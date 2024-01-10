@@ -1,0 +1,263 @@
+{% extends "base/base_settings.html" %}
+{%load static%}
+
+{% block content %}
+
+<div class="col-md-8 offset-md-2">
+
+	<!-- Page Header -->
+	<div class="page-header">
+		<div class="row">
+			<div class="col-sm-12">
+				<h3 class="page-title">Company Settings</h3>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Header -->
+	{% if create %}
+	<form id="create_update_form" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Company Name <span class="text-danger">*</span></label><br>
+					{{ form.name }}
+					{% if form.name.errors %}
+						<span class="error">{{ form.name.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Contact Person</label><br>
+					{{ form.contact_person }}
+					{% if form.contact_person.errors %}
+						<span class="error">{{ form.contact_person.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Address</label><br>
+					{{ form.address }}
+					{% if form.address.errors %}
+						<span class="error">{{ form.address.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-6 col-lg-3">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Country</label><br>
+					{{ form.country }}
+					{% if form.country.errors %}
+						<span class="error">{{ form.country.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-6 col-lg-3">
+				<div class="input-block mb-3">
+					<label class="col-form-label">State/Province</label><br>
+					{{ form.state }}
+					{% if form.state.errors %}
+						<span class="error">{{ form.state.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-6 col-lg-3">
+				<div class="input-block mb-3">
+					<label class="col-form-label">City</label><br>
+					{{ form.city }}
+					{% if form.city.errors %}
+						<span class="error">{{ form.city.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-6 col-lg-3">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Postal Code</label><br>
+					{{ form.postal_code }}
+					{% if form.postal_code.errors %}
+						<span class="error">{{ form.postal_code.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Email</label><br>
+					{{ form.email }}
+					{% if form.email.errors %}
+						<span class="error">{{ form.email.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Phone Number</label><br>
+					{{ form.phone }}
+					{% if form.phone.errors %}
+						<span class="error">{{ form.phone.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Mobile Number</label><br>
+					{{ form.mobile }}
+					{% if form.mobile.errors %}
+						<span class="error">{{ form.mobile.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Fax</label><br>
+					{{ form.fax }}
+					{% if form.fax.errors %}
+						<span class="error">{{ form.fax.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Website Url</label><br>
+					{{ form.website }}
+					{% if form.website.errors %}
+						<span class="error">{{ form.website.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="submit-section">
+			<button class="btn btn-primary submit-btn onclick="submitForm(event)"">Save</button>
+		</div>
+	</form>
+	{% endif %}
+</div>
+{% comment %} <script>
+    $(document).ready(function () {
+        $("#id_country").change(function () {
+            var country_id = $(this).val();
+            $.ajax({
+                url: '/get_states/',
+                data: {'country_id': country_id},
+                dataType: 'json',
+                success: function (data) {
+                    var statesSelect = $("#id_state");
+                    statesSelect.empty();
+                    $.each(data.states, function (index, state) {
+                        statesSelect.append($('<option>', {
+                            value: state.id,
+                            text: state.name
+                        }));
+                    });
+                }
+            });
+        });
+    });
+</script> {% endcomment %}
+<!-- Include SweetAlert JS from CDN -->
+  
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+<script>
+	function submitForm(event) {
+	event.preventDefault();  // Prevent the default form submission behavior
+	var form = document.getElementById('create_update_form');
+	var formData = new FormData(form);
+	
+	fetch(form.action, {
+		method: 'POST',
+		body: formData,
+	})
+	.then(response => response.json())
+	.then(data => {
+		console.log(data);
+		console.log("status", data.status);
+		console.log('data.redirect_url:', data.redirect_url);
+	
+		// Corrected variable name here
+		if (data.status === 'true') {
+		console.log("status is true");
+		console.log("redirect url", data.redirect_url);
+		showSweetAlert(data.message, data.status, data.redirect_url);
+		} else if (data.status === 'form_error') {
+		console.log("status is form_error");
+		showSweetAlert(data.message, 'form_error');
+		} else if (data.status === 'false') {
+		console.log("status is false");
+		showSweetAlert(data.message, data.status);
+		} else {
+		console.log("status is neither true or false");
+		showSweetAlert(data.message, 'error');
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+	});
+	}
+	
+	function showSweetAlert(message, status, redirectUrl) {
+	console.log('showSweetAlert called');
+	console.log('message:', message);
+	console.log('status:', status);
+	console.log('redirectUrl:', redirectUrl);
+	
+	if (status === 'true') {
+		Swal.fire({
+		icon: 'success',
+		title: 'Success!',
+		text: message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+	
+		didClose: () => {
+			console.log('Redirecting to:', redirectUrl);
+			if (redirectUrl) {
+			// Combine the redirect URL with the current protocol and host to get the full URL
+			var fullRedirectUrl = window.location.origin + redirectUrl;
+			console.log('Full Redirect URL:', fullRedirectUrl);
+			window.location.href = fullRedirectUrl;
+			}
+		}
+		});
+	} else if (status === 'form_error') {
+		console.log('Showing form error alert');
+		Swal.fire({
+		icon: 'error',
+		title: 'Form Validation Error!',
+		html: message,  // Display form errors as HTML
+		showConfirmButton: true,
+		allowOutsideClick: false,
+		});
+	} else if (status === 'false') {
+		console.log('Showing form error alert');
+		Swal.fire({
+		icon: 'error',
+		title: 'Form Error!',
+		text: 'Error: ' + message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+		});
+	} else {
+		console.log('Showing error alert');
+		Swal.fire({
+		icon: 'error',
+		title: 'Error!',
+		text: 'Error: ' + message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+		});
+	}
+	}
+	
+</script>
+
+{% endblock %}

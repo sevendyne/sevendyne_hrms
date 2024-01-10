@@ -1,0 +1,247 @@
+{% extends "sevendyne_admin/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Section: Design Block -->
+<section class="" style="width: 70%;margin-top: -3%;margin-left: 25%;">
+    
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" >
+      <div class="container">
+        <div class="row gx-lg-5 align-items-center">
+            
+          <div class="col-lg-8 mb-5 mb-lg-0">
+            {% if create %}
+            <div class="card">
+              <h3 style="margin-top: 3%;color: #2c9792;">HRMS Client Creation Form</h3>
+              <div class="card-body py-5 px-md-5">
+                <form id="hrmsclientform" method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <!-- 2 column grid layout with text inputs for the first and last names -->
+                  <div class="row" style="margin-top: -5%;">
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                          <span class="error">{{ form.first_name.errors.0 }}</span>
+                        {% endif %}
+                        <label class="form-label">First name</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                          <span class="error">{{ form.last_name.errors.0 }}</span>
+                        {% endif %}
+                        <label class="form-label">Last name</label>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <!-- Email input -->
+                  <div class="form-outline mb-4">
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                      <span class="error">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                    <label class="form-label">Email address</label>
+                  </div>
+
+                  <!-- Username input -->
+                  <div class="form-outline mb-4">
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                      <span class="error">{{ form.username.errors.0 }}</span>
+                    {% endif %}
+                    <label class="form-label">User Name</label>
+                  </div>
+  
+                  <!-- Password input -->
+                  <div class="form-outline mb-4">
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                      <span class="error">{{ form.password.errors.0 }}</span>
+                    {% endif %}
+                    <label class="form-label">Password</label>
+                  </div>                                 
+  
+                  <!-- Submit button -->
+                  <button type="submit" class="btn btn-primary btn-block mb-4" onclick="submitForm(event)">
+                    Create HRMS Client
+                  </button> 
+                  
+                </form>
+              </div>
+            </div>
+            {% else %}
+            <div class="card">
+              <h3 style="margin-top: 3%;color: #2c9792;">Update HRMS Client Form</h3>
+              <div class="card-body py-5 px-md-5">
+                <form id="hrmsclientform" method="post" enctype="multipart/form-data" class="ajax">
+                  {% csrf_token %}
+
+                  <!-- 2 column grid layout with text inputs for the first and last names -->
+                  <div class="row" style="margin-top: -5%;">
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                          <span class="error">{{ form.first_name.errors.0 }}</span>
+                        {% endif %}
+                        <label class="form-label">First name</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="form-outline">
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                          <span class="error">{{ form.last_name.errors.0 }}</span>
+                        {% endif %}
+                        <label class="form-label">Last name</label>
+                      </div>
+                    </div>
+                  </div>
+  
+                  <!-- Email input -->
+                  <div class="form-outline mb-4">
+                    {{ form.email }}
+                    {% if form.email.errors %}
+                      <span class="error">{{ form.email.errors.0 }}</span>
+                    {% endif %}
+                    <label class="form-label">Email address</label>
+                  </div>
+
+                  <!-- Username input -->
+                  <div class="form-outline mb-4">
+                    {{ form.username }}
+                    {% if form.username.errors %}
+                      <span class="error">{{ form.username.errors.0 }}</span>
+                    {% endif %}
+                    <label class="form-label">User Name</label>
+                  </div>
+  
+                  <!-- Password input -->
+                  <div class="form-outline mb-4">
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                      <span class="error">{{ form.password.errors.0 }}</span>
+                    {% endif %}
+                    <label class="form-label">Password</label>
+                  </div>                 
+  
+                  <!-- Submit button -->
+                  <button type="submit" class="btn btn-primary btn-block mb-4" onclick="submitForm(event)">
+                    Update HRMS Client
+                  </button> 
+                  
+                </form>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Include SweetAlert JS from CDN -->
+  
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+ 
+<!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+<script>
+  function submitForm(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+    var form = document.getElementById('hrmsclientform');
+    var formData = new FormData(form);
+  
+    fetch(form.action, {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      console.log("status", data.status);
+      console.log('data.redirect_url:', data.redirect_url);
+  
+      // Corrected variable name here
+      if (data.status === 'true') {
+        console.log("status is true");
+        console.log("redirect url", data.redirect_url);
+        showSweetAlert(data.message, data.status, data.redirect_url);
+      } else if (data.status === 'form_error') {
+        console.log("status is form_error");
+        showSweetAlert(data.message, 'form_error');
+      } else if (data.status === 'false') {
+        console.log("status is false");
+        showSweetAlert(data.message, data.status);
+      } else {
+        console.log("status is neither true or false");
+        showSweetAlert(data.message, 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  }
+  
+  function showSweetAlert(message, status, redirectUrl) {
+    console.log('showSweetAlert called');
+    console.log('message:', message);
+    console.log('status:', status);
+    console.log('redirectUrl:', redirectUrl);
+  
+    if (status === 'true') {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: message,
+        showConfirmButton: true,
+        allowOutsideClick: false, // Prevent closing on outside click
+  
+        didClose: () => {
+          console.log('Redirecting to:', redirectUrl);
+          if (redirectUrl) {
+            // Combine the redirect URL with the current protocol and host to get the full URL
+            var fullRedirectUrl = window.location.origin + redirectUrl;
+            console.log('Full Redirect URL:', fullRedirectUrl);
+            window.location.href = fullRedirectUrl;
+          }
+        }
+      });
+    } else if (status === 'form_error') {
+      console.log('Showing form error alert');
+      Swal.fire({
+        icon: 'error',
+        title: 'Form Validation Error!',
+        html: message,  // Display form errors as HTML
+        showConfirmButton: true,
+        allowOutsideClick: false,
+      });
+    } else if (status === 'false') {
+      console.log('Showing form error alert');
+      Swal.fire({
+        icon: 'error',
+        title: 'Form Error!',
+        text: 'Error: ' + message,
+        showConfirmButton: true,
+        allowOutsideClick: false, // Prevent closing on outside click
+      });
+    } else {
+      console.log('Showing error alert');
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: 'Error: ' + message,
+        showConfirmButton: true,
+        allowOutsideClick: false, // Prevent closing on outside click
+      });
+    }
+  }
+  
+</script>
+
+{% endblock %}

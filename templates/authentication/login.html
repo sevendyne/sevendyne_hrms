@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sevendyne HRMS - Login</title>
+    <!-- Font Awesome -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+    />
+    <!-- Google Fonts -->
+    <link
+    href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+    rel="stylesheet"
+    />
+    <!-- MDB -->
+    <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css"
+    rel="stylesheet"
+    />
+</head>
+<body>
+    <!-- Section: Design Block -->
+<section class="text-center" style="width: 50%;margin-top: 5%;margin-left: 25%;">
+    <!-- Background image -->
+    {% if error_message %}
+    <div class="alert alert-danger" role="alert">
+        {{ error_message }}
+    </div>
+{% endif %}
+    <div class="p-5 bg-image" style="
+          background-image: url('static/assets/img/login_img.jpg');
+          height: 300px;
+          "></div>
+    <!-- Background image -->
+  
+    <div class="card mx-4 mx-md-5 shadow-5-strong" style="
+          margin-top: -100px;
+          background: hsla(0, 0%, 100%, 0.8);
+          backdrop-filter: blur(30px);
+          ">
+      <div class="card-body py-5 px-md-5">
+  
+        <div class="row d-flex justify-content-center">
+          <div class="col-lg-8">
+            <h1 style="color:#326c92">SEVENDYNE HRMS</h1>
+            <h2 class="fw-bold mb-5">Login</h2>
+            <form method="POST"  enctype="multipart/form-data">
+              {% csrf_token %}
+  
+              <!-- Email input -->
+              <div class="form-outline mb-4">
+                <label class="form-label" for="form3Example3">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                  <span class="error">{{ form.username.errors.0 }}</span>
+                {% endif %}
+              </div>
+  
+              <!-- Password input -->
+              <div class="form-outline mb-4">
+                <label class="form-label" for="form3Example4">Password</label>
+                {{ form.password }}
+                {% if form.password.errors %}
+                  <span class="error">{{ form.password.errors.0 }}</span>
+                {% endif %}
+              </div>              
+              <p style="font-size:smaller">Contact technical@sevendyne.com for username and password</p>          
+   
+              <!-- Submit button -->
+              <button type="submit" class="btn btn-primary btn-block mb-4">
+                Login
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Section: Design Block -->
+  <!-- MDB -->
+    <script
+    type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.umd.min.js"
+    ></script>
+</body>
+</html>

@@ -1,0 +1,184 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Smarthr - Bootstrap Admin Template">
+		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
+        <meta name="author" content="Dreamguys - Bootstrap Admin Template">
+        <title>Reports- HRMS admin template</title>
+		
+		<!-- Favicon -->
+        <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
+		
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+    	<link rel="stylesheet" href="assets/plugins/fontawesome/css/all.min.css">
+
+		<!-- Lineawesome CSS -->
+        <link rel="stylesheet" href="assets/css/line-awesome.min.css">
+		<link rel="stylesheet" href="assets/css/material.css">
+		
+		<!-- Select2 CSS -->
+		<link rel="stylesheet" href="assets/css/select2.min.css">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="assets/css/style.css">
+		
+		 
+    </head>
+    <body>
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+		
+			
+			<!-- Page Wrapper -->
+            <div class="page-wrapper">
+			
+				<!-- Page Content -->
+                <div class="content container-fluid">
+					
+					<!-- Page Header -->
+					<div class="page-header">
+						<div class="row">
+							<div class="col-sm-12">
+								<h3 class="page-title">Attendance Reports</h3>
+								<ul class="breadcrumb">
+									<li class="breadcrumb-item"><a href="admin-dashboard.html">Dashboard</a></li>
+									<li class="breadcrumb-item active">Attendance Reports</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /Page Header -->
+					
+						<!-- Content Starts -->
+						<!-- Search Filter -->
+					<div class="row filter-row">
+						
+						<div class="col-sm-6 col-md-3">  
+							<div class="input-block mb-3 form-focus">
+								<input type="text" class="form-control floating">
+								<label class="focus-label">Employee Name</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">  
+							<div class="input-block mb-3 form-focus">
+								<select class="form-control floating select">
+									<option>
+										Management
+									</option>
+									<option>
+										Finance
+									</option>
+									<option>
+										Development
+									</option>
+								</select>
+								<label class="focus-label">Department</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">  
+							<div class="input-block mb-3 form-focus">
+								<select class="form-control floating select">
+									<option>
+										All
+									</option>
+									<option>
+										CEO
+									</option>
+									<option>
+										Finance
+									</option>
+								</select>
+								<label class="focus-label">Designation</label>
+							</div>
+						</div>
+						<div class="col-sm-6 col-md-3">  
+							<div class="d-grid">
+								<a href="#" class="btn btn-success"> Search </a>  
+							</div>
+						</div>     
+                    </div>
+					<!-- /Search Filter -->
+							<div class="card card-table mt-3">
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-hover table-center mb-0">
+											<thead>
+												<tr>
+													<th>Employee</th>
+													<th>Date</th>
+													<th class="text-center">Total Working days</th>
+													<th class="text-center">Workday by Employee</th>
+													<th class="text-center">Late Arrival</th>
+													<th class="text-center">Missing Work</th>
+													<th class="text-center">Night Hrs</th>
+													<th class="text-center">Extra Time</th>
+													<th>Leave Count for This Month</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<td>
+														<h2 class="table-avatar">
+															<a href="profile.html" class="avatar avatar-sm me-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-03.jpg" alt="User Image"></a>
+															<a href="profile.html">Justin Lee <span> #0001</span></a>
+														</h2>
+													</td>
+													<td>20 Dec 2020</td>
+													<td class="text-center">
+														<button class="btn btn-outline-info btn-sm">28</button>
+													</td>
+													<td class="text-center"><span class="btn btn-danger btn-sm">26</span></td>
+													<td class="text-center"><span class="btn btn-warning btn-sm"><b>15 min</b></span></td>
+													<td class="text-center"><span class="btn btn-success btn-sm"><b>No Work missing</b></span></td>
+													<td class="text-center">3 hrs</td>
+													<td class="text-center">2 hrs</td>
+													<td class="text-center"><span class="btn btn-danger btn-sm">02</span></td>
+												</tr>
+											
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+					
+                
+					<!-- /Content End -->
+					
+                </div>
+				<!-- /Page Content -->
+				
+            </div>
+			<!-- /Page Wrapper -->
+			
+        </div>
+		<!-- /Main Wrapper -->
+		
+
+		<!-- jQuery -->
+       <script src="assets/js/jquery-3.7.1.min.js"></script>
+		
+		<!-- Bootstrap Core JS -->
+        <script src="assets/js/bootstrap.bundle.min.js"></script>
+		
+		<!-- Select2 JS -->
+		<script src="assets/js/select2.min.js"></script>
+		
+		<!-- Slimscroll JS -->
+		<script src="assets/js/jquery.slimscroll.min.js"></script>
+		
+		 <!-- Theme Settings JS -->
+		<script src="assets/js/layout.js"></script>
+		<script src="assets/js/theme-settings.js"></script>
+		<script src="assets/js/greedynav.js"></script>
+		<!-- Custom JS -->
+		<script src="assets/js/app.js"></script>
+		
+    </body>
+</html>
