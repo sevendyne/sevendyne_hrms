@@ -1,9 +1,9 @@
-asgiref==3.7.2
+asgiref==3.4.1
 Django==3.2.12
-django-autocomplete-light==3.9.7
-django-phonenumber-field==7.3.0
+django-autocomplete-light==3.8.1
+django-phonenumber-field==5.2.0
 phonenumbers==8.13.27
 pillow==10.2.0
 six==1.16.0
-sqlparse==0.4.4
-typing_extensions==4.9.0
+sqlparse==0.4.2
+typing-extensions==4.9.0
