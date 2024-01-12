@@ -1,5 +1,5 @@
 asgiref==3.7.2
-Django==5.0.1
+Django==3.2.12
 django-autocomplete-light==3.9.7
 django-phonenumber-field==7.3.0
 phonenumbers==8.13.27
