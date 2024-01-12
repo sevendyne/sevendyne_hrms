@@ -10,67 +10,13 @@ from django.urls import reverse,reverse
 from django.db.models import Q
 from django.http.response import HttpResponse
 from django.http import HttpResponse, JsonResponse
-from django.db.models import Count
-from django.db.models.functions import TruncMonth
 from django.contrib.auth.decorators import login_required, user_passes_test
 
+from main.decorators import company_required
 from main.functions import generate_form_errors, has_admin_dashboard_permission, has_hrms_permission
 from hrms.forms import HrmsClientForm
 from hrms.models import HrmsClient
 
-
-@login_required
-@user_passes_test(has_hrms_permission, redirect_field_name=None)
-def hrms_dashboard(request):
-    # print("hrms home request got")
-    # Debugging: Print the user to verify it's the correct user
-    # print("User:", request.user)
-    # hrms_clients = HrmsClient.objects.filter(is_deleted=False)
-    # print("all hrms clients",hrms_clients)
-
-    try:
-        # Retrieve the HrmsClient object associated with the logged-in user
-        hrms_client = get_object_or_404(HrmsClient, user=request.user, is_deleted=False)
-        # print("hrms client")
-        # print(hrms_client)
-
-        context = {
-            'hrms_client': hrms_client,
-        }
-
-        return render(request, "home/home_hrms.html", context=context)
-    except HrmsClient.DoesNotExist:
-        # Debugging: Print a message if the HrmsClient object is not found
-        # print("HrmsClient not found for the user.")
-        return HttpResponse("HrmsClient not found for the user.")
-    except Exception as e:
-        # Debugging: Print any other exceptions that might occur
-        # print("Exception:", e)
-        return HttpResponse(f"An error occurred: {str(e)}")
-    # Retrieve the HrmsClient object associated with the logged-in user
-    # hrms_client = get_object_or_404(HrmsClient, user=request.user, is_deleted=False)
-    # print("hrms client")
-    # print(hrms_client)
-    # context = {
-    #     'hrms_client': hrms_client,
-    # }
-
-    # return render(request, "home_hrms.html", context=context)
-
-
-@login_required
-@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
-def admin_dashboard(request):
-    total_hrms_clients = 0
-    hrms_clients = HrmsClient.objects.filter(is_deleted=False)
-    monthly_hrms_clients = HrmsClient.objects.annotate(month=TruncMonth('created_at')).values('month').annotate(count=Count('id')).order_by('month')
-    total_hrms_clients = hrms_clients.count()
-
-    context = {
-        'total_hrms_clients': total_hrms_clients,
-        'monthly_hrms_clients' : monthly_hrms_clients
-    }
-    return render(request, "sevendyne_admin/sevendyne_admin.html", context=context)
 
 
 # hrms_client crud starts here

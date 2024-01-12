@@ -11,7 +11,7 @@ urlpatterns = [
     path('',include(('user.urls','user'),namespace='user')),
     # path('',general_views.app,name='app'),
     path('app/hrms/dashboard/',general_views.hrms_dashboard,name='hrms_dashboard'),
-    path('app/sevendyne/dashboard/',general_views.sevendyne_dashboard,name='sevendyne_dashboard'),
+    path('app/sevendyne/dashboard/',general_views.admin_dashboard,name='sevendyne_dashboard'),
     path('app/main/',include(('main.urls','main'),namespace='main')),
     path('app/hrms/',include(('hrms.urls','hrms'),namespace='hrms')),
 

@@ -9,9 +9,6 @@ class HrmsClient(models.Model):
     email = models.EmailField(max_length=254)
     username = models.CharField(max_length=254)    
     password = models.CharField(max_length=100)
-    # employee_profile_url = models.URLField()
-    # leave_application_url = models.URLField()
-    # payroll_salary_url = models.URLField()
     created_at = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(default=False)
 

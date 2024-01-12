@@ -15,7 +15,7 @@
 	</div>
 	<!-- /Page Header -->
 	{% if create %}
-	<form id="create_update_form" method="post" enctype="multipart/form-data">
+	<form id="create_update_form" method="POST" enctype="multipart/form-data">
 		{% csrf_token %}
 		<div class="row">
 			<div class="col-sm-6">
@@ -136,7 +136,7 @@
 			</div>
 		</div>
 		<div class="submit-section">
-			<button class="btn btn-primary submit-btn onclick="submitForm(event)"">Save</button>
+			<button type="submit" class="btn btn-primary submit-btn" onclick="submitForm(event)">Save</button>
 		</div>
 	</form>
 	{% endif %}

@@ -4,9 +4,6 @@ from django.urls import path, re_path
 app_name = "hrms"
 
 urlpatterns = [
-    path("home/", views.hrms_dashboard, name="hrms_dashboard"),
-    path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),
-
     path("client/create/", views.create_hrms_client, name="create_hrms_client"),
     path("clients/", views.hrms_clients, name="hrms_clients"),
     re_path(r'^hrms_client/edit/(?P<pk>.*)/$', views.edit_hrms_client, name='edit_hrms_client'),    

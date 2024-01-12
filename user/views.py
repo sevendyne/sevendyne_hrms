@@ -41,10 +41,10 @@ def user_login(request):
                 # Check user groups and redirect accordingly
                 if user.groups.filter(name='sevendyne_admin').exists():
                     # print("sevendyne_admin")
-                    return redirect('hrms:admin_dashboard')  
+                    return redirect('main:admin_dashboard')  
                 elif user.groups.filter(name='hrms_clients').exists():
                     # print("user belongs to hrms_clients group ")
-                    return redirect('hrms:home_hrms')  
+                    return redirect('main:hrms_dashboard')  
                 else:
                     # print("user not an admin or hrms client")
                     return redirect('user:user_login')

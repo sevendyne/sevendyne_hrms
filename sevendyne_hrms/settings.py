@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     # Third party apps
     'main',
     'user',
-    'hrms'
+    'hrms',
+    'candidate'
 ]
 
 MIDDLEWARE = [

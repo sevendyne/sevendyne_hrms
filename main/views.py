@@ -15,14 +15,22 @@ from main.models import Company, State
 
 from django.http import JsonResponse
 
-def get_states(request):
-    country_id = request.GET.get('country_id')
-    if country_id:
-        states = State.objects.filter(country_id=country_id)
-        state_list = [{'id': state.id, 'name': state.name} for state in states]
-        return JsonResponse({'states': state_list})
-    else:
-        return JsonResponse({'states': []})
+from django.db.models import Count
+from django.db.models.functions import TruncMonth
+
+from django.contrib.auth.decorators import login_required, user_passes_test
+from main.decorators import company_required
+from main.functions import generate_form_errors, has_admin_dashboard_permission, has_hrms_permission
+
+from hrms.models import HrmsClient
+# def get_states(request):
+#     country_id = request.GET.get('country_id')
+#     if country_id:
+#         states = State.objects.filter(country_id=country_id)
+#         state_list = [{'id': state.id, 'name': state.name} for state in states]
+#         return JsonResponse({'states': state_list})
+#     else:
+#         return JsonResponse({'states': []})
 
 # @login_required
 # @company_required
@@ -30,15 +38,61 @@ def get_states(request):
 #     return HttpResponseRedirect(reverse('main:create_company'))
     # return HttpResponseRedirect(reverse('dashboard'))
 
-
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def hrms_dashboard(request):
-    return render(request, 'base/hrms_base.html')
+    # print("hrms home request got")
+    # Debugging: Print the user to verify it's the correct user
+    # print("User:", request.user)
+    # hrms_clients = HrmsClient.objects.filter(is_deleted=False)
+    # print("all hrms clients",hrms_clients)
+
+    try:
+        # Retrieve the HrmsClient object associated with the logged-in user
+        hrms_client = get_object_or_404(HrmsClient, user=request.user, is_deleted=False)
+        # print("hrms client")
+        # print(hrms_client)
+
+        context = {
+            'hrms_client': hrms_client,
+        }
+
+        return render(request, "dashboard/admin-dashboard.html", context=context)
+    except HrmsClient.DoesNotExist:
+        # Debugging: Print a message if the HrmsClient object is not found
+        # print("HrmsClient not found for the user.")
+        return HttpResponse("HrmsClient not found for the user.")
+    except Exception as e:
+        # Debugging: Print any other exceptions that might occur
+        # print("Exception:", e)
+        return HttpResponse(f"An error occurred: {str(e)}")
+    # Retrieve the HrmsClient object associated with the logged-in user
+    # hrms_client = get_object_or_404(HrmsClient, user=request.user, is_deleted=False)
+    # print("hrms client")
+    # print(hrms_client)
+    # context = {
+    #     'hrms_client': hrms_client,
+    # }
+
+    # return render(request, "home_hrms.html", context=context)
 
 
-@company_required
-def sevendyne_dashboard(request):
-    return render(request, 'base/sevendyne_base.html')
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def admin_dashboard(request):
+    total_hrms_clients = 0
+    hrms_clients = HrmsClient.objects.filter(is_deleted=False)
+    monthly_hrms_clients = HrmsClient.objects.annotate(month=TruncMonth('created_at')).values('month').annotate(count=Count('id')).order_by('month')
+    total_hrms_clients = hrms_clients.count()
+
+    context = {
+        'total_hrms_clients': total_hrms_clients,
+        'monthly_hrms_clients' : monthly_hrms_clients
+    }
+    return render(request, "sevendyne_admin/sevendyne_admin.html", context=context)
+
+
 
 
 # company crud starts here
@@ -80,7 +134,7 @@ def create_company(request):
                     creator = creator,
                     updator = updator
                 ).save()
-
+                print("company details is saved in db")
                 response_data = {
                     "status": "true",
                     "title": "Successfully Created",
@@ -88,6 +142,7 @@ def create_company(request):
                     "redirect": "true",
                     "redirect_url": reverse('main:companies')
                 }
+                print("Redirect URL:", response_data["redirect_url"])
             else:               
                 response_data = {
                     "status": "false",
@@ -95,15 +150,18 @@ def create_company(request):
                     "title": "Already exists",
                     "message": "Company already exists",                        
                 }
+                print("status inside", response_data["status"])
+            print("status outside", response_data["status"])
         else:
             print('not valid')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
-                "status": "false",
+                "status": "form_error",
                 "title": "Form validation error",
                 "message": str(message),               
             }
+            print("status", response_data["status"])
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = CompanyForm()

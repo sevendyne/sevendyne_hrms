@@ -3,6 +3,10 @@ from main import views
 from main.autocomplete_registery import StateAutocomplete
 
 urlpatterns = [
+
+    path("hrms/dashboard/", views.hrms_dashboard, name="hrms_dashboard"),
+    path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),
+
 	# path('state-autocomplete/',StateAutocomplete.as_view(),name='state_autocomplete'),
     # path('get_states/', views.get_states, name='get_states'),
 	path('company/create/', views.create_company, name='create_company'),
@@ -13,3 +17,4 @@ urlpatterns = [
     path('company/delete-selected/', views.delete_selected_companies, name='delete_selected_companies')
 
 ]
+
