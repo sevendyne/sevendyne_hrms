@@ -38,5 +38,5 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > deploy_key.pem
           chmod 600 deploy_key.pem
-          ssh -o StrictHostKeyChecking=no -i deploy_key.pem ec2-user@3.110.118.236 "git clone https://github.com/seven7dyne/sevendyne_hrms.git ~/sevendyne_hrms && cd ~/sevendyne_hrms && git pull && python manage.py makemigrations && python manage.py migrate && python manage.py loaddata states countries && python manage.py create_groups_and_permissions && python manage.py createsuperuser && systemctl restart your-app-service"
+          ssh -o StrictHostKeyChecking=no -i deploy_key.pem ubuntu@ec2-3-110-118-236.ap-south-1.compute.amazonaws.com "git clone https://github.com/seven7dyne/sevendyne_hrms.git ~/sevendyne_hrms && cd ~/sevendyne_hrms && git pull && python manage.py makemigrations && python manage.py migrate && python manage.py loaddata states countries && python manage.py create_groups_and_permissions && python manage.py createsuperuser && systemctl restart your-app-service"
           rm deploy_key.pem
