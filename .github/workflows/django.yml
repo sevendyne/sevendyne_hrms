@@ -31,5 +31,7 @@ jobs:
       # Deployment steps
       - name: Deploy to AWS EC2
         run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ssh_key.pem
+          cat ssh_key.pem
           ssh -i ${{ secrets.SSH_PRIVATE_KEY }} ec2-user@3.110.118.236 "git clone https://github.com/seven7dyne/sevendyne_hrms.git ~/sevendyne_hrms && cd ~/sevendyne_hrms && git pull && python manage.py makemigrations && python manage.py migrate && python manage.py loaddata states countries && python manage.py create_groups_and_permissions && python manage.py createsuperuser && systemctl restart your-app-service"
       
