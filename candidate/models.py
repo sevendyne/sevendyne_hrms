@@ -5,7 +5,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 from main.models import BaseModel
 
-
+# Refer https://internshala.com/student/resume?detail_source=resume_direct#personal_details 
 #check internshala,naukri etc
 class Candidate(BaseModel):
     first_name = models.CharField(_("First Name"),max_length=100)
@@ -17,14 +17,14 @@ class Candidate(BaseModel):
     education = models.TextField(_("Highest Level Of Education"),null=True, blank=True)
     experience = models.TextField(_("Experience in years"),null=True, blank=True)
     skills = models.TextField(_("Skills"),null=True, blank=True)
-    certifications = models.TextField(_("Certifications"),null=True, blank=True)
-    projects = models.TextField(null=True, blank=True)
-    programming_languages = models.TextField(null=True, blank=True)
-    database_management = models.TextField(null=True, blank=True)
-    version_control = models.TextField(null=True, blank=True)
-    additional_information = models.TextField(null=True, blank=True)
-    linkedin_profile = models.URLField(null=True, blank=True)
-    github_profile = models.URLField(null=True, blank=True)
+    certifications = models.FileField(upload_to='certificates/', null=True, blank=True)
+    projects = models.URLField(_("Portfolio/ Work Samples/ Github Links"),null=True, blank=True)
+    # programming_languages = models.TextField(null=True, blank=True) #formset
+    # database_management = models.TextField(null=True, blank=True)
+    # version_control = models.TextField(null=True, blank=True)
+    additional_information = models.TextField(null=True, blank=True) # formset
+    linkedin_profile = models.URLField(_("LinkedIn Profile Link"),null=True, blank=True)
+    github_profile = models.URLField(_(" Github Links"),null=True, blank=True)
     resume = models.FileField(upload_to='resumes/', null=True, blank=True)
     date_applied = models.DateTimeField(auto_now_add=True)
     is_deleted = models.BooleanField(default=False)

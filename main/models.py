@@ -17,8 +17,7 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class Company(BaseModel):    
-    # user = models.ForeignKey('auth.User',null=True,on_delete=models.CASCADE)
+class Company(BaseModel):
     name = models.CharField(_("Company Name"),max_length=128)
     contact_person = models.CharField(_("Contact Person"),max_length=128)
     address = models.TextField(_("Address")) 
