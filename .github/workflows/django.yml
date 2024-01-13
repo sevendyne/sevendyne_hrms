@@ -27,6 +27,11 @@ jobs:
       - name: Run Tests
         run: |
           python manage.py test
+     
+      - name: Debug
+        run: |
+          cat ~/.ssh/known_hosts
+          ls -l ~/.ssh
 
       # Deployment steps
       - name: Deploy to AWS EC2
