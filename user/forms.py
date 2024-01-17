@@ -12,12 +12,3 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput(attrs={'class': 'required form-control', 'placeholder': 'Enter your password'})
     )
 
-
-# class LoginForm(forms.Form):
-#     username = forms.CharField(label='Username', max_length=100)
-#     password = forms.CharField(label='Password', widget=forms.PasswordInput())
-#     class Meta:
-#         widgets = {            
-#                 'username': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter your username'}),
-#                 'password': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter your password'})            
-#             }
