@@ -14,6 +14,8 @@ urlpatterns = [
     path('app/sevendyne/dashboard/',general_views.admin_dashboard,name='sevendyne_dashboard'),
     path('app/main/',include(('main.urls','main'),namespace='main')),
     path('app/hrms/',include(('hrms.urls','hrms'),namespace='hrms')),
+    path('app/candidate/',include(('candidate.urls','candidate'),namespace='candidate')),
+    path('app/employee/',include(('employee.urls','employee'),namespace='employee')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

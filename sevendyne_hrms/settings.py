@@ -39,12 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'dal',
     'dal_select2',
-    # 'autocomplete_light',
     # Third party apps
     'main',
     'user',
     'hrms',
-    'candidate'
+    'candidate',
+    'employee'
 ]
 
 MIDDLEWARE = [

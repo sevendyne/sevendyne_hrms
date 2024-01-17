@@ -57,7 +57,7 @@ def hrms_dashboard(request):
         context = {
             'hrms_client': hrms_client,
         }
-
+    
         return render(request, "dashboard/admin-dashboard.html", context=context)
     except HrmsClient.DoesNotExist:
         # Debugging: Print a message if the HrmsClient object is not found
@@ -93,10 +93,18 @@ def admin_dashboard(request):
     return render(request, "sevendyne_admin/sevendyne_admin.html", context=context)
 
 
-
-
 # company crud starts here
 def create_company(request):
+    # Check if the user is an HrmsClient and has already created a company
+    if HrmsClient.objects.filter(user=request.user).exists() and Company.objects.filter(creator=request.user).exists():
+        response_data = {
+            "status": "false",
+            "stable": "true",
+            "title": "Cannot create another company",
+            "message": "An HRMS client can create only one company.",
+        }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+
     if request.method == 'POST':
         form = CompanyForm(request.POST)
         if form.is_valid():
@@ -175,21 +183,8 @@ def create_company(request):
         return render(request, 'settings/settings.html', context)
 
 
-# @company_required
-def companies(request):
-    instances = Company.objects.filter(is_deleted=False)
-    paginator = Paginator(instances,1000000000000)
-    page_number = request.GET.get('page')
-    instances = paginator.get_page(page_number)
-    context = {
-        'instances': instances,
-        "title": 'Companies' 
-    }
-    return render(request, "settings/companies.html", context)
 
-
-
-# @company_required
+@company_required
 def edit_company(request, pk):
     instance = get_object_or_404(Company.objects.filter(pk=pk, is_deleted=False))
     query = request.GET.get("q")
@@ -241,7 +236,7 @@ def edit_company(request, pk):
         return render(request, 'settings/create_company.html', context)
 
 
-# @company_required
+@company_required
 def company(request, pk):
     instance = get_object_or_404(Company.objects.filter(pk=pk,is_deleted=False))
 
@@ -252,48 +247,3 @@ def company(request, pk):
     }
     return render(request, "settings/company.html", context)
 
-
-# @company_required
-def delete_company(request,pk):
-    instance = get_object_or_404(Company.objects.filter(pk=pk,is_deleted=False))
-    
-    Company.objects.filter(pk=pk).update(is_deleted=True,slug=instance.slug + "_deleted_" + str(instance.auto_id))
-
-    response_data = {
-        "status" : "true",        
-        "title" : "Successfully Deleted",
-        "message" : "Company Successfully Deleted.", 
-        "redirect" : "true",       
-        "redirect_url" : reverse('main:companies')
-    }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
-   
-
-# @company_required
-def delete_selected_companies(request):
-    pks = request.GET.get('pk')
-    if pks:
-        pks = pks[:-1]
-
-        pks = pks.split(',')
-        for pk in pks:
-            instance = get_object_or_404(Company.objects.filter(pk=pk, is_deleted=False))
-            
-        Company.objects.filter(pk=pk).update(
-            is_deleted=True, slug=instance.slug + "_deleted_" + str(instance.auto_id))
-
-        response_data = {
-            "status": "true",            
-            "title": "Successfully Deleted",
-            "message": "Selected Company Successfully Deleted.",  
-
-            "redirect" : "true",          
-            "redirect_url": reverse('main:companies')
-        }
-    else:
-        response_data = {
-            "status": "false",
-            "title": "Nothing selected",
-            "message": "Please select any company first.",
-        }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')

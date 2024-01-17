@@ -16,12 +16,9 @@ class Candidate(BaseModel):
     address = models.TextField(_("Address"),null=True, blank=True)
     education = models.TextField(_("Highest Level Of Education"),null=True, blank=True)
     experience = models.TextField(_("Experience in years"),null=True, blank=True)
-    skills = models.TextField(_("Skills"),null=True, blank=True)
-    certifications = models.FileField(upload_to='certificates/', null=True, blank=True)
-    projects = models.URLField(_("Portfolio/ Work Samples/ Github Links"),null=True, blank=True)
-    # programming_languages = models.TextField(null=True, blank=True) #formset
-    # database_management = models.TextField(null=True, blank=True)
-    # version_control = models.TextField(null=True, blank=True)
+    skills = models.TextField(_("Skills")) #formset
+    certifications = models.FileField(upload_to='certificates/', null=True, blank=True) #formset
+    projects = models.URLField(_("Portfolio/ Work Samples/ Github Links"),null=True, blank=True) #formset
     additional_information = models.TextField(null=True, blank=True) # formset
     linkedin_profile = models.URLField(_("LinkedIn Profile Link"),null=True, blank=True)
     github_profile = models.URLField(_(" Github Links"),null=True, blank=True)

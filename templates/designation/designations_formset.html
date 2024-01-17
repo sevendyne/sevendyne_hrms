@@ -10,14 +10,14 @@
 	<div class="page-header">
 		<div class="row align-items-center">
 			<div class="col">
-				<h3 class="page-title">Departments</h3>
+				<h3 class="page-title">Designations</h3>
 				<ul class="breadcrumb">
 					<li class="breadcrumb-item"><a href="{% url 'main:hrms_dashboard' %}">Dashboard</a></li>
-					<li class="breadcrumb-item active">Departments</li>
+					<li class="breadcrumb-item active">Designations</li>
 				</ul>
 			</div>
 			<div class="col-auto float-end ms-auto">
-				<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i class="fa-solid fa-plus"></i> Add Department</a>
+				<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_designation"><i class="fa-solid fa-plus"></i> Add Designations</a>
 			</div>
 		</div>
 	</div>
@@ -30,65 +30,71 @@
 					<thead>
 						<tr>
 							<th class="width-thirty">#</th>
-							<th>Department Name</th>
+							<th>Department </th>
+							<th>Designation </th>
 							<th class="text-end">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						{% for department in departments %}
+						{% for designation in designations %}
 						<tr>
 							<td>{{forloop.counter}}</td>
-							<td>{{ department.name }}</td>
+							<td>{{ designation.department }}</td>
+							<td>{{ designation.name }}</td>
 							<td class="text-end">
 								<div class="dropdown dropdown-action">
 									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_department_{{ department.id }}"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_department_{{ department.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_designation_{{ designation.id }}"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_designation_{{ designation.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
 									</div>
 								</div>
 							</td>
 						</tr>
-						<!-- Edit Department Modal -->
-						<div id="edit_department_{{ department.pk }}" class="modal custom-modal fade" role="dialog">
+						<!-- Edit designation Modal -->
+						<div id="edit_designation_{{ designation.pk }}" class="modal custom-modal fade" role="dialog">
 							<div class="modal-dialog modal-dialog-centered" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h5 class="modal-title">Edit Department</h5>
+										<h5 class="modal-title">Edit Designation</h5>
 										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 											<span aria-hidden="true">&times;</span>
 										</button>
 									</div>
 									<div class="modal-body">
-										<form id="update_form_{{ department.pk }}" method="POST" action="{% url 'employee:edit_department' pk=department.pk %}" enctype="multipart/form-data">
+										<form id="update_form_{{ designation.pk }}" method="POST" action="{% url 'employee:edit_designation' pk=designation.pk %}" enctype="multipart/form-data">
 											{% csrf_token %}
 											<div class="input-block mb-3">
-												<label class="col-form-label">Department Name <span class="text-danger">*</span></label>
-												<input class="form-control" name="name" value="{{ department.name }}" type="text">
+												<label class="col-form-label">designation Name <span class="text-danger">*</span></label>
+												<input class="form-control" name="name" value="{{ designation.name }}" type="text">
+											</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">Designation Name <span class="text-danger">*</span></label>
+												<input class="form-control" name="name" value="{{ designation.name }}" type="text">
 											</div>
 											<div class="submit-section">
-												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{department.pk}})">Save</button>
+												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{designation.pk}})">Save</button>
 											</div>
 										</form>
 									</div>
 								</div>
 							</div>
 						</div>
-						<!-- /Edit Department Modal -->
+						<!-- /Edit designation Modal -->
 
-						<!-- Delete Department Modal -->
-						<div class="modal custom-modal fade" id="delete_department_{{ department.id }}" role="dialog">
+						<!-- Delete Designation Modal -->
+						<div class="modal custom-modal fade" id="delete_designation_{{ designation.id }}" role="dialog">
 							<div class="modal-dialog modal-dialog-centered">
 								<div class="modal-content">
 									<div class="modal-body">
 										<div class="form-header">
-											<h3>Delete Department</h3>
+											<h3>Delete Designation</h3>
 											<p>Are you sure want to delete?</p>
 										</div>
 										<div class="modal-btn delete-action">
 											<div class="row">
 												<div class="col-6">
-													<a href="{% url 'employee:delete_department' pk=department.pk %}" class="btn btn-primary continue-btn">Delete</a>
+													<a href="{% url 'employee:delete_designation' pk=designation.pk %}" class="btn btn-primary continue-btn">Delete</a>
 												</div>
 												<div class="col-6">
 													<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
@@ -99,7 +105,7 @@
 								</div>
 							</div>
 						</div>
-						<!-- /Delete Department Modal -->
+						<!-- /Delete Designation Modal -->
 						{% endfor %}
 					</tbody>
 				</table>
@@ -109,23 +115,30 @@
 </div>
 <!-- /Page Content -->
 
-<!-- Add Department Modal -->
-<div id="add_department" class="modal custom-modal fade" role="dialog">
+<!-- Add Designation Modal -->
+<div id="add_designation" class="modal custom-modal fade" role="dialog">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Add Department</h5>
+				<h5 class="modal-title">Add Designation</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<div class="modal-body">
-				<form id="create_form" method="POST" action="{% url 'employee:create_department' %}" enctype="multipart/form-data">
+			<div class="modal-body designation_formset ">
+				<form id="create_form" method="POST" action="{% url 'employee:create_designation' %}" enctype="multipart/form-data">
 					{% csrf_token %}
 					<div class="input-block mb-3">
 						<label class="col-form-label">Department Name <span class="text-danger">*</span></label>
+						<input class="form-control" name="department" type="text">
+					</div>
+					{% for form in designation_formset.forms %}
+					<div class="input-block mb-3 form_set_row">
+						<label class="col-form-label">Designation Name <span class="text-danger">*</span></label>
 						<input class="form-control" name="name" type="text">
 					</div>
+					{% endfor %}
+					{{ designation_formset.management_form }}
 					<div class="submit-section">
 						<button class="btn btn-primary submit-btn" onclick="submitCreateForm(event)">Submit</button>
 					</div>
@@ -134,7 +147,16 @@
 		</div>
 	</div>
 </div>
-<!-- /Add Department Modal -->
+<!-- /Add designation Modal -->
+<script>
+	$('.standard_formset table .form_set_row').formset({
+		prefix:'{{standard_formset.prefix}}',
+		formCssClass: 'dynamic-formset1',
+		'added' : function (row) {
+		}
+	})  
+</script>
+{{standard_formset.media}}
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 		<!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
 		<script>
@@ -231,10 +253,10 @@
 		</script>
 
 		<script>
-			function submitUpdateForm(event,departmentId) {
-			console.log("deapartment id",departmentId)
+			function submitUpdateForm(event,designationId) {
+			console.log("deapartment id",designationId)
 			event.preventDefault();  // Prevent the default form submission behavior
-			var form = document.getElementById('update_form_' + departmentId);
+			var form = document.getElementById('update_form_' + designationId);
 			var formData = new FormData(form);
 			
 			fetch(form.action, {

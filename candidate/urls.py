@@ -1,0 +1,14 @@
+from django.urls import path, re_path
+from candidate import views
+
+urlpatterns = [
+    
+    path('candidate/create/', views.create_candidate, name='create_candidate'),
+    path("candidates/", views.candidates, name="candidates"),
+    re_path(r'^candidate/edit/(?P<pk>.*)/$', views.edit_candidate, name='edit_candidate'),
+    re_path(r'^delete-candidate/(?P<pk>.*)/$', views.delete_candidate, name='delete_candidate'),
+    path('candidate/delete-selected/', views.delete_selected_candidates, name='delete_selected_hrms_candidates'),
+    re_path(r'^candidate/(?P<pk>.*)/$', views.candidate, name='candidate'),
+   
+]
+
