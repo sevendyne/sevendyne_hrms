@@ -291,7 +291,7 @@ def create_designation(request):
             "redirect": "true",
             "create":True
         }
-        print("Form in context:", context["form"])
+        
         return render(request, 'designation/designations.html', context)
 
 
@@ -314,8 +314,9 @@ def designations(request):
 @company_required
 def edit_designation(request, pk):
     instance = get_object_or_404(Designation.objects.filter(pk=pk, is_deleted=False))    
-    print("department id",instance.pk)
+    print("edit request, designation name",instance.name)
     if request.method == "POST":
+        print("post request")
         form = DesignationForm(request.POST, instance=instance)
 
         if form.is_valid():
@@ -346,15 +347,19 @@ def edit_designation(request, pk):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = DesignationForm(instance=instance)
-
+        departments = Department.objects.all()
+        print("edit get request - designation")
+        print("instance",instance)
+        print("departmet",instance.department)
+        print("designation",instance.name)
         context = {
             "form": form,
             "instance": instance,
+            "departments":departments,
             "title": "Edit Designation :" + instance.name,
             
             "redirect": "true",
             "url": reverse('employee:edit_designation', kwargs={'pk': instance.pk}),
-
 
         }
         return render(request, 'designation/designations.html', context)

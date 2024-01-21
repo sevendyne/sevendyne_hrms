@@ -50,7 +50,7 @@
 							</td>
 						</tr>
 						<!-- Edit Department Modal -->
-						<div id="edit_department_{{ department.pk }}" class="modal custom-modal fade" role="dialog">
+						<div id="edit_department_{{ department.id }}" class="modal custom-modal fade" role="dialog">
 							<div class="modal-dialog modal-dialog-centered" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -60,14 +60,14 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form id="update_form_{{ department.pk }}" method="POST" action="{% url 'employee:edit_department' pk=department.pk %}" enctype="multipart/form-data">
+										<form id="update_form_{{ department.id }}" method="POST" action="{% url 'employee:edit_department' pk=department.id %}" enctype="multipart/form-data">
 											{% csrf_token %}
 											<div class="input-block mb-3">
 												<label class="col-form-label">Department Name <span class="text-danger">*</span></label>
 												<input class="form-control" name="name" value="{{ department.name }}" type="text">
 											</div>
 											<div class="submit-section">
-												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{department.pk}})">Save</button>
+												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{department.id}})">Save</button>
 											</div>
 										</form>
 									</div>
@@ -322,9 +322,6 @@
 			}
 			}
 			
-		</script>
-
-		<script>
 			// Function to handle delete action
 			function handleDelete(pk) {
 				Swal.fire({
