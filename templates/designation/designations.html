@@ -22,7 +22,7 @@
 		</div>
 	</div>
 	<!-- /Page Header -->
-	
+
 	<div class="row">
 		<div class="col-md-12">
 			<div>
@@ -45,14 +45,14 @@
 								<div class="dropdown dropdown-action">
 									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_designation_{{ designation.id }}"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+										<a class="dropdown-item" onclick="loadUpdateDesignationForm(this, '{{ designation.id }}')" href="#" data-bs-toggle="modal" data-bs-target="#edit_designation_modal"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
 										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_designation_{{ designation.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
 									</div>
 								</div>
 							</td>
 						</tr>
 						<!-- Edit designation Modal -->
-						<div id="edit_designation_{{ designation.pk }}" class="modal custom-modal fade" role="dialog">
+						<div id="edit_designation_modal" class="modal custom-modal fade" role="dialog">
 							<div class="modal-dialog modal-dialog-centered" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -62,18 +62,25 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form id="update_form_{{ designation.pk }}" method="POST" action="{% url 'employee:edit_designation' pk=designation.pk %}" enctype="multipart/form-data">
+										<form id="update_form_{{ designation.id }}" method="POST" action="{% url 'employee:edit_designation' pk=designation.id %}" enctype="multipart/form-data">
 											{% csrf_token %}
 											<div class="input-block mb-3">
 												<label class="col-form-label">Department Name <span class="text-danger">*</span></label>
-												<input class="form-control" name="name" value="{{ designation.department }}" type="text">
+												{% comment %} {{ form.department }} {% endcomment %}
+												{% comment %} <select class="form-control" name="department">
+													{% for department in departments %}
+														<option value="{{ department.id }}" {% if department.id == designation.department.id %}selected{% endif %}>{{ department.name }}</option>
+													{% endfor %}
+												</select> {% endcomment %}
+												<input class="form-control" name="department" value="{{ designation.department }}" type="text">
 											</div>
 											<div class="input-block mb-3">
 												<label class="col-form-label">Designation Name <span class="text-danger">*</span></label>
+												{% comment %} {{ form.name}} {% endcomment %}
 												<input class="form-control" name="name" value="{{ designation.name }}" type="text">
 											</div>
 											<div class="submit-section">
-												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{designation.pk}})">Save</button>
+												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{designation.id}})">Save</button>
 											</div>
 										</form>
 									</div>
@@ -94,7 +101,7 @@
 										<div class="modal-btn delete-action">
 											<div class="row">
 												<div class="col-6">
-													<a href="{% url 'employee:delete_designation' pk=designation.pk %}" class="btn btn-primary continue-btn">Delete</a>
+													<a href="{% url 'employee:delete_designation' pk=designation.id %}" class="btn btn-primary continue-btn">Delete</a>
 												</div>
 												<div class="col-6">
 													<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
@@ -128,7 +135,7 @@
 			<div class="modal-body ">
 				<form id="create_form" method="POST" action="{% url 'employee:create_designation' %}" enctype="multipart/form-data">
 					{% csrf_token %}
-					
+
 					<div class="input-block mb-3">
 						<label class="col-form-label">Department Name <span class="text-danger">*</span></label>
 						{{ form.department }}
@@ -153,7 +160,48 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
-<script>		
+<script>
+	function loadUpdateDesignationForm(element, designationId) {
+		console.log("update designation form load called");
+		console.log("designation id", designationId);
+	
+		// Construct the URL with a hardcoded path
+		const editUrl = `/app/employee/designation/edit/${designationId}/`;
+	
+		// Fetch the URL using the provided designationId
+		fetch(editUrl)
+			.then(response => response.text())
+			.then(data => {
+				console.log("data", data);// Check if "edit_designation_modal" is present in the data
+				if (data.includes("edit_designation_modal")) {
+					console.log("Data contains edit_designation_modal");
+				} else {
+					console.log("Data does not contain edit_designation_modal");
+				}
+	
+				// Find the form element in the fetched data
+				var formElement = document.querySelector('#update_form_' + designationId);
+	
+				if (!formElement) {
+					console.error("Form element not found in the fetched data");
+					return;
+				}
+	
+				// Append the form to the modal body
+				var modalBody = document.querySelector('#edit_designation_modal .modal-body');
+				modalBody.appendChild(formElement);
+	
+				// Show the modal for updating designations
+				$('#edit_designation_modal_' + designationId).modal('show');
+				console.log("modal showed");
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	}
+	
+	
+		
 	function loadCreateDesignationForm() {
         console.log("designation form load called");
 		fetch("{% url 'employee:create_designation' %}")
@@ -162,15 +210,15 @@
             // Create a temporary element to hold the form HTML
             var tempElement = document.createElement('div');
             tempElement.innerHTML = data;
-            
+
             // Find the form element in the temporary element
             var formElement = tempElement.querySelector('#create_form');
-            
+
             // Append the form to the modal body
             var modalBody = document.querySelector('#add_designation .modal-body');
             modalBody.innerHTML = '';
             modalBody.appendChild(formElement);
-            
+
             // Show the modal
             $('#add_designation').modal('show');
             console.log("modal showed");
@@ -179,11 +227,12 @@
             console.error('Error:', error);
         });
     }
+	
 	function submitCreateForm(event) {
 	event.preventDefault();  // Prevent the default form submission behavior
 	var form = document.getElementById('create_form');
 	var formData = new FormData(form);
-	
+
 	fetch(form.action, {
 		method: 'POST',
 		body: formData,
@@ -193,7 +242,7 @@
 		console.log(data);
 		console.log("status", data.status);
 		console.log('data.redirect_url:', data.redirect_url);
-	
+
 		// Corrected variable name here
 		if (data.status === 'true') {
 		console.log("status is true");
@@ -214,13 +263,13 @@
 		console.error('Error:', error);
 	});
 	}
-	
+
 	function showSweetAlert(message, status, redirectUrl) {
 	console.log('showSweetAlert called');
 	console.log('message:', message);
 	console.log('status:', status);
 	console.log('redirectUrl:', redirectUrl);
-	
+
 	if (status === 'true') {
 		Swal.fire({
 		icon: 'success',
@@ -228,7 +277,7 @@
 		text: message,
 		showConfirmButton: true,
 		allowOutsideClick: false, // Prevent closing on outside click
-	
+
 		didClose: () => {
 			console.log('Redirecting to:', redirectUrl);
 			if (redirectUrl) {
@@ -268,12 +317,13 @@
 		});
 	}
 	}
+
 	function submitUpdateForm(event,designationId) {
 	console.log("deapartment id",designationId)
 	event.preventDefault();  // Prevent the default form submission behavior
 	var form = document.getElementById('update_form_' + designationId);
 	var formData = new FormData(form);
-	
+
 	fetch(form.action, {
 		method: 'POST',
 		body: formData,
@@ -283,7 +333,7 @@
 		console.log(data);
 		console.log("status", data.status);
 		console.log('data.redirect_url:', data.redirect_url);
-	
+
 		// Corrected variable name here
 		if (data.status === 'true') {
 		console.log("status is true");
@@ -304,13 +354,13 @@
 		console.error('Error:', error);
 	});
 	}
-	
+
 	function showSweetAlert(message, status, redirectUrl) {
 	console.log('showSweetAlert called');
 	console.log('message:', message);
 	console.log('status:', status);
 	console.log('redirectUrl:', redirectUrl);
-	
+
 	if (status === 'true') {
 		Swal.fire({
 		icon: 'success',
@@ -318,7 +368,7 @@
 		text: message,
 		showConfirmButton: true,
 		allowOutsideClick: false, // Prevent closing on outside click
-	
+
 		didClose: () => {
 			console.log('Redirecting to:', redirectUrl);
 			if (redirectUrl) {
@@ -358,6 +408,7 @@
 		});
 	}
 	}
+
 	// Function to handle delete action
 	function handleDelete(pk) {
 		Swal.fire({
