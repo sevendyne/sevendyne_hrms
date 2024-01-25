@@ -8,6 +8,7 @@ from main.models import BaseModel
 # Refer https://internshala.com/student/resume?detail_source=resume_direct#personal_details 
 #check internshala,naukri etc
 class Candidate(BaseModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(_("First Name"),max_length=100)
     last_name = models.CharField(_("Last Name"),max_length=100)
     email = models.EmailField(_("Email"),unique=True)
@@ -24,6 +25,8 @@ class Candidate(BaseModel):
     github_profile = models.URLField(_(" Github Links"),null=True, blank=True)
     resume = models.FileField(upload_to='resumes/', null=True, blank=True)
     date_applied = models.DateTimeField(auto_now_add=True)
+    
+    is_blocked = models.BooleanField(_('Is Blocked'),help_text='button to toggle employee block and unblock',default=False)
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):

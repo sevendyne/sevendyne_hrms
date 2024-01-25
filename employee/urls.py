@@ -14,6 +14,12 @@ urlpatterns = [
     re_path(r'^designation/edit/(?P<pk>.*)/$', views.edit_designation, name='edit_designation'),
     re_path(r'^delete-designation/(?P<pk>.*)/$', views.delete_designation, name='delete_designation'),    
     re_path(r'^designation/(?P<pk>.*)/$', views.designation, name='designation'),
+    
+    path('employee/create/', views.create_employee, name='create_employee'),
+    path("employees/", views.employees, name="employees"),
+    re_path(r'^employee/edit/(?P<pk>.*)/$', views.edit_employee, name='edit_employee'),
+    re_path(r'^delete-employee/(?P<pk>.*)/$', views.delete_employee, name='delete_employee'),    
+    re_path(r'^employee/(?P<pk>.*)/$', views.employee, name='employee'),
    
 ]
 

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'user',
     'hrms',
     'candidate',
+    'client',
     'employee'
 ]
 

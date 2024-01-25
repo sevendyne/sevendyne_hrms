@@ -11,7 +11,7 @@ from candidate.models import Candidate
 from main.decorators import company_required
 
 from candidate.forms import CandidateForm
-from main.functions import generate_form_errors, get_auto_id
+from main.functions import generate_form_errors, get_a_id, get_auto_id
 from main.models import Company, State
 
 from django.http import JsonResponse
@@ -47,6 +47,7 @@ def create_candidate(request):
             fax = form.cleaned_data['fax']
             website = form.cleaned_data['website']
             auto_id = get_auto_id(Candidate)
+            a_id = get_a_id(Candidate,request)
             creator = request.user
             updator = request.user
 
@@ -65,6 +66,7 @@ def create_candidate(request):
                     fax = fax, 
                     website = website,
                     auto_id =auto_id,
+                    a_id = a_id,
                     creator = creator,
                     updator = updator
                 ).save()

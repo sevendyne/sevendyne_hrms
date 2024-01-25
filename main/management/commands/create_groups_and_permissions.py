@@ -10,6 +10,7 @@ class Command(BaseCommand):
         groups_and_permissions = [
             ('sevendyne_admin', 'can_manage_admin_dashboard'),
             ('hrms_clients', 'can_view_hrms_home'),
+            ('employee_group', 'can_view_employee_dashboard')
             # Add more groups and permissions as needed
         ]
 

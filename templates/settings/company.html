@@ -1,0 +1,100 @@
+{% extends "base/base_hrms_admin.html" %}
+{%load static%}
+
+{% block content %}
+
+<div class="col-md-8 offset-md-2">
+<!-- Page Header -->
+<div class="page-header">
+	<div class="row">
+		<div class="col-sm-12">
+			<h3 class="page-title">Company Settings</h3>
+		</div>
+	</div>
+</div>
+<!-- /Page Header -->
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="input-block mb-3">
+				<label class="col-form-label">Company Name <span class="text-danger">*</span></label><br>
+				{{ instance.name }}				
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="input-block mb-3">
+				<label class="col-form-label">Contact Person</label><br>
+				{{ instance.contact_person }}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="input-block mb-3">
+				<label class="col-form-label">Address</label><br>
+				{{ instance.address }}
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-6 col-lg-3">
+			<div class="input-block mb-3">
+				<label class="col-form-label">Country</label><br>
+				{{ instance.country }}
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-6 col-lg-3">
+			<div class="input-block mb-3">
+				<label class="col-form-label">State/Province</label><br>
+				{{ instance.state }}
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-6 col-lg-3">
+			<div class="input-block mb-3">
+				<label class="col-form-label">City</label><br>
+				{{ instance.city }}
+			</div>
+		</div>
+		<div class="col-sm-6 col-md-6 col-lg-3">
+			<div class="input-block mb-3">
+				<label class="col-form-label">Postal Code</label><br>
+				{{ instance.postal_code }}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="input-block mb-3">
+				<label class="col-form-label">Email</label><br>
+				{{ instance.email }}
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="input-block mb-3">
+				<label class="col-form-label">Phone Number</label><br>
+				{{ instance.phone }}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6">
+			<div class="input-block mb-3">
+				<label class="col-form-label">Mobile Number</label><br>
+				{{ instance.mobile }}
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="input-block mb-3">
+				<label class="col-form-label">Fax</label><br>
+				{{ instance.fax }}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="input-block mb-3">
+				<label class="col-form-label">Website Url</label><br>
+				{{ instance.website }}
+			</div>
+		</div>
+	</div>	
+</div>
+
+{% endblock %}

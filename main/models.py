@@ -8,6 +8,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 class BaseModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     auto_id = models.PositiveIntegerField(db_index=True,unique=True)
+    a_id = models.PositiveIntegerField()   
     creator = models.ForeignKey("auth.User",blank=True,related_name="creator_%(class)s_objects",on_delete=models.CASCADE)
     updator = models.ForeignKey("auth.User",blank=True,related_name="updator_%(class)s_objects",on_delete=models.CASCADE)
     date_added = models.DateTimeField(db_index=True,auto_now_add=True)    
@@ -17,7 +18,13 @@ class BaseModel(models.Model):
         abstract = True
 
 
-class Company(BaseModel):
+class Company(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    auto_id = models.PositiveIntegerField(db_index=True,unique=True)
+    creator = models.ForeignKey("auth.User",blank=True,related_name="creator_%(class)s_objects",on_delete=models.CASCADE,)
+    updator = models.ForeignKey("auth.User",blank=True,related_name="updator_%(class)s_objects",on_delete=models.CASCADE,)
+    date_added = models.DateTimeField(db_index=True,auto_now_add=True)    
+    date_updated = models.DateTimeField(auto_now_add=True) 
     name = models.CharField(_("Company Name"),max_length=128)
     contact_person = models.CharField(_("Contact Person"),max_length=128)
     address = models.TextField(_("Address")) 
@@ -39,7 +46,29 @@ class Company(BaseModel):
         ordering = ('name',)
         
     def __str__(self):
-        return self.name
+        return self.name    
+
+
+class CompanyAccess(models.Model):
+    user = models.ForeignKey('auth.User',null=True,on_delete=models.CASCADE)
+    company = models.ForeignKey('main.Company',blank=True,on_delete=models.CASCADE,limit_choices_to={'is_deleted' : False})
+    group = models.ForeignKey('auth.Group',on_delete=models.CASCADE)
+    is_accepted = models.BooleanField(default=False)
+    is_default = models.BooleanField(default=False)       
+
+    class Meta:
+        db_table = 'company_access'
+        verbose_name = _('company_access')
+        verbose_name_plural = _('company_access')
+        ordering = ('company',)
+    
+    class Admin:
+        list_dispay = ('company','group','is_accepted',)
+    
+    def __str__(self):
+        return self.company.name + ' ' + self.group.name  
+    
+
     
 
 # class CompanyTheme(models.Model):

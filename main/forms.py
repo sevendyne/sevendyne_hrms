@@ -13,7 +13,7 @@ class CompanyForm(forms.ModelForm):
     
     class Meta:
         model = Company
-        exclude = ['creator','updator','auto_id','user','is_deleted']
+        exclude = ['creator','updator','auto_id','is_deleted']
         widgets = {
             
             'name': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter your company name'}),
@@ -49,7 +49,3 @@ class CompanyForm(forms.ModelForm):
                 'required' : _("Country field is required."),
             }
         }
-    # def __init__(self, *args, **kwargs):
-    #     super(CompanyForm, self).__init__(*args, **kwargs)
-    #     self.fields['country'].widget.attrs['id'] = 'id_country'  # Add this line
-    #     self.fields['state'].widget.attrs['id'] = 'id_state'
