@@ -20,6 +20,12 @@ urlpatterns = [
     re_path(r'^employee/edit/(?P<pk>.*)/$', views.edit_employee, name='edit_employee'),
     re_path(r'^delete-employee/(?P<pk>.*)/$', views.delete_employee, name='delete_employee'),    
     re_path(r'^employee/(?P<pk>.*)/$', views.employee, name='employee'),
+    
+    path('leave_type/create/', views.create_leave_type, name='create_leave_type'),
+    path("leave_types/", views.leave_types, name="leave_types"),
+    re_path(r'^leave_type/edit/(?P<pk>.*)/$', views.edit_leave_type, name='edit_leave_type'),
+    re_path(r'^delete-leave_type/(?P<pk>.*)/$', views.delete_leave_type, name='delete_leave_type'),    
+    re_path(r'^leave_type/(?P<pk>.*)/$', views.leave_type, name='leave_type'),
    
 ]
 

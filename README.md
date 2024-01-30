@@ -31,4 +31,5 @@
     ```
 10. sevendyne admin --- username - admin , password - admin
 11. hrms client --- username - hrmsclient1 , password - password@123 , hrmsclient1@example.com 
+12. employee1, password@123
 

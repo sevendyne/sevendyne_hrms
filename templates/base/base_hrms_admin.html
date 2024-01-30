@@ -317,7 +317,7 @@
 						</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="profile.html">My Profile</a>
-							<a class="dropdown-item" href="settings.html">Settings</a>
+							<a class="dropdown-item" href="{% url 'employee:leave_types' %}">Settings</a>
 							<a class="dropdown-item" href="{% url 'user:user_logout' %}">Logout</a>
 						</div>
 					</li>
@@ -329,8 +329,8 @@
 					<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
 					<div class="dropdown-menu dropdown-menu-right">
 						<a class="dropdown-item" href="profile.html">My Profile</a>
-						<a class="dropdown-item" href="settings.html">Settings</a>
-						<a class="dropdown-item" href="index.html">Logout</a>
+						<a class="dropdown-item" href="{% url 'employee:leave_types' %}">Settings</a>
+						<a class="dropdown-item" href="{% url 'user:user_logout' %}">Logout</a>
 					</div>
 				</div>
 				<!-- /Mobile Menu -->
@@ -384,7 +384,7 @@
 											<li><a href="holidays.html">Holidays</a></li>
 											<li><a href="leaves.html">Leaves (Admin) <span class="badge rounded-pill bg-primary float-end">1</span></a></li>
 											<li><a href="leaves-employee.html">Leaves (Employee)</a></li>
-											<li><a href="leave-settings.html">Leave Settings</a></li>
+											<li><a href="leave-{% url 'employee:leave_types' %}">Leave Settings</a></li>
 											<li><a href="attendance.html">Attendance (Admin)</a></li>
 											<li><a href="attendance-employee.html">Attendance (Employee)</a></li>
 											<li><a href="{% url 'employee:departments' %}">Departments</a></li>
@@ -526,7 +526,7 @@
 										<a href="users.html"><i class="la la-user-plus"></i> <span>Users</span></a>
 									</li>
 									<li> 
-										<a href="settings.html"><i class="la la-cog"></i> <span>Settings</span></a>
+										<a href="{% url 'employee:leave_types' %}"><i class="la la-cog"></i> <span>Settings</span></a>
 									</li>
 									<li class="menu-title"> 
 										<span>Pages</span>
@@ -709,12 +709,12 @@
 								<span>Main</span>
 							</li>
 							<li class="submenu">
-								<a href="#"><i class="la la-dashboard"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
-								{% comment %} <ul>
-									<li><a   href="admin-dashboard.html">Admin Dashboard</a></li>
-									<li><a  class="active" href="employee-dashboard.html">Employee Dashboard</a></li>
+								<a href="{% url 'hrms_dashboard' %}"><i class="la la-dashboard"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
+								<ul>
+									<li><a   href="{% url 'hrms_dashboard' %}">Admin Dashboard</a></li>
+									{% comment %} <li><a  class="active" href="employee-dashboard.html">Employee Dashboard</a></li> {% endcomment %}
 								</ul>
-							</li> {% endcomment %}
+							</li> 
 							{% comment %} <li class="submenu">
 								<a href="#"><i class="la la-cube"></i> <span> Apps</span> <span class="menu-arrow"></span></a>
 								<ul>
@@ -741,10 +741,15 @@
 								<a href="#" class="noti-dot"><i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
 								<ul>
 									<li><a href="{% url 'employee:employees' %}">All Employees</a></li>
-									{% comment %} <li><a href="holidays.html">Holidays</a></li>
-									<li><a href="leaves.html">Leaves (Admin) <span class="badge rounded-pill bg-primary float-end">1</span></a></li>
-									<li><a href="leaves-employee.html">Leaves (Employee)</a></li>
-									<li><a href="leave-settings.html">Leave Settings</a></li>
+									<li><a href="#">Holidays</a></li>
+									<li class="submenu">
+										<a href="{% url 'employee:leave_types' %}">Leaves<span class="menu-arrow"></span></a>
+										<ul>
+											<li><a href="#">Leave Report</a></li>
+										</ul>		
+									</li>
+									{% comment %} <li><a href="leaves-employee.html">Leaves (Employee)</a></li>
+									<li><a href="leave-{% url 'employee:leave_types' %}">Leave Settings</a></li>
 									<li><a href="attendance.html">Attendance (Admin)</a></li>
 									<li><a href="attendance-employee.html">Attendance (Employee)</a></li> {% endcomment %}
 									<li><a href="{% url 'employee:departments' %}">Departments</a></li>
@@ -873,13 +878,29 @@
 								</ul>
 							</li>
 							<li class="submenu">
-								<a href="#"><i class="la la-briefcase"></i> <span> Candidates </span> <span class="menu-arrow"></span></a>
+								<a href="#"><i class="la la-briefcase"></i> <span>Hire Candidates </span> <span class="menu-arrow"></span></a>
 								<ul>
 									{% comment %} <li><a href="user-dashboard.html"> User Dasboard </a></li> {% endcomment %}
 									{% comment %} <li><a href="#"> Post Jobs </a></li>
 									<li><a href="#"> Manage Jobs </a></li>
 									<li><a href="#"> Manage Resumes </a></li> {% endcomment %}
 									<li><a href="#"> Shortlist Candidates </a></li>
+									{% comment %} <li><a href="interview-questions.html"> Interview Questions </a></li> {% endcomment %}
+									<li><a href="#"> Offer Approvals </a></li>
+									{% comment %} <li><a href="experiance-level.html"> Experience Level </a></li> {% endcomment %}
+									{% comment %} <li><a href="candidates.html"> Candidates List </a></li> {% endcomment %}
+									<li><a href="#"> Schedule Interview </a></li>
+									{% comment %} <li><a href="apptitude-result.html"> Aptitude Results </a></li> {% endcomment %}
+								</ul>
+							</li>
+							<li class="submenu">
+								<a href="#"><i class="la la-briefcase"></i> <span>Hire Teams </span> <span class="menu-arrow"></span></a>
+								<ul>
+									{% comment %} <li><a href="user-dashboard.html"> User Dasboard </a></li> {% endcomment %}
+									{% comment %} <li><a href="#"> Post Jobs </a></li>
+									<li><a href="#"> Manage Jobs </a></li>
+									<li><a href="#"> Manage Resumes </a></li> {% endcomment %}
+									<li><a href="#"> Shortlist Teams </a></li>
 									{% comment %} <li><a href="interview-questions.html"> Interview Questions </a></li> {% endcomment %}
 									<li><a href="#"> Offer Approvals </a></li>
 									{% comment %} <li><a href="experiance-level.html"> Experience Level </a></li> {% endcomment %}
@@ -897,8 +918,24 @@
 							<li> 
 								<a href="users.html"><i class="la la-user-plus"></i> <span>Users</span></a>
 							</li> {% endcomment %}
+							<li class="submenu">
+								<a href="#"><i class="la la-briefcase"></i> <span>Reports </span> <span class="menu-arrow"></span></a>
+								<ul>
+									<li><a href="#"> Expense Report </a></li>
+									<li><a href="#"> Invoice Report </a></li>
+									<li><a href="#"> Payments Report </a></li>
+									<li><a href="#"> Project Report </a></li>
+									<li><a href="#"> Task Report </a></li>
+									<li><a href="#"> User Report </a></li>
+									<li><a href="#"> Employee Report </a></li>
+									<li><a href="#"> Payslip Report </a></li>
+									<li><a href="#"> Attendance Report </a></li>
+									<li><a href="#"> Leave Report </a></li>
+									<li><a href="#"> Daily Report </a></li>
+								</ul>
+							</li>
 							<li> 
-								<a href="#"><i class="la la-cog"></i> <span>Settings</span></a>
+								<a href="{% url 'employee:leave_types' %}"><i class="la la-cog"></i> <span>Settings</span></a>
 							</li>
 							{% comment %} <li class="menu-title"> 
 								<span>Pages</span>
@@ -1328,7 +1365,7 @@
 									<li><a href="holidays.html">Holidays</a></li>
 									<li><a href="leaves.html">Leaves (Admin) <span class="badge rounded-pill bg-primary float-end">1</span></a></li>
 									<li><a href="leaves-employee.html">Leaves (Employee)</a></li>
-									<li><a href="leave-settings.html">Leave Settings</a></li>
+									<li><a href="leave-{% url 'employee:leave_types' %}">Leave Settings</a></li>
 									<li><a href="attendance.html">Attendance (Admin)</a></li>
 									<li><a href="attendance-employee.html">Attendance (Employee)</a></li>
 									<li><a href="departments.html">Departments</a></li>
@@ -1499,7 +1536,7 @@
 							<div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
 								<p>Settings</p>
 								<ul>
-									<li><a href="settings.html"> Settings </a></li>
+									<li><a href="{% url 'employee:leave_types' %}"> Settings </a></li>
 								</ul>
 							</div>
 							<div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">

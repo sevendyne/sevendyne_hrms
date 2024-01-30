@@ -42,8 +42,8 @@
 			</div>
 		</div>
 		<div class="col-sm-6 col-md-3"> 
-			<div class="input-block mb-3 form-focus select-focus">
-				<select class="select floating"> 
+			<div class="input-block mb-3 form-control form-focus select-focus">
+				<select class="select floating form-control"> 
 					<option>Select Designation</option>
 					<option>Web Developer</option>
 					<option>Web Designer</option>
@@ -66,17 +66,17 @@
 		<div class="col-md-4 col-sm-6 col-12 col-lg-4 col-xl-3">
 			<div class="profile-widget">
 				<div class="profile-img">
-					<a href="profile.html" class="avatar"><img src="{%static 'hrms/assets/img/profiles/avatar-02.jpg'%}" alt="User Image"></a>
+					<a href="profile.html" class="avatar"><img src="{%static 'assets/img/profiles/avatar-02.jpg'%}" alt="User Image"></a>
 				</div>
 				<div class="dropdown profile-action">
 					<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 					<div class="dropdown-menu dropdown-menu-right">
-						<a class="dropdown-item" onclick="loadUpdateDesignationForm(this, '{{ designation.id }}')" href="#" data-bs-toggle="modal" data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+						<a class="dropdown-item" onclick="loadUpdateEmployeeForm(this, '{{ employee.id }}')" href="#" data-bs-toggle="modal" data-bs-target="#edit_employee"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
 						<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_employee"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
 					</div>
 				</div>
 				<h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile.html">{{employee.firstname}}</a></h4>
-				<div class="small text-muted">{{employee.company}}</div>
+				<div class="small text-muted">{{employee.client_company}}</div>
 			</div>
 		</div>
 		
@@ -232,6 +232,7 @@
 			</div>
 			<div class="modal-body">
 				<form id="create_form" method="POST" action="{% url 'employee:create_employee' %}" enctype="multipart/form-data">
+					{% csrf_token %}
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="input-block mb-3">
@@ -308,6 +309,7 @@
 						<div class="col-sm-6">
 							<div class="input-block mb-3">
 								<label class="col-form-label">Address </label>
+								{{ form.address }}
 								{% if form.address.errors %}
 								<span class="error">{{ form.address.errors.0 }}</span>
 								{% endif %}
@@ -316,9 +318,9 @@
 						<div class="col-sm-6">
 							<div class="input-block mb-3">
 								<label class="col-form-label">Company</label>
-								{{ form.company }}
-								{% if form.company.errors %}
-								<span class="error">{{ form.company.errors.0 }}</span>
+								{{ form.client_company }}
+								{% if form.client_company.errors %}
+								<span class="error">{{ form.client_company.errors.0 }}</span>
 								{% endif %}
 							</div>
 						</div>

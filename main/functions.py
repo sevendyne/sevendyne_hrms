@@ -70,7 +70,7 @@ def generate_form_errors(args, formset=False):
 
 
 def has_hrms_permission(user):
-    print("checking has_hrms_permission")
+    # print("checking has_hrms_permission")
     if user.groups.filter(name='hrms_clients').exists():
         print("user exists in hrms clients group")
     else:
@@ -83,15 +83,18 @@ def has_admin_dashboard_permission(user):
 
 
 def get_current_company(request):
+    # print("current company get request")
     company = None
     if request.user.is_authenticated:
         if "current_company" in request.session:
+            # print("current company in request.session")
             pk =  request.session['current_company']
             if Company.objects.filter(pk=pk).exists():
                 company = Company.objects.get(pk=pk)
-        elif CompanyAccess.objects.filter(user=request.user,is_default=True).exists():
-            company = CompanyAccess.objects.get(user=request.user,is_default=True).company        
-                    
+                # print("company", company)
+        elif CompanyAccess.objects.filter(user=request.user).exists():
+            company = CompanyAccess.objects.get(user=request.user).company        
+            # print("company in get current company",company)
     return company
 
 

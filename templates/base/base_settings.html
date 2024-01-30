@@ -369,7 +369,7 @@
 								<a href="change-password.html"><i class="la la-lock"></i> <span>Change Password</span></a>
 							</li>
 							<li> 
-								<a href="leave-type.html"><i class="la la-cogs"></i> <span>Leave Type</span></a>
+								<a href="{% url 'employee:leave_types' %}"><i class="la la-cogs"></i> <span>Leave Type</span></a>
 							</li>
 							<li> 
 								<a href="toxbox-setting.html"><i class="la la-comment"></i> <span>ToxBox Settings</span></a>
@@ -632,7 +632,7 @@
 									<li><a href="holidays.html">Holidays</a></li>
 									<li><a href="leaves.html">Leaves (Admin) <span class="badge rounded-pill bg-primary float-end">1</span></a></li>
 									<li><a href="leaves-employee.html">Leaves (Employee)</a></li>
-									<li><a href="leave-settings.html">Leave Settings</a></li>
+									<li><a href="{% url 'employee:leave_types' %}">Leave Settings</a></li>
 									<li><a href="attendance.html">Attendance (Admin)</a></li>
 									<li><a href="attendance-employee.html">Attendance (Employee)</a></li>
 									<li><a href="departments.html">Departments</a></li>

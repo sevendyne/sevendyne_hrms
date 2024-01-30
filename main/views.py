@@ -149,17 +149,19 @@ def create_company(request):
                     creator = creator,
                     updator = updator
                 )
+                data.save()
                 print("data",data)
                 current_company = data
                 print("current_company:", current_company)
                 #create company access
                 # group = Group.objects.get(name="hrms_clients")
                 
-                # is_default= True
-                # if CompanyAccess.objects.filter(user=request.user).exists():
-                #     is_default = False
+                is_default= True
+                if CompanyAccess.objects.filter(user=request.user).exists():
+                    is_default = False
                 # Check if CompanyAccess already exists for the user and current_company
-                if not CompanyAccess.objects.filter(user=request.user, company=current_company).exists():
+                # if not CompanyAccess.objects.filter(user=request.user, company=current_company).exists():
+                #     is_default = True
                     group = Group.objects.get(name="hrms_clients")
 
                     CompanyAccess.objects.create(
@@ -167,6 +169,7 @@ def create_company(request):
                         company=current_company,
                         group=group,
                         is_accepted=True,
+                        is_default=is_default
                     )
                 # company_access_instance = CompanyAccess(user=request.user, company=current_company, group=group, is_accepted=True, is_default=is_default)
                 # company_access_instance.save()
@@ -174,14 +177,14 @@ def create_company(request):
                 # Add print statements to check if user=request.user is saved in CompanyAccess
                 # print(f"CompanyAccess saved - User: {company_access_instance.user}, Company: {company_access_instance.company}, Group: {company_access_instance.group}")
 
-                request.session["current_company"] = str(data.pk)
+                request.session["current_company"] = str(current_company.pk)
                 request.session.save()
                 response_data = {
                     "status": "true",
                     "title": "Successfully Created",
                     "message": "Company created successfully.",
                     "redirect": "true",
-                    "redirect_url": reverse('main:company', kwargs={'pk': data.pk})
+                    "redirect_url": reverse('main:company', kwargs={'pk': current_company.pk})
                 }
                 print("Redirect URL:", response_data["redirect_url"])
             else:               

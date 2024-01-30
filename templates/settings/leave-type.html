@@ -1,8 +1,9 @@
-{% extends "base/base_hrms_admin.html" %}
-{% load static %}
+{% extends "base/base_settings.html" %}
+{%load static%}
 
 {% block content %}
 
+			
 <!-- Page Content -->
 <div class="content container-fluid">
 
@@ -10,14 +11,14 @@
 	<div class="page-header">
 		<div class="row align-items-center">
 			<div class="col">
-				<h3 class="page-title">Departments</h3>
+				<h3 class="page-title">Leave Type</h3>
 				<ul class="breadcrumb">
 					<li class="breadcrumb-item"><a href="{% url 'main:hrms_dashboard' %}">Dashboard</a></li>
-					<li class="breadcrumb-item active">Departments</li>
+					<li class="breadcrumb-item active">Leave Type</li>
 				</ul>
 			</div>
 			<div class="col-auto float-end ms-auto">
-				<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_department"><i class="fa-solid fa-plus"></i> Add Department</a>
+				<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_leavetype"><i class="fa-solid fa-plus"></i> Add Leave Type</a>
 			</div>
 		</div>
 	</div>
@@ -25,70 +26,100 @@
 	
 	<div class="row">
 		<div class="col-md-12">
-			<div>
-				<table class="table table-striped custom-table mb-0 datatable">
+			<div class="table-responsive">
+				<table class="table table-striped custom-table datatable mb-0">
 					<thead>
 						<tr>
-							<th class="width-thirty">#</th>
-							<th>Department Name</th>
+							<th>#</th>
+							<th>Leave Type</th>
+							<th>Leave Days</th>
+							<th>Status</th>
 							<th class="text-end">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						{% for department in departments %}
+						{% for leave_type in leave_types %}
 						<tr>
-							<td>{{forloop.counter}}</td>
-							<td>{{ department.name }}</td>
+							<td>{{ forloop.counter }}</td>
+							<td>{{ leave_type.name }}</td>
+							<td>{{ leave_type.days }}</td>
+							<td>
+								<div class="dropdown action-label">
+									<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+										{% if leave_type.is_active %}
+										<i class="fa-regular fa-circle-dot text-success"></i> Active
+										{% else %}
+											<i class="fa-regular fa-circle-dot text-danger"></i> Inactive
+										{% endif %}							
+									</a>
+									{% comment %} <div class="dropdown-menu dropdown-menu-right">
+										<a href="#" class="dropdown-item"><i class="fa-regular fa-circle-dot text-success"></i> Active</a>
+										<a href="#" class="dropdown-item"><i class="fa-regular fa-circle-dot text-danger"></i> Inactive</a>
+									</div> {% endcomment %}
+								</div>
+							</td>
 							<td class="text-end">
 								<div class="dropdown dropdown-action">
 									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_department_{{ department.id }}"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_department_{{ department.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_leavetype_{{ leave_type.id }}"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_leavetype_{{ leave_type.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
 									</div>
 								</div>
 							</td>
-						</tr>
-						<!-- Edit Department Modal -->
-						<div id="edit_department_{{ department.id }}" class="modal custom-modal fade" role="dialog">
+						</tr>					
+				
+						<!-- Edit Leavetype Modal -->
+						<div id="edit_leavetype_{{ leave_type.id }}" class="modal custom-modal fade" role="dialog">
 							<div class="modal-dialog modal-dialog-centered" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
-										<h5 class="modal-title">Edit Department</h5>
+										<h5 class="modal-title">Edit Leave Type</h5>
 										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 											<span aria-hidden="true">&times;</span>
 										</button>
 									</div>
 									<div class="modal-body">
-										<form id="update_form_{{ department.id }}" method="POST" action="{% url 'employee:edit_department' pk=department.id %}" enctype="multipart/form-data">
+										<form id="update_form_{{ leave_type.id }}" method="POST" action="{% url 'employee:edit_leave_type' pk=leave_type.id %}" enctype="multipart/form-data">
 											{% csrf_token %}
 											<div class="input-block mb-3">
-												<label class="col-form-label">Department Name <span class="text-danger">*</span></label>
-												<input class="form-control" name="name" value="{{ department.name }}" type="text">
+												<label class="col-form-label">Leave Type <span class="text-danger">*</span></label>
+												<input class="form-control" name="name" type="text" value="{{ leave_type.name }}">
+											</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">Number of days <span class="text-danger">*</span></label>
+												<input class="form-control" name="days" type="text" value="{{ leave_type.days }}">
+											</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">Status - Is Active ? <span class="text-danger">*</span></label>
+												<div class="form-check">
+													<input class="form-check-input" type="checkbox" name="is_active" {% if leave_type.is_active %}checked{% endif %}>
+													<label class="form-check-label" for="is_active">Active</label>
+												</div>											
 											</div>
 											<div class="submit-section">
-												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{department.id}})">Save</button>
+												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{leave_type.id}})">Save</button>
 											</div>
 										</form>
 									</div>
 								</div>
 							</div>
 						</div>
-						<!-- /Edit Department Modal -->
+						<!-- /Edit Leavetype Modal -->
 
-						<!-- Delete Department Modal -->
-						<div class="modal custom-modal fade" id="delete_department_{{ department.id }}" role="dialog">
+						<!-- Delete Leavetype Modal -->
+						<div class="modal custom-modal fade" id="delete_leavetype_{{ leave_type.id }}" role="dialog">
 							<div class="modal-dialog modal-dialog-centered">
 								<div class="modal-content">
 									<div class="modal-body">
 										<div class="form-header">
-											<h3>Delete Department</h3>
+											<h3>Delete Leave Type</h3>
 											<p>Are you sure want to delete?</p>
 										</div>
 										<div class="modal-btn delete-action">
 											<div class="row">
 												<div class="col-6">
-													<a href="{% url 'employee:delete_department' pk=department.pk %}" class="btn btn-primary continue-btn">Delete</a>
+													<a href="{% url 'employee:delete_leave_type' pk=leave_type.pk %}" class="btn btn-primary continue-btn">Delete</a>
 												</div>
 												<div class="col-6">
 													<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
@@ -99,7 +130,7 @@
 								</div>
 							</div>
 						</div>
-						<!-- /Delete Department Modal -->
+						<!-- /Delete Leavetype Modal -->
 						{% endfor %}
 					</tbody>
 				</table>
@@ -109,22 +140,26 @@
 </div>
 <!-- /Page Content -->
 
-<!-- Add Department Modal -->
-<div id="add_department" class="modal custom-modal fade" role="dialog">
+<!-- Add Leavetype Modal -->
+<div id="add_leavetype" class="modal custom-modal fade" role="dialog">
 	<div class="modal-dialog modal-dialog-centered" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Add Department</h5>
+				<h5 class="modal-title">Add Leave Type</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<form id="create_form" method="POST" action="{% url 'employee:create_department' %}" enctype="multipart/form-data">
+				<form id="create_form" method="POST" action="{% url 'employee:create_leave_type' %}" enctype="multipart/form-data">
 					{% csrf_token %}
 					<div class="input-block mb-3">
-						<label class="col-form-label">Department Name <span class="text-danger">*</span></label>
+						<label class="col-form-label">Leave Type <span class="text-danger">*</span></label>
 						<input class="form-control" name="name" type="text">
+					</div>
+					<div class="input-block mb-3">
+						<label class="col-form-label">Number of days <span class="text-danger">*</span></label>
+						<input class="form-control" name="days" type="text">
 					</div>
 					<div class="submit-section">
 						<button class="btn btn-primary submit-btn" onclick="submitCreateForm(event)">Submit</button>
@@ -134,7 +169,7 @@
 		</div>
 	</div>
 </div>
-<!-- /Add Department Modal -->
+<!-- /Add Leavetype Modal -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
 <script>
@@ -231,10 +266,10 @@
 </script>
 
 <script>
-	function submitUpdateForm(event,departmentId) {
-	console.log("deapartment id",departmentId)
+	function submitUpdateForm(event,leavetypeId) {
+	console.log("deapartment id",leavetypeId)
 	event.preventDefault();  // Prevent the default form submission behavior
-	var form = document.getElementById('update_form_' + departmentId);
+	var form = document.getElementById('update_form_' + leavetypeId);
 	var formData = new FormData(form);
 	
 	fetch(form.action, {
@@ -381,4 +416,5 @@
 </script>
 
 
-{% endblock %}
+{% endblock%}
+
