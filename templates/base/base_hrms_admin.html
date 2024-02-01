@@ -743,8 +743,9 @@
 									<li><a href="{% url 'employee:employees' %}">All Employees</a></li>
 									<li><a href="#">Holidays</a></li>
 									<li class="submenu">
-										<a href="{% url 'employee:leave_types' %}">Leaves<span class="menu-arrow"></span></a>
+										<a href="{% url 'employee:leave_types' %}">Leave Management<span class="menu-arrow"></span></a>
 										<ul>
+											<li><a href="{% url 'employee:leaves' %}">Leave Request & Approval</a></li>
 											<li><a href="#">Leave Report</a></li>
 										</ul>		
 									</li>
@@ -861,54 +862,54 @@
 							<li> 
 								<a href="assets.html"><i class="la la-object-ungroup"></i> <span>Assets</span></a>
 							</li> {% endcomment %} 
-							<li class="submenu">
+							{% comment %} <li class="submenu">
 								<a href="#"><i class="la la-briefcase"></i> <span> Jobs </span> <span class="menu-arrow"></span></a>
 								<ul>
-									{% comment %} <li><a href="user-dashboard.html"> User Dasboard </a></li> {% endcomment %}
+									<li><a href="user-dashboard.html"> User Dasboard </a></li>
 									<li><a href="#"> Post Jobs </a></li>
 									<li><a href="#"> Manage Jobs </a></li>
-									{% comment %} <li><a href="#"> Manage Resumes </a></li>
-									<li><a href="#"> Shortlist Candidates </a></li> {% endcomment %}
-									{% comment %} <li><a href="interview-questions.html"> Interview Questions </a></li> {% endcomment %}
-									{% comment %} <li><a href="#"> Offer Approvals </a></li> {% endcomment %}
-									{% comment %} <li><a href="experiance-level.html"> Experience Level </a></li> {% endcomment %}
-									{% comment %} <li><a href="candidates.html"> Candidates List </a></li> {% endcomment %}
-									{% comment %} <li><a href="#"> Schedule Interview </a></li> {% endcomment %}
-									{% comment %} <li><a href="apptitude-result.html"> Aptitude Results </a></li> {% endcomment %}
+									<li><a href="#"> Manage Resumes </a></li>
+									<li><a href="#"> Shortlist Candidates </a></li>
+									<li><a href="interview-questions.html"> Interview Questions </a></li>
+									<li><a href="#"> Offer Approvals </a></li>
+									<li><a href="experiance-level.html"> Experience Level </a></li>
+									<li><a href="candidates.html"> Candidates List </a></li>
+									<li><a href="#"> Schedule Interview </a></li>
+									<li><a href="apptitude-result.html"> Aptitude Results </a></li>
 								</ul>
-							</li>
-							<li class="submenu">
+							</li> {% endcomment %}
+							{% comment %} <li class="submenu">
 								<a href="#"><i class="la la-briefcase"></i> <span>Hire Candidates </span> <span class="menu-arrow"></span></a>
 								<ul>
-									{% comment %} <li><a href="user-dashboard.html"> User Dasboard </a></li> {% endcomment %}
-									{% comment %} <li><a href="#"> Post Jobs </a></li>
+									<li><a href="user-dashboard.html"> User Dasboard </a></li>
+									<li><a href="#"> Post Jobs </a></li>
 									<li><a href="#"> Manage Jobs </a></li>
-									<li><a href="#"> Manage Resumes </a></li> {% endcomment %}
+									<li><a href="#"> Manage Resumes </a></li> 
 									<li><a href="#"> Shortlist Candidates </a></li>
-									{% comment %} <li><a href="interview-questions.html"> Interview Questions </a></li> {% endcomment %}
+									<li><a href="interview-questions.html"> Interview Questions </a></li>
 									<li><a href="#"> Offer Approvals </a></li>
-									{% comment %} <li><a href="experiance-level.html"> Experience Level </a></li> {% endcomment %}
-									{% comment %} <li><a href="candidates.html"> Candidates List </a></li> {% endcomment %}
+									<li><a href="experiance-level.html"> Experience Level </a></li>
+									<li><a href="candidates.html"> Candidates List </a></li>
 									<li><a href="#"> Schedule Interview </a></li>
-									{% comment %} <li><a href="apptitude-result.html"> Aptitude Results </a></li> {% endcomment %}
+									<li><a href="apptitude-result.html"> Aptitude Results </a></li>
 								</ul>
-							</li>
-							<li class="submenu">
+							</li> {% endcomment %}
+							{% comment %} <li class="submenu">
 								<a href="#"><i class="la la-briefcase"></i> <span>Hire Teams </span> <span class="menu-arrow"></span></a>
 								<ul>
-									{% comment %} <li><a href="user-dashboard.html"> User Dasboard </a></li> {% endcomment %}
-									{% comment %} <li><a href="#"> Post Jobs </a></li>
+									<li><a href="user-dashboard.html"> User Dasboard </a></li>
+									<li><a href="#"> Post Jobs </a></li>
 									<li><a href="#"> Manage Jobs </a></li>
-									<li><a href="#"> Manage Resumes </a></li> {% endcomment %}
+									<li><a href="#"> Manage Resumes </a></li>
 									<li><a href="#"> Shortlist Teams </a></li>
-									{% comment %} <li><a href="interview-questions.html"> Interview Questions </a></li> {% endcomment %}
+									<li><a href="interview-questions.html"> Interview Questions </a></li>
 									<li><a href="#"> Offer Approvals </a></li>
-									{% comment %} <li><a href="experiance-level.html"> Experience Level </a></li> {% endcomment %}
-									{% comment %} <li><a href="candidates.html"> Candidates List </a></li> {% endcomment %}
+									<li><a href="experiance-level.html"> Experience Level </a></li>
+									<li><a href="candidates.html"> Candidates List </a></li>
 									<li><a href="#"> Schedule Interview </a></li>
-									{% comment %} <li><a href="apptitude-result.html"> Aptitude Results </a></li> {% endcomment %}
+									<li><a href="apptitude-result.html"> Aptitude Results </a></li>
 								</ul>
-							</li>
+							</li> {% endcomment %}
 							{% comment %} <li> 
 								<a href="knowledgebase.html"><i class="la la-question"></i> <span>Knowledgebase</span></a>
 							</li>
@@ -1498,7 +1499,7 @@
 									<li><a href="assets.html"> Assets </a></li>
 								</ul>
 							</div> {% endcomment %}
-							<div class="tab-pane fade " id="v-pills-jobs" role="tabpanel" aria-labelledby="v-pills-jobs-tab">
+							{% comment %} <div class="tab-pane fade " id="v-pills-jobs" role="tabpanel" aria-labelledby="v-pills-jobs-tab">
 								<p>Jobs</p>
 								<ul>
 									<li><a href="user-dashboard.html" class="active"> User Dasboard </a></li>
@@ -1514,7 +1515,7 @@
 									<li><a href="schedule-timing.html"> Schedule timing </a></li>
 									<li><a href="apptitude-result.html"> Aptitude Results </a></li>
 								</ul>
-							</div>
+							</div> {% endcomment %}
 							{% comment %} <div class="tab-pane fade" id="v-pills-knowledgebase" role="tabpanel" aria-labelledby="v-pills-knowledgebase-tab">
 								<p>Knowledgebase</p>
 								<ul>

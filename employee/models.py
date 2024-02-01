@@ -87,39 +87,50 @@ class LeaveType(BaseModel):
     def __str__(self):
         return self.name
 
+#tuple for status
+class Leave(BaseModel):
+    company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})  
+    employee = models.ForeignKey("employee.Employee", on_delete=models.CASCADE, limit_choices_to={'is_deleted': False})
+    startdate = models.DateField(verbose_name=_('From'), help_text='leave start date is on ..', null=True, blank=False)
+    enddate = models.DateField(verbose_name=_('To'), help_text='coming back on ...', null=True, blank=False)
+    leavetype = models.ForeignKey("employee.LeaveType", on_delete=models.CASCADE, limit_choices_to={'is_deleted': False})
+    reason = models.CharField(verbose_name=_('Leave Reason'), max_length=255, help_text='add additional information for leave', null=True, blank=True)
+    status = models.CharField(max_length=12, default='pending')  # pending, approved, rejected, cancelled
+    is_approved = models.BooleanField(default=False)  
+    is_deleted = models.BooleanField(default=False)
 
+    class Meta:
+        verbose_name = _('Leave')
+        verbose_name_plural = _('Leaves')
+        ordering = ['leavetype'] 
 
-# class Leave(models.Model):
-# 	user/employee = models.ForeignKey(User/employee,on_delete=models.CASCADE,default=1)
-# 	startdate = models.DateField(verbose_name=_('Start Date'),help_text='leave start date is on ..',null=True,blank=False)
-# 	enddate = models.DateField(verbose_name=_('End Date'),help_text='coming back on ...',null=True,blank=False)
-# 	leavetype = models.CharField(choices=LEAVE_TYPE,max_length=25,default=SICK,null=True,blank=False)
-# 	reason = models.CharField(verbose_name=_('Reason for Leave'),max_length=255,help_text='add additional information for leave',null=True,blank=True)
-# 	defaultdays = models.PositiveIntegerField(verbose_name=_('Leave days per year counter'),default=DAYS,null=True,blank=True)
+    def __str__(self):
+        return f"{self.employee} - {self.leavetype}"
 
+    @property
+    def leave_days(self):
+        days_count = ''
+        startdate = self.startdate
+        enddate = self.enddate
+        if startdate > enddate:
+            return
+        elif startdate == enddate:
+            days_count = '1 day'
+        else:
+            diff = enddate - startdate
+            if diff.days == 1:
+                days_count = '{0} day'.format(diff.days)
+            else:
+                days_count = '{0} days'.format(diff.days)
+        return "{0}, {1}".format(days_count, self.leavetype)
 
-# 	# hrcomments = models.ForeignKey('CommentLeave') #hide
-
-# 	status = models.CharField(max_length=12,default='pending') #pending,approved,rejected,cancelled
-# 	is_approved = models.BooleanField(default=False) #hide
-# 	is_deleted = models.BooleanField(default=False)
-
-# 	updated = models.DateTimeField(auto_now=True, auto_now_add=False)
-# 	created = models.DateTimeField(auto_now=False, auto_now_add=True)
-
-
-	
-# 	class Meta:
-# 		verbose_name = _('Leave')
-# 		verbose_name_plural = _('Leaves')
-# 		ordering = ['-created'] #recent objects
-
-
-
-# 	def __str__(self):
-# 		return ('{0} - {1}'.format(self.leavetype,self.user))
-
-
+    @property
+    def remaining_days(self):
+        if self.leavetype.days is not None:
+            approved_leave_days = Leave.objects.filter(employee=self.employee, leavetype=self.leavetype, is_approved=True).count()
+            remaining_days = self.leavetype.days - approved_leave_days
+            return max(0, remaining_days)
+        return None
 
 
 # 	@property
@@ -130,27 +141,12 @@ class LeaveType(BaseModel):
 # 		leave = self.leavetype
 # 		user = self.user
 # 		employee = user.employee_set.first().get_full_name
-# 		return ('{0} - {1}'.format(employee,leave))
-
-
-
-# 	@property
-# 	def leave_days(self):
-# 		days_count = ''
-# 		startdate = self.startdate
-# 		enddate = self.enddate
-# 		if startdate > enddate:
-# 			return
-# 		dates = (enddate - startdate)
-# 		return dates.days
-
+# 		return ('{0} - {1}'.format(employee,leave))	
 
 
 # 	@property
 # 	def leave_approved(self):
 # 		return self.is_approved == True
-
-
 
 
 # 	@property
@@ -159,8 +155,6 @@ class LeaveType(BaseModel):
 # 			self.is_approved = True
 # 			self.status = 'approved'
 # 			self.save()
-
-
 
 
 # 	@property

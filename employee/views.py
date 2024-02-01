@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.core.paginator import Paginator
 from employee import models
 from employee.forms import DepartmentForm, DesignationForm, EmployeeForm, LeaveTypeForm
-from employee.models import Department, Designation, Employee, LeaveType
+from employee.models import Department, Designation, Employee, Leave, LeaveType
 from main.decorators import company_required
 from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company
 from django.urls import reverse
@@ -777,7 +777,169 @@ def delete_leave_type(request,pk):
         "title" : "Successfully Deleted",
         "message" : "Leave Type Successfully Deleted.", 
         "redirect" : "true",       
-        "redirect_url" : reverse('employee:departments')
+        "redirect_url" : reverse('employee:leave_types')
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+   
+
+# Leave crud starts here
+@login_required
+@company_required
+def create_leave(request):
+    current_company = get_current_company(request)
+    print("current comapny",current_company)
+    if request.method == 'POST':
+        print("leave type post request")
+        form = LeaveForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            days = form.cleaned_data['days']
+            auto_id = get_auto_id(Leave)
+            a_id = get_a_id(Leave,request)
+            company = current_company
+            creator = request.user
+            updator = request.user
+
+            if not Leave.objects.filter(name=name,company=current_company,is_deleted=False).exists():
+                Leave(                    
+                    name = name,
+                    days = days,
+                    auto_id = auto_id,
+                    a_id = a_id,
+                    company =company,
+                    creator = creator,
+                    updator = updator
+                ).save()
+                response_data = {
+                    "status": "true",
+                    "title": "Successfully Created",
+                    "message": "Leave created successfully.",
+                    "redirect": "true",
+                    "redirect_url": reverse('employee:leaves')
+                }
+                print("Redirect URL:", response_data["redirect_url"])
+            else:               
+                response_data = {
+                    "status": "false",
+                    "stable": "true",
+                    "title": "Already exists",
+                    "message": "Leave already exists",                        
+                }
+                print("status inside", response_data["status"])
+            print("status outside", response_data["status"])
+        else:
+            print('not valid')
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "form_error",
+                "title": "Form validation error",
+                "message": str(message),               
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = LeaveForm()
+
+        context = {
+            "title": "Create Leave",
+            "form": form,
+            "redirect": "true",
+            "create":True
+        }
+        return render(request, 'leave/leaves.html', context)
+
+
+@login_required
+@company_required
+def leaves(request):
+    current_company = get_current_company(request)
+    leaves = Leave.objects.filter(company=current_company,is_deleted=False)
+    paginator = Paginator(leaves,1000000000000)
+    page_number = request.GET.get('page')
+    leaves = paginator.get_page(page_number)
+    context = {
+        'leaves': leaves,
+        "title": 'Leaves' 
+    }
+    return render(request, "leave/leaves.html", context)
+
+
+@login_required
+@company_required
+def edit_leave(request, pk):
+    current_company = get_current_company(request)
+    instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company, is_deleted=False))    
+    print("department id",instance.pk)
+    if request.method == "POST":
+        form = LeaveForm(request.POST, instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.updator = request.user
+            data.date_updated = datetime.datetime.now()
+            data.save()
+            print("updated department",data.name)
+
+            response_data = {
+                "status": "true",
+                "redirect" : "true",
+                "title": "Successfully Updated",
+                "message": "Leave updated successfully.",                
+                "redirect_url": reverse('employee:leaves')
+            }
+
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "stable": "true",
+                "status": "false",
+                "message": str(message),
+                "title": "Form validation error"  
+            }
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = LeaveForm(instance=instance)
+
+        context = {
+            "form": form,
+            "instance": instance,
+            "title": "Edit Leave :" + instance.name,
+            
+            "redirect": "true",
+            "url": reverse('employee:edit_leave', kwargs={'pk': instance.pk}),
+        }
+        return render(request, 'leave/leaves.html', context)
+
+
+@login_required
+@company_required
+def leave(request, pk):
+    current_company = get_current_company(request)
+    instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company,is_deleted=False))
+
+    context = {
+        'instance': instance,
+        'title': 'Leave',
+
+    }
+    return render(request, "leave/leaves.html", context)
+
+@login_required
+@company_required
+def delete_leave(request,pk):
+    current_company = get_current_company(request)
+    instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company,is_deleted=False))
+    
+    Leave.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
+
+    response_data = {
+        "status" : "true",        
+        "title" : "Successfully Deleted",
+        "message" : "Leave Successfully Deleted.", 
+        "redirect" : "true",       
+        "redirect_url" : reverse('employee:leaves')
     }
     return HttpResponse(json.dumps(response_data), content_type='application/json')
    

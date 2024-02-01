@@ -122,7 +122,7 @@ def candidates(request):
         'instances': instances,
         "title": 'Companies' 
     }
-    return render(request, "candidate/candidates-list.html", context)
+    return render(request, "sevendyne_admin/candidate/candidates.html", context)
 
 
 @login_required
@@ -175,7 +175,7 @@ def edit_candidate(request, pk):
 
 
         }
-        return render(request, 'candidate/create_candidate.html', context)
+        return render(request, 'sevendyne_admin/candidate/create_candidate.html', context)
 
 
 @login_required

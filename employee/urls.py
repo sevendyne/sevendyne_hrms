@@ -26,6 +26,12 @@ urlpatterns = [
     re_path(r'^leave_type/edit/(?P<pk>.*)/$', views.edit_leave_type, name='edit_leave_type'),
     re_path(r'^delete-leave_type/(?P<pk>.*)/$', views.delete_leave_type, name='delete_leave_type'),    
     re_path(r'^leave_type/(?P<pk>.*)/$', views.leave_type, name='leave_type'),
+    
+    path('leave/create/', views.create_leave, name='create_leave'),
+    path("leaves/", views.leaves, name="leaves"),
+    re_path(r'^leave/edit/(?P<pk>.*)/$', views.edit_leave, name='edit_leave'),
+    re_path(r'^delete-leave/(?P<pk>.*)/$', views.delete_leave, name='delete_leave'),    
+    re_path(r'^leave/(?P<pk>.*)/$', views.leave, name='leave'),
    
 ]
 

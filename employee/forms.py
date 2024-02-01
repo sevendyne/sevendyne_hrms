@@ -3,7 +3,7 @@ import datetime
 from django import forms
 from django.forms.widgets import TextInput, Select,URLInput, ClearableFileInput
 from django.utils.translation import gettext_lazy as _
-from employee.models import Department, Designation, Employee, LeaveType
+from employee.models import Department, Designation, Employee, Leave, LeaveType
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -142,6 +142,35 @@ class LeaveTypeForm(forms.ModelForm):
             },
             'days' : {
                 'required' : _("days field is required."),
+            }
+        }
+
+
+class LeaveForm(forms.ModelForm):
+    leave_days = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly', 'class': 'form-control'}))
+    remaining_days = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly', 'class': 'form-control'}))
+    
+    class Meta:
+        model = Leave
+        exclude = ['creator', 'updator', 'auto_id','a_id','company','is_deleted','employee','is_approved','status'] 
+        widgets = {
+            'reason': TextInput(attrs={'class': 'form-control', 'placeholder': 'Reason for leave'}),
+            'leavetype': Select(attrs={'class': 'required form-control'}),'startdate' : DateInput(attrs={'class' : 'datetimepicker form-control'}),
+            'enddate' : DateInput(attrs={'class' : 'datetimepicker form-control'}),
+            'startdate' : DateInput(attrs={'class' : 'datetimepicker form-control'}),
+        }
+        error_messages = {
+            'reason': {
+                'required': _("reason field is required."),
+            },
+            'leavetype': {
+                'required': _("Leave Type field is required."),
+            },
+            'enddate': {
+                'required': _("enddate field is required."),
+            },
+            'startdate': {
+                'required': _("startdate field is required."),
             }
         }
 

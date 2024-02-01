@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'hrms',
     'candidate',
     'client',
-    'employee'
+    'employee',
+    'payroll'
 ]
 
 MIDDLEWARE = [
