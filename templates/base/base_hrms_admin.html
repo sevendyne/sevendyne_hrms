@@ -746,8 +746,8 @@
 										<a href="{% url 'employee:leave_types' %}">Leave Management<span class="menu-arrow"></span></a>
 										<ul>
 											<li><a href="{% url 'employee:leaves' %}">Leave Request & Approval</a></li>
-											<li><a href="{% url 'employee:leave_requests' %}">Leave Request</a></li>
-											<li><a href="{% url 'employee:leave_approval' %}">Leave Approval</a></li>
+											{% comment %} <li><a href="{% url 'employee:leave_requests' %}">Leave Request</a></li> {% endcomment %}
+											{% comment %} <li><a href="{% url 'employee:leave_approval' %}">Leave Approval</a></li> {% endcomment %}
 											<li><a href="#">Leave Report</a></li>
 										</ul>		
 									</li>
