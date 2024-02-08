@@ -36,9 +36,9 @@ class Job(BaseModel):
 
    
     class Meta:
-        verbose_name = _('Employee')
-        verbose_name_plural = _('Employees')
-        ordering = ['firstname']
+        verbose_name = _('Job')
+        verbose_name_plural = _('Jobs')
+        ordering = ['job_title']
 
     def __str__(self):
-        return self.get_full_name
+        return self.job_title
