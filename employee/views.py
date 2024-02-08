@@ -1,6 +1,7 @@
 import datetime
 import json
 from django.forms import formset_factory
+from django.db.models import Sum
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User, Group
@@ -838,9 +839,15 @@ def create_leave(request):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = LeaveForm()
+        # to find approved leave days
+        employees = Employee.objects.all()
 
+        for employee in employees:
+            approved_leave_days = Leave.objects.filter(employee=employee, is_approved=True)
+            print(f"Approved leave days for {employee}: {approved_leave_days}")
         context = {
             "title": "Create Leave",
+            'approved_leave_days': approved_leave_days,
             "form": form,
             "redirect": "true",
             "create":True

@@ -293,7 +293,7 @@
 					<div class="input-block mb-3">
 					  <label class="col-form-label">From <span class="text-danger">*</span></label>
 					  <div class="cal-icon"><div class="cal-icon">
-							<input id="start_date" name="startdate" class="form-control datetimepicker" type="text">
+							<input id="start_date" name="startdate" class="start_date form-control datetimepicker" type="text">
 						</div>
 					  </div>
 					</div>
@@ -301,7 +301,7 @@
 					<div class="input-block mb-3">
 					  <label class="col-form-label">To <span class="text-danger">*</span></label>
 					  <div class="cal-icon"><div class="cal-icon">
-							<input id="end_date" name="enddate" class="form-control datetimepicker" type="text">
+							<input id="end_date" name="enddate" class="ed_date form-control datetimepicker" type="text">
 						</div>
 					  </div>
 					</div>
@@ -338,57 +338,64 @@
 	</div>
 </div>
 <!-- /Add Leave Modal -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
 <script>
-  function calculateLeaveDays(startDateString, endDateString, leaveTypeDays) {
-    var startDate = new Date(startDateString);
-    var endDate = new Date(endDateString);
-    var diffTime = Math.abs(endDate - startDate);
-    var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+	$('input#start_date.start_date.form-control.datetimepicker').change(function() {
+			console.log("start date changed")
+			updateLeaveDays();
+		
+		
+		// Event listener for end date change
+		$('#end_date').change(function() {
+			console.log("leave date changed")
+			 updateLeaveDays();
+			updateRemainingDays(); 
+		});  
+		
+		{% comment %} function calculateLeaveDays(startDateString, endDateString, leaveTypeDays) {
+			console.log("calculate leave days called")
+			var startDate = new Date(startDateString);
+			var endDate = new Date(endDateString);
+			var diffTime = Math.abs(endDate - startDate);
+			var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) {
-      return "1 day";
-    } else if (diffDays === 1) {
-      return "1 day, " + leaveTypeDays;
-    } else {
-      return diffDays + " days, " + leaveTypeDays;
-    }
-  }
+			if (diffDays === 0) {
+			return "1 day";
+			} else if (diffDays === 1) {
+			return "1 day, " + leaveTypeDays;
+			} else {
+			return diffDays + " days, " + leaveTypeDays;
+			}
+		}
 
-  function calculateRemainingDays(approvedLeaveDays, leaveTypeDays) {
-    var remainingDays = leaveTypeDays - approvedLeaveDays;
-    return Math.max(0, remainingDays);
-  }
+		function calculateRemainingDays(approvedLeaveDays, leaveTypeDays) {
+			console.log("calculate remaining days called")
+			var remainingDays = leaveTypeDays - approvedLeaveDays;
+			return Math.max(0, remainingDays);
+		}
 
-  $(document).ready(function() {
-    // Function to calculate and update leave days
-    function updateLeaveDays() {
-      var startDate = $('#start_date').val();
-      var endDate = $('#end_date').val();
-      var leaveTypeDays = parseInt($('#leave_type_days').val()); // Assuming you have a hidden input field with leave type days
-      var leaveDays = calculateLeaveDays(startDate, endDate, leaveTypeDays);
-      $('#leave_days').val(leaveDays);
-    }
-
-    // Function to update remaining days
-    function updateRemainingDays() {
-      var approvedLeaveDays = parseInt($('#approved_leave_days').val()); // Assuming you have a hidden input field with approved leave days
-      var leaveTypeDays = parseInt($('#leave_type_days').val()); // Assuming you have a hidden input field with leave type days
-      var remainingDays = calculateRemainingDays(approvedLeaveDays, leaveTypeDays);
-      $('#remaining_days').val(remainingDays);
-    }
-
-    // Event listener for start date change
-    $('#start_date').change(function() {
-      updateLeaveDays();
-      updateRemainingDays();
-    });
-
-    // Event listener for end date change
-    $('#end_date').change(function() {
-      updateLeaveDays();
-      updateRemainingDays();
-    });
-  });
+	
+		// Function to calculate and update leave days
+		function updateLeaveDays() {
+			console.log("update leave days called")
+			var startDate = $('#start_date').val();
+			console.log("start date",startDate)
+			var endDate = $('#end_date').val();
+			console.log("start date",endDate)
+			var leaveTypeDays = parseInt($('#leave_days').val()); // Assuming you have a hidden input field with leave type days
+			var leaveDays = calculateLeaveDays(startDate, endDate, leaveTypeDays);
+			$('#leave_days').val(leaveDays);
+		}
+		
+		// Function to update remaining days
+		function updateRemainingDays() {
+			console.log("update remaining days called")
+			var approvedLeaveDays = parseInt('{{ approved_leave_days }}'); // Get the approved leave days from Django context
+			var leaveTypeDays = parseInt($('#leave_days').val()); // Assuming you have a hidden input field with leave type days
+			var remainingDays = calculateRemainingDays(approvedLeaveDays, leaveTypeDays);
+			$('#remaining_days').val(remainingDays);
+		}	
+		 {% endcomment %}
+	});
 </script>
 {% endblock %}
