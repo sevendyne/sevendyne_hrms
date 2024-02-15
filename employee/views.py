@@ -362,7 +362,7 @@ def edit_designation(request, pk):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = DesignationForm(instance=instance)
-        departments = Department.objects.all()
+        departments = Department.objects.filter(company=current_company,is_deleted=False)
         print("edit get request - designation")
         print("instance",instance)
         print("departmet",instance.department)
@@ -371,6 +371,7 @@ def edit_designation(request, pk):
             "form": form,
             "instance": instance,
             "departments":departments,
+            'pk': pk,
             "title": "Edit Designation :" + instance.name,
             
             "redirect": "true",
@@ -803,9 +804,10 @@ def create_leave(request):
             company = company
             creator = request.user
             updator = request.user
-            print("leave type", leave_type)
+            print("leave type", leavetype)
             print("leave_days",leave_days)
             if int(leave_days)<=int(remaining_days):
+                print("next step is saving in leave model db")
                 Leave( 
                     startdate = startdate,
                     enddate = enddate,                   
@@ -819,10 +821,12 @@ def create_leave(request):
                     creator = creator,
                     updator = updator
                 ).save()
+                leave= Leave.objects.all()
+                print("leaves saved in db model",leave)
                 response_data = {
                     "status": "true",
-                    "title": "Successfully Created",
-                    "message": "Leave created successfully.",
+                    "title": "Leave Request",
+                    "message": "Requested for Leave successfully.",
                     "redirect": "true",
                     "redirect_url": reverse('employee:leaves')
                 }
@@ -884,8 +888,9 @@ def ajax_load_remaining_days(request):
 
 @login_required
 def leaves(request):
-    current_company = get_current_company(request)
-    leaves = Leave.objects.filter(company=current_company,is_deleted=False)
+    employee = get_object_or_404(Employee, user=request.user)
+    company = employee.company
+    leaves = Leave.objects.filter(company=company,is_deleted=False)
     print("leaves",leaves)
     paginator = Paginator(leaves,1000000000000)
     page_number = request.GET.get('page')
@@ -896,13 +901,27 @@ def leaves(request):
     }
     return render(request, "leave/leaves.html", context)
 
+@login_required
+@company_required
+def leave_approvals(request):
+    current_company = get_current_company(request)
+    leaves = Leave.objects.filter(company=current_company,is_deleted=False)
+    paginator = Paginator(leaves,1000000000000)
+    page_number = request.GET.get('page')
+    leaves = paginator.get_page(page_number)
+    context = {
+        'leaves': leaves,
+        "title": 'Leaves' 
+    }
+    return render(request, "leave/leaves-approval.html", context)
+
 
 @login_required
 @company_required
 def edit_leave(request, pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company, is_deleted=False))    
-    print("department id",instance.pk)
+    print("leave id",instance.pk)
     if request.method == "POST":
         form = LeaveForm(request.POST, instance=instance)
 
@@ -911,14 +930,14 @@ def edit_leave(request, pk):
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-            print("updated department",data.name)
+            print("updated leave",data.name)
 
             response_data = {
                 "status": "true",
                 "redirect" : "true",
                 "title": "Successfully Updated",
                 "message": "Leave updated successfully.",                
-                "redirect_url": reverse('employee:leaves')
+                "redirect_url": reverse('employee:leave_approvals')
             }
 
         else:
@@ -938,12 +957,12 @@ def edit_leave(request, pk):
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Leave :" + instance.name,
+            "title": "Edit Leave",
             
             "redirect": "true",
             "url": reverse('employee:edit_leave', kwargs={'pk': instance.pk}),
         }
-        return render(request, 'leave/leaves.html', context)
+        return render(request, 'leave/leaves-approval.html', context)
 
 
 @login_required
@@ -961,18 +980,18 @@ def leave(request, pk):
 
 @login_required
 @company_required
-def delete_leave(request,pk):
+def leave_approval(request,pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company,is_deleted=False))
     
-    Leave.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
+    Leave.objects.filter(pk=pk).update(is_approved=True,status='Approved',employee=instance.employee)
 
     response_data = {
         "status" : "true",        
-        "title" : "Successfully Deleted",
-        "message" : "Leave Successfully Deleted.", 
+        "title" : "Successfully Approved",
+        "message" : "Leave Request Successfully Approved.", 
         "redirect" : "true",       
-        "redirect_url" : reverse('employee:leaves')
+        "redirect_url" : reverse('employee:leave_approvals')
     }
     return HttpResponse(json.dumps(response_data), content_type='application/json')
    

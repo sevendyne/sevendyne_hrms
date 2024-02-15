@@ -382,11 +382,11 @@
 										<ul>
 											<li><a href="employees.html">All Employees</a></li>
 											<li><a href="holidays.html">Holidays</a></li>
-											<li><a href="leaves.html">Leaves (Admin) <span class="badge rounded-pill bg-primary float-end">1</span></a></li>
-											<li><a href="leaves-employee.html">Leaves (Employee)</a></li>
+											{% comment %} <li><a href="leaves.html">Leaves (Admin) <span class="badge rounded-pill bg-primary float-end">1</span></a></li>
+											<li><a href="leaves-employee.html">Leaves (Employee)</a></li> {% endcomment %}
 											<li><a href="{% url 'employee:leave_types' %}">Leave Settings</a></li>
-											<li><a href="attendance.html">Attendance (Admin)</a></li>
-											<li><a href="attendance-employee.html">Attendance (Employee)</a></li>
+											{% comment %} <li><a href="attendance.html">Attendance (Admin)</a></li>
+											<li><a href="attendance-employee.html">Attendance (Employee)</a></li> {% endcomment %}
 											<li><a href="{% url 'employee:departments' %}">Departments</a></li>
 											<li><a href="{% url 'employee:designations' %}">Designations</a></li>
 											<li><a href="timesheet.html">Timesheet</a></li>
@@ -747,7 +747,7 @@
 									<li class="submenu">
 										<a href="{% url 'employee:leave_types' %}">Leave Management<span class="menu-arrow"></span></a>
 										<ul>
-											<li><a href="{% url 'employee:leaves' %}">Leave Approval</a></li>
+											<li><a href="{% url 'employee:leave_approvals' %}">Leave Approval</a></li>
 											{% comment %} <li><a href="{% url 'employee:leave_requests' %}">Leave Request</a></li> {% endcomment %}
 											{% comment %} <li><a href="{% url 'employee:leave_approval' %}">Leave Approval</a></li> {% endcomment %}
 											<li><a href="#">Leave Report</a></li>

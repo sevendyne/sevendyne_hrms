@@ -66,18 +66,10 @@
 											{% csrf_token %}
 											<div class="input-block mb-3">
 												<label class="col-form-label">Department Name <span class="text-danger">*</span></label>
-												{% comment %} {{ form.department }} {% endcomment %}
-												{% comment %} <select class="form-control" name="department">
-													{% for department in departments %}
-														<option value="{{ department.id }}" {% if department.id == designation.department.id %}selected{% endif %}>{{ department.name }}</option>
-													{% endfor %}
-												</select> {% endcomment %}
-												<input class="form-control" name="department" value="{{ designation.department }}" type="text">
-											</div>
+												{{ form.department }}</div>
 											<div class="input-block mb-3">
 												<label class="col-form-label">Designation Name <span class="text-danger">*</span></label>
-												{% comment %} {{ form.name}} {% endcomment %}
-												<input class="form-control" name="name" value="{{ designation.name }}" type="text">
+												{{ form.name}}
 											</div>
 											<div class="submit-section">
 												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{designation.id}})">Save</button>
@@ -161,7 +153,95 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
 <script>
-	function loadUpdateDesignationForm(element, designationId) {
+		function loadUpdateDesignationForm(element, designationId) {
+			console.log("update designation form load called");
+			console.log("designation id", designationId);
+		
+			// Construct the URL with a hardcoded path
+			const editUrl = `/app/employee/designation/edit/${designationId}/`;
+		
+			// Fetch the URL using the provided designationId
+			fetch(editUrl)
+				.then(response => response.text())
+				.then(data => {
+					if (data.includes("edit_designation_modal")) {
+						console.log("Data contains edit_designation_modal");
+						// Create a temporary element to hold the form HTML
+						//var tempElement = document.createElement('div');
+						//tempElement.innerHTML = data;
+
+						// Find the form element in the temporary element
+						//var formElement = tempElement.querySelector('#update_form');
+
+						// Find the form element in the fetched data
+						var formElement = document.querySelector('#update_form_' + designationId);
+						//var formElement = $(data).find('#update_form_' + designationId);
+						console.log("form element",formElement)
+						if (!formElement) {
+							console.error("Form element not found in the fetched data");
+							return;
+						}
+						// Find the modal body element
+						//var modalBody = $('#edit_designation_modal').find('.modal-body');
+            
+						// Check if modal body is found
+						{% comment %} if (!modalBody.length) {
+							console.error("Modal body element not found");
+							return;
+						} {% endcomment %}
+			
+						// Update the content of the modal body with the form element
+						{% comment %} modalBody.html(formElement);
+						console.log("moda body",modalBody) {% endcomment %}
+						// Show the modal after updating its content
+						{% comment %} $('#edit_designation_modal').modal('show'); {% endcomment %}
+						// Find the modal element
+						var modal = $('#edit_designation_modal .modal-body');
+						var modalBody = $('#edit_designation_modal').find('.modal-body');
+
+						// Check if modal is found
+						if (!modal.length) {
+							console.error("Modal element not found");
+							return;
+						}
+						 // Check if modal body is found
+						 if (!modalBody.length) {
+							console.error("Modal body element not found");
+							return;
+						}
+						// Update the content of the modal body with the form element
+						modalBody.html(formElement);
+						console.log("modal body", modalBody);
+				
+		
+						// Use .find() to get the .modal-body element
+						//var modalBody = modal.find('.modal-body');
+						//modalBody.html(data);
+						//modal.html(formElement);
+						//console.log("modal",modal)
+						//modal.modal('show'); // Show the modal after content is loaded
+						//modal.find('#edit_designation_modal .modal-body').html(data);
+						//modal.modal('show'); // Show the modal
+						// Get the modal body
+						//var modalBody = document.querySelector('#edit_designation_modal .modal-body');
+		
+						// Set the inner HTML of the modal body to include the form element
+						//modalBody.innerHTML = ''; // Clear existing content
+						//modalBody.appendChild(formElement);
+		
+						// Show the modal for updating designations
+						$('#edit_designation_modal').modal('show');
+						//console.log("modal showed");
+					} else {
+						console.log("Data does not contain edit_designation_modal");
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+				});
+		}
+		
+	{% comment %} function loadUpdateDesignationForm(element, designationId) {
 		console.log("update designation form load called");
 		console.log("designation id", designationId);
 	
@@ -172,7 +252,6 @@
 		fetch(editUrl)
 			.then(response => response.text())
 			.then(data => {
-				console.log("data", data);// Check if "edit_designation_modal" is present in the data
 				if (data.includes("edit_designation_modal")) {
 					console.log("Data contains edit_designation_modal");
 				} else {
@@ -189,16 +268,17 @@
 	
 				// Append the form to the modal body
 				var modalBody = document.querySelector('#edit_designation_modal .modal-body');
+				modalBody.innerHTML = ''; // Clear existing content
 				modalBody.appendChild(formElement);
 	
 				// Show the modal for updating designations
-				$('#edit_designation_modal_' + designationId).modal('show');
+				$('#edit_designation_modal').modal('show');
 				console.log("modal showed");
 			})
 			.catch(error => {
 				console.error('Error:', error);
 			});
-	}
+	} {% endcomment %}
 	
 	
 		

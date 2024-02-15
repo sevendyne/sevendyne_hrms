@@ -29,10 +29,16 @@ urlpatterns = [
     
     path('leave/create/', views.create_leave, name='create_leave'),
     path("leaves/", views.leaves, name="leaves"),
-    re_path(r'^leave/edit/(?P<pk>.*)/$', views.edit_leave, name='edit_leave'),
-    re_path(r'^delete-leave/(?P<pk>.*)/$', views.delete_leave, name='delete_leave'),    
-    re_path(r'^leave/(?P<pk>.*)/$', views.leave, name='leave'),
+    # re_path(r'^delete-leave/(?P<pk>.*)/$', views.delete_leave, name='delete_leave'),    
+    # re_path(r'^leave/(?P<pk>.*)/$', views.leave, name='leave'),
    
-    path('ajax_load_remaining_days', views.ajax_load_remaining_days, name='ajax_load_remaining_days')
+    path('ajax_load_remaining_days', views.ajax_load_remaining_days, name='ajax_load_remaining_days'),
+    
+    path('leave-approval/create/', views.create_leave, name='create_leave'),
+    path("leave-approvals/", views.leave_approvals, name="leave_approvals"),
+    re_path(r'^leave/edit/(?P<pk>.*)/$', views.edit_leave, name='edit_leave'),
+    # re_path(r'^delete-leave/(?P<pk>.*)/$', views.delete_leave, name='delete_leave'),    
+    re_path(r'^leave-approval/(?P<pk>.*)/$', views.leave_approval, name='leave_approval'),
+   
 ]
 

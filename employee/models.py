@@ -6,6 +6,12 @@ from django.contrib.auth.models import User
 from phonenumber_field.modelfields import PhoneNumberField
 
 
+LEAVE_STATUS = (
+    ('Pending', "Pending"),
+    ('Approved',"Approved"),
+    ('Rejected',"Rejected")    
+)
+
 class Department(BaseModel):
     company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})
     name = models.CharField(_("Department Name"),max_length=125)
@@ -96,7 +102,7 @@ class Leave(BaseModel):
     leavetype = models.ForeignKey("employee.LeaveType", on_delete=models.CASCADE, limit_choices_to={'is_deleted': False})
     reason = models.CharField(verbose_name=_('Leave Reason'), max_length=255, help_text='add additional information for leave', null=True, blank=True)
     leave_days = models.PositiveIntegerField(_("Number of Leave Days"))
-    status = models.CharField(max_length=12, default='pending')  # pending, approved, rejected, cancelled
+    status = models.CharField(max_length=128, choices=LEAVE_STATUS, default='Pending') # pending, approved, rejected, cancelled
     is_approved = models.BooleanField(default=False)  
     is_deleted = models.BooleanField(default=False)
 

@@ -1,4 +1,4 @@
-{% extends "base/base_employee.html" %}
+{% extends "base/base_hrms_admin.html" %}
 {%load static%}
 
 {% block content %}
@@ -15,10 +15,7 @@
 					<li class="breadcrumb-item"><a href="{% url 'main:employee_dashboard' %}">Dashboard</a></li>
 					<li class="breadcrumb-item active">Leaves</li>
 				</ul>
-			</div>
-			<div class="col-auto float-end ms-auto">
-				<a href="#" class="btn add-btn" onclick="loadCreateLeaveForm()"  data-bs-toggle="modal" data-bs-target="#add_leave"><i class="fa-solid fa-plus"></i> Add Leave</a>
-			</div>
+			</div>			
 		</div>
 	</div>
 	<!-- /Page Header -->
@@ -111,19 +108,21 @@
 					<thead>
 						<tr>
 							<th>Sl. No.</th>
+							<th>Employee</th>
 							<th>Leave Type</th>
 							<th>From</th>
 							<th>To</th>
 							<th>No of Days</th>
 							<th>Reason</th>
 							<th class="text-center">Status</th>
-							{% comment %} <th class="text-end">Actions</th> {% endcomment %}
+							<th class="text-end">Actions</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for leave in leaves %}
 						<tr>
 							<td>{{forloop.counter}}</td>
+							<td>{{ leave.employee }}</td>
 							<td>{{ leave.leavetype }}</td>
 							<td>{{ leave.startdate }}</td>
 							<td>{{ leave.enddate }}</td>
@@ -144,21 +143,112 @@
 									<div class="dropdown-menu dropdown-menu-right">
 										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-purple"></i> New</a>
 										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-info"></i> Pending</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#approve_leave"><i class="fa-regular fa-circle-dot text-success"></i> Approved</a>
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#approve_leave_{{ leave.id }}"><i class="fa-regular fa-circle-dot text-success"></i> Approved</a>
 										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-danger"></i> Declined</a>
 									</div>
 								</div>
 							</td> {% endcomment %}
-							{% comment %} <td class="text-end">
+							<td class="text-end">
 								<div class="dropdown dropdown-action">
 									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_leave"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_approve"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
+										<a class="dropdown-item" onclick="loadUpdateApprovalForm(this, '{{ leave.id }}')" href="#" data-bs-toggle="modal" data-bs-target="#edit_leave_modal"><i class="fa-solid fa-pencil m-r-5"></i> Approve/Reject</a>
+										{% comment %} <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_approve_{{ leave.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a> {% endcomment %}
 									</div>
 								</div>
-							</td> {% endcomment %}
-						</tr>							
+							</td>
+						</tr>	
+						<!-- Edit Leave Modal -->
+						<div id="edit_leave_modal" class="modal custom-modal fade" role="dialog">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Approve/Reject Leave Request</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form id="update_form_{{ leave.id }}" method="POST" action="{% url 'employee:edit_leave' pk=leave.id %}" enctype="multipart/form-data">
+											{% csrf_token %}
+											<div class="isnput-block mb-3">
+												<label class="col-form-label">Leave Type <span class="text-danger">*</span></label>
+												{{ form.leavetype }}
+												{% if form.leavetype.errors %}
+												<span class="error">{{ form.leavetype.errors.0 }}</span>
+												{% endif %}
+											</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">From <span class="text-danger">*</span></label>
+												{{ form.startdate }}
+												{% if form.startdate.errors %}
+												<span class="error">{{ form.startdate.errors.0 }}</span>
+												{% endif %}
+											</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">To <span class="text-danger">*</span></label>
+												{{ form.enddate }}
+												{% if form.enddate.errors %}
+												<span class="error">{{ form.enddate.errors.0 }}</span>
+												{% endif %}
+											</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">Number of days <span class="text-danger">*</span></label>
+												{{ form.leave_days }}
+												{% if form.leave_days.errors %}
+												<span class="error">{{ form.leave_days.errors.0 }}</span>
+												{% endif %}
+											</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">Remaining Leaves <span class="text-danger">*</span></label>
+												{{ form.remaining_days }} 
+												{% if form.remaining_days.errors %}
+												<span class="error">{{ form.remaining_days.errors.0 }}</span>
+												{% endif %}
+											</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">Leave Reason <span class="text-danger">*</span></label>
+												{{ form.reason }}
+												{% if form.reason.errors %}
+												<span class="error">{{ form.reason.errors.0 }}</span>
+												{% endif %}
+											</div>
+											<div class="submit-section">
+												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{leave.id}})">Update</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /Edit Leave Modal -->
+
+						<!-- Approve Leave Modal -->
+						<div class="modal custom-modal fade" id="approve_leave_{{ leave.id }}" role="dialog">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-body">
+										<div class="form-header">
+											<h3>Leave Approve</h3>
+											<p>Are you sure want to approve for this leave?</p>
+										</div>
+										<div class="modal-btn delete-action">
+											<div class="row">
+												<div class="col-6">
+													<a href="{% url 'employee:leave_approval' pk=leave.id %}" class="btn btn-primary continue-btn">Approve</a>
+												</div>
+												<div class="col-6">
+													<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Decline</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /Approve Leave Modal -->
+
+						
 						{% endfor %}
 					</tbody>
 				</table>
@@ -168,91 +258,11 @@
 </div>
 <!-- /Page Content -->
 
-<!-- Add Leave Modal -->
-<div id="add_leave" class="modal custom-modal fade" role="dialog">
-	<div class="modal-dialog modal-dialog-centered" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h5 class="modal-title">Add Leave</h5>
-				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<div class="modal-body">
-				<form id="create_form" method="post" action="{% url 'employee:create_leave' %}" enctype="multipart/form-data">
-					{% csrf_token %}
-					
-					<div class="input-block mb-3">
-					  <label class="col-form-label">Leave Type <span class="text-danger">*</span></label>
-					  	{{ form.leavetype }}
-						{% if form.leavetype.errors %}
-						<span class="error">{{ form.leavetype.errors.0 }}</span>
-						{% endif %}
-					</div>
-		  
-					<div class="input-block mb-3">
-					  <label class="col-form-label">From <span class="text-danger">*</span></label>
-					  {{ form.startdate }}
-					  {% if form.startdate.errors %}
-					  <span class="error">{{ form.startdate.errors.0 }}</span>
-					  {% endif %}
-					</div>
-		  
-					<div class="input-block mb-3">
-					  <label class="col-form-label">To <span class="text-danger">*</span></label>					  
-					  {{ form.enddate }}
-					  {% if form.enddate.errors %}
-					  <span class="error">{{ form.enddate.errors.0 }}</span>
-					  {% endif %}
-					</div>
-		  
-					<div class="input-block mb-3">
-					  <label class="col-form-label">Number of leave days <span class="text-danger">*</span></label>
-					  {{ form.leave_days }}
-					  {% if form.leave_days.errors %}
-					  <span class="error">{{ form.leave_days.errors.0 }}</span>
-					  {% endif %}
-					  {% comment %} <input id="leave_days" class="form-control" readonly type="text"> {% endcomment %}
-					  
-					  {% comment %} <input name="days" class="form-control" readonly type="text" value="{{ form.days }}"> {% endcomment %}
-					</div>
-		  
-					<div class="input-block mb-3">
-					  <label class="col-form-label">Remaining Leaves (without considering this leave)<span class="text-danger">*</span></label>
-					  {{ form.remaining_days }} 
-					  {% if form.remaining_days.errors %}
-					  <span class="error">{{ form.remaining_days.errors.0 }}</span>
-					  {% endif %}
-					  {% comment %} <input id="remaining_days" class="form-control" readonly type="text"> {% endcomment %}
-					  
-					  {% comment %} <input name="remaining_days" class="form-control" readonly type="text" value="{{ form.remaining_days }}"> {% endcomment %}
-					</div>
-		  
-					<div class="input-block mb-3">
-					  <label class="col-form-label">Leave Reason <span class="text-danger">*</span></label>
-					  	{{ form.reason }}
-						{% if form.reason.errors %}
-						<span class="error">{{ form.reason.errors.0 }}</span>
-						{% endif %}
-					  {% comment %} <textarea name="reason" rows="4" class="form-control">{{ form.reason }}</textarea> {% endcomment %}
-					</div>
-		  
-					<div class="submit-section">
-					  <button class="btn btn-primary submit-btn" type="submit" onclick="submitCreateForm(event)">Submit</button>
-					</div>
-				  </form>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /Add Leave Modal -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
 
 <script>
-	
-
-	function loadUpdateLeaveForm(element, leaveId) {
+	function loadUpdateApprovalForm(element, leaveId) {
 		console.log("update leave form load called");
 		console.log("leave id", leaveId);
 	
@@ -263,61 +273,58 @@
 		fetch(editUrl)
 			.then(response => response.text())
 			.then(data => {
-				console.log("data", data);// Check if "edit_leave_modal" is present in the data
+				//console.log("data", data);// Check if "edit_leave_modal" is present in the data
 				if (data.includes("edit_leave_modal")) {
 					console.log("Data contains edit_leave_modal");
 				} else {
 					console.log("Data does not contain edit_leave_modal");
 				}
-	
+				
 				// Find the form element in the fetched data
-				var formElement = document.querySelector('#update_form_' + leaveId);
-	
+				var formElement = document.querySelector(`#update_form_` + leaveId);
+
 				if (!formElement) {
 					console.error("Form element not found in the fetched data");
 					return;
 				}
-	
-				// Append the form to the modal body
+				// Remove any existing modal content
 				var modalBody = document.querySelector('#edit_leave_modal .modal-body');
+				
+				console.log("Modal body element:", modalBody);
+				console.log("Form element:", formElement);
+				// Clear existing content in the modal body
+				modalBody.innerHTML = '';
+				
+				// Append the form to the modal body
 				modalBody.appendChild(formElement);
-	
+
+				// Add CSS class to the form
+				formElement.classList.add('modal-form');
+
+				// Log the HTML content of the modal body after appending the form
+				console.log("Modal body content after appending form:", modalBody.innerHTML);
+
+				// Clone the form element
+				//var clonedFormElement = formElement.cloneNode(true);
+
+				// Append the cloned form to the modal body
+				//modalBody.appendChild(clonedFormElement);
+
 				// Show the modal for updating leaves
-				$('#edit_leave_modal_' + leaveId).modal('show');
-				console.log("modal showed");
+				$('#edit_leave_modal').modal('show');
+				// Show the modal for updating leaves
+				// Check if the form is visible
+				//console.log("Is form visible?", formElement.offsetParent !== null);
+				//console.log("Is modal visible?", $('#edit_leave_modal').is(':visible'));ole.log("Modal body content after appending form:", modalBody.innerHTML);
+
+
+				console.log("Modal shown");
+				attachEventListeners();
 			})
 			.catch(error => {
 				console.error('Error:', error);
 			});
-	}	
-		
-	function loadCreateLeaveForm() {
-        console.log("leave form load called");
-		fetch("{% url 'employee:create_leave' %}")
-        .then(response => response.text())
-        .then(data => {            
-            // Create a temporary element to hold the form HTML
-            var tempElement = document.createElement('div');
-            tempElement.innerHTML = data;
-
-            // Find the form element in the temporary element
-            var formElement = tempElement.querySelector('#create_form');
-
-            // Append the form to the modal body
-            var modalBody = document.querySelector('#add_leave .modal-body');
-            modalBody.innerHTML = '';
-            modalBody.appendChild(formElement);
-
-            // Show the modal
-            $('#add_leave').modal('show');
-            console.log("modal showed");
-			 // Attach event listeners after the form is loaded
-			 attachEventListeners();
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    }
+	}
 	function attachEventListeners() {
 		// Event listener for #id_leavetype
 		// leave type based remaining_days load -Ajax
@@ -406,97 +413,7 @@
 		var leaveTypeDays = parseInt($('#id_leave_days').val()); // Assuming you have a hidden input field with leave type days
 		var leaveDays = calculateLeaveDays(startDate, endDate, leaveTypeDays);
 		$('#id_leave_days').val(leaveDays);
-	}
-	
-	function submitCreateForm(event) {
-	event.preventDefault();  // Prevent the default form submission behavior
-	var form = document.getElementById('create_form');
-	var formData = new FormData(form);
-
-	fetch(form.action, {
-		method: 'POST',
-		body: formData,
-	})
-	.then(response => response.json())
-	.then(data => {
-		console.log(data);
-		console.log("status", data.status);
-		console.log('data.redirect_url:', data.redirect_url);
-
-		// Corrected variable name here
-		if (data.status === 'true') {
-		console.log("status is true");
-		console.log("redirect url", data.redirect_url);
-		showSweetAlert(data.message, data.status, data.redirect_url);
-		} else if (data.status === 'form_error') {
-		console.log("status is form_error");
-		showSweetAlert(data.message, 'form_error');
-		} else if (data.status === 'false') {
-		console.log("status is false");
-		showSweetAlert(data.message, data.status);
-		} else {
-		console.log("status is neither true or false");
-		showSweetAlert(data.message, 'error');
-		}
-	})
-	.catch(error => {
-		console.error('Error:', error);
-	});
-	}
-
-	function showSweetAlert(message, status, redirectUrl) {
-	console.log('showSweetAlert called');
-	console.log('message:', message);
-	console.log('status:', status);
-	console.log('redirectUrl:', redirectUrl);
-
-	if (status === 'true') {
-		Swal.fire({
-		icon: 'success',
-		title: 'Success!',
-		text: message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-
-		didClose: () => {
-			console.log('Redirecting to:', redirectUrl);
-			if (redirectUrl) {
-			// Combine the redirect URL with the current protocol and host to get the full URL
-			var fullRedirectUrl = window.location.origin + redirectUrl;
-			console.log('Full Redirect URL:', fullRedirectUrl);
-			window.location.href = fullRedirectUrl;
-			}
-		}
-		});
-	} else if (status === 'form_error') {
-		console.log('Showing form error alert');
-		Swal.fire({
-		icon: 'error',
-		title: 'Form Validation Error!',
-		html: message,  // Display form errors as HTML
-		showConfirmButton: true,
-		allowOutsideClick: false,
-		});
-	} else if (status === 'false') {
-		console.log('Showing form error alert');
-		Swal.fire({
-		icon: 'error',
-		title: 'Form Error!',
-		text: 'Error: ' + message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-		});
-	} else {
-		console.log('Showing error alert');
-		Swal.fire({
-		icon: 'error',
-		title: 'Error!',
-		text: 'Error: ' + message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-		});
-	}
-	}
+	}	
 
 	function submitUpdateForm(event,leaveId) {
 	console.log("deapartment id",leaveId)
@@ -587,64 +504,11 @@
 		allowOutsideClick: false, // Prevent closing on outside click
 		});
 	}
-	}
+	}	
 
-	// Function to handle delete action
-	function handleDelete(pk) {
-		Swal.fire({
-			title: "Are you sure?",
-			text: "Once deleted, you will not be able to recover this HRMS Client!",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#3085d6",
-			cancelButtonColor: "#d33",
-			confirmButtonText: "Yes, delete it!"
-		})
-		.then((result) => {
-			if (result.isConfirmed) {
-				// If user confirms, send Fetch API request to delete
-				fetch('{% url "employee:delete_leave" pk=0 %}'.replace('0', pk), {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRFToken': '{{ csrf_token }}'
-					},
-				})
-				.then(response => response.json())
-				.then(data => {
-					// Handle success response
-					if (data.status === "true") {
-						Swal.fire({
-							title: data.title,
-							text: data.message,
-							icon: "success",
-						})
-						.then((value) => {
-							// Redirect to the specified URL after success
-							window.location.href = data.redirect_url;
-						});
-					} else {
-						Swal.fire("Error", "An error occurred while deleting.", "error");
-					}
-				})
-				.catch(() => {
-					// Handle error
-					Swal.fire("Error", "An error occurred while processing the request.", "error");
-				});
-			} else {
-				Swal.fire("leave is safe!");
-			}
-		});
-	}
+	// Function to handle approve action
+	
 
-	// Attach click event to delete button
-	document.querySelectorAll('.remove').forEach(function(el) {
-		el.addEventListener('click', function(e) {
-			e.preventDefault();
-			var pk = this.getAttribute('data-id');
-			handleDelete(pk);
-		});
-	});
 
 </script>
 
