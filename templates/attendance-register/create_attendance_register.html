@@ -1,0 +1,233 @@
+{% extends "base/base_hrms_admin.html" %}
+{% load i18n %}
+{% load static %}
+{% load main_template_tags %}
+{% block content %}
+	<section id="content">
+        <div class="container">
+			
+            <form id="create_form" method="POST" action="{% url 'employee:create_attendance_register' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div id="c-grid" class="clearfix  justify-content-center ">
+    				<div class="card card-box-shadow m-t-20"id="l-login">
+                        
+                        <div class="card-header">                            
+                            <h2 style="color: #046459;text-transform: uppercase;font-weight: bold;">{{title}}<small></small></h2>
+                        </div>
+                        <div class="card-body card-padding">
+
+                            <div class="form-group ">
+                                <label for="{{ date_form.date.id_for_label }}">
+                                    {{ date_form.date.label }}
+                                    {% if date_form.date.field.required %}
+                                        <small class="star">*</small>
+                                    {% endif %}
+                                    
+                                    {% if date_form.date.help_text %}
+                                        <span data-original-title="Field Info" title="" data-content="{{ date_form.date.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline"></span>
+                                    {% endif %}
+                                </label> <br>
+                                <div>{{ date_form.date }}</div>
+                                
+                                
+                                {% if date_form.date.errors %}
+                                    <label class="error">{{ date_form.date.errors.as_text }}</label>
+                                {% endif %}
+                                
+                            </div>
+                            <div class="form-group  an_fn">
+                                <label for="{{ date_form.an_fn.id_for_label }}">
+                                    {{ date_form.an_fn.label }}
+                                    {% if date_form.an_fn.field.required %}
+                                        <small class="star">*</small>
+                                    {% endif %}
+                                    
+                                    {% if date_form.an_fn.help_text %}
+                                        <span data-original-title="Field Info" title="" data-content="{{ date_form.an_fn.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline"></span>
+                                    {% endif %}
+                                </label> <br>
+                                <div>{{ date_form.an_fn }}</div>
+                                
+                                
+                                {% if date_form.an_fn.errors %}
+                                    <label class="error">{{ date_form.an_fn.errors.as_text }}</label>
+                                {% endif %}
+                            </div>
+                        </div>
+                    
+                        <div class="card card-box-shadow attendanceregister-card">
+                            <div class="table-responsive card-body add_item_container attendanceregister_formset">
+                                <table id="data-table-basic" class="table table-vmiddle">
+                                    <thead>
+                                        <tr>
+                                            <th class="card-theme color-w" width= "50%"data-column-id="name">Name</th>
+                                            <th class="card-theme color-w" width= "50%" data-column-id="dw" class="day-wise">Attendance</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for att in attendanceregister_formset.forms %}
+                                        <tr class="form_set_row card-box-shadow">
+                                            <td width= "50%" class="employee">
+                                                {{ att.id }}
+                                                <span class="employee" >
+                                                    {{ att.employee_name }}
+                                                </span>
+                                                   
+                                            </td>
+                                            <td hidden>
+                                                {{att.employee_pk}}
+                                            </td>
+                                            
+                                            <td class="day-wise" style="width:10%;">
+                                                <span class="day-wise  p-relative">
+                                                    {{att.is_attended}}
+                                                </span>
+                                            </td>
+                                            
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {{ attendanceregister_formset.management_form }}
+                                <div class="m-t-20 text-center">
+                                    <button type="submit" class="palette-theme  bg btn btn-info waves-effect" onclick="submitCreateForm(event)">Submit</button>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </form>     
+           
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function submitCreateForm(event) {
+            console.log("submit form get request")
+            event.preventDefault();  // Prevent the default form submission behavior
+            var form = document.getElementById('create_form');
+            var formData = new FormData(form);
+            console.log("form data", formData)
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                console.log("status", data.status);
+                console.log('data.redirect_url:', data.redirect_url);
+        
+                // Corrected variable name here
+                if (data.status === 'true') {
+                console.log("status is true");
+                console.log("redirect url", data.redirect_url);
+                showSweetAlert(data.message, data.status, data.redirect_url);
+                } else if (data.status === 'form_error') {
+                console.log("status is form_error");
+                showSweetAlert(data.message, 'form_error');
+                } else if (data.status === 'false') {
+                console.log("status is false");
+                showSweetAlert(data.message, data.status);
+                } else {
+                console.log("status is neither true or false");
+                showSweetAlert(data.message, 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+            }
+        
+            function showSweetAlert(message, status, redirectUrl) {
+            console.log('showSweetAlert called');
+            console.log('message:', message);
+            console.log('status:', status);
+            console.log('redirectUrl:', redirectUrl);
+        
+            if (status === 'true') {
+                Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: message,
+                showConfirmButton: true,
+                allowOutsideClick: false, // Prevent closing on outside click
+        
+                didClose: () => {
+                    console.log('Redirecting to:', redirectUrl);
+                    if (redirectUrl) {
+                    // Combine the redirect URL with the current protocol and host to get the full URL
+                    var fullRedirectUrl = window.location.origin + redirectUrl;
+                    console.log('Full Redirect URL:', fullRedirectUrl);
+                    window.location.href = fullRedirectUrl;
+                    }
+                }
+                });
+            } else if (status === 'form_error') {
+                console.log('Showing form error alert');
+                Swal.fire({
+                icon: 'error',
+                title: 'Form Validation Error!',
+                html: message,  // Display form errors as HTML
+                showConfirmButton: true,
+                allowOutsideClick: false,
+                });
+            } else if (status === 'false') {
+                console.log('Showing form error alert');
+                Swal.fire({
+                icon: 'error',
+                title: 'Form Error!',
+                text: 'Error: ' + message,
+                showConfirmButton: true,
+                allowOutsideClick: false, // Prevent closing on outside click
+                });
+            } else {
+                console.log('Showing error alert');
+                Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'Error: ' + message,
+                showConfirmButton: true,
+                allowOutsideClick: false, // Prevent closing on outside click
+                });
+            }
+            }
+    </script>
+    
+    <style>
+    @media screen and (max-width: 700px) {
+        .action-header {
+            display: none;
+        }
+    }
+    @media screen and (min-width: 700px) {
+        #c-grid {
+            padding : 0px 250px;
+        }
+    }
+    select,input {
+		font-size: 15px;
+		padding: 10px 10px 10px 5px;
+		display: block;
+		width: 100%;
+		background:#dde1e7;
+		border: 1px solid #686868;
+		border-radius: 4px;
+		
+		box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+		}
+    input[type="hidden" ] {
+        appearance: none;
+        background-color: initial;
+        cursor: default;
+        display: none !important;
+        padding: initial;
+        border: initial;
+    }
+    .card-body.card-padding {
+        padding: 10px 33px !important;
+    }
+    </style>
+    {{attendanceregister_formset.media}}
+{% endblock %}

@@ -1,3 +1,4 @@
+import calendar
 import datetime
 import json
 from django.forms import formset_factory
@@ -9,8 +10,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from employee import models
-from employee.forms import DepartmentForm, DesignationForm, EmployeeForm, LeaveForm, LeaveTypeForm
-from employee.models import Department, Designation, Employee, Leave, LeaveType
+from employee.forms import AttendanceDateForm, AttendanceRegisterForm, DepartmentForm, DesignationForm, EmployeeForm, LeaveForm, LeaveTypeForm
+from employee.models import AttendanceRegister, Department, Designation, Employee, Leave, LeaveType
 from main.decorators import company_required
 from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company
 from django.urls import reverse
@@ -249,7 +250,7 @@ def delete_department(request,pk):
 @login_required
 @company_required
 def create_designation(request):
-    current_company = get_current_company(request)    
+    current_company = get_current_company(request)
     if request.method == 'POST':
         form = DesignationForm(request.POST)
         if form.is_valid():
@@ -1201,4 +1202,238 @@ def unreject_leave(request,id):
 
 	return redirect('dashboard:leavesrejected')
 
+
+@login_required
+@company_required
+def create_attendance_register(request):     
+    company=get_current_company(request)   
+    AttendanceRegisterFormSet = formset_factory(AttendanceRegisterForm, extra=0)  
+    if request.method == 'POST':     
+        date_form = AttendanceDateForm(request.POST)               
+        attendanceregister_formset = AttendanceRegisterFormSet(request.POST,prefix='attendanceregister_formset')   
+
+        if attendanceregister_formset.is_valid() and date_form.is_valid(): 
+
+            date = date_form.cleaned_data['date']
+            an_fn = date_form.cleaned_data['an_fn']
+            for f in attendanceregister_formset:
+                is_attended = f.cleaned_data['is_attended'] 
+                employee_pk = f.cleaned_data['employee_pk'] 
+                employee = Employee.objects.get(pk=employee_pk) 
+                is_fn = False 
+                is_an = False
+                if not AttendanceRegister.objects.filter(employee = employee,date = date,company=company).exists():
+                    AttendanceRegister(  
+                        employee = employee,
+                        date = date,
+                        company=company,
+                        auto_id = get_auto_id(AttendanceRegister),
+                        a_id = get_a_id(AttendanceRegister, request),
+                        creator = request.user,
+                        updator = request.user,  
+                    ).save() 
+                att = AttendanceRegister.objects.filter(employee = employee,date = date,company=company)[0]  
+                
+                if an_fn == "FN" :
+                    att.is_fn = is_attended
+                if an_fn == "AN" :
+                    att.is_an = is_attended
+                att.save()
+            response_data = {
+                "status": "true",
+                "redirect": "true",
+                "title": "Successfully Created",
+                "message": "Attendance Registered Successfully.",
+                "redirect_url" : reverse('employee:attendance_register')
+            }
+        else:
+            message = generate_form_errors(date_form,formset=False)
+      
+            response_data = {
+                "status": "false",
+                "stable": "true",
+                "title": "Form Validation error",
+                "message": str(message)
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/javascript')
+
+    else:
+        att = AttendanceRegister.objects.filter(company=company,is_deleted=False).values('is_attended','is_fn','is_an')
+        initial_data={
+            'date': datetime.datetime.today().date()
+        }
+        date_form = AttendanceDateForm(initial= initial_data)               
+        employees = Employee.objects.filter(is_deleted=False).order_by('id')
+        initial_dict = []
+        for s in employees:
+            init_dict={
+                'employee_name':s.get_full_name,           
+                'employee_pk' : s.pk, 
+            }
+            initial_dict.append(init_dict) 
+        attendanceregister_formset = AttendanceRegisterFormSet(prefix='attendanceregister_formset',initial=initial_dict)
+        
+        context = {
+            "title": "Take Attendance",
+            "attendanceregister_formset": attendanceregister_formset,
+            'date_form' : date_form
+        }
+        return render(request, 'attendance-register/create_attendance_register.html', context=context)
+
+
+
+@login_required
+@company_required
+def attendance_register(request):
+    company = get_current_company(request)
+    employees = Employee.objects.filter(company=company,is_deleted=False).order_by('id')
+
+    y = datetime.date.today().year   
+    month = datetime.date.today().month
+    
+    leap = 0
+    if y% 400 == 0:
+        leap = 1
+    elif y % 100 == 0:
+        leap = 0
+    elif y% 4 == 0:
+        leap = 1
+    ar = [1,3,5,7,8,10,12]
+    n = 30  
+    if month in ar:
+        n = 31
+    elif month == 2:
+        if leap ==1:
+            n = 29
+        else:
+            n = 28
+
+    att_list =[]
+    nn = n + 1 
+    for employee in employees:
+        for i in range(1,nn):
+            att = employee.get_attendance(month,i)
+            
+            result = {
+                'employee' : employee,
+                'date' : i,
+                'month' : month,
+                'attendance' : att
+            }
+            att_list.append(result)
+    context={        
+        "title" : "Attendance Register" ,
+        'month' : calendar.month_name[month],     
+        'att_list' :att_list,
+        'n' : range(n),
+        'nn' : range(nn),
+        "employees" : employees
+    }
+    return render(request, 'attendance/attendance.html', context=context)
+    # return render(request, 'attendance-register/attendance_register.html', context=context)
+
+
+@login_required
+@company_required
+def edit_attendance_register(request, pk):
+    company=get_current_company(request)   
+    # instance = get_object_or_404(AttendanceRegister.objects.filter(pk=pk, is_deleted=False,company=company))
+    AttendanceRegisterFormSet = formset_factory(AttendanceRegisterForm, extra=0)       
+    is_class = request.GET.get('is_class')
+    if is_class:
+        is_class = True
+    else:
+        is_class = False
+    if request.method == 'POST':     
+        date_form = AttendanceDateForm(request.POST)               
+        attendanceregister_formset = AttendanceRegisterFormSet(request.POST,prefix='attendanceregister_formset')   
+
+        if attendanceregister_formset.is_valid() and date_form.is_valid(): 
+
+            date = date_form.cleaned_data['date']
+            an_fn = date_form.cleaned_data['an_fn']
+            for f in attendanceregister_formset:
+                is_attended = f.cleaned_data['is_attended'] 
+                employee_pk = f.cleaned_data['employee_pk'] 
+                employee = Employee.objects.get(pk=employee_pk) 
+                is_fn = False 
+                is_an = False
+                if not AttendanceRegister.objects.filter(employee = employee,date = date,company=company).exists():
+                    AttendanceRegister(  
+                        employee = employee,
+                        date = date,
+                        company=company,
+                        auto_id = get_auto_id(AttendanceRegister),
+                        a_id = get_a_id(AttendanceRegister, request),
+                        creator = request.user,
+                        updator = request.user,  
+                    ).save() 
+                att = AttendanceRegister.objects.filter(employee = employee,date = date,company=company)[0]  
+                
+                if an_fn == "FN" :
+                    att.is_fn = is_attended
+                if an_fn == "AN" :
+                    att.is_an = is_attended    
+
+                att.save()
+
+                response_data = {
+                    "status": "true",
+                    "title": "Successfully Updated",
+                    "message": "Attendance Register Updated successfully.",
+                    "redirect": "true",
+                    "redirect_url" : reverse('employee:attendance_register', kwargs={'pk': pk})
+                }
+        else:
+            message = generate_form_errors(date_form,formset=False)
+      
+            response_data = {
+                "status": "false",
+                "stable": "true",
+                "title": "Form Validation error",
+                "message": str(message)
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/javascript')
+
+    else:
+        initial_data={
+            'date': datetime.datetime.today().date()
+        }
+        date_form = AttendanceDateForm(initial= initial_data)               
+        employees = Employee.objects.filter(is_deleted=False,company=company).order_by('id')
+        initial_dict = []
+        for s in employees:
+            init_dict={
+                'employee_name':s.f_name,           
+                'employee_pk' : s.pk, 
+            }
+            initial_dict.append(init_dict) 
+        attendanceregister_formset = AttendanceRegisterFormSet(prefix='attendanceregister_formset',initial=initial_dict)
+        
+        context = {
+            "title": "Edit Attendance Register",
+            "attendanceregister_formset": attendanceregister_formset,
+            'date_form' : date_form,
+            'pk' : pk,
+        }
+        return render(request, 'attendance-register/create_attendance_register.html', context=context)
+
+
+@login_required
+@company_required
+def delete_attendance_register(request,pk):
+    current_company = get_current_company(request)
+    instance = get_object_or_404(AttendanceRegister.objects.filter(pk=pk,is_deleted=False,company=current_company))
+    
+    AttendanceRegister.objects.filter(pk=pk,company=current_company).update(is_deleted=True,date=instance.date + "_deleted_" + str(instance.auto_id))
+
+    response_data = {
+        "status" : "true",        
+        "title" : "Successfully Deleted",
+        "message" : "Attendance Register Successfully Deleted.", 
+
+        "redirect" : "true",       
+        "redirect_url" : reverse('employee:attendance_register')
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/javascript')
 

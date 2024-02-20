@@ -3,7 +3,8 @@ import datetime
 from django import forms
 from django.forms.widgets import TextInput, Select,URLInput, ClearableFileInput
 from django.utils.translation import gettext_lazy as _
-from employee.models import Department, Designation, Employee, Leave, LeaveType
+from employee.models import AttendanceRegister, Department, Designation, Employee, Leave, LeaveType
+
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -16,8 +17,7 @@ class DepartmentForm(forms.ModelForm):
         model = Department
         exclude = ['creator','updator','auto_id','a_id','company','is_deleted']
         widgets = {            
-            'name': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter Designation name'}),
-            
+            'name': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter Designation name'})            
         }
         error_messages = {
             'name' : {
@@ -61,17 +61,17 @@ class DesignationForm(forms.ModelForm):
 #         }
 
 # class DesignationForm(forms.ModelForm):    
-#     class Meta:
-#         model = Designation
-#         exclude = ['creator', 'updator', 'auto_id', 'is_deleted']
-#         widgets = {
-#             'section':Select(attrs={'class':'required form-control'}),
-#         }
-#         error_messages = {
-#             'section': {
-#                 'required': _("section field is required."),
-#             }            
-#         }
+    # class Meta:
+    #     model = Designation
+    #     exclude = ['creator', 'updator', 'auto_id', 'is_deleted']
+    #     widgets = {
+    #         'section':Select(attrs={'class':'required form-control'}),
+    #     }
+    #     error_messages = {
+    #         'section': {
+    #             'required': _("section field is required."),
+    #         }            
+    #     }
 
 # class DesignationEditForm(forms.ModelForm):    
 #     class Meta:
@@ -197,3 +197,61 @@ class LeaveForm(forms.ModelForm):
 
 # 		return enddate
 
+
+
+class AttendanceRegisterForm(forms.ModelForm):
+
+    ATTENDANCE_CHOICES = (                
+        ('True', 'Present'), 
+        ('False', 'Absent'),                
+        )
+    
+    employee_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'required  form-control'}))
+    employee_pk = forms.CharField(widget=forms.TextInput(attrs={'class': 'required  form-control'}))
+    is_attended = forms.CharField(
+        max_length=20,
+        widget=forms.Select(choices = ATTENDANCE_CHOICES,attrs={'class' : 'form-control '}),
+        required=False
+    )
+    is_fn = forms.CharField(
+        max_length=20,
+        widget=forms.Select(choices = ATTENDANCE_CHOICES,attrs={'class' : ' '}),
+        required=False
+    )
+    is_an = forms.CharField(
+        max_length=20,
+        widget=forms.Select(choices = ATTENDANCE_CHOICES,attrs={'class' : ' '}),
+        required=False
+    )
+    class Meta:
+        model = AttendanceRegister
+        fields = []        
+        widgets = {   
+                   
+        }, 
+        error_messages = {
+            
+        }
+       
+class AttendanceDateForm(forms.ModelForm): 
+    an_fn_CHOICES = (                
+        ('FN', 'Forenoon'), 
+        ('AN', 'Afternoon'),
+        )
+    
+    an_fn = forms.CharField(
+        max_length=20,
+        widget=forms.Select(choices = an_fn_CHOICES,attrs={'class' : ' form-control', 'placeholder': 'Select FN/AN'}),
+        required=False
+    )   
+    class Meta:
+        model = AttendanceRegister       
+        fields = ['date']
+        widgets = {       
+            'date': DateInput(format = '%Y-%m-%d',attrs={'type': 'date','class' : ' form-control'}),
+        }
+        error_messages = {
+            'date' : {
+                'required' : ("date field is required."),
+            }
+        }

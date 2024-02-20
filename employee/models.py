@@ -12,6 +12,12 @@ LEAVE_STATUS = (
     ('Rejected',"Rejected")    
 )
 
+ATTENDANCE_CHOICES = {
+    ('present', 'Present' ),
+    ('absent', 'Absent'),
+    ('half-day','Half')
+}
+
 class Department(BaseModel):
     company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})
     name = models.CharField(_("Department Name"),max_length=125)
@@ -76,6 +82,33 @@ class Employee(BaseModel):
         else:
             full_name = self.firstname
         return full_name
+    
+    def get_attendance(self,month,date):
+        if AttendanceRegister.objects.filter(employee=self,date__month=month,date__day=date,is_deleted=False).exists():
+            att = AttendanceRegister.objects.filter(employee=self,date__month=month,date__day=date,is_deleted=False)
+            if att.filter(is_fn=True,is_an=True).exists():
+                att.update(status = 'present')
+                return True
+            elif att.filter(is_fn=False,is_an=True).exists():
+                att.update(status = 'half-day')
+                return "AnHalf"
+            elif att.filter(is_fn=True,is_an=False).exists():
+                att.update(status = 'half-day')
+                return "FnHalf"
+            elif att.filter(is_fn=False,is_an=False).exists():
+                att.update(status = 'absent')
+                return False
+            elif att.filter(is_attended=False).exists():
+                att.update(status = 'absent')
+                return False
+            elif att.filter(is_attended=True).exists():
+                att.update(status = 'present')
+                return True            
+            else:
+                att.update(status = 'absent')
+                return False
+        else:
+            return 'blank'
     
 
 class LeaveType(BaseModel):
@@ -203,3 +236,21 @@ class Leave(BaseModel):
 # 	def is_rejected(self):
 # 		return self.status == 'rejected'
 
+class AttendanceRegister(BaseModel):  
+    company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})  
+    employee = models.ForeignKey("employee.Employee", on_delete=models.CASCADE, limit_choices_to={'is_deleted': False})
+    status = models.CharField (max_length=15,choices=ATTENDANCE_CHOICES,default='absent')
+    date = models.DateField()    
+
+    is_attended = models.BooleanField(default=True)
+    is_fn = models.BooleanField(default=True)
+    is_an = models.BooleanField(default=True)
+    is_deleted = models.BooleanField(default=False)  
+
+    class Meta:
+        db_table = 'attendence_register'
+        verbose_name = _('attendence register')
+        verbose_name_plural = _('attendence registers')
+
+    def __str__(self):
+        return str(self.employee)
