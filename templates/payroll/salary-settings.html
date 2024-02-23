@@ -1,192 +1,315 @@
-{%load static%}     
+{% extends "base/base_settings.html" %}
+{%load static%}
 
-			
-<!-- Page Content -->
-<div class="content container-fluid">
-<div class="row">
-	<div class="col-md-8 offset-md-2">
+{% block content %}
+<div class="col-md-8 offset-md-2">
+
+	<!-- Page Header -->
+	<div class="page-header">
+		<div class="row">
+			<div class="col-sm-12">
+				<h3 class="page-title">Salary Settings</h3>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Header -->
 	
-		<!-- Page Header -->
-		<div class="page-header">
+	<form id="create_update_form" method="POST" action="{% url 'payroll:create_salary_setting' %}" enctype="multipart/form-data">
+		{% csrf_token %}
+		<!-- DA and HRA Settings -->
+		<div class="settings-widget">
+			<div class="h3 card-title with-switch">
+				DA and HRA 											
+				{% comment %} <div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_hra" checked>
+					<label class="onoffswitch-label" for="switch_hra">
+						<span class="onoffswitch-inner"></span>
+						<span class="onoffswitch-switch"></span>
+					</label>
+				</div> {% endcomment %}
+			</div>
 			<div class="row">
-				<div class="col-sm-12">
-					<h3 class="page-title">Salary Settings</h3>
+				<div class="col-sm-6">
+					<div class="input-block mb-3">
+						<label class="col-form-label">DA (%)</label>
+						{{ form.da }}
+						{% if form.da.errors %}
+						<span class="error">{{ form.da.errors.0 }}</span>
+						{% endif %}
+						<!-- <input type="text" class="form-control"> -->
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="input-block mb-3">
+						<label class="col-form-label">HRA (%)</label>
+						{{ form.hra }}
+						{% if form.hra.errors %}
+						<span class="error">{{ form.hra.errors.0 }}</span>
+						{% endif %}
+						<!-- <input class="form-control" type="text"> -->
+					</div>
 				</div>
 			</div>
 		</div>
-		<!-- /Page Header -->
+		<!-- /DA and HRA Settings -->
 		
-		<form>
-			
-			<!-- DA and HRA Settings -->
-			<div class="settings-widget">
-				<div class="h3 card-title with-switch">
-					DA and HRA 											
-					<div class="onoffswitch">
-						<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_hra" checked>
-						<label class="onoffswitch-label" for="switch_hra">
-							<span class="onoffswitch-inner"></span>
-							<span class="onoffswitch-switch"></span>
-						</label>
+		<!-- Provident Fund Settings -->
+		<div class="settings-widget">
+			<div class="h3 card-title with-switch">
+				Provident Fund Settings 											
+				{% comment %} <div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_pf" checked>
+					<label class="onoffswitch-label" for="switch_pf">
+						<span class="onoffswitch-inner"></span>
+						<span class="onoffswitch-switch"></span>
+					</label>
+				</div> {% endcomment %}
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="input-block mb-3">
+						<label class="col-form-label">Employee Share (%)</label>
+						{{ form.pf_emp }}
+						{% if form.pf_emp.errors %}
+						<span class="error">{{ form.pf_emp.errors.0 }}</span>
+						{% endif %}
+						<!-- <input class="form-control" type="text"> -->
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="input-block mb-3">
-							<label class="col-form-label">DA (%)</label>
-							<input type="text" class="form-control">
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="input-block mb-3">
-							<label class="col-form-label">HRA (%)</label>
-							<input class="form-control" type="text">
-						</div>
+				<div class="col-sm-6">
+					<div class="input-block mb-3">
+						<label class="col-form-label">Organization Share (%)</label>
+						{{ form.pf_org }}
+						{% if form.pf_org.errors %}
+						<span class="error">{{ form.pf_org.errors.0 }}</span>
+						{% endif %}
+						<!-- <input class="form-control" type="text"> -->
 					</div>
 				</div>
 			</div>
-			<!-- /DA and HRA Settings -->
-			
-			<!-- Provident Fund Settings -->
-			<div class="settings-widget">
-				<div class="h3 card-title with-switch">
-					Provident Fund Settings 											
-					<div class="onoffswitch">
-						<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_pf" checked>
-						<label class="onoffswitch-label" for="switch_pf">
-							<span class="onoffswitch-inner"></span>
-							<span class="onoffswitch-switch"></span>
-						</label>
+		</div>
+		<!-- /Provident Fund Settings -->
+		
+		<!-- ESI Settings -->
+		<div class="settings-widget">
+			<div class="h3 card-title with-switch">
+				ESI Settings 											
+				{% comment %} <div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_esi">
+					<label class="onoffswitch-label" for="switch_esi">
+						<span class="onoffswitch-inner"></span>
+						<span class="onoffswitch-switch"></span>
+					</label>
+				</div> {% endcomment %}
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="input-block mb-3">
+						<label class="col-form-label">Employee Share (%)</label>
+						{{ form.esi_emp }}
+						{% if form.esi_emp.errors %}
+						<span class="error">{{ form.esi_emp.errors.0 }}</span>
+						{% endif %}
+						<!-- <input class="form-control" type="text"> -->
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="input-block mb-3">
-							<label class="col-form-label">Employee Share (%)</label>
-							<input class="form-control" type="text">
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="input-block mb-3">
-							<label class="col-form-label">Organization Share (%)</label>
-							<input class="form-control" type="text">
-						</div>
+				<div class="col-sm-6">
+					<div class="input-block mb-3">
+						<label class="col-form-label">Organization Share (%)</label>
+						{{ form.esi_org }}
+						{% if form.esi_org.errors %}
+						<span class="error">{{ form.esi_org.errors.0 }}</span>
+						{% endif %}
+						<!-- <input class="form-control" type="text"> -->
 					</div>
 				</div>
 			</div>
-			<!-- /Provident Fund Settings -->
+		</div>
+		<!-- /ESI Settings -->
+		
+		<!-- TDS Settings -->
+		<div class="settings-widget">
+			<div class="h3 card-title with-switch">
+				TDS&nbsp; <small class="form-text text-muted"></small>
+				{{ form.tds }}
+				{% if form.tds.errors %}
+				<span class="error">{{ form.tds.errors.0 }}</span>
+				{% endif %}
+				{% comment %} <div class="onoffswitch">
+					<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_tds">
+					<label class="onoffswitch-label" for="switch_tds">
+						<span class="onoffswitch-inner"></span>
+						<span class="onoffswitch-switch"></span>
+					</label>
+				</div> {% endcomment %}
+			</div>
 			
-			<!-- ESI Settings -->
-			<div class="settings-widget">
-				<div class="h3 card-title with-switch">
-					ESI Settings 											
-					<div class="onoffswitch">
-						<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_esi">
-						<label class="onoffswitch-label" for="switch_esi">
-							<span class="onoffswitch-inner"></span>
-							<span class="onoffswitch-switch"></span>
-						</label>
+			{% comment %} <div class="row row-sm">
+				<div class="col-sm-4">
+					<div class="input-block mb-3">
+						<label class="col-form-label">Salary From</label>
+						<input class="form-control" type="text">
 					</div>
 				</div>
-				<div class="row">
-					<div class="col-sm-6">
-						<div class="input-block mb-3">
-							<label class="col-form-label">Employee Share (%)</label>
-							<input class="form-control" type="text">
-						</div>
+				<div class="col-sm-4">
+					<div class="input-block mb-3">
+						<label class="col-form-label">Salary To</label>
+						<input class="form-control" type="text">
 					</div>
-					<div class="col-sm-6">
-						<div class="input-block mb-3">
-							<label class="col-form-label">Organization Share (%)</label>
-							<input class="form-control" type="text">
-						</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="input-block mb-3">
+						<label class="col-form-label">%</label>
+						<input class="form-control" type="text">
+					</div>
+				</div>
+				<div class="col-sm-2">
+					<div class="input-block mb-3">
+						<label class="d-none d-sm-block">&nbsp;</label>
+						<button class="btn btn-danger w-100 set-btn" type="button"><i class="fa-regular fa-trash-can"></i></button>
 					</div>
 				</div>
 			</div>
-			<!-- /ESI Settings -->
-			
-			<!-- TDS Settings -->
-			<div class="settings-widget">
-				<div class="h3 card-title with-switch">
-					TDS&nbsp; <small class="form-text text-muted">Annual Salary</small>
-					<div class="onoffswitch">
-						<input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="switch_tds">
-						<label class="onoffswitch-label" for="switch_tds">
-							<span class="onoffswitch-inner"></span>
-							<span class="onoffswitch-switch"></span>
-						</label>
+			<div class="row row-sm">
+				<div class="col-sm-4">
+					<div class="input-block mb-3">
+						<label class="col-form-label">Salary From</label>
+						<input class="form-control" type="text">
 					</div>
 				</div>
-				<div class="row row-sm">
-					<div class="col-sm-4">
-						<div class="input-block mb-3">
-							<label class="col-form-label">Salary From</label>
-							<input class="form-control" type="text">
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="input-block mb-3">
-							<label class="col-form-label">Salary To</label>
-							<input class="form-control" type="text">
-						</div>
-					</div>
-					<div class="col-sm-2">
-						<div class="input-block mb-3">
-							<label class="col-form-label">%</label>
-							<input class="form-control" type="text">
-						</div>
-					</div>
-					<div class="col-sm-2">
-						<div class="input-block mb-3">
-							<label class="d-none d-sm-block">&nbsp;</label>
-							<button class="btn btn-danger w-100 set-btn" type="button"><i class="fa-regular fa-trash-can"></i></button>
-						</div>
+				<div class="col-sm-4">
+					<div class="input-block mb-3">
+						<label class="col-form-label">Salary To</label>
+						<input class="form-control" type="text">
 					</div>
 				</div>
-				<div class="row row-sm">
-					<div class="col-sm-4">
-						<div class="input-block mb-3">
-							<label class="col-form-label">Salary From</label>
-							<input class="form-control" type="text">
-						</div>
-					</div>
-					<div class="col-sm-4">
-						<div class="input-block mb-3">
-							<label class="col-form-label">Salary To</label>
-							<input class="form-control" type="text">
-						</div>
-					</div>
-					<div class="col-sm-2">
-						<div class="input-block mb-3">
-							<label class="col-form-label">%</label>
-							<input class="form-control" type="text">
-						</div>
-					</div>
-					<div class="col-sm-2">
-						<div class="input-block mb-3">
-							<label class="d-none d-sm-block">&nbsp;</label>
-							<button class="btn btn-danger w-100 set-btn" type="button"><i class="fa-regular fa-trash-can"></i></button>
-						</div>
+				<div class="col-sm-2">
+					<div class="input-block mb-3">
+						<label class="col-form-label">%</label>
+						<input class="form-control" type="text">
 					</div>
 				</div>
-				<div class="row row-sm">
-					<div class="col-sm-2 ms-auto">
-						<div class="input-block mb-3">
-							<button class="btn btn-primary w-100" type="button"><i class="fa-solid fa-plus"></i></button>
-						</div>
+				<div class="col-sm-2">
+					<div class="input-block mb-3">
+						<label class="d-none d-sm-block">&nbsp;</label>
+						<button class="btn btn-danger w-100 set-btn" type="button"><i class="fa-regular fa-trash-can"></i></button>
 					</div>
 				</div>
-			</div>
-			<!-- /TDS Settings -->
-			
-			<!-- Submit Button -->
-			<div class="submit-section">
-				<button class="btn btn-primary submit-btn" type="submit">Save</button>
-			</div>
-			<!-- /Submit Button -->
-			
-		</form>
-	</div>
-</div>
+			</div> {% endcomment %}
+			{% comment %} <div class="row row-sm">
+				<div class="col-sm-2 ms-auto">
+					<div class="input-block mb-3">
+						<button class="btn btn-primary w-100" type="button"><i class="fa-solid fa-plus"></i></button>
+					</div>
+				</div>
+			</div> {% endcomment %}
+		</div>
+		<!-- /TDS Settings -->
+		
+		<!-- Submit Button -->
+		<div class="submit-section">
+			<button class="btn btn-primary submit-btn" onclick="submitForm(event)" type="submit">Save</button>
+		</div>
+		<!-- /Submit Button -->
+		
+	</form>
 </div>
 <!-- /Page Content -->
+<!-- Include SweetAlert JS from CDN -->
+  
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+<script>
+	function submitForm(event) {
+	event.preventDefault();  // Prevent the default form submission behavior
+	var form = document.getElementById('create_update_form');
+	var formData = new FormData(form);
+	
+	fetch(form.action, {
+		method: 'POST',
+		body: formData,
+	})
+	.then(response => response.json())
+	.then(data => {
+		console.log(data);
+		console.log("status", data.status);
+		console.log('data.redirect_url:', data.redirect_url);
+	
+		// Corrected variable name here
+		if (data.status === 'true') {
+		console.log("status is true");
+		console.log("redirect url", data.redirect_url);
+		showSweetAlert(data.message, data.status, data.redirect_url);
+		} else if (data.status === 'form_error') {
+		console.log("status is form_error");
+		showSweetAlert(data.message, 'form_error');
+		} else if (data.status === 'false') {
+		console.log("status is false");
+		showSweetAlert(data.message, data.status);
+		} else {
+		console.log("status is neither true or false");
+		showSweetAlert(data.message, 'error');
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+	});
+	}
+	
+	function showSweetAlert(message, status, redirectUrl) {
+	console.log('showSweetAlert called');
+	console.log('message:', message);
+	console.log('status:', status);
+	console.log('redirectUrl:', redirectUrl);
+	
+	if (status === 'true') {
+		Swal.fire({
+		icon: 'success',
+		title: 'Success!',
+		text: message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+	
+		didClose: () => {
+			console.log('Redirecting to:', redirectUrl);
+			if (redirectUrl) {
+			// Combine the redirect URL with the current protocol and host to get the full URL
+			var fullRedirectUrl = window.location.origin + redirectUrl;
+			console.log('Full Redirect URL:', fullRedirectUrl);
+			window.location.href = fullRedirectUrl;
+			}
+		}
+		});
+	} else if (status === 'form_error') {
+		console.log('Showing form error alert');
+		Swal.fire({
+		icon: 'error',
+		title: 'Form Validation Error!',
+		html: message,  // Display form errors as HTML
+		showConfirmButton: true,
+		allowOutsideClick: false,
+		});
+	} else if (status === 'false') {
+		console.log('Showing form error alert');
+		Swal.fire({
+		icon: 'error',
+		title: 'Form Error!',
+		text: 'Error: ' + message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+		});
+	} else {
+		console.log('Showing error alert');
+		Swal.fire({
+		icon: 'error',
+		title: 'Error!',
+		text: 'Error: ' + message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+		});
+	}
+	}
+	
+</script>
+
+{% endblock %}

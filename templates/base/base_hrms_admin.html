@@ -49,12 +49,12 @@
 			<!-- /Loader -->
 		
 			<!-- Header -->
-			<div class="header" style="background: linear-gradient(275.55deg, #fffffff 0%, #ffffff 100%) !important">
+			<div class="header" style="">
 				
 				<!-- Logo -->
 				<div class="header-left">
 					<a href="admin-dashboard.html" class="logo">
-						<img src="{%static 'assets/img/logo.png'%}" width="40" height="40" alt="Logo">
+						<img src="{%static 'assets/img/logo_svd.png'%}" width="60" height="60" alt="Logo">
 					</a>
 					<a href="admin-dashboard.html" class="logo2">
 						<img src="{%static 'assets/img/logo_svd.png'%}" width="60" height="60" alt="Logo">
@@ -71,8 +71,8 @@
 				</a>
 				
 				<!-- Header Title -->
-				<div class="page-title-box">
-					<h3>Sevendyne HRMS</h3>
+				<div class="page-title-box"> 
+					<h3 >Sevendyne HRMS</h3>
 				</div>
 				<!-- /Header Title -->
 				
@@ -82,7 +82,7 @@
 				<ul class="nav user-menu">
 				
 					<!-- Search -->
-					<li class="nav-item">
+					{% comment %} <li class="nav-item">
 						<div class="top-nav-search">
 							<a href="javascript:void(0);" class="responsive-search">
 								<i class="fa-solid fa-magnifying-glass"></i>
@@ -92,11 +92,11 @@
 								<button class="btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
 							</form>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Search -->
 				
 					<!-- Flag -->
-					<li class="nav-item dropdown has-arrow flag-nav">
+					{% comment %} <li class="nav-item dropdown has-arrow flag-nav">
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
 							<img src="{%static 'assets/img/flags/us.png'%}" alt="Flag" height="20"> <span>English</span>
 						</a>
@@ -114,11 +114,11 @@
 								<img src="{%static 'assets/img/flags/de.png'%}" alt="Flag" height="16"> German
 							</a>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Flag -->
 				
 					<!-- Notifications -->
-					<li class="nav-item dropdown">
+					{% comment %} <li class="nav-item dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<i class="fa-regular fa-bell"></i> <span class="badge rounded-pill">3</span>
 						</a>
@@ -200,11 +200,11 @@
 								<a href="activities.html">View all Notifications</a>
 							</div>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Notifications -->
 					
 					<!-- Message Notifications -->
-					<li class="nav-item dropdown">
+					{% comment %} <li class="nav-item dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<i class="fa-regular fa-comment"></i> <span class="badge rounded-pill">8</span>
 						</a>
@@ -306,7 +306,7 @@
 								<a href="chat.html">View all Messages</a>
 							</div>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Message Notifications -->
 
 					<li class="nav-item dropdown has-arrow main-drop">
@@ -316,7 +316,7 @@
 							<span>Admin</span>
 						</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="profile.html">My Profile</a>
+							{% comment %} <a class="dropdown-item" href="profile.html">My Profile</a> {% endcomment %}
 							<a class="dropdown-item" href="{% url 'employee:leave_types' %}">Settings</a>
 							<a class="dropdown-item" href="{% url 'user:user_logout' %}">Logout</a>
 						</div>
@@ -411,11 +411,11 @@
 									</li>
 									<li> 
 										<a href="tickets.html"><i class="la la-ticket"></i> <span>Tickets</span></a>
-									</li>
+									</li>{% endcomment %}
 									<li class="menu-title"> 
 										<span>HR</span>
 									</li>
-									<li class="submenu">
+									{% comment %}<li class="submenu">
 										<a href="#"><i class="la la-files-o"></i> <span> Sales </span> <span class="menu-arrow"></span></a>
 										<ul>
 											<li><a href="estimates.html">Estimates</a></li>
@@ -436,7 +436,7 @@
 										</ul>
 									</li>
 								</ul>
-								<button class="viewmoremenu">More Menu</button>
+								<button class="viewmoremenu">More Menu</button>{% endcomment %}
 								<ul class="hidden-links hidden">
 									
 									<li class="submenu">
@@ -447,7 +447,7 @@
 											<li><a href="payroll-items.html"> Payroll Items </a></li>
 										</ul>
 									</li>
-									<li> 
+									{% comment %}<li> 
 										<a href="policies.html"><i class="la la-file-pdf-o"></i> <span>Policies</span></a>
 									</li>
 									<li class="submenu">
@@ -781,11 +781,11 @@
 							</li>
 							<li> 
 								<a href="tickets.html"><i class="la la-ticket"></i> <span>Tickets</span></a>
-							</li>
+							</li>{% endcomment %}
 							<li class="menu-title"> 
 								<span>HR</span>
 							</li>
-							<li class="submenu">
+							{% comment %}<li class="submenu">
 								<a href="#"><i class="la la-files-o"></i> <span> Sales </span> <span class="menu-arrow"></span></a>
 								<ul>
 									<li><a href="estimates.html">Estimates</a></li>
@@ -804,16 +804,16 @@
 									<li><a href="budget-expenses.html">Budget Expenses</a></li>
 									<li><a href="budget-revenues.html">Budget Revenues</a></li>
 								</ul>
-							</li>
+							</li>{% endcomment %}
 							<li class="submenu">
 								<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 								<ul>
-									<li><a href="salary.html"> Employee Salary </a></li>
+									<li><a href="{% url 'payroll:salaries' %}"> Employee Salary </a></li>
 									<li><a href="salary-view.html"> Payslip </a></li>
-									<li><a href="payroll-items.html"> Payroll Items </a></li>
+									{% comment %} <li><a href="{% url 'payroll:payroll_items' %}"> Payroll Items </a></li> {% endcomment %}
 								</ul>
 							</li>
-							<li> 
+							{% comment %}<li> 
 								<a href="policies.html"><i class="la la-file-pdf-o"></i> <span>Policies</span></a>
 							</li>
 							<li class="submenu">

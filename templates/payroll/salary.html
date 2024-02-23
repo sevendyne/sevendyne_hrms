@@ -12,12 +12,12 @@
 			<div class="col">
 				<h3 class="page-title">Employee Salary</h3>
 				<ul class="breadcrumb">
-					<li class="breadcrumb-item"><a href="admin-dashboard.html">Dashboard</a></li>
+					<li class="breadcrumb-item"><a href="{% url 'main:hrms_dashboard' %}">Dashboard</a></li>
 					<li class="breadcrumb-item active">Salary</li>
 				</ul>
 			</div>
 			<div class="col-auto float-end ms-auto">
-				<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_salary"><i class="fa-solid fa-plus"></i> Add Salary</a>
+				<a href="#" class="btn add-btn" onclick="loadCreateSalaryForm()" data-bs-toggle="modal" data-bs-target="#add_salary"><i class="fa-solid fa-plus"></i> Add Salary</a>
 			</div>
 		</div>
 	</div>
@@ -91,28 +91,19 @@
 						</tr>
 					</thead>
 					<tbody>
+						{% for salary in salaries %}
 						<tr>
 							<td>
 								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-02.jpg" alt="User Image"></a>
-									<a href="profile.html">John Doe <span>Web Designer</span></a>
+									{% comment %} <a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-02.jpg" alt="User Image"></a> {% endcomment %}
+									<a href="profile.html">{{ salary.employee.get_full_name }} <span>{{ salary.employee.salary }}</span></a>
 								</h2>
 							</td>
-							<td>FT-0001</td>
-							<td>johndoe@example.com</td>
-							<td>1 Jan 2013</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Web Designer </a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$59698</td>
+							<td>{{ salary.employee.employeeid }}</td>
+							<td>{{ salary.employee.email }}</td>
+							<td>{{ salary.employee.joindate }}</td>
+							<td>{{ salary.employee.salary }}</td>
+							<td>{{ salary.net_salary }}</td>
 							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
 							<td class="text-end">
 								<div class="dropdown dropdown-action">
@@ -124,336 +115,7 @@
 								</div>
 							</td>
 						</tr>
-						<tr>
-							<td>
-								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-09.jpg" alt="User Image"></a>
-									<a href="profile.html">Richard Miles <span>Web Developer</span></a>
-								</h2>
-							</td>
-							<td>FT-0002</td>
-							<td>richardmiles@example.com</td>
-							<td>1 Jan 2013</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Web Developer </a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$72000</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
-							<td class="text-end">
-								<div class="dropdown dropdown-action">
-									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-10.jpg" alt="User Image"></a>
-									<a href="profile.html">John Smith <span>Android Developer</span></a>
-								</h2>
-							</td>
-							<td>FT-0003</td>
-							<td>johnsmith@example.com</td>
-							<td>1 Jan 2013</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Android Developer </a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$48200</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
-							<td class="text-end">
-								<div class="dropdown dropdown-action">
-									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-05.jpg" alt="User Image"></a>
-									<a href="profile.html">Mike Litorus <span>IOS Developer</span></a>
-								</h2>
-							</td>
-							<td>FT-0004</td>
-							<td>mikelitorus@example.com</td>
-							<td>1 Jan 2013</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">IOS Developer </a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$59698</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
-							<td class="text-end">
-								<div class="dropdown dropdown-action">
-									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-11.jpg" alt="User Image"></a>
-									<a href="profile.html">Wilmer Deluna <span>Team Leader</span></a>
-								</h2>
-							</td>
-							<td>FT-0005</td>
-							<td>wilmerdeluna@example.com</td>
-							<td>1 Jan 2013</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Team Leader </a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$43000</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
-							<td class="text-end">
-								<div class="dropdown dropdown-action">
-									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-12.jpg" alt="User Image"></a>
-									<a href="profile.html">Jeffrey Warden <span>Web Developer</span></a>
-								</h2>
-							</td>
-							<td>FT-0006</td>
-							<td>jeffreywarden@example.com</td>
-							<td>1 Jan 2013</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Web Developer</a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$45000</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
-							<td class="text-end">
-								<div class="dropdown dropdown-action">
-									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-13.jpg" alt="User Image"></a>
-									<a href="profile.html">Bernardo Galaviz <span>Web Developer</span></a>
-								</h2>
-							</td>
-							<td>FT-0007</td>
-							<td>bernardogalaviz@example.com</td>
-							<td>1 Jan 2014</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Web Developer </a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$38400</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
-							<td class="text-end">
-								<div class="dropdown dropdown-action">
-									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-01.jpg" alt="User Image"></a>
-									<a href="profile.html">Lesley Grauer <span>Team Leader</span></a>
-								</h2>
-							</td>
-							<td>FT-0008</td>
-							<td>lesleygrauer@example.com</td>
-							<td>1 Jun 2015</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Team Leader </a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$75500</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
-							<td class="text-end">
-								<div class="dropdown dropdown-action">
-									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-16.jpg" alt="User Image"></a>
-									<a href="profile.html">Jeffery Lalor <span>Team Leader</span></a>
-								</h2>
-							</td>
-							<td>FT-0009</td>
-							<td>jefferylalor@example.com</td>
-							<td>1 Jan 2013</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Team Leader </a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$73550</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
-							<td class="text-end">
-								<div class="dropdown dropdown-action">
-									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-04.jpg" alt="User Image"></a>
-									<a href="profile.html">Loren Gatlin <span>Android Developer</span></a>
-								</h2>
-							</td>
-							<td>FT-0010</td>
-							<td>lorengatlin@example.com</td>
-							<td>1 Jan 2013</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Android Developer </a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$55000</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
-							<td class="text-end">
-								<div class="dropdown dropdown-action">
-									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<h2 class="table-avatar">
-									<a href="profile.html" class="avatar"><img src="assets/img/profiles/avatar-03.jpg" alt="User Image"></a>
-									<a href="profile.html">Tarah Shropshire <span>Android Developer</span></a>
-								</h2>
-							</td>
-							<td>FT-0011</td>
-							<td>tarahshropshire@example.com</td>
-							<td>1 Jan 2013</td>
-							<td>
-								<div class="dropdown">
-									<a href="" class="btn btn-white btn-sm btn-rounded dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Android Developer </a>
-									<div class="dropdown-menu">
-										<a class="dropdown-item" href="#">Software Engineer</a>
-										<a class="dropdown-item" href="#">Software Tester</a>
-										<a class="dropdown-item" href="#">Frontend Developer</a>
-										<a class="dropdown-item" href="#">UI/UX Developer</a>
-									</div>
-								</div>
-							</td>
-							<td>$92400</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
-							<td class="text-end">
-								<div class="dropdown dropdown-action">
-									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
-									</div>
-								</div>
-							</td>
-						</tr>
+						{% endfor %}
 					</tbody>
 				</table>
 			</div>
@@ -467,100 +129,72 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Add Staff Salary</h5>
+				<h5 class="modal-title">Calculate Staff Salary</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<form action="salary.html">
+				<form id="create_form" method="POST" action="{% url 'payroll:create_salary' %}" enctype="multipart/form-data">
+					{% csrf_token %}
 					<div class="row"> 
 						<div class="col-sm-6"> 
 							<div class="input-block mb-3">
 								<label class="col-form-label">Select Staff</label>
-								<select class="select"> 
-									<option>John Doe</option>
-									<option>Richard Miles</option>
-								</select>
+								{{ form.employee }}
+								{% if form.employee.errors %}
+								<span class="error">{{ form.employee.errors.0 }}</span>
+								{% endif %}
 							</div>
 						</div>
 						<div class="col-sm-6"> 
 							<label class="col-form-label">Net Salary</label>
-							<input class="form-control" type="text">
+							{{ form.net_salary }}
+							{% if form.net_salary.errors %}
+							<span class="error">{{ form.net_salary.errors.0 }}</span>
+							{% endif %}
 						</div>
 					</div>
 					<div class="row"> 
 						<div class="col-sm-6"> 
 							<h4 class="text-primary">Earnings</h4>
-							<div class="input-block mb-3">
-								<label class="col-form-label">Basic</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">DA(40%)</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">HRA(15%)</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">Conveyance</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">Allowance</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">Medical  Allowance</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">Others</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="add-more">
-								<a href="#"><i class="fa-solid fa-plus-circle"></i> Add More</a>
-							</div>
+							<!-- Loop through and display payroll items of category 'Additions' -->
+							<!-- Render Basic Salary field first -->
+                            <div class="addition input-block mb-3">
+                                <label class="col-form-label">Basic Salary</label>
+                                <input class="form-control" type="text" name="Basic Salary">
+                                {% if form.payroll_item.errors %}
+                                    <span class="error">{{ form.payroll_item.errors.0 }}</span>
+                                {% endif %}
+                            </div>
+							{% for payroll_item in addition_payroll_items %}
+							{% if payroll_item.name != 'Basic Salary' %}
+								<div class="addition input-block mb-3">
+									<label class="col-form-label">{{ payroll_item.name }}</label>
+									<input class="form-control" type="text" name="{{ payroll_item.name }}">
+									{% if form.payroll_item.errors %}
+										<span class="error">{{ form.payroll_item.errors.0 }}</span>
+									{% endif %}
+								</div>
+							{% endif %}
+							{% endfor %}
 						</div>
 						<div class="col-sm-6">  
 							<h4 class="text-primary">Deductions</h4>
-							<div class="input-block mb-3">
-								<label class="col-form-label">TDS</label>
-								<input class="form-control" type="text">
-							</div> 
-							<div class="input-block mb-3">
-								<label class="col-form-label">ESI</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">PF</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">Leave</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">Prof. Tax</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">Labour Welfare</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="input-block mb-3">
-								<label class="col-form-label">Others</label>
-								<input class="form-control" type="text">
-							</div>
-							<div class="add-more">
-								<a href="#"><i class="fa-solid fa-plus-circle"></i> Add More</a>
-							</div>
+							<!-- Loop through and display payroll items of category 'Deductions' -->
+                            {% for payroll_item in deduction_payroll_items %}
+								<div class="deduction input-block mb-3">
+									<label class="col-form-label">{{ payroll_item.name }}</label>
+									<input class="form-control" type="text" name="{{ payroll_item.name }}">
+									{% if form.payroll_item.errors %}
+										<span class="error">{{ form.payroll_item.errors.0 }}</span>
+									{% endif %}
+								</div>
+							{% endfor %}
 						</div>
 					</div>
 					<div class="submit-section">
-						<button class="btn btn-primary submit-btn">Submit</button>
+						<button class="btn btn-primary submit-btn" onclick="submitCreateForm(event)">Submit</button>
 					</div>
 				</form>
 			</div>
@@ -698,5 +332,162 @@
 	</div>
 </div>
 <!-- /Delete Salary Modal -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+{% comment %} <script>
+	function loadCreateSalaryForm() {
+        console.log("salary form load called");
+		fetch("{% url 'payroll:create_salary' %}")
+        .then(response => response.text())
+        .then(data => {            
+            // Create a temporary element to hold the form HTML
+            var tempElement = document.createElement('div');
+            tempElement.innerHTML = data;
+
+            // Find the form element in the temporary element
+            var formElement = tempElement.querySelector('#create_form');
+
+            // Append the form to the modal body
+            var modalBody = document.querySelector('#add_salary .modal-body');
+            modalBody.innerHTML = '';
+            modalBody.appendChild(formElement);
+
+            // Show the modal
+            $('#add_salary').modal('show');
+            console.log("modal showed");
+			// Attach event listeners after the form is loaded
+			attachEventListeners();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+	function attachEventListeners() {
+		$('input[name="Basic Salary"]').on('input', function() {
+			var url = "{% url 'payroll:ajax_load_salary_components' %}";
+			var basicSalary = parseFloat($(this).val());
+			$('input[name="DA"]').val(basicSalary * parseFloat('{{ salary_setting.da }}'));
+			$('input[name="HRA"]').val(basicSalary * parseFloat('{{ salary_setting.hra }}'));
+			$('input[name="ESI"]').val(basicSalary * parseFloat('{{ salary_setting.esi }}'));
+			$('input[name="PF"]').val(basicSalary * parseFloat('{{ salary_setting.pf }}'));
+			$('input[name="TDS"]').val(basicSalary * parseFloat('{{ salary_setting.tds }}'));
+			
+			$.ajax({
+				url: url,
+				data: {'basic_salary': basicSalary},
+				success: function(data) {	
+					$('input[name="DA"]').val($(data).filter('input[name="DA"]').val());
+					$('input[name="HRA"]').val($(data).filter('input[name="HRA"]').val());
+					$('input[name="ESI"]').val($(data).filter('input[name="ESI"]').val());
+					$('input[name="PF"]').val($(data).filter('input[name="PF"]').val());
+					$('input[name="TDS"]').val($(data).filter('input[name="TDS"]').val());					
+				},
+				error: function(xhr, status, error) {
+					console.error('Error:', error);
+				}
+			});
+		});
+	}
+	
+</script>  {% endcomment %}
+
+
+<script>
+    function loadCreateSalaryForm() {
+		netSalary = 0;
+        console.log("salary form load called");
+        fetch("{% url 'payroll:create_salary' %}")
+            .then(response => response.text())
+            .then(data => {            
+                // Create a temporary element to hold the form HTML
+                var tempElement = document.createElement('div');
+                tempElement.innerHTML = data;
+
+                // Find the form element in the temporary element
+                var formElement = tempElement.querySelector('#create_form');
+
+                // Append the form to the modal body
+                var modalBody = document.querySelector('#add_salary .modal-body');
+                modalBody.innerHTML = '';
+                modalBody.appendChild(formElement);
+
+                // Show the modal
+                $('#add_salary').modal('show');
+                console.log("modal showed");
+                // Attach event listeners after the form is loaded
+                attachEventListeners();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function attachEventListeners() {
+        $('input[name="Basic Salary"]').on('input', function() {
+            var url = "{% url 'payroll:ajax_load_salary_components' %}";
+            var basicSalary = parseFloat($(this).val());
+			netSalary = netSalary+basicSalary;
+            $.ajax({
+                url: url,
+                data: {'basic_salary': basicSalary},
+                success: function(data) {    
+                    $('input[name="DA"]').val($(data).filter('input[name="DA"]').val());
+                    $('input[name="HRA"]').val($(data).filter('input[name="HRA"]').val());
+                    $('input[name="ESI"]').val($(data).filter('input[name="ESI"]').val());
+                    $('input[name="PF"]').val($(data).filter('input[name="PF"]').val());
+                    $('input[name="TDS"]').val($(data).filter('input[name="TDS"]').val());                    
+                    // Update net salary after receiving data from the server
+					calculateNetSalary();
+								
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });		
+		$('.addition input[type="text"], .deduction input[type="text"]').on('input', function() {
+			console.log("addition Input and deduction input changed!");
+			calculateNetSalary();
+		});		
+    }
+	// JavaScript code for calculating net salary
+    function calculateNetSalary() {
+		//var netSalary = basicSalary;
+		
+        // Initialize variables to store the total additions and deductions
+        var totalAdditions = 0;
+        var totalDeductions = 0;
+
+        // Iterate through all input fields under the class "addition"
+        $('.addition input[type="text"]').each(function(index, element) {
+            // Get the value of the input field and convert it to a number
+            var value = parseFloat($(element).val());
+
+            // Add the value to the total additions if it's a valid number
+            if (!isNaN(value)) {
+                totalAdditions += value;
+            }
+        });
+
+        // Iterate through all input fields under the class "deduction"
+        $('.deduction input[type="text"]').each(function(index, element) {
+            // Get the value of the input field and convert it to a number
+            var value = parseFloat($(element).val());
+
+            // Add the value to the total deductions if it's a valid number
+            if (!isNaN(value)) {
+                totalDeductions += value;
+            }
+        });
+
+        // Calculate net salary by subtracting total deductions from total additions
+        var netSalary = totalAdditions - totalDeductions;
+
+        // Set the calculated net salary value to the corresponding form field
+        $('input[name="net_salary"]').val(netSalary.toFixed(2));
+    }
+	
+</script>
 
 {% endblock %}

@@ -1,0 +1,116 @@
+{% extends "base/base_settings.html" %}
+{%load static%}
+
+{% block content %}
+<div class="col-md-8 offset-md-2">
+
+	<!-- Page Header -->
+	<div class="page-header">
+		<div class="row">
+			<div class="col-sm-12">
+				<h3 class="page-title">Salary Settings</h3>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Header -->
+	
+	<div class="row">
+		<div class="col-md-12">
+			<div>
+				<table class="table table-striped custom-table mb-0 datatable">
+					<thead>
+						<tr>
+							<th class="width-thirty">#</th>
+							<th>DA </th>
+							<th>HRA </th>							
+							<th>PF EMP </th>							
+							<th>PF ORG </th>							
+							<th>ESI EMP </th>							
+							<th>ESI ORG </th>							
+							<th>TDS </th>
+							<th class="text-end">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for salary_setting in salary_settings %}
+						<tr>
+							<td>{{forloop.counter}}</td>
+							<td>{{ salary_setting.da }}</td>
+							<td>{{ salary_setting.hra }}</td>
+							<td>{{ salary_setting.pf_emp }}</td>
+							<td>{{ salary_setting.pf_org }}</td>
+							<td>{{ salary_setting.esi_emp }}</td>
+							<td>{{ salary_setting.tds }}</td>
+							<td class="text-end">
+								<div class="dropdown dropdown-action">
+									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a class="dropdown-item" onclick="loadUpdatesalary_settingForm(this, '{{ salary_setting.id }}')" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary_setting_modal"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary_setting_{{ salary_setting.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<!-- Edit salary_setting Modal -->
+						<div id="edit_salary_setting_modal" class="modal custom-modal fade" role="dialog">
+							<div class="modal-dialog modal-dialog-centered" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Edit salary_setting</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form id="update_form_{{ salary_setting.id }}" method="POST" action="{% url 'payroll:edit_salary_setting' pk=salary_setting.id %}" enctype="multipart/form-data">
+											{% csrf_token %}
+											<div class="input-block mb-3">
+												<label class="col-form-label">Department Name <span class="text-danger">*</span></label>
+												{{ form.department }}</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">salary_setting Name <span class="text-danger">*</span></label>
+												{{ form.name}}
+											</div>
+											<div class="submit-section">
+												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event,{{salary_setting.id}})">Save</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /Edit salary_setting Modal -->
+
+						<!-- Delete salary_setting Modal -->
+						<div class="modal custom-modal fade" id="delete_salary_setting_{{ salary_setting.id }}" role="dialog">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-body">
+										<div class="form-header">
+											<h3>Delete salary_setting</h3>
+											<p>Are you sure want to delete?</p>
+										</div>
+										<div class="modal-btn delete-action">
+											<div class="row">
+												<div class="col-6">
+													<a href="{% url 'payroll:delete_salary_setting' pk=salary_setting.id %}" class="btn btn-primary continue-btn">Delete</a>
+												</div>
+												<div class="col-6">
+													<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /Delete salary_setting Modal -->
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Page Content -->
+{% endblock %}
