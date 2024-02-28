@@ -1,12 +1,12 @@
 # sevendyne_hrms
 
-**Install dependencies:**
+**Install dependencies**
     sudo apt update
     sudo apt install python3 python3-pip python3-venv git
 
 source venv/bin/activate (on windows use "venv\Scripts\activate)
 
-**Install Django & Libjpeg: **
+**Install Django & Libjpeg**
     pip install django
     sudo apt-get install libjpeg-dev
     
@@ -41,7 +41,7 @@ python manage.py loaddata states countries
     python manage.py createsuperuser --username yourusername --email youremail@example.com --noinput - Add username and email address
     ```
 
-**Test Credentials **
+**Test Credentials**
 
 Admin: username - admin , password - admin
 Client: username - hrmsclient1 , password - password@123, hrmsclient1@example.com 
