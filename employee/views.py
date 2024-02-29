@@ -432,6 +432,7 @@ def create_employee(request):
             employeeid = form.cleaned_data['employeeid']
             department = form.cleaned_data['department']
             designation = form.cleaned_data['designation']
+            joindate = form.cleaned_data['joindate']            
             auto_id = get_auto_id(Employee)
             a_id = get_a_id(Employee,request)
             company =current_company
@@ -470,6 +471,7 @@ def create_employee(request):
                     department = department,
                     designation = designation,
                     employeeid = employeeid,
+                    joindate = joindate,
                     auto_id = auto_id,
                     a_id = a_id,
                     company =company,

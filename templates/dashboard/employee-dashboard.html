@@ -13,15 +13,16 @@
 					<img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User Image">
 				</div>
 				<div class="welcome-det">
-					<h3>Welcome, John Doe</h3>
-					<p>Monday, 20 May 2019</p>
+					<h3>Welcome, {{ employee.get_full_name }}</h3>
+					<p>{{ employee.company }}</p>
+					{% comment %} <p>Monday, 20 May 2019</p> {% endcomment %}
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<div class="row">
-		<div class="col-lg-8 col-md-8">
+		{% comment %} <div class="col-lg-8 col-md-8">
 			<section class="dash-section">
 				<h1 class="dash-sec-title">Today</h1>
 				<div class="dash-sec-content">
@@ -146,11 +147,11 @@
 					</div>
 				</div>
 			</section>
-		</div>
+		</div> {% endcomment %}
 
 		<div class="col-lg-4 col-md-4">
 			<div class="dash-sidebar">
-				<section>
+				{% comment %} <section>
 					<h5 class="dash-title">Projects</h5>
 					<div class="card">
 						<div class="card-body">
@@ -172,18 +173,18 @@
 							</div>
 						</div>
 					</div>
-				</section>
+				</section> {% endcomment %}
 				<section>
 					<h5 class="dash-title">Your Leave</h5>
 					<div class="card">
 						<div class="card-body">
 							<div class="time-list">
 								<div class="dash-stats-list">
-									<h4>4.5</h4>
+									<h4>{{approved_leave}}</h4>
 									<p>Leave Taken</p>
 								</div>
 								<div class="dash-stats-list">
-									<h4>12</h4>
+									<h4>{{remaining_leave}}</h4>
 									<p>Remaining</p>
 								</div>
 							</div>
@@ -193,7 +194,7 @@
 						</div>
 					</div>
 				</section>
-				<section>
+				{% comment %} <section>
 					<h5 class="dash-title">Your time off allowance</h5>
 					<div class="card">
 						<div class="card-body">
@@ -212,15 +213,15 @@
 							</div>
 						</div>
 					</div>
-				</section>
-				<section>
+				</section> {% endcomment %}
+				{% comment %} <section>
 					<h5 class="dash-title">Upcoming Holiday</h5>
 					<div class="card">
 						<div class="card-body text-center">
 							<h4 class="holiday-title mb-0">Mon 20 May 2019 - Ramzan</h4>
 						</div>
 					</div>
-				</section>
+				</section> {% endcomment %}
 			</div>
 		</div>
 	</div>

@@ -24,3 +24,11 @@ class Client(BaseModel):
 
     def __str__(self):
         return  self.company_name 
+
+    @property
+    def get_full_name(self):
+        if self.lastname:
+            full_name = f"{self.firstname} {self.lastname}"
+        else:
+            full_name = self.firstname
+        return full_name

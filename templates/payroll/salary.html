@@ -102,19 +102,44 @@
 							<td>{{ salary.employee.employeeid }}</td>
 							<td>{{ salary.employee.email }}</td>
 							<td>{{ salary.employee.joindate }}</td>
-							<td>{{ salary.employee.salary }}</td>
+							<td>{{ salary.employee.designation }}</td>
 							<td>{{ salary.net_salary }}</td>
-							<td><a class="btn btn-sm btn-primary" href="salary-view.html">Generate Slip</a></td>
+							<td><a class="btn btn-sm btn-primary" href="{% url 'payroll:payslip' pk=salary.employee.pk %}">Generate Slip</a></td>
 							<td class="text-end">
 								<div class="dropdown dropdown-action">
 									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 									<div class="dropdown-menu dropdown-menu-right">
 										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_salary"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_salary_{{ salary.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
 									</div>
 								</div>
 							</td>
 						</tr>
+						<!-- Delete Salary Modal -->
+						<div class="modal custom-modal fade" id="delete_salary_{{ salary.id }}" role="dialog">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-body">
+										<div class="form-header">
+											<h3>Delete Salary</h3>
+											<p>Are you sure want to delete?</p>
+										</div>
+										<div class="modal-btn delete-action">
+											<div class="row">
+												<div class="col-6">
+													<a href="{% url 'payroll:delete_salary' pk=salary.pk %}" class="btn btn-primary continue-btn">Delete</a>
+												</div>
+												<div class="col-6">
+													<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /Delete Salary Modal -->
+
 						{% endfor %}
 					</tbody>
 				</table>
@@ -308,30 +333,6 @@
 </div>
 <!-- /Edit Salary Modal -->
 
-<!-- Delete Salary Modal -->
-<div class="modal custom-modal fade" id="delete_salary" role="dialog">
-	<div class="modal-dialog modal-dialog-centered">
-		<div class="modal-content">
-			<div class="modal-body">
-				<div class="form-header">
-					<h3>Delete Salary</h3>
-					<p>Are you sure want to delete?</p>
-				</div>
-				<div class="modal-btn delete-action">
-					<div class="row">
-						<div class="col-6">
-							<a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
-						</div>
-						<div class="col-6">
-							<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /Delete Salary Modal -->
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
@@ -452,7 +453,7 @@
 		});		
     }
 	// JavaScript code for calculating net salary
-    function calculateNetSalary() {
+    {% comment %} function calculateNetSalary() {
 		//var netSalary = basicSalary;
 		
         // Initialize variables to store the total additions and deductions
@@ -486,7 +487,314 @@
 
         // Set the calculated net salary value to the corresponding form field
         $('input[name="net_salary"]').val(netSalary.toFixed(2));
-    }
+    } {% endcomment %}
+
+	function calculateNetSalary() {//var netSalary = basicSalary;
+		
+        // Initialize variables to store the total additions and deductions
+        var totalAdditions = 0;
+        var totalDeductions = 0;
+
+        // Iterate through all input fields under the class "addition"
+        $('.addition input[type="text"]').each(function(index, element) {
+            // Get the value of the input field and convert it to a number
+            var value = parseFloat($(element).val());
+
+            // Add the value to the total additions if it's a valid number
+            if (!isNaN(value)) {
+                totalAdditions += value;
+            }
+        });
+
+        // Iterate through all input fields under the class "deduction"
+        $('.deduction input[type="text"]').each(function(index, element) {
+            // Get the value of the input field and convert it to a number
+            var value = parseFloat($(element).val());
+
+            // Add the value to the total deductions if it's a valid number
+            if (!isNaN(value)) {
+                totalDeductions += value;
+            }
+        });
+
+        // Calculate net salary by subtracting total deductions from total additions
+        var netSalary = totalAdditions - totalDeductions;
+        // Set the calculated net salary value to the corresponding form field
+        $('input[name="net_salary"]').val(netSalary.toFixed(2));
+		
+		savePayslipData();
+		{% comment %} // to save payslip model data dynamically
+		var formData = {}; // Object to hold form data
+
+		// Define the form variable and select the form element by its ID
+		var form = $('#create_form');
+
+		// Access form elements using jQuery selectors within the form context
+		var employeeValue = form.find('[name="employee"]').val();
+		var netSalaryValue = form.find('[name="net_salary"]').val();
+		console.log("employee value",employeeValue);
+		console.log("netSalaryValue",netSalaryValue);
+
+		//formData['employee'] = employeeValue; // Fetch the value of form.employee
+    	//formData['net_salary'] = netSalaryValue; // Fetch the value of form.net_salary
+		console.log("Form Data: ", formData);
+		//console.log("form data employee ", formData.employee);
+		//console.log("form data net salary ", formData.net_salary);
+	
+		// Iterate through all input fields under the class "addition"
+		$('.addition input[type="text"]').each(function(index, element) {
+			var name = $(element).attr('name'); // Get the name attribute
+			console.log("addition items name ",name)
+			var value = parseFloat($(element).val()); // Get the value
+			console.log("addition item value ",value)
+			// Add the name and value to the formData object
+			formData[name] = value;
+		});
+	
+		// Iterate through all input fields under the class "deduction"
+		$('.deduction input[type="text"]').each(function(index, element) {
+			var name = $(element).attr('name'); // Get the name attribute
+			var value = parseFloat($(element).val()); // Get the value
+	
+			// Add the name and value to the formData object
+			formData[name] = value;
+		});
+		/// Get CSRF token from the form
+		var csrftoken = $('#create_form input[name="csrfmiddlewaretoken"]').val();
+
+		var url = "{% url 'payroll:process_salary_data' %}";
+		console.log("url of process data ",url)
+		console.log("formData",formData)
+		// Send formData to the server using AJAX
+		$.ajax({
+			url: url, // Replace 'your_server_url_here' with your server URL
+			method: 'POST', // Specify the request method
+
+			headers: {'X-CSRFToken': csrftoken}, // Include CSRF token and X-Requested-With header
+			data: {
+				formData: formData,
+				employee: employeeValue,
+				net_salary: netSalaryValue
+			},
+			success: function(response) {
+				// Handle success response
+				if (response.success) {
+					// Do something on success, like showing a success message
+					console.log('Success:', response);
+				} else {
+					// Handle the case where the server returns success as false
+					console.error('Error:', response.error);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error:', error);
+			}
+		}); {% endcomment %}
+	}
+	
+	function submitCreateForm(event) {
+		event.preventDefault();  // Prevent the default form submission behavior
+		//savePayslipData();
+		var form = document.getElementById('create_form');
+		var formData = new FormData(form);
+	
+		fetch(form.action, {
+			method: 'POST',
+			body: formData,
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+			console.log("status", data.status);
+			console.log('data.redirect_url:', data.redirect_url);
+	
+			// Corrected variable name here
+			if (data.status === 'true') {
+			console.log("status is true");
+			console.log("redirect url", data.redirect_url);
+			showSweetAlert(data.message, data.status, data.redirect_url);
+			} else if (data.status === 'form_error') {
+			console.log("status is form_error");
+			showSweetAlert(data.message, 'form_error');
+			} else if (data.status === 'false') {
+			console.log("status is false");
+			showSweetAlert(data.message, data.status);
+			} else {
+			console.log("status is neither true or false");
+			showSweetAlert(data.message, 'error');
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+		}
+	
+		function showSweetAlert(message, status, redirectUrl) {
+		console.log('showSweetAlert called');
+		console.log('message:', message);
+		console.log('status:', status);
+		console.log('redirectUrl:', redirectUrl);
+	
+		if (status === 'true') {			
+			Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+	
+			didClose: () => {
+				console.log('Redirecting to:', redirectUrl);
+				if (redirectUrl) {
+				// Combine the redirect URL with the current protocol and host to get the full URL
+				var fullRedirectUrl = window.location.origin + redirectUrl;
+				console.log('Full Redirect URL:', fullRedirectUrl);
+				window.location.href = fullRedirectUrl;
+				}
+			}
+			});
+		} else if (status === 'form_error') {
+			console.log('Showing form error alert');
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Validation Error!',
+			html: message,  // Display form errors as HTML
+			showConfirmButton: true,
+			allowOutsideClick: false,
+			});
+		} else if (status === 'false') {
+			console.log('Showing form error alert');
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		} else {
+			console.log('Showing error alert');
+			Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		}
+		}
+
+	// Define a function to handle the AJAX request
+	function savePayslipData() {
+		var formData = {}; // Object to hold form data
+
+		// Define the form variable and select the form element by its ID
+		var form = $('#create_form');
+
+		// Fetch the value of employee and net_salary separately
+		var employeeValue = form.find('[name="employee"]').val();
+		var netSalaryValue = form.find('[name="net_salary"]').val();
+
+		// Iterate through all input fields under the class "addition"
+		$('.addition input[type="text"]').each(function(index, element) {
+			var name = $(element).attr('name'); // Get the name attribute
+			console.log("addition items name ",name)
+			var value = parseFloat($(element).val()); // Get the value
+			console.log("addition item value ",value)
+			// Add the name and value to the formData object
+			formData[name] = value;
+		});
+
+		// Iterate through all input fields under the class "deduction"
+		$('.deduction input[type="text"]').each(function(index, element) {
+			var name = $(element).attr('name'); // Get the name attribute
+			var value = parseFloat($(element).val()); // Get the value
+
+			// Add the name and value to the formData object
+			formData[name] = value;
+		});
+		// Get CSRF token from the form
+		var csrftoken = $('#create_form input[name="csrfmiddlewaretoken"]').val();
+
+		// Define the URL to send the AJAX request
+		var url = "{% url 'payroll:process_salary_data' %}";
+
+		// Send formData, employeeValue, and netSalaryValue to the server using AJAX
+		$.ajax({
+			url: url,
+			type: "POST",
+			headers: { "X-CSRFToken": csrftoken },
+			data: {
+				formData: formData,
+				employee: employeeValue,
+				net_salary: netSalaryValue
+			},
+			success: function(response) {
+				// Handle success response if needed
+				console.log("Success:", response);
+			},
+			error: function(xhr, status, error) {
+				// Handle error response if needed
+				console.error("Error:", error);
+			}
+		});
+	}
+
+	// Function to handle delete action
+	function handleDelete(pk) {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this HRMS Client!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!"
+		})
+		.then((result) => {
+			if (result.isConfirmed) {
+				// If user confirms, send Fetch API request to delete
+				fetch('{% url "hrms:delete_hrms_client" pk=0 %}'.replace('0', pk), {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': '{{ csrf_token }}'
+					},
+				})
+				.then(response => response.json())
+				.then(data => {
+					// Handle success response
+					if (data.status === "true") {
+						Swal.fire({
+							title: data.title,
+							text: data.message,
+							icon: "success",
+						})
+						.then((value) => {
+							// Redirect to the specified URL after success
+							window.location.href = data.redirect_url;
+						});
+					} else {
+						Swal.fire("Error", "An error occurred while deleting.", "error");
+					}
+				})
+				.catch(() => {
+					// Handle error
+					Swal.fire("Error", "An error occurred while processing the request.", "error");
+				});
+			} else {
+				Swal.fire("HRMS Client is safe!");
+			}
+		});
+	}
+
+	// Attach click event to delete button
+	document.querySelectorAll('.remove').forEach(function(el) {
+		el.addEventListener('click', function(e) {
+			e.preventDefault();
+			var pk = this.getAttribute('data-id');
+			handleDelete(pk);
+		});
+	});
 	
 </script>
 

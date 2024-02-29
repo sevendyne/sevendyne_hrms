@@ -8,7 +8,8 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 # from main.decorators import company_required
 from django.db.models import Q
-from employee.models import Employee
+from client.models import Client
+from employee.models import AttendanceRegister, Employee, Leave
 from main.decorators import company_required
 
 from main.forms import CompanyForm
@@ -48,20 +49,42 @@ def home_hrms(request):
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def hrms_dashboard(request):
-    print("hrms home request got")
+    company=get_current_company(request)
+    # print("company name",company.name)
+    company_name = company.name
+    employees_count = Employee.objects.filter(company=company,is_deleted=False).count()
+    clients = Client.objects.filter(company=company,is_deleted=False)[:5]
+    clients_count =clients.count()
+    # Step 1: Get the current date
+    current_date = datetime.date.today()
+
+    # Step 2: Query the AttendanceRegister model for absent entries today
+    absent_employees = AttendanceRegister.objects.filter(company=company,date=current_date, status='absent')[:4]
+
+    # Step 3: Retrieve the employees associated with the absent entries
+    absent_employees_count = absent_employees.count()
+
+    # print("hrms home request got")
     # Debugging: Print the user to verify it's the correct user
-    print("User:", request.user)
-    hrms_clients = HrmsClient.objects.filter(is_deleted=False)
-    print("all hrms clients",hrms_clients)
+    # print("User:", request.user)
+    # hrms_clients = HrmsClient.objects.filter(is_deleted=False)
+    # print("all hrms clients",hrms_clients)
 
     try:
         # Retrieve the HrmsClient object associated with the logged-in user
         hrms_client = get_object_or_404(HrmsClient, user=request.user, is_deleted=False)
         # print("hrms client")
-        print(hrms_client)
+        # print(hrms_client)
 
         context = {
             'hrms_client': hrms_client,
+            'company_name':company_name,
+            'employees_count': employees_count,
+            'clients_count':clients_count,
+            'clients':clients,
+            'absent_employees': absent_employees,
+            'absent_employees_count': absent_employees_count
+
         }
     
         return render(request, "dashboard/admin-dashboard.html", context=context)
@@ -78,20 +101,25 @@ def hrms_dashboard(request):
 @user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
 # @company_required
 def employee_dashboard(request):
-    print("employee dashboard request got")
-    # Debugging: Print the user to verify it's the correct user
-    print("User:", request.user)
-    employees = Employee.objects.filter(is_deleted=False)
-    print("all employees",employees)
+    # print("employee dashboard request got")
+    # # Debugging: Print the user to verify it's the correct user
+    # print("User:", request.user)
+    # employees = Employee.objects.filter(is_deleted=False)
+    # print("all employees",employees)
     # current_company = get_current_company(request)
     try:
         # Retrieve the HrmsClient object associated with the logged-in user
         employee = get_object_or_404(Employee, user=request.user, is_deleted=False)
         print("employee")
+        company=employee.company
         print(employee)
-
+        approved_leave = Leave.objects.filter(employee=employee,company=company,is_approved=True,is_deleted=False).count()
+        total_leave = Leave.objects.filter(employee=employee,company=company,is_deleted=False).count()
+        remaining_leave = total_leave - approved_leave
         context = {
             'employee': employee,
+            'approved_leave':approved_leave,
+            'remaining_leave':remaining_leave
         }
     
         return render(request, "dashboard/employee-dashboard.html", context=context)

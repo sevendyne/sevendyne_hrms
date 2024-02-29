@@ -40,11 +40,11 @@
 			
 				<!-- Logo -->
                 <div class="header-left">
-                     <a href="admin-dashboard.html" class="logo">
-						<img src="{%static 'assets/img/logo.png'%}" width="40" height="40" alt="Logo">
+                     <a href="{% url 'main:hrms_dashboard' %}" class="logo">
+						<img src="{%static 'assets/img/logo_svd.png'%}" width="40" height="40" alt="Logo">
 					</a>
-					<a href="admin-dashboard.html" class="logo2">
-						<img src="{%static 'assets/img/logo2.png'%}" width="40" height="40" alt="Logo">
+					<a href="{% url 'main:hrms_dashboard' %}" class="logo2">
+						<img src="{%static 'assets/img/logo_svd.png'%}" width="40" height="40" alt="Logo">
 					</a>
                 </div>
 				<!-- /Logo -->
@@ -69,7 +69,7 @@
 				<ul class="nav user-menu">
 				
 					<!-- Search -->
-					<li class="nav-item">
+					{% comment %} <li class="nav-item">
 						<div class="top-nav-search">
 							<a href="javascript:void(0);" class="responsive-search">
 								<i class="fa-solid fa-magnifying-glass"></i>
@@ -79,11 +79,11 @@
 								<button class="btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
 							</form>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Search -->
 				
 					<!-- Flag -->
-					<li class="nav-item dropdown has-arrow flag-nav">
+					{% comment %} <li class="nav-item dropdown has-arrow flag-nav">
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
 							<img src="{%static 'assets/img/flags/us.png'%}" alt="Flag" height="20"> <span>English</span>
 						</a>
@@ -101,11 +101,11 @@
 								<img src="{%static 'assets/img/flags/de.png'%}" alt="Flag" height="16"> German
 							</a>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Flag -->
 				
 					<!-- Notifications -->
-					<li class="nav-item dropdown">
+					{% comment %} <li class="nav-item dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<i class="fa-regular fa-bell"></i> <span class="badge rounded-pill">3</span>
 						</a>
@@ -187,11 +187,11 @@
 								<a href="activities.html">View all Notifications</a>
 							</div>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Notifications -->
 					
 					<!-- Message Notifications -->
-					<li class="nav-item dropdown">
+					{% comment %} <li class="nav-item dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<i class="fa-regular fa-comment"></i> <span class="badge rounded-pill">8</span>
 						</a>
@@ -293,7 +293,7 @@
 								<a href="chat.html">View all Messages</a>
 							</div>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Message Notifications -->
 	
 					<li class="nav-item dropdown has-arrow main-drop">
@@ -303,8 +303,8 @@
 							<span>Admin</span>
 						</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="profile.html">My Profile</a>
-							<a class="dropdown-item" href="settings.html">Settings</a>
+							{% comment %} <a class="dropdown-item" href="profile.html">My Profile</a>
+							<a class="dropdown-item" href="settings.html">Settings</a> {% endcomment %}
 							<a class="dropdown-item" href="{% url 'user:user_logout' %}">Logout</a>
 						</div>
 					</li>
@@ -315,8 +315,8 @@
 				<div class="dropdown mobile-user-menu">
 					<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
 					<div class="dropdown-menu dropdown-menu-right">
-						<a class="dropdown-item" href="profile.html">My Profile</a>
-						<a class="dropdown-item" href="settings.html">Settings</a>
+						{% comment %} <a class="dropdown-item" href="profile.html">My Profile</a> {% endcomment %}
+						{% comment %} <a class="dropdown-item" href="settings.html">Settings</a> {% endcomment %}
 						<a class="dropdown-item" href="{% url 'user:user_logout' %}">Logout</a>
 					</div>
 				</div>
@@ -326,7 +326,7 @@
 			<!-- /Header -->
 			
 			<!-- Sidebar -->
-            <div class="sidebar" id="sidebar">
+            <div class="sidebar" id="sidebar" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%)">
                 <div class="sidebar-inner slimscroll">
 					<div id="sidebar-menu" class="sidebar-menu">
 							
@@ -338,10 +338,10 @@
 							<li> 
 								<a href="settings.html"><i class="la la-building"></i> <span>Company Settings</span></a>
 							</li>
-							<li class="active"> 
+							{% comment %} <li class="active"> 
 								<a href="localization.html"><i class="la la-clock-o"></i> <span>Localization</span></a>
-							</li>
-							<li> 
+							</li> {% endcomment %}
+							{% comment %} <li> 
 								<a href="theme-settings.html"><i class="la la-photo"></i> <span>Theme Settings</span></a>
 							</li>
 							<li> 
@@ -358,28 +358,28 @@
                             </li>
 							<li> 
 								<a href="invoice-settings.html"><i class="la la-pencil-square"></i> <span>Invoice Settings</span></a>
-							</li>
+							</li> {% endcomment %}
 							<li> 
 								<a href="{% url 'payroll:create_salary_setting' %}"><i class="la la-money"></i> <span>Salary Settings</span></a>
 							</li>
 							<li> 
 								<a href="{% url 'payroll:create_payroll_item' %}"><i class="la la-money"></i> <span>Payroll Item Settings</span></a>
 							</li>
-							<li> 
+							{% comment %} <li> 
 								<a href="notifications-settings.html"><i class="la la-globe"></i> <span>Notifications</span></a>
 							</li>
 							<li> 
 								<a href="change-password.html"><i class="la la-lock"></i> <span>Change Password</span></a>
-							</li>
+							</li> {% endcomment %}
 							<li> 
 								<a href="{% url 'employee:leave_types' %}"><i class="la la-cogs"></i> <span>Leave Type</span></a>
 							</li>
-							<li> 
+							{% comment %} <li> 
 								<a href="toxbox-setting.html"><i class="la la-comment"></i> <span>ToxBox Settings</span></a>
 							</li>
 							<li> 
 								<a href="cron-setting.html"><i class="la la-rocket"></i> <span>Cron Settings</span></a>
-							</li>
+							</li> {% endcomment %}
 							</ul>
 							
 					</div>
@@ -592,7 +592,7 @@
 								<p>Dashboard</p>
 								<ul>
 									<li>
-										<a href="admin-dashboard.html">Admin Dashboard</a>
+										<a href="{% url 'main:hrms_dashboard' %}">Admin Dashboard</a>
 									</li>
 									<li>
 										<a href="employee-dashboard.html">Employee Dashboard</a>
@@ -792,7 +792,7 @@
 			</div>
 			<!-- /Two Col Sidebar -->
 			<!-- Page Wrapper -->
-            <div class="page-wrapper">
+            <div class="page-wrapper" style="padding-left:2%;padding-top:5%;padding-right:2%;padding-bottom:2%">
 			
 				<!-- Page Content -->
                 <div class="content container-fluid">

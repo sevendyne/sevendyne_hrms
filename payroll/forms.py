@@ -53,15 +53,11 @@ class SalaryForm(forms.ModelForm):
         exclude = ['creator', 'updator', 'auto_id','a_id','company','is_deleted'] 
         widgets = {
             'net_salary': forms.TextInput(attrs={'class': 'required form-control '}),
-            'payroll_item': Select(attrs={'class': 'required form-control selectpicker'}),
             'employee': Select(attrs={'class': 'required form-control selectpicker'})       
         }
         error_messages = {
             'net_salary': {
                 'required': _("Net Salary field is required."),
-            },
-            'payroll_item': {
-                'required': _("Payroll Item field is required."),
             },
             'employee': {
                 'required': _("Employee field is required.")

@@ -57,10 +57,10 @@
 				
 				<!-- Logo -->
 				<div class="header-left">
-					<a href="admin-dashboard.html" class="logo">
-						<img src="{%static 'assets/img/logo.png'%}" width="40" height="40" alt="Logo">
+					<a href="{% url 'main:employee_dashboard' %}" class="logo">
+						<img src="{%static 'assets/img/logo_svd.png'%}" width="40" height="40" alt="Logo">
 					</a>
-					<a href="admin-dashboard.html" class="logo2">
+					<a href="{% url 'main:employee_dashboard' %}" class="logo2">
 						<img src="{%static 'assets/img/logo_svd.png'%}" width="60" height="60" alt="Logo">
 					</a>
 				</div>
@@ -86,7 +86,7 @@
 				<ul class="nav user-menu">
 				
 					<!-- Search -->
-					<li class="nav-item">
+					{% comment %} <li class="nav-item">
 						<div class="top-nav-search">
 							<a href="javascript:void(0);" class="responsive-search">
 								<i class="fa-solid fa-magnifying-glass"></i>
@@ -96,11 +96,11 @@
 								<button class="btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
 							</form>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Search -->
 				
 					<!-- Flag -->
-					<li class="nav-item dropdown has-arrow flag-nav">
+					{% comment %} <li class="nav-item dropdown has-arrow flag-nav">
 						<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button">
 							<img src="{%static 'assets/img/flags/us.png'%}" alt="Flag" height="20"> <span>English</span>
 						</a>
@@ -117,12 +117,12 @@
 							<a href="javascript:void(0);" class="dropdown-item">
 								<img src="{%static 'assets/img/flags/de.png'%}" alt="Flag" height="16"> German
 							</a>
-						</div>
+						</div> {% endcomment %}
 					</li>
 					<!-- /Flag -->
 				
 					<!-- Notifications -->
-					<li class="nav-item dropdown">
+					{% comment %} <li class="nav-item dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<i class="fa-regular fa-bell"></i> <span class="badge rounded-pill">3</span>
 						</a>
@@ -204,11 +204,11 @@
 								<a href="#">View all Notifications</a>
 							</div>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Notifications -->
 					
 					<!-- Message Notifications -->
-					<li class="nav-item dropdown">
+					{% comment %} <li class="nav-item dropdown">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<i class="fa-regular fa-comment"></i> <span class="badge rounded-pill">8</span>
 						</a>
@@ -310,7 +310,7 @@
 								<a href="chat.html">View all Messages</a>
 							</div>
 						</div>
-					</li>
+					</li> {% endcomment %}
 					<!-- /Message Notifications -->
 
 					<li class="nav-item dropdown has-arrow main-drop">
@@ -321,7 +321,7 @@
 						</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" href="#">My Profile</a>
-							<a class="dropdown-item" href="{% url 'employee:leave_types' %}">Settings</a>
+							{% comment %} <a class="dropdown-item" href="{% url 'employee:leave_types' %}">Settings</a> {% endcomment %}
 							<a class="dropdown-item" href="{% url 'user:user_logout' %}">Logout</a>
 						</div>
 					</li>
@@ -333,7 +333,7 @@
 					<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
 					<div class="dropdown-menu dropdown-menu-right">
 						<a class="dropdown-item" href="#">My Profile</a>
-						<a class="dropdown-item" href="{% url 'employee:leave_types' %}">Settings</a>
+						{% comment %} <a class="dropdown-item" href="{% url 'employee:leave_types' %}">Settings</a> {% endcomment %}
 						<a class="dropdown-item" href="{% url 'user:user_logout' %}">Logout</a>
 					</div>
 				</div>
@@ -360,7 +360,7 @@
 											<li><a  class="active" href="{% url 'main:employee_dashboard' %}">Employee Dashboard</a></li>
 										</ul> {% endcomment %}
 									</li>
-									<li class="submenu">
+									{% comment %} <li class="submenu">
 										<a href="#"><i class="la la-cube"></i> <span> Apps</span> <span class="menu-arrow"></span></a>
 										<ul>
 											<li><a href="chat.html">Chat</a></li>
@@ -378,8 +378,8 @@
 											<li><a href="#">Email</a></li>
 											<li><a href="#">File Manager</a></li>
 										</ul>
-									</li>
-									
+									</li> {% endcomment %}
+{% comment %} 									
 									<li class="submenu">
 										<a href="#"><i class="la la-rocket"></i> <span> Projects</span> <span class="menu-arrow"></span></a>
 										<ul>
@@ -387,7 +387,7 @@
 											<li><a href="#">Tasks</a></li>
 											<li><a href="#">Task Board</a></li>
 										</ul>
-									</li>
+									</li> {% endcomment %}
 									
 								</ul>
 								<button class="viewmoremenu">More Menu</button>
@@ -399,7 +399,7 @@
 											<li><a href="#"> Payslip </a></li>
 										</ul>
 									</li>
-									<li> 
+									{% comment %} <li> 
 										<a href="#"><i class="la la-file-pdf-o"></i> <span>Policies</span></a>
 									</li>
 									
@@ -442,7 +442,7 @@
 										<ul>
 											<li><a href="#"> Employee Profile </a></li>
 										</ul>
-									</li>									
+									</li>									 {% endcomment %}
 								</ul> 
 							</nav>
 						</div>
@@ -454,20 +454,20 @@
 								<a href="{% url 'main:employee_dashboard' %}"><i class="la la-dashboard"></i> <span> Dashboard</span>
 									 {% comment %} <span class="menu-arrow"></span> {% endcomment %}
 								</a>
-								{% comment %} <ul>
-									<li><a  class="active" href="{% url 'main:employee_dashboard' %}">Employee Dashboard</a></li>
-								</ul> {% endcomment %}
+								<ul>
+									<li><a  class="" href="{% url 'main:employee_dashboard' %}">Employee Dashboard</a></li>
+								</ul>
 							</li> 
 							<li class="submenu">
 								<a href="#"><i class="la la-rocket"></i> <span> Leave Management</span> <span class="menu-arrow"></span></a>
 								<ul>
-									<li><a href="{% url 'employee:leaves' %}">Leave Request</a></li>
+									<li><a href="#">Leave Request</a></li>
 									<li><a href="#">Leave Status</a></li>
 									{% comment %} <li><a href="#">Task Board</a></li> {% endcomment %}
 								</ul>
 							</li>
 							
-							<li class="submenu">
+							{% comment %} <li class="submenu">
 								<a href="#"><i class="la la-cube"></i> <span> Apps</span> <span class="menu-arrow"></span></a>
 								<ul>
 									<li><a href="chat.html">Chat</a></li>
@@ -485,25 +485,25 @@
 									<li><a href="#">Email</a></li>
 									<li><a href="#">File Manager</a></li>
 								</ul>
-							</li>
+							</li> {% endcomment %}
 							
-							<li class="submenu">
+							{% comment %} <li class="submenu">
 								<a href="#"><i class="la la-rocket"></i> <span> Projects</span> <span class="menu-arrow"></span></a>
 								<ul>
 									<li><a href="#">Projects</a></li>
 									<li><a href="#">Tasks</a></li>
 									<li><a href="#">Task Board</a></li>
 								</ul>
-							</li>
+							</li> {% endcomment %}
 							
 							<li class="submenu">
 								<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 								<ul>
-									<li><a href="#"> Employee Salary </a></li>
+									{% comment %} <li><a href="#"> Employee Salary </a></li> {% endcomment %}
 									<li><a href="#"> Payslip </a></li>
 								</ul>
 							</li>
-							<li> 
+							{% comment %} <li> 
 								<a href="#"><i class="la la-file-pdf-o"></i> <span>Policies</span></a>
 							</li>							
 							<li class="menu-title"> 
@@ -538,7 +538,7 @@
 																					
 							<li> 
 								<a href="#"><i class="la la-bell"></i> <span>Activities</span></a>
-							</li>							
+							</li>							 {% endcomment %}
 						</ul>
 					</div>
 				</div>
@@ -866,7 +866,7 @@
 
 			
 			<!-- Page Wrapper -->
-            <div class="page-wrapper">
+            <div class="page-wrapper" style="padding-left:2%;padding-top:5%;padding-right:2%;padding-bottom:2%">
 					
 				{% block content %}
 					<!-- Page Content -->

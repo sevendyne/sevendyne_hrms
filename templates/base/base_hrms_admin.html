@@ -53,10 +53,10 @@
 				
 				<!-- Logo -->
 				<div class="header-left">
-					<a href="admin-dashboard.html" class="logo">
+					<a href="{% url 'main:hrms_dashboard' %}" class="logo">
 						<img src="{%static 'assets/img/logo_svd.png'%}" width="60" height="60" alt="Logo">
 					</a>
-					<a href="admin-dashboard.html" class="logo2">
+					<a href="{% url 'main:hrms_dashboard' %}" class="logo2">
 						<img src="{%static 'assets/img/logo_svd.png'%}" width="60" height="60" alt="Logo">
 					</a>
 				</div>
@@ -443,7 +443,7 @@
 										<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 										<ul>
 											<li><a href="salary.html"> Employee Salary </a></li>
-											<li><a href="salary-view.html"> Payslip </a></li>
+											{% comment %} <li><a href="salary-view.html"> Payslip </a></li> {% endcomment %}
 											<li><a href="payroll-items.html"> Payroll Items </a></li>
 										</ul>
 									</li>
@@ -809,7 +809,7 @@
 								<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 								<ul>
 									<li><a href="{% url 'payroll:salaries' %}"> Employee Salary </a></li>
-									<li><a href="salary-view.html"> Payslip </a></li>
+									{% comment %} <li><a href="salary-view.html"> Payslip </a></li> {% endcomment %}
 									{% comment %} <li><a href="{% url 'payroll:payroll_items' %}"> Payroll Items </a></li> {% endcomment %}
 								</ul>
 							</li>
@@ -924,7 +924,7 @@
 							<li> 
 								<a href="users.html"><i class="la la-user-plus"></i> <span>Users</span></a>
 							</li> {% endcomment %}
-							<li class="submenu">
+							{% comment %} <li class="submenu">
 								<a href="#"><i class="la la-briefcase"></i> <span>Reports </span> <span class="menu-arrow"></span></a>
 								<ul>
 									<li><a href="#"> Expense Report </a></li>
@@ -939,7 +939,7 @@
 									<li><a href="#"> Leave Report </a></li>
 									<li><a href="#"> Daily Report </a></li>
 								</ul>
-							</li>
+							</li> {% endcomment %}
 							<li> 
 								<a href="{% url 'employee:leave_types' %}"><i class="la la-cog"></i> <span>Settings</span></a>
 							</li>
@@ -1587,7 +1587,7 @@
 
 			
 			<!-- Page Wrapper -->
-            <div class="page-wrapper">
+            <div class="page-wrapper" style="padding-left:2%;padding-top:5%;padding-right:2%;padding-bottom:2%">
 					
 				{% block content %}
 					<!-- Page Content -->

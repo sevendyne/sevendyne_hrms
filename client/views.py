@@ -33,7 +33,7 @@ def create_client(request):
             creator = request.user
             updator = request.user
 
-            if not Client.objects.filter(company=company).exists():
+            if not Client.objects.filter(company_name=company_name,company=company,is_deleted=False).exists():
                 Client( 
                     firstname = firstname,
                     lastname = lastname,

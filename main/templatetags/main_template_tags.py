@@ -1,3 +1,4 @@
+import json
 from django.template import Library
 
 register = Library()
@@ -21,3 +22,6 @@ def get_attendance(att,date):
     else:
         return "-"
 
+@register.filter
+def get_dynamic_field_value(salary, field_name):
+    return getattr(salary, field_name, '')

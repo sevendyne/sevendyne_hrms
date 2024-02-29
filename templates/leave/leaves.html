@@ -589,63 +589,7 @@
 	}
 	}
 
-	// Function to handle delete action
-	function handleDelete(pk) {
-		Swal.fire({
-			title: "Are you sure?",
-			text: "Once deleted, you will not be able to recover this HRMS Client!",
-			icon: "warning",
-			showCancelButton: true,
-			confirmButtonColor: "#3085d6",
-			cancelButtonColor: "#d33",
-			confirmButtonText: "Yes, delete it!"
-		})
-		.then((result) => {
-			if (result.isConfirmed) {
-				// If user confirms, send Fetch API request to delete
-				fetch('{% url "employee:delete_leave" pk=0 %}'.replace('0', pk), {
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						'X-CSRFToken': '{{ csrf_token }}'
-					},
-				})
-				.then(response => response.json())
-				.then(data => {
-					// Handle success response
-					if (data.status === "true") {
-						Swal.fire({
-							title: data.title,
-							text: data.message,
-							icon: "success",
-						})
-						.then((value) => {
-							// Redirect to the specified URL after success
-							window.location.href = data.redirect_url;
-						});
-					} else {
-						Swal.fire("Error", "An error occurred while deleting.", "error");
-					}
-				})
-				.catch(() => {
-					// Handle error
-					Swal.fire("Error", "An error occurred while processing the request.", "error");
-				});
-			} else {
-				Swal.fire("leave is safe!");
-			}
-		});
-	}
-
-	// Attach click event to delete button
-	document.querySelectorAll('.remove').forEach(function(el) {
-		el.addEventListener('click', function(e) {
-			e.preventDefault();
-			var pk = this.getAttribute('data-id');
-			handleDelete(pk);
-		});
-	});
-
+	
 </script>
 
 {% endblock %}
