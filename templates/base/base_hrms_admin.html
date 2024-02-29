@@ -390,9 +390,9 @@
 											<li><a href="attendance-employee.html">Attendance (Employee)</a></li> {% endcomment %}
 											<li><a href="{% url 'employee:departments' %}">Departments</a></li>
 											<li><a href="{% url 'employee:designations' %}">Designations</a></li>
-											<li><a href="timesheet.html">Timesheet</a></li>
+											{% comment %} <li><a href="timesheet.html">Timesheet</a></li>
 											<li><a href="shift-scheduling.html">Shift & Schedule</a></li>
-											<li><a href="overtime.html">Overtime</a></li>
+											<li><a href="overtime.html">Overtime</a></li> {% endcomment %}
 										</ul>
 									</li>
 									{% comment %} <li> 
@@ -744,7 +744,7 @@
 								</a>
 								<ul>
 									<li><a href="{% url 'employee:employees' %}">All Employees</a></li>
-									<li><a href="#">Holidays</a></li>
+									{% comment %} <li><a href="#">Holidays</a></li> {% endcomment %}
 									<li class="submenu">
 										<a href="{% url 'employee:leave_types' %}">Leave Management<span class="menu-arrow"></span></a>
 										<ul>
