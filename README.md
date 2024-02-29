@@ -1,35 +1,39 @@
 # sevendyne_hrms
 
-1. virtualenv venv
-2. source venv/bin/activate (on windows use "venv\Scripts\activate)
-3. pip install -r requirements.txt
-5. python manage.py makemigrations
-6. python manage.py migrate
-7. python manage.py loaddata states countries
-8.Create user groups and permissions:
+**Install dependencies**
 
-    ```bash
-    python manage.py create_groups_and_permissions
-    ```
+- sudo apt update
+- sudo apt install python3 python3-pip python3-venv git
+- source venv/bin/activate (on Windows use "venv\Scripts\activate")
+- pip install django
+- sudo apt-get install libjpeg-dev
+- pip install -r requirements.txt
+- python manage.py makemigrations
+- python manage.py migrate
+- python manage.py loaddata states countries
 
-9. Create a superuser:
+**Create user groups and permissions:**
 
-    ```bash
-    python manage.py createsuperuser
-    ```
+- python manage.py create_groups_and_permissions
 
-    Follow the prompts to set up the superuser account. For example:
-    
-    - Username: admin
-    - Email: [leave blank]
-    - Password: admin
+**Create a superuser:**
 
-    For Windows
-    
-    ```bash
-    python manage.py createsuperuser --username yourusername --email youremail@example.com --noinput - Add username and email address
-    ```
-10. sevendyne admin --- username - admin , password - admin
-11. hrms client --- username - hrmsclient1 , password - password@123 , hrmsclient1@example.com 
-12. employee1, password@123
+- python manage.py createsuperuser
 
+Follow the prompts to set up the superuser account. For example:
+- Username: admin
+- Email: [leave blank]
+- Password: admin
+
+For Windows
+
+- python manage.py createsuperuser --username yourusername --email youremail@example.com --noinput - Add username and email address
+
+**Test Credentials**
+
+- Admin: username - admin , password - admin
+- Client: username - hrmsclient1 , password - password@123, hrmsclient1@example.com 
+- Employee: username - employee1, password - password@123
+
+**Run the app**: python manage.py runserver 0.0.0.0:8000
+- Open your browser and type localhost:8000 and you will see the app running. Cheers!!!
