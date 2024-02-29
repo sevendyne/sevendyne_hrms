@@ -444,7 +444,7 @@
         <!--/ Pricing Slider-->
 
         <!-- Core Features List -->
-        <div class="main-feature-section ">
+        {% comment %} <div class="main-feature-section ">
             <div class="container">
                 <div class="row" data-aos="fade-up" data-aos-duration="2000">
                     <div class="common-title-section">
@@ -578,12 +578,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
         <!-- /Core Features List -->
 
 
         <!-- Pricing Plan List  -->
-        <div class="features-pricing-list" id="pricing">
+        {% comment %} <div class="features-pricing-list" id="pricing">
             <div class="container">
                 <div class="row" data-aos="fade-up" data-aos-duration="2000">
                     <div class="common-title-section">
@@ -676,11 +676,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
         <!-- /Pricing Plan List -->
 
         <!-- Our Reviews -->
-        <div class="reviews" id="reviews">
+        {% comment %} <div class="reviews" id="reviews">
             <div class="container">
                 <div class="row" data-aos="fade-up" data-aos-duration="1000">
                     <div class="commom-title-header d-flex justify-content-center">
@@ -690,11 +690,11 @@
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ad minim veniam.</p>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
         <!-- / Our Reviews -->
 
         <!-- Review Slider -->
-        <div class="review-slider justify-content-center">
+        {% comment %} <div class="review-slider justify-content-center">
             <div class="review-section">
                 <div class="container">
                     <div class="row justify-content-center review-quoated-slider" data-aos="fade-up" data-aos-duration="1000">
@@ -748,7 +748,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
         <!--/ Review Slider -->
 
         <!-- Testimonial Section -->
@@ -822,7 +822,7 @@
         <!-- /Tesimonial Section -->
 
         <!-- News and Events -->
-        <div class="main-news" id="blog">
+        {% comment %} <div class="main-news" id="blog">
             <div class="container">
                 <div class="row" data-aos="fade-up" data-aos-duration="2000">
                     <div class="common-title-section">
@@ -914,11 +914,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
         <!-- /News And Events -->
 		
 		<!-- Subscribe -->
-        <div class="main-subscribe " id="contact" data-aos="fade-up" data-aos-duration="2000">
+        {% comment %} <div class="main-subscribe " id="contact" data-aos="fade-up" data-aos-duration="2000">
             <div class="container">
                 <div class="row">
                     <div class="main-subscribe-content">
@@ -940,7 +940,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> {% endcomment %}
 		<!-- /Subscribe -->
 
         <!-- Footer-->
@@ -949,12 +949,14 @@
                 <div class="row align-items-center justify-content-center">
                     <div class="col-lg-6">
                         <div class="copy-rights-second">
-                            <p>Copyrights © 2023. All Rights Reserved By Smart HR</p>
+                            <p>Copyrights © 2023. All Rights Reserved By Sevendyne</p>
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <div class="company-logo-second">
-                            <p>a product of <img src="{% static 'assets_home/img/company-logo-2.png' %}" alt="Company-logo"></p>
+                            <p>A Product of Sevendyne
+                                {% comment %} <img src="{% static 'assets/img/logo_svd.png' %}" alt="Company-logo"> {% endcomment %}
+                            </p>
                         </div>
                     </div>
                 </div>
