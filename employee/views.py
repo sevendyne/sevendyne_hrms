@@ -599,14 +599,13 @@ def edit_employee(request, pk):
 @company_required
 def employee(request, pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Employee.objects.filter(pk=pk,company=current_company,is_deleted=False))
-
+    employee = get_object_or_404(Employee.objects.filter(pk=pk,company=current_company,is_deleted=False))
     context = {
-        'instance': instance,
+        'employee': employee,
         'title': 'Employee',
 
     }
-    return render(request, 'employee/employees.html', context)
+    return render(request, 'employee/employee-profile.html', context)
 
 @login_required
 @company_required
