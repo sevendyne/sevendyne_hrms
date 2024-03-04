@@ -1,36 +1,25 @@
 import datetime
+from decimal import Decimal, InvalidOperation
 import json
+from django.apps import apps
+from django.db.models import DecimalField, Sum
 from django.forms import model_to_dict
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from django.core.validators import MinValueValidator
 from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
+from num2words import num2words
 from employee.models import Employee
 
+from django.db import models
 from main.decorators import company_required
-from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company
+from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission
+# from payroll import models
 from payroll.forms import PayrollItemForm, SalaryForm, SalarySettingForm
-from payroll.models import  PayrollItem, Salary, SalaryData, SalarySetting
+from payroll.models import  PayrollItem, Salary, SalaryDynamicField, SalarySetting
 
-# def ajax_load_da(request):
-#     company=get_current_company(request)
-#     # Retrieve all SalarySetting objects for the company
-#     salary_settings = SalarySetting.objects.filter(company=company)
-
-#     # Select the first SalarySetting object
-#     salary_setting = salary_settings.first()
-    
-#     basic_salary = request.GET.get('basicsalary')
-#     print("basic salary ",basic_salary) # Calculate DA based on the basic salary and DA percentage
-#     da_value = float(basic_salary) * (float(salary_setting.da) / 100)
-#     data = da_value
-
-#     context = {
-#         'data' : data,
-#         'salary_setting':salary_setting
-#     }
-#     return render(request,'payroll/ajax_load_da.html',context)
 
 def ajax_load_salary_components(request):
     basic_salary = float(request.GET.get('basic_salary', 0))
@@ -305,15 +294,17 @@ def payroll_items(request):
 def edit_payroll_item(request, pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(PayrollItem.objects.filter(pk=pk,company=current_company, is_deleted=False))    
+    
     if request.method == "POST":
         form = PayrollItemForm(request.POST, instance=instance)
 
         if form.is_valid():
-            data = form.save(commit=False)
-            data.updator = request.user
-            data.date_updated = datetime.datetime.now()
-            data.save()
+            updated_payroll_item = form.save(commit=False)
+            updated_payroll_item.updator = request.user
+            updated_payroll_item.date_updated = datetime.datetime.now()
+            updated_payroll_item.save()
 
+            
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -379,274 +370,33 @@ def delete_payroll_item(request,pk):
     return HttpResponse(json.dumps(response_data), content_type='application/json')
    
 
-#salary crud starts here
-
-# @login_required
-# @company_required
-# def create_salary(request):
-#     current_company = get_current_company(request)    
-#     if request.method == 'POST':
-#         form = SalaryForm(request.POST)
-#         if form.is_valid():
-#             # payroll_item = form.cleaned_data['payroll_item']
-#             net_salary = form.cleaned_data['net_salary']
-#             employee = form.cleaned_data['employee']
-#             auto_id = get_auto_id(Salary)
-#             a_id = get_a_id(Salary,request)
-#             company =current_company
-#             creator = request.user
-#             updator = request.user
-
-#             if not Salary.objects.filter(employee=employee,company=current_company,is_deleted=False).exists():
-#                 salary_instance = Salary.objects.create(
-#                     employee=employee,
-#                     net_salary=net_salary,
-#                     auto_id=auto_id,
-#                     a_id=a_id,
-#                     company=company,
-#                     creator=creator,
-#                     updator=updator
-#                 )
-#                 # payroll_items = {}
-#                 # for key, value in request.POST.items():
-#                 #     if key != 'csrfmiddlewaretoken' and key != 'employee' and key != 'net_salary':
-#                 #         payroll_items[key] = value
-#                 #         print(f"{key} ------ {value}")
-
-#                 # # Print all payroll items data in the terminal
-#                 # print("All payroll items data:")
-#                 # for item_name, item_value in payroll_items.items():
-#                 #     print(f"{item_name}: {item_value}")
-
-#                 # Extract payroll items
-#                 payroll_items = {'Additions': {}, 'Deductions': {}}
-#                 for key, value in request.POST.items():
-#                     if key != 'csrfmiddlewaretoken' and key != 'employee' and key != 'net_salary':
-#                         payroll_item_name = key
-#                         if value:
-#                             payroll_item_value = value
-#                         else:
-#                             payroll_item_value = 0
-#                         print("payroll item name ",payroll_item_name)
-#                         print("payroll item value ",payroll_item_value)
-#                         # Get the category of the payroll item
-#                         # try:
-#                         #     payroll_item = PayrollItem.objects.filter(name=payroll_item_name, company=current_company, is_deleted=False)
-#                         #     if payroll_item:
-#                         #         category = payroll_item.category
-#                         #         payroll_items[category][payroll_item_name] = payroll_item_value  
-#                         #         print("payroll_item_name",payroll_item_name)
-#                                 # Save basic salary separately in Payslip model
-#                         if payroll_item_name == 'Basic Salary':
-#                             print("payroll item is basic salary")
-#                             # Retrieve the PayrollItem instance for basic salary
-#                             try:
-#                                 basic_salary_item = PayrollItem.objects.get(name='Basic Salary', category='Additions', company=current_company, is_deleted=False)
-#                                 print("basic_salary_item",basic_salary_item)
-#                                 # Create a Payslip instance for basic salary
-#                                 PaySlip.objects.create(
-#                                     company=company,
-#                                     employee=employee,
-#                                     salary=salary_instance,
-#                                     payroll_item=basic_salary_item,
-#                                     value=payroll_item_value,
-#                                     category='Additions'  # Assuming basic salary is always an addition
-#                                 )
-#                             except PayrollItem.DoesNotExist:
-#                                 print("payroll item with basic salary not exist")
-#                                 pass
-
-#                         else:       
-#                             print("payroll item is not basic salary")
-#                             # if payroll_item_name == 'Basic Salary':
-#                             #     print("basic salary comes in else part also")
-#                             # PaySlip.objects.bulk_create([
-#                             #     PaySlip(salary=salary_instance, payroll_item=payroll_item, value=value, category=category)
-#                             #     for payroll_item, value in payroll_items[category].items()
-                
-#                 # Create PaySlip instances for other payroll items
-#                 for category, items in payroll_items.items():
-#                     print(f"\nCategory: {category}")
-#                     for item_name, item_value in items.items():
-#                         print(f"{item_name}: {item_value}")
-#                         payroll_item = PayrollItem.objects.get(name=item_name, company=current_company, is_deleted=False)
-#                         PaySlip.objects.bulk_create([
-#                             PaySlip(salary=salary_instance, payroll_item=payroll_item, value=item_value, category=category)
-#                         ])
-
-#                 # Now 'payroll_items' dictionary contains the payroll items data grouped by category
-#                 payslips = PaySlip.objects.all()
-#                 print("payslips",payslips)
-#                 # Print all payroll items data in the terminal
-#                 print("All payroll items data:")
-#                 for category, items in payroll_items.items():
-#                     print(f"\nCategory: {category}")
-#                     for item_name, item_value in items.items():
-#                         print(f"{item_name}: {item_value}")
-
-
-#                 response_data = {
-#                     "status": "true",
-#                     "title": "Successfully Created",
-#                     "message": "Salary created successfully.",
-#                     "redirect": "true",
-#                     "redirect_url": reverse('payroll:salaries')
-#                 }
-            
-#             else:               
-#                 response_data = {
-#                     "status": "false",
-#                     "stable": "true",
-#                     "title": "Already exists",
-#                     "message": "Salary already exists",                        
-#                 }
-#         else:
-#             message = generate_form_errors(form, formset=False)
-#             response_data = {
-#                 "stable": "true",
-#                 "status": "form_error",
-#                 "title": "Form validation error",
-#                 "message": str(message),               
-#             }
-#         return HttpResponse(json.dumps(response_data), content_type='application/json')
-#     else:
-#         form = SalaryForm()
-#         addition_payroll_items = PayrollItem.objects.filter(company=current_company,category='Additions')
-#         deduction_payroll_items = PayrollItem.objects.filter(company=current_company,category='Deductions')
-        
-#         context = {
-#             "title": "Create Salary",
-#             "form": form,
-#             'addition_payroll_items': addition_payroll_items,
-#             'deduction_payroll_items': deduction_payroll_items,
-#             "redirect": "true",
-#             "create":True
-#         }
-        
-#         return render(request, 'payroll/salary.html', context)
-
-# @login_required
-# @company_required
-# def create_salary(request):
-#     current_company = get_current_company(request)
-#     if request.method == 'POST':
-#         form = SalaryForm(request.POST)
-#         if form.is_valid():
-#             net_salary = form.cleaned_data['net_salary']
-#             employee = form.cleaned_data['employee']
-#             auto_id = get_auto_id(Salary)
-#             a_id = get_a_id(Salary,request)
-#             company = current_company
-#             creator = request.user
-#             updator = request.user
-
-#             if not Salary.objects.filter(employee=employee, company=current_company, is_deleted=False).exists():
-#                 # salary_instance = Salary.objects.create(
-#                 #     employee=employee,
-#                 #     net_salary=net_salary,
-#                 #     auto_id=auto_id,
-#                 #     a_id=a_id,
-#                 #     company=company,
-#                 #     creator=creator,
-#                 #     updator=updator
-#                 # )
-
-            
-#                 payroll_items = {'Additions': [], 'Deductions': []}
-#                 for key, value in request.POST.items():
-#                     if key != 'csrfmiddlewaretoken' and key != 'employee' and key != 'net_salary':
-#                         payroll_item_name = key
-#                         if value:
-#                             payroll_item_value = value
-#                         else:
-#                             payroll_item_value = 0
-
-#                         # Fetch the payroll items matching the name, company, and not deleted
-#                         payroll_items_queryset = PayrollItem.objects.filter(name=payroll_item_name, company=current_company, is_deleted=False)
-
-#                         # Iterate over each payroll item in the queryset
-#                         for payroll_item in payroll_items_queryset:
-#                             # Determine category and append to corresponding list
-#                             category = payroll_item.category
-#                             payroll_items[category].append({'item': payroll_item, 'value': payroll_item_value})
-
-               
-
-#                 response_data = {
-#                     "status": "true",
-#                     "title": "Successfully Created",
-#                     "message": "Salary created successfully.",
-#                     "redirect": "true",
-#                     "redirect_url": reverse('payroll:salaries')
-#                 }
-            
-#             else:               
-#                 response_data = {
-#                     "status": "false",
-#                     "stable": "true",
-#                     "title": "Already exists",
-#                     "message": "Salary already exists",                        
-#                 }
-#         else:
-#             message = generate_form_errors(form, formset=False)
-#             response_data = {
-#                 "stable": "true",
-#                 "status": "form_error",
-#                 "title": "Form validation error",
-#                 "message": str(message),               
-#             }
-#         return HttpResponse(json.dumps(response_data), content_type='application/json')
-#     else:
-#         form = SalaryForm()
-#         addition_payroll_items = PayrollItem.objects.filter(company=current_company, category='Additions')
-#         deduction_payroll_items = PayrollItem.objects.filter(company=current_company, category='Deductions')
-        
-#         context = {
-#             "title": "Create Salary",
-#             "form": form,
-#             'addition_payroll_items': addition_payroll_items,
-#             'deduction_payroll_items': deduction_payroll_items,
-#             "redirect": "true",
-#             "create":True
-#         }
-        
-#         return render(request, 'payroll/salary.html', context)
 
 @login_required
 @company_required
 def create_salary(request):
     current_company = get_current_company(request)
+    
     if request.method == 'POST':
         form = SalaryForm(request.POST)
         if form.is_valid():
             net_salary = form.cleaned_data['net_salary']
+            selected_date = form.cleaned_data['date']
             employee = form.cleaned_data['employee']
-            # basic_salary = request.POST.get('Basic Salary')
             auto_id = get_auto_id(Salary)
             a_id = get_a_id(Salary,request)
             company = current_company
             creator = request.user
-            updator = request.user
+            updator = request.user    
 
-            # Retrieve values of addition and deduction payroll items
-            # additions = []
-            # deductions = []
-            # for key, value in request.POST.items():
-            #     if key.startswith('addition_'):
-            #         additions.append((key.split('_')[1], value))
-            #     elif key.startswith('deduction_'):
-            #         deductions.append((key.split('_')[1], value))
+            month = selected_date.month
+            year = selected_date.year        
 
-
-            # Ensure the employee is valid
-            # employee_instance = get_object_or_404(Employee, pk=employee.pk, is_deleted=False)
-
-
-            if not Salary.objects.filter(employee=employee, company=current_company, is_deleted=False).exists():
+            if not Salary.objects.filter(date__month=month,date__year=year,employee=employee, company=current_company, is_deleted=False).exists():
                 # Create the Salary instance
-                Salary.objects.create(
+                salary=Salary.objects.create(
                     employee=employee,
                     net_salary=net_salary,
+                    date = selected_date ,
                     auto_id=auto_id,
                     a_id=a_id,
                     company=company,
@@ -654,23 +404,51 @@ def create_salary(request):
                     updator=updator
                 )
                 
-                # # Fetch all relevant payroll items in one database query
-                # payroll_items = PayrollItem.objects.filter(name__in=request.POST.keys(), company=current_company, is_deleted=False)
+                # Retrieve dynamic fields for additions and deductions
+                additions_fields = PayrollItem.objects.filter(company=current_company, category='Additions', is_deleted=False)
+                deductions_fields = PayrollItem.objects.filter(company=current_company, category='Deductions', is_deleted=False)
 
-                # # Process payroll items from the form data
-                # for payroll_item in payroll_items:
-                #     payroll_item_value = request.POST.get(payroll_item.name, 0)
-                #     if payroll_item_value:
-                #         # Create PaySlip instance for each matching payroll item
-                #         category = payroll_item.category
-                #         PaySlip.objects.create(
-                #             salary=salary_instance,
-                #             payroll_items=payroll_item,
-                #             # value=payroll_item_value,
-                #             # category=category
-                #         )
-                #         # Add the payroll item to the many-to-many field
-                #         payslip.payroll_items.add(payroll_item)
+                # Save dynamic fields for additions
+                for item in additions_fields:
+                    field_name = item.name
+                    field_value = request.POST.get(field_name, 0)
+                    try:
+                        # Attempt to convert field_value to Decimal
+                        field_value = Decimal(field_value)
+                    except (InvalidOperation, ValueError):
+                        # If conversion fails, log the error and use 0 as a default value
+                        print(f"Invalid input for {field_name}: {field_value}. Defaulting to 0.")
+                        field_value = Decimal('0.00')
+
+                    # Check if field_value is NaN (Not a Number)
+                    if field_value.is_nan():
+                        # If so, default it to 0
+                        field_value = Decimal('0.00')
+
+        
+                    SalaryDynamicField.objects.create(company=current_company,employee=employee, salary=salary, field_name=field_name, field_value=field_value, category='Additions')
+
+                # Save dynamic fields for deductions
+                for item in deductions_fields:
+                    field_name = item.name
+                    field_value = request.POST.get(field_name, 0)
+                    try:
+                        # Attempt to convert field_value to Decimal
+                        field_value = Decimal(field_value)
+                    except (InvalidOperation, ValueError):
+                        # If conversion fails, log the error and use 0 as a default value
+                        print(f"Invalid input for {field_name}: {field_value}. Defaulting to 0.")
+                        field_value = Decimal('0.00')
+
+                    # Check if field_value is NaN (Not a Number)
+                    if field_value.is_nan():
+                        # If so, default it to 0
+                        field_value = Decimal('0.00')
+
+                    SalaryDynamicField.objects.create(company=current_company,employee=employee, salary=salary, field_name=field_name, field_value=field_value, category='Deductions')
+
+               
+                
                 response_data = {
                     "status": "true",
                     "title": "Successfully Created",
@@ -696,219 +474,27 @@ def create_salary(request):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = SalaryForm()
-        addition_payroll_items = PayrollItem.objects.filter(company=current_company, category='Additions')
-        deduction_payroll_items = PayrollItem.objects.filter(company=current_company, category='Deductions')
-        
+        # Retrieve dynamic fields for additions and deductions
+        additions_fields = [item.name for item in PayrollItem.objects.filter(company=current_company, category='Additions', is_deleted=False)]
+        deductions_fields = [item.name for item in PayrollItem.objects.filter(company=current_company, category='Deductions', is_deleted=False)]
+
         context = {
             "title": "Create Salary",
             "form": form,
-            'addition_payroll_items': addition_payroll_items,
-            'deduction_payroll_items': deduction_payroll_items,
+            "additions_fields": additions_fields,
+            "deductions_fields": deductions_fields,
             "redirect": "true",
             "create":True
         }
         
         return render(request, 'payroll/salary.html', context)
     
-def process_salary_data(request):
-    print("process salary data request in views")
-    current_company = get_current_company(request)
-    form_data = request.POST.dict() 
-
-    print("form data/post dict is ", form_data)
-    employee_id = request.POST.get('employee')  # Get employee
-    
-    # Retrieve the Employee instance corresponding to the employee_id
-    employee = Employee.objects.get(id=employee_id)
-    print("employee", employee)
-    
-    salary_data_instance, created = SalaryData.objects.get_or_create(
-        company=current_company,
-        employee=employee,
-        is_deleted=False
-    )
-    print("salarydata", salary_data_instance)
-
-    # Update dynamic fields
-    for key, value in form_data.items():
-        if key not in ["employee", "net_salary"]:
-            field_name = key.split('[')[-1][:-1]  # Extract field name from "formData[Field_Name]"
-            setattr(salary_data_instance, field_name, value)
-            salary_data_instance.dynamic_field_names.add(field_name)
-            print("salary_data_instance.dynamic_field_names before save", salary_data_instance.dynamic_field_names)
-    
-    salary_data_instance.save()
-    print("salary_data_instance.dynamic_field_names after save", salary_data_instance.dynamic_field_names)
-    salary_data = SalaryData.objects.get(company=current_company,employee=employee,is_deleted=False)
-    dynamic_fields = salary_data.get_dynamic_fields()
-    print("dynamic fields", dynamic_fields)
-
-    return JsonResponse({'success': True})
-
-# def process_salary_data(request):
-#     print("process salary data request in views")
-#     current_company = get_current_company(request)
-#     form_data = request.POST.dict() 
-
-#     print("form data/post dict is ", form_data)
-#     employee_id = request.POST.get('employee')  # Get employee
-#     # net_salary = request.POST.get('net_salary')  # Get net_salary
-    
-#     # print("form_data",form_data)
-#     # print("employee id",employee_id)
-#     # print("net_salary",net_salary)
-
-#     # employee_id = form_data.pop('employee')  # Remove employee from form_data and get its value
-#     # net_salary = form_data.pop('net_salary')  # Remove net_salary from form_data and get its value
-
-    
-#     # Retrieve the Employee instance corresponding to the employee_id
-#     employee = Employee.objects.get(id=employee_id)
-#     print("employee",employee)
-#     if SalaryData.objects.filter(company=current_company,employee=employee,is_deleted=False).exists():
-#         salary_data_instance = SalaryData.objects.get(company=current_company,employee=employee,is_deleted=False)
-#         print("salarydata", salary_data_instance)
-#     # if  not SalaryData.objects.filter(company=current_company,employee=employee,is_deleted=False).exists():
-#     if salary_data_instance:
-#         # If an instance already exists, update its dynamic fields
-#         for key, value in form_data.items():
-#             if key not in ["employee", "net_salary"]:
-#                 field_name = key.split('[')[-1][:-1]  # Extract field name from "formData[Field_Name]"
-#                 setattr(salary_data_instance, field_name, value)
-#                 salary_data_instance.dynamic_field_names.add(field_name)
-#                 print("salary_data_instance.dynamic_field_names before save",salary_data_instance.dynamic_field_names)
-#         salary_data_instance.save()
-#         print("salary_data_instance.dynamic_field_names after save",salary_data_instance.dynamic_field_names)
-#         # print("salary_data_instance.get_dynamic_fields after save ",salary_data_instance.get_dynamic_fields)            
-#     else:
-#         # If no instance exists, create a new one
-#         salary_data_instance = SalaryData.create_dynamic_fields(current_company, form_data)
-#         # Add the dynamic field names to the instance
-#         salary_data_instance.dynamic_field_names = set([key.split('[')[-1][:-1] for key in form_data.keys() if key not in ["employee", "net_salary"]])
-#         salary_data_instance.save()
-#         print("salary_data_instance.dynamic_field_names after save",salary_data_instance.dynamic_field_names)
-
-#     dynamic_field = salary_data_instance.get_dynamic_fields()
-#     print("dynamic field get in views ",dynamic_field)
-#     return JsonResponse({'success': True})
-# # except Exception as e:
-# #     return JsonResponse({'success': False, 'error': str(e)})
-#     # else:
-#     #     print("Salary already exists for this employee")
-#     #     return JsonResponse({'success': False, 'error': 'Salary already exists for this employee'})
-@login_required
-@company_required
-def payslip(request,pk):
-    print("payslip request in views got")
-    current_company = get_current_company(request)
-    employee = Employee.objects.get(company=current_company,id=pk)
-    salary_data = get_object_or_404(SalaryData.objects.filter(company=current_company,is_deleted=False,employee__id=pk))
-    print("salary data of employee",salary_data)
-    # Get all field names of the SalaryData model
-    all_field_names = [field.name for field in SalaryData._meta.get_fields()]
-    print("all_field_names",all_field_names)
-    # Get the values of all fields for the instance
-    all_field_values = model_to_dict(salary_data)
-    print("all_field_values",all_field_values)
-    # Combine field names and values into a dictionary
-    fields_data = dict(zip(all_field_names, all_field_values.values()))
-    print("fields_data",fields_data)
-
-    dynamic_fields = salary_data.get_dynamic_fields()
-    print("dynamic_fields", dynamic_fields)
-    
-    # Get dynamic fields and their values
-    dynamic_field_names = salary_data.dynamic_field_names
-    print("dynamic_field names", dynamic_field_names)
-    salarydata = SalaryData.objects.all()
-
-    # Iterate over each SalaryData object in the queryset
-    for data in salarydata:
-        # Retrieve all regular fields of the current SalaryData object
-        regular_fields = [(field.name, getattr(data, field.name)) for field in data._meta.fields]
-        
-        # Retrieve all dynamic fields of the current SalaryData object
-        dynamic_fields = [(field_name, getattr(data, field_name)) for field_name in data.dynamic_field_names]
-        print("dynamic_fields",dynamic_fields)
-        # Combine regular and dynamic fields
-        all_fields = regular_fields + dynamic_fields
-
-        # Print the fields
-        for field_name, field_value in all_fields:
-            print(f"{field_name}: {field_value}")
-
-
-    # # Combine dynamic field names and their values into a dictionary
-    # dynamic_fields_data = {field: getattr(salary_data, field) for field in dynamic_fields}
-    # print("dynamic_fields_data", dynamic_fields_data)
-
-    # # Retrieve dynamic fields
-    # dynamic_fields = salary_data.dynamic_field_names
-    # print("dynamic_fields",dynamic_fields)
-    # dynamic_field_data = {field: getattr(salary_data, field) for field in dynamic_fields}
-    # print("dynamic_field_data",dynamic_field_data)
-    # print("dynamic_fields",dynamic_fields)
-    # dynamic_fields_data = {}
-    # for field in dynamic_fields:
-    #     dynamic_fields_data[field.verbose_name] = getattr(salary_data, field.name)
-
-    # print("dynamic_fields_data",dynamic_fields_data)
-
-
-    # Iterate through each SalaryData instance
-    # for salary_data in salary_datas:
-        # Print the fields and their values for the current instance
-    # Print the dynamic fields and their values for the salary_data instance
-    # dynamic_fields = {}  # Dictionary to store dynamic field values
-    # print("salary_data.get_dynamic_fields()",salary_data.get_dynamic_fields())
-    # # Iterate through each dynamic field of the salary_data instance
-    # for field in salary_data.get_dynamic_fields():
-    #     # Use getattr to access the value of each dynamic field
-    #     field_value = getattr(salary_data, field.name)
-    #     # Add the field name and value to the dynamic_fields dictionary
-    #     dynamic_fields[field.name] = field_value
-    #     print("dynamic fields in pay slip",dynamic_fields)
-    #     # Add a separator for better readability between instances
-    #     print("=" * 20)
-    # instance = get_object_or_404(SalaryData.objects.filter(employee__pk=pk,company=current_company,is_deleted=False))
-
-    context = {
-        'company':current_company,
-        'employee':employee,
-        'salary_data':salary_data,
-        'fields_data':fields_data,
-        'dynamic_fields': dynamic_fields, 
-        # 'instance': instance,
-        'title': 'Pay Slip',
-
-    }
-    return render(request, "payroll/payslip.html", context)
-
-
-# @login_required
-# @company_required
-# def payslip(request, pk):
-    
-#     current_company = get_current_company(request)
-
-#     salary_instance = get_object_or_404(Salary.objects.filter(pk=pk, company=current_company, is_deleted=False))
-#     # employee_instance = salary_instance.employee  # Retrieve the employee associated with the salary
-    
-#     instance = get_object_or_404(PaySlip.objects.filter(salary=salary_instance, is_deleted=False))
-
-#     context = {
-#         'instance': instance,
-#         'title': 'Pay Slip',
-#     }
-#     return render(request, "payroll/payslip.html", context)
-
 
 @login_required
 @company_required
 def salaries(request):
     current_company = get_current_company(request)
-    salaries = Salary.objects.filter(company=current_company,is_deleted=False)
-    
+    salaries = Salary.objects.filter(company=current_company,is_deleted=False)    
     paginator = Paginator(salaries,1000000000000)
     page_number = request.GET.get('page')
     salaries = paginator.get_page(page_number)
@@ -943,7 +529,6 @@ def edit_salary(request, pk):
 
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
@@ -969,21 +554,6 @@ def edit_salary(request, pk):
 
 @login_required
 @company_required
-def salary(request,pk):
-    current_company = get_current_company(request)
-    instance = get_object_or_404(Salary.objects.filter(pk=pk,company=current_company,is_deleted=False))
-
-    context = {
-        'instance': instance,
-        'title': 'Salary',
-
-    }
-    return render(request, "payroll/salary.html", context)
-
-
-
-@login_required
-@company_required
 def delete_salary(request,pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Salary.objects.filter(pk=pk,company=current_company,is_deleted=False))
@@ -998,4 +568,170 @@ def delete_salary(request,pk):
         "redirect_url" : reverse('payroll:salaries')
     }
     return HttpResponse(json.dumps(response_data), content_type='application/json')
-   
+
+
+@login_required
+@company_required
+def payslip(request,pk): 
+    current_company = get_current_company(request)    
+    currency=current_company.country.currency
+    currency_symbol = current_company.country.currency_symbol
+    salaries = Salary.objects.filter(company=current_company,is_deleted=False)
+    instance = Salary.objects.get(pk=pk,company=current_company,is_deleted=False)
+    # Access the Employee instance directly from the Salary instance
+    employee = instance.employee
+    dynamic_fields =  SalaryDynamicField.objects.filter(company=current_company,employee=employee,is_deleted=False)
+    # Filter SalaryDynamicField objects for the current Salary instance, separated by category
+    additions_fields = SalaryDynamicField.objects.filter(company=current_company,employee=employee, salary=instance, category='Additions')
+    deductions_fields = SalaryDynamicField.objects.filter(company=current_company,employee=employee, salary=instance, category='Deductions')
+     # Calculate total of additions
+    total_additions = additions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+    
+    # Calculate total of deductions
+    total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+    # Convert net_salary to words
+    # Convert net_salary to words without specifying currency
+    net_salary_in_words = num2words(instance.net_salary, lang='en')
+
+    # # Check if there's a fractional part to handle "paise"
+    # net_salary_parts = str(instance.net_salary).split('.')
+    # if len(net_salary_parts) > 1 and int(net_salary_parts[1]) > 0:
+    #     rupees_part = num2words(net_salary_parts[0], lang='en')
+    #     paise_part = num2words(net_salary_parts[1], lang='en')
+    #     net_salary_in_words = f"{rupees_part} INDIAN RUPEES AND {paise_part} PAISE"
+    # else:
+    #     net_salary_in_words += " RUPEES"
+
+    # Convert the entire string to uppercase
+    net_salary_in_words = net_salary_in_words.upper()
+
+
+    context = {
+        'instance': instance,
+        'title': 'PaySlip',
+        'currency': currency,
+        'currency_symbol':currency_symbol,
+        'dynamic_fields': dynamic_fields,
+        'additions_fields': additions_fields,
+        'deductions_fields': deductions_fields,
+        'total_additions': total_additions,
+        'total_deductions': total_deductions,
+        'net_salary_in_words': net_salary_in_words
+    }
+    return render(request, "payroll/payslip.html", context)
+
+@login_required
+@user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
+def payslips_employee(request):
+    print("payslips for employee")
+    try:
+        print("employee payslip request")
+        employee = get_object_or_404(Employee, user=request.user, is_deleted=False)
+        print("employee",employee)
+        company=employee.company
+        # payslips=PaySlip.objects.filter(company=company,is_deleted=False)
+        # print("payslips",payslips)
+        payslips = Salary.objects.filter(company=company,employee=employee,is_deleted=False)
+        print("payslips",payslips)
+        salary_instance = Salary.objects.get(company=company,is_deleted=False)
+        # Filter SalaryDynamicField objects for the current Salary instance, separated by category
+        additions_fields = SalaryDynamicField.objects.filter(company=company,employee=employee, salary=salary_instance, category='Additions')
+        deductions_fields = SalaryDynamicField.objects.filter(company=company,employee=employee, salary=salary_instance, category='Deductions')
+        # Calculate total of additions
+        total_additions = additions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+        
+        # Calculate total of deductions
+        total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+        # Convert net_salary to words
+        # Convert net_salary to words without specifying currency
+        net_salary_in_words = num2words(salary_instance.net_salary, lang='en')
+
+        # # Check if there's a fractional part to handle "paise"
+        # net_salary_parts = str(salary_instance.net_salary).split('.')
+        # if len(net_salary_parts) > 1 and int(net_salary_parts[1]) > 0:
+        #     rupees_part = num2words(net_salary_parts[0], lang='en')
+        #     paise_part = num2words(net_salary_parts[1], lang='en')
+        #     net_salary_in_words = f"{rupees_part} INDIAN RUPEES AND {paise_part} PAISE"
+        # else:
+        #     net_salary_in_words += " RUPEES"
+
+        # Convert the entire string to uppercase
+        net_salary_in_words = net_salary_in_words.upper()
+
+        context = {
+            'payslips': payslips,
+            'title': 'PaySlip',
+            'additions_fields': additions_fields,
+            'deductions_fields': deductions_fields,
+            'total_additions': total_additions,
+            'total_deductions': total_deductions,
+            'net_salary_in_words': net_salary_in_words
+
+        }
+        return render(request, "payroll/payslips-employee.html", context)
+    except Employee.DoesNotExist:
+        # Debugging: Print a message if the Employee object is not found
+        print("Employee not found for the user.")
+        return HttpResponse("Employee not found for the user.")
+    except Exception as e:
+        # Debugging: Print any other exceptions that might occur
+        print("Exception:", e)
+        return HttpResponse(f"An error occurred: {str(e)}")
+    
+@login_required
+@user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
+def employee_payslip(request,pk):
+    try:
+        print("employee payslip request")
+        employee = get_object_or_404(Employee, user=request.user, is_deleted=False)
+        print("employee",employee)
+        company=employee.company
+        currency=company.country.currency
+        currency_symbol = company.country.currency_symbol
+        instance = Salary.objects.get(company=company,is_deleted=False)
+        # Filter SalaryDynamicField objects for the current Salary instance, separated by category
+        additions_fields = SalaryDynamicField.objects.filter(company=company,employee=employee, salary=instance, category='Additions')
+        deductions_fields = SalaryDynamicField.objects.filter(company=company,employee=employee, salary=instance, category='Deductions')
+        # Calculate total of additions
+        total_additions = additions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+        
+        # Calculate total of deductions
+        total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+        # Convert net_salary to words
+        # Convert net_salary to words without specifying currency
+        net_salary_in_words = num2words(instance.net_salary, lang='en')
+
+        # Check if there's a fractional part to handle "paise"
+        # net_salary_parts = str(instance.net_salary).split('.')
+        # if len(net_salary_parts) > 1 and int(net_salary_parts[1]) > 0:
+        #     rupees_part = num2words(net_salary_parts[0], lang='en')
+        #     paise_part = num2words(net_salary_parts[1], lang='en')
+        #     net_salary_in_words = f"{rupees_part} INDIAN RUPEES AND {paise_part} PAISE"
+        # else:
+        #     net_salary_in_words += " RUPEES"
+
+        # Convert the entire string to uppercase
+        net_salary_in_words = net_salary_in_words.upper()
+        print("instance.company",instance.company)
+        context = {
+            'instance': instance,
+            'title': 'PaySlip',
+            'currency': currency,
+            'currency_symbol':currency_symbol,
+            'additions_fields': additions_fields,
+            'deductions_fields': deductions_fields,
+            'total_additions': total_additions,
+            'total_deductions': total_deductions,
+            'net_salary_in_words': net_salary_in_words
+
+        }
+        return render(request, "payroll/payslip-employee.html", context)
+    except Employee.DoesNotExist:
+        # Debugging: Print a message if the Employee object is not found
+        print("Employee not found for the user.")
+        return HttpResponse("Employee not found for the user.")
+    except Exception as e:
+        # Debugging: Print any other exceptions that might occur
+        print("Exception:", e)
+        return HttpResponse(f"An error occurred: {str(e)}")
+    

@@ -525,6 +525,24 @@
 	});
 	}
 
+	function CreateDynamicFieldsPayslip() {
+		// Make an AJAX request to the URL
+		$.ajax({
+			url: "{% url 'create_dynamic_payslip_fields' %}", // Replace with your actual URL or use a variable to store the URL
+			type: "GET", // or "POST" if needed
+			success: function(response) {
+				// Handle the response here, if needed
+				console.log("Dynamic fields for payslip created successfully.");
+				// Redirect to the desired URL
+				window.location.href = "{% url 'create_dynamic_payslip_fields' %}";
+			},
+			error: function(xhr, status, error) {
+				// Handle errors here
+				console.error("Error creating dynamic fields for payslip:", error);
+			}
+		});
+	}
+	
 	function showSweetAlert(message, status, redirectUrl) {
 	console.log('showSweetAlert called');
 	console.log('message:', message);
@@ -532,6 +550,7 @@
 	console.log('redirectUrl:', redirectUrl);
 
 	if (status === 'true') {
+		CreateDynamicFieldsPayslip()
 		Swal.fire({
 		icon: 'success',
 		title: 'Success!',
