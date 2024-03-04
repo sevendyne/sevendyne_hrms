@@ -99,14 +99,7 @@ def hrms_dashboard(request):
     
 @login_required
 @user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
-# @company_required
 def employee_dashboard(request):
-    # print("employee dashboard request got")
-    # # Debugging: Print the user to verify it's the correct user
-    # print("User:", request.user)
-    # employees = Employee.objects.filter(is_deleted=False)
-    # print("all employees",employees)
-    # current_company = get_current_company(request)
     try:
         # Retrieve the HrmsClient object associated with the logged-in user
         employee = get_object_or_404(Employee, user=request.user, is_deleted=False)
@@ -123,10 +116,10 @@ def employee_dashboard(request):
         }
     
         return render(request, "dashboard/employee-dashboard.html", context=context)
-    except HrmsClient.DoesNotExist:
-        # Debugging: Print a message if the HrmsClient object is not found
-        print("HrmsClient not found for the user.")
-        return HttpResponse("HrmsClient not found for the user.")
+    except Employee.DoesNotExist:
+        # Debugging: Print a message if the Employee object is not found
+        print("Employee not found for the user.")
+        return HttpResponse("Employee not found for the user.")
     except Exception as e:
         # Debugging: Print any other exceptions that might occur
         print("Exception:", e)

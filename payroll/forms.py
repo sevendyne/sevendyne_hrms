@@ -53,7 +53,8 @@ class SalaryForm(forms.ModelForm):
         exclude = ['creator', 'updator', 'auto_id','a_id','company','is_deleted'] 
         widgets = {
             'net_salary': forms.TextInput(attrs={'class': 'required form-control '}),
-            'employee': Select(attrs={'class': 'required form-control selectpicker'})       
+            'employee': Select(attrs={'class': 'required form-control selectpicker'}),
+            'date': DateInput(attrs={'class' : 'datetimepicker form-control'})       
         }
         error_messages = {
             'net_salary': {
@@ -61,5 +62,23 @@ class SalaryForm(forms.ModelForm):
             },
             'employee': {
                 'required': _("Employee field is required.")
+            },
+            'date': {
+                'required': _("date field is required."),
             }
         }
+
+
+# class GeneratePayslipForm(forms.ModelForm):
+#     date = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+#     class Meta:
+#         model = PaySlip
+#         fields = ['date'] 
+#         widgets = {       
+#             'date': DateInput(format = '%Y-%m-%d',attrs={'type': 'date','class' : ' form-control'}),
+#         }
+#         error_messages = {
+#             'date' : {
+#                 'required' : ("date field is required."),
+#             }
+#         }

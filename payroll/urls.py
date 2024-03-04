@@ -22,10 +22,13 @@ urlpatterns = [
     path("salaries/", views.salaries, name="salaries"),
     re_path(r'^salary/edit/(?P<pk>.*)/$', views.edit_salary, name='edit_salary'),
     re_path(r'^delete-salary/(?P<pk>.*)/$', views.delete_salary, name='delete_salary'),    
-    re_path(r'^salary/(?P<pk>.*)/$', views.salary, name='salary'),
     
-    path('salary-data/create/', views.process_salary_data, name='process_salary_data'),
-    # path('payslip/', views.payslip, name='payslip'),
+    # path('employees/payslips/hrms-dashboard/', views.employees_payslips, name='employees_payslips'),
     re_path(r'^payslip/(?P<pk>.*)/$', views.payslip, name='payslip'),
+    
+    path('payslips/employee/employee-dashboard/', views.payslips_employee, name='payslips_employee'),
+    re_path(r'^employee/payslip/employee/(?P<pk>.*)/$', views.employee_payslip, name='employee_payslip'),
 
+    # re_path(r'^generate/payslip/(?P<pk>.*)/$', views.generate_payslip, name='generate_payslip')
+    
 ]

@@ -10,15 +10,15 @@
 	<div class="page-header">
 		<div class="row align-items-center">
 			<div class="col">
-				<h3 class="page-title">Employee Salary</h3>
+				<h3 class="page-title">PaySlips</h3>
 				<ul class="breadcrumb">
 					<li class="breadcrumb-item"><a href="{% url 'main:hrms_dashboard' %}">Dashboard</a></li>
-					<li class="breadcrumb-item active">Salary</li>
+					<li class="breadcrumb-item active">PaySlips</li>
 				</ul>
 			</div>
-			<div class="col-auto float-end ms-auto">
-				<a href="#" class="btn add-btn" onclick="loadCreateSalaryForm()" data-bs-toggle="modal" data-bs-target="#add_salary"><i class="fa-solid fa-plus"></i> Generate PaySlip</a>
-			</div>
+			{% comment %} <div class="col-auto float-end ms-auto">
+				<a href="#" class="btn add-btn" onclick="loadCreateSalaryForm()" data-bs-toggle="modal" data-bs-target="#add_salary"><i class="fa-solid fa-plus"></i> Add Salary</a>
+			</div> {% endcomment %}
 		</div>
 	</div>
 	<!-- /Page Header -->
@@ -80,33 +80,32 @@
 				<table class="table table-striped custom-table datatable">
 					<thead>
 						<tr>
-							<th>Employee</th>
-							<th>Employee ID</th>
-							<th>Email</th>
-							<th>Join Date</th>
-							<th>Role</th>
+							<th>Sl.No</th>
+							<th>Employee Name</th>
+							{% comment %} <th>Email</th> {% endcomment %}
 							<th>Month</th>
+							{% comment %} <th>Role</th> {% endcomment %}
 							<th>Salary</th>
 							<th>Payslip</th>
 							<th class="text-end">Action</th>
 						</tr>
 					</thead>
 					<tbody>
-						{% for salary in salaries %}
+						{% for payslip in payslips %}
 						<tr>
-							<td>
+							{% comment %} <td>
 								<h2 class="table-avatar">
 									<a href="#" class="avatar"><img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User Image"></a>
 									<a href="profile.html">{{ salary.employee.get_full_name }} <span>{{ salary.employee.salary }}</span></a>
 								</h2>
-							</td>
-							<td>{{ salary.employee.employeeid }}</td>
-							<td>{{ salary.employee.email }}</td>
-							<td>{{ salary.employee.joindate }}</td>
-							<td>{{ salary.employee.designation }}</td>
-							<td>{{ salary.date|date:"F Y" }}</td>
-							<td>{{ salary.net_salary }}</td>
-							<td><a class="btn btn-sm btn-primary" href="{% url 'payroll:payslip' pk=salary.id %}">View PaySlip</a></td>
+							</td> {% endcomment %}
+							<td>{{ forloop.counter }}</td>
+							<td>{{ payslip.employee.get_full_name }}</td>
+							<td>{{ payslip.date|date:"F Y" }}</td>
+							{% comment %} <td>{{ salary.employee.joindate }}</td> {% endcomment %}
+							{% comment %} <td>{{ salary.employee.designation }}</td> {% endcomment %}
+							<td>{{ payslip.salary.net_salary }}</td>
+							{% comment %} <td><a class="btn btn-sm btn-primary" href="{% url 'payroll:employee_payslip' pk=payslip.id %}">View PaySlip</a></td> {% endcomment %}
 							<td class="text-end">
 								<div class="dropdown dropdown-action">
 									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
@@ -152,7 +151,7 @@
 <!-- /Page Content -->
 
 <!-- Add Salary Modal -->
-<div id="add_salary" class="modal custom-modal fade" role="dialog">
+{% comment %} <div id="add_salary" class="modal custom-modal fade" role="dialog">
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -174,7 +173,6 @@
 								{% endif %}
 							</div>
 						</div>
-						
 						<div class="col-sm-6"> 
 							<label class="col-form-label">Net Salary</label>
 							{{ form.net_salary }}
@@ -183,13 +181,6 @@
 							{% endif %}
 						</div>
 					</div>
-					<div class="input-block mb-3">
-						<label class="col-form-label">Select Date</label>
-						{{ form.date }}
-						{% if form.date.errors %}
-						<span class="error">{{ form.date.errors.0 }}</span>
-						{% endif %}
-					</div>					
 					<div class="row"> 
 						<div class="col-sm-6"> 
 							<h4 class="text-primary">Earnings</h4>
@@ -236,7 +227,7 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> {% endcomment %}
 <!-- /Add Salary Modal -->
 
 <!-- Edit Salary Modal -->

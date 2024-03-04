@@ -396,7 +396,7 @@
 									<li class="submenu">
 										<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 										<ul>
-											<li><a href="#"> Payslip </a></li>
+											<li><a href="{% url 'payroll:payslips_employee' %}"> Payslips </a></li>
 										</ul>
 									</li>
 									{% comment %} <li> 
@@ -500,7 +500,7 @@
 								<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 								<ul>
 									{% comment %} <li><a href="#"> Employee Salary </a></li> {% endcomment %}
-									<li><a href="#"> Payslip </a></li>
+									<li><a href="{% url 'payroll:payslips_employee' %}"> Payslips </a></li>
 								</ul>
 							</li>
 							{% comment %} <li> 

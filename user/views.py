@@ -58,7 +58,7 @@ def user_login(request):
                 return render(request, "authentication/login.html", {"form": form, "error_message": error_message})
 
     # If the request method is not POST, render the login form
-    print("get request")
+    print("get request/ user not belongs to any user group")
     return render(request, "authentication/login.html", {"form": form})
 
 
