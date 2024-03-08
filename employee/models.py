@@ -136,7 +136,8 @@ class Leave(BaseModel):
     reason = models.CharField(verbose_name=_('Leave Reason'), max_length=255, help_text='add additional information for leave', null=True, blank=True)
     leave_days = models.PositiveIntegerField(_("Number of Leave Days"))
     status = models.CharField(max_length=128, choices=LEAVE_STATUS, default='Pending') # pending, approved, rejected, cancelled
-    is_approved = models.BooleanField(default=False)  
+    is_approved = models.BooleanField(default=False) 
+    is_rejected = models.BooleanField(default=False) 
     is_deleted = models.BooleanField(default=False)
 
     class Meta:

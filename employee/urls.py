@@ -39,7 +39,8 @@ urlpatterns = [
     re_path(r'^leave/edit/(?P<pk>.*)/$', views.edit_leave, name='edit_leave'),
     # re_path(r'^delete-leave/(?P<pk>.*)/$', views.delete_leave, name='delete_leave'),    
     re_path(r'^leave-approval/(?P<pk>.*)/$', views.leave_approval, name='leave_approval'),
-    
+    re_path(r'^leave-reject/(?P<pk>.*)/$', views.leave_reject, name='leave_reject'),
+
     path('attendance-register/create/', views.create_attendance_register, name='create_attendance_register'), 
     path('attendance-register/', views.attendance_register, name='attendance_register'), 
     re_path(r'^attendance-register/edit/(?P<pk>.*)/$', views.edit_attendance_register, name='edit_attendance_register'),    

@@ -145,11 +145,11 @@
 										{% comment %} <a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-purple"></i> New</a> {% endcomment %}
 										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-info"></i> Pending</a>
 										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#approve_leave_{{ leave.id }}"><i class="fa-regular fa-circle-dot text-success"></i> Approved</a>
-										{% comment %} <a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-danger"></i> Declined</a> {% endcomment %}
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#approve_leave_{{ leave.id }}"><i class="fa-regular fa-circle-dot text-danger"></i> Declined</a>
 									</div>
 								</div>
 							</td>
-							{% comment %} <td class="text-end">
+							<td class="text-end">
 								<div class="dropdown dropdown-action">
 									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 									<div class="dropdown-menu dropdown-menu-right">
@@ -157,7 +157,7 @@
 										{% comment %} <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_approve_{{ leave.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a> {% endcomment %}
 									</div>
 								</div>
-							</td> {% endcomment %}
+							</td> 
 						</tr>	
 						<!-- Edit Leave Modal -->
 						<div id="edit_leave_modal" class="modal custom-modal fade" role="dialog">
@@ -219,7 +219,7 @@
 								<div class="modal-content">
 									<div class="modal-body">
 										<div class="form-header">
-											<h3>Leave Approve</h3>
+											<h3>Leave Approval</h3>
 											<p>Are you sure want to approve for this leave?</p>
 										</div>
 										<div class="modal-btn delete-action">
@@ -228,9 +228,8 @@
 													<a href="{% url 'employee:leave_approval' pk=leave.id %}" class="btn btn-primary continue-btn approve-btn" data-leave-id="{{ leave.id }}">Approve</a>
 												</div>
 												<div class="col-6">
-													<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Decline</a>
-													
-
+													<a href="{% url 'employee:leave_reject' pk=leave.id %}" class="btn btn-primary continue-btn reject-btn" data-leave-id="{{ leave.id }}">Reject</a>
+												
 												</div>
 											</div>
 										</div>
@@ -308,7 +307,6 @@
 			}
 		});
 	}
-
 	// Attach click event to approve button
 	document.addEventListener("DOMContentLoaded", function() {
 		document.querySelectorAll('.approve-btn').forEach(function(el) {
@@ -316,6 +314,63 @@
 				e.preventDefault();
 				var leaveId = this.getAttribute('data-leave-id');
 				handleApproval(leaveId);
+			});
+		});
+	});
+
+	// Function to handle leave reject
+	function handleReject(leaveId) {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Do you want to reject this leave request?",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, reject it!"
+		}).then((result) => {
+			if (result.isConfirmed) {
+				// If user confirms, send Fetch API request to reject
+				fetch('{% url "employee:leave_reject" pk=0 %}'.replace('0', leaveId), {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': '{{ csrf_token }}'
+					},
+				})
+				.then(response => response.json())
+				.then(data => {
+					console.log("data.status",data.status)
+					// Handle success response
+					if (data.status === "true") {
+						Swal.fire({
+							title: data.title,
+							text: data.message,
+							icon: "success",
+						})
+						.then((value) => {
+							// Redirect to the specified URL after success
+							window.location.href = data.redirect_url;
+						});
+					} else {
+						Swal.fire("Error", "An error occurred while approving the leave.", "error");
+					}
+				})
+				.catch(() => {
+					// Handle error
+					Swal.fire("Error", "An error occurred while processing the request.", "error");
+				});
+			}
+		});
+	}
+
+	// Attach click event to approve button
+	document.addEventListener("DOMContentLoaded", function() {
+		document.querySelectorAll('.reject-btn').forEach(function(el) {
+			el.addEventListener('click', function(e) {
+				e.preventDefault();
+				var leaveId = this.getAttribute('data-leave-id');
+				handleReject(leaveId);
 			});
 		});
 	});

@@ -1027,6 +1027,36 @@ def leave_approval(request,pk):
     # Redirect or show an error for non-POST requests
     return redirect('employee:leave_approvals')
 
+@login_required
+@company_required
+def leave_reject(request,pk):
+    if request.method == 'POST':
+        current_company = get_current_company(request)
+        instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company,is_deleted=False))
+        
+        if not instance.is_approved:
+            Leave.objects.filter(pk=pk).update(is_rejected=True,status='Rejected',employee=instance.employee)
+
+            response_data = {
+                "status" : "true",        
+                "title" : "Rejected",
+                "message" : "Leave Request Rejected.", 
+                "redirect" : "true",       
+                "redirect_url" : reverse('employee:leave_approvals')
+            }
+            return HttpResponse(json.dumps(response_data), content_type='application/json')
+        else:               
+            response_data = {
+                "status": "false",
+                "stable": "true",
+                "title": "Already processed",
+                "message": "This leave request is already processed.",                        
+            }
+            return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+    # Redirect or show an error for non-POST requests
+    return redirect('employee:leave_approvals')
+
 
 # class LeaveManager(models.Manager):
 # 	def get_queryset(self):
