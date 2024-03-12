@@ -129,6 +129,7 @@ def hrms_clients(request):
     
     instances = HrmsClient.objects.filter(is_deleted=False)
     query = request.GET.get("q")
+    print("hrms search q",query)
     if query:
         instances = instances.filter(Q(first_name__icontains=query) | Q(last_name__icontains=query))
     

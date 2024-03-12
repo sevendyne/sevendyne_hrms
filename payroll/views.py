@@ -2,7 +2,9 @@ import datetime
 from decimal import Decimal, InvalidOperation
 import json
 from django.apps import apps
-from django.db.models import DecimalField, Sum
+from django.db.models import DecimalField, Sum, Q
+from django.db.models.functions import ExtractMonth
+from django.utils import timezone
 from django.forms import model_to_dict
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
@@ -495,6 +497,26 @@ def create_salary(request):
 def salaries(request):
     current_company = get_current_company(request)
     salaries = Salary.objects.filter(company=current_company,is_deleted=False)    
+    
+    employee_name_query = request.GET.get("employee_name")
+    if employee_name_query:
+        salaries = salaries.filter(Q(employee__firstname__icontains=employee_name_query) | Q(employee__lastname__icontains=employee_name_query))
+    
+    employee_designation_query = request.GET.get("employee_designation")
+    if employee_designation_query:
+        salaries = salaries.filter(Q(employee__designation__name__icontains=employee_designation_query))
+    
+    month_query = request.GET.get("month")
+    if month_query:
+        month_int = timezone.datetime.strptime(month_query, "%B").month    # Convert month name to its corresponding number
+        salaries = salaries.filter(date__month=month_int)
+        # salaries = salaries.filter(Q(date__month__icontains=month_query))
+    
+    year_query = request.GET.get("year")
+    if year_query:
+        salaries = salaries.filter(Q(date__year__icontains=year_query))    
+
+    
     paginator = Paginator(salaries,1000000000000)
     page_number = request.GET.get('page')
     salaries = paginator.get_page(page_number)

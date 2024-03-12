@@ -50,55 +50,49 @@
 	<!-- /Leave Statistics -->
 	
 	<!-- Search Filter -->
-	{% comment %} <div class="row filter-row">
-		<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
-			<div class="input-block mb-3 form-focus">
-				<input type="text" class="form-control floating">
-				<label class="focus-label">Employee Name</label>
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
-			<div class="input-block mb-3 form-focus select-focus">
-				<select class="select floating"> 
-					<option> -- Select -- </option>
-					<option>Casual Leave</option>
-					<option>Medical Leave</option>
-					<option>Loss of Pay</option>
-				</select>
-				<label class="focus-label">Leave Type</label>
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12"> 
-			<div class="input-block mb-3 form-focus select-focus">
-				<select class="select floating"> 
-					<option> -- Select -- </option>
-					<option> Pending </option>
-					<option> Approved </option>
-					<option> Rejected </option>
-				</select>
-				<label class="focus-label">Leave Status</label>
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
-			<div class="input-block mb-3 form-focus">
-				<div class="cal-icon">
-					<input class="form-control floating datetimepicker" type="text">
+	<form action="" method="GET">
+		<div class="row filter-row">
+			<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
+				<div class="input-block mb-3 form-focus">
+					<input type="text" class="form-control floating" name="employee_name">
+					<label class="focus-label">Employee Name</label>
 				</div>
-				<label class="focus-label">From</label>
 			</div>
-		</div>
-		<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
-			<div class="input-block mb-3 form-focus">
-				<div class="cal-icon">
-					<input class="form-control floating datetimepicker" type="text">
+			<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
+				<div class="input-block mb-3 form-focus select-focus">
+					<input type="text" class="form-control floating" name="leave_type">
+					<label class="focus-label">Leave Type</label>
 				</div>
-				<label class="focus-label">To</label>
 			</div>
+			<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12"> 
+				<div class="input-block mb-3 form-focus select-focus">
+					<input type="text" class="form-control floating" name="leave_status">
+					<label class="focus-label">Leave Status</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
+				<div class="input-block mb-3 form-focus">
+					<div class="cal-icon">
+						<input class="form-control floating datetimepicker" type="text" name="leave_from">
+					</div>
+					<label class="focus-label">From</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
+				<div class="input-block mb-3 form-focus">
+					<div class="cal-icon">
+						<input class="form-control floating datetimepicker" type="text" name="leave_to">
+					</div>
+					<label class="focus-label">To</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">
+				<div class="d-grid">
+					<button class="btn btn-primary w-100" type="submit">Search</button>
+				</div>  
+			</div>    
 		</div>
-		<div class="col-sm-6 col-md-3 col-lg-3 col-xl-2 col-12">  
-			<a href="#" class="btn btn-success w-100"> Search </a>  
-		</div>     
-	</div> {% endcomment %}
+	</form>
 	<!-- /Search Filter -->
 	
 	<div class="row">
@@ -149,15 +143,15 @@
 									</div>
 								</div>
 							</td>
-							<td class="text-end">
+							{% comment %} <td class="text-end">
 								<div class="dropdown dropdown-action">
 									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 									<div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" onclick="loadUpdateLeaveForm(this, '{{ leave.id }}')" href="#" data-bs-toggle="modal" data-bs-target="#edit_leave_modal"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-										{% comment %} <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_approve_{{ leave.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a> {% endcomment %}
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_leave_modal" ><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_approve_{{ leave.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
 									</div>
 								</div>
-							</td> 
+							</td>  {% endcomment %}
 						</tr>	
 						<!-- Edit Leave Modal -->
 						<div id="edit_leave_modal" class="modal custom-modal fade" role="dialog">
@@ -182,26 +176,28 @@
 											<div class="input-block mb-3">
 												<label class="col-form-label">From <span class="text-danger">*</span></label>
 												<div class="cal-icon">
-													<input class="form-control datetimepicker"  name="phone" value="{{employee.phone}}" type="text">
+													{% comment %} <input class="form-control datetimepicker startdate" id="start_date" name="startdate" value="{{ leave.startdate }}" type="text"> {% endcomment %}
+
+													<input class="form-control datetimepicker startdate" id="start_date"  name="startdate" value="{{leave.startdate}}" type="text">
 												</div>
 											</div>
 											<div class="input-block mb-3">
 												<label class="col-form-label">To <span class="text-danger">*</span></label>
 												<div class="cal-icon">
-													<input class="form-control datetimepicker"  name="phone" value="{{employee.phone}}" type="text">
+													<input class="form-control datetimepicker" id="enddate" name="enddate" value="{{leave.enddate}}" type="text">
 												</div>
 											</div>
 											<div class="input-block mb-3">
 												<label class="col-form-label">Number of days <span class="text-danger">*</span></label>
-												<input class="form-control" readonly type="text" name="phone" value="{{employee.phone}}">
+												<input class="form-control" readonly type="text" id="leave_days" name="leave_days" value="{{leave.leave_days}}">
 											</div>
-											<div class="input-block mb-3">
+											{% comment %} <div class="input-block mb-3">
 												<label class="col-form-label">Remaining Leaves <span class="text-danger">*</span></label>
-												<input class="form-control" readonly  name="phone" value="{{employee.phone}}" type="text">
-											</div>
+												<input class="form-control" readonly  name="phone" value="{{leave.phone}}" type="text">
+											</div> {% endcomment %}
 											<div class="input-block mb-3">
 												<label class="col-form-label">Leave Reason <span class="text-danger">*</span></label>
-												<textarea rows="4" class="form-control"  name="phone" value="{{employee.phone}}">Going to hospital</textarea>
+												<textarea rows="4" class="form-control"  name="reason" value="{{leave.reason}}">{{leave.reason}}</textarea>
 											</div>
 											<div class="submit-section">
 												<button class="btn btn-primary submit-btn">Save</button>
@@ -252,15 +248,199 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
 <script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tempusdominus-bootstrap-4@5.1.2/js/tempusdominus-bootstrap-4.min.js"></script>
+
 <script>
-	$(document).ready(function(){
-        $('.datetimepicker').datetimepicker({
-            format: 'YYYY-MM-DD', // Date-only format
-            // Additional configurations to ensure time is not included
-            ignoreReadonly: true,
-            allowInputToggle: true
-        });
-    });		
+		
+	$(document).ready(function() {
+		// Initialize datetimepicker
+		$('.datetimepicker').datetimepicker({
+			format: 'YYYY-MM-DD',
+			ignoreReadonly: true,
+			allowInputToggle: true
+		});
+		
+	});
+	
+	document.addEventListener('DOMContentLoaded', function() {
+		// Event listener for start date change
+		var startDateInputs = document.querySelectorAll('.startdate');
+		startDateInputs.forEach(function(input) {
+			input.addEventListener('change', function() {
+				console.log("Start date changed");
+				// Get today's date
+			});
+		});
+	
+		var startDateInput = document.getElementById('start_date');
+		startDateInput.addEventListener('change', function() {
+			console.log("Start date changed");
+			// Get today's date
+		});
+	});
+	
+	
+	$(document).ready(function() {
+		// Event listener for start date change
+		$('.startdate').on('change', function() {
+			console.log("Start date 1changed");// Get today's date
+			
+		});
+		$('#start_date').on('change', function() {
+			console.log("Start date 2changed");// Get today's date
+			
+		});
+		$('.startdate').on('change datetimepicker', function() {
+			console.log("Start date 3changed");// Get today's date
+			
+		});
+		$(document).on('change', '.startdate', function() {
+			console.log("Start date4 changed");
+			// Get today's date
+		});
+		$('body').on('change', '.startdate', function() {
+			console.log("Start date5 changed");
+			// Get today's date
+		});
+		$('#edit_leave_modal').find('.startdate').on('change', function() {
+			console.log("Start date6 changed");
+			// Get today's date
+		});
+		$('.startdate, #start_date').on('change', function() {
+			console.log("Start date 7changed");
+			// Get today's date
+		});
+	});
+	
+	
+
+	{% comment %} $(document).ready(function() {
+		// Event listener for start date change
+		$('.startdate').on('change', function() {
+			console.log("Start date changed");
+			// Get today's date
+			var today = new Date();
+	
+			// Get the selected start date
+			var startDate = new Date(this.value);
+			
+			// Check if the selected start date is earlier than today's date
+			if (startDate < today) {
+				// Reset the value of the start date input to today's date
+				this.value = today.toISOString().slice(0,10);
+				console.log("Start date cannot be earlier than today. Resetting to today's date.");
+			}
+			updateLeaveDays();
+			//updateRemainingDays(); 
+		});
+	
+		// Event listener for end date change
+		$('#enddate').on('change', function() {
+			console.log("End date changed");
+			updateLeaveDays();
+			//updateRemainingDays(); 
+		});
+	});
+	 {% endcomment %}
+			
+		
+	// Event listener for end date change
+	function calculateLeaveDays(startDateString, endDateString, leaveTypeDays) {
+		console.log("calculate leave days called")
+		var startDate = new Date(startDateString);
+		var endDate = new Date(endDateString);
+		var diffTime = Math.abs(endDate - startDate);
+		var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+		if (diffDays === 0) {
+			return 1;
+			} else if (diffDays < 1) {
+			return "to should be greater than from " ;
+			} else {
+			return diffDays + 1;
+			}
+	}
+
+	function calculateRemainingDays(approvedLeaveDays, leaveTypeDays) {
+		console.log("calculate remaining days called")
+		var remainingDays = leaveTypeDays - approvedLeaveDays;
+		return Math.max(0, remainingDays);
+	}
+	// Function to calculate and update leave days
+	function updateLeaveDays() {
+		console.log("update leave days called")
+		var startDate = $('#id_startdate').val();
+		console.log("start date",startDate)
+		var endDate = $('#id_enddate').val();
+		console.log("start date",endDate)
+		var leaveTypeDays = parseInt($('#id_leave_days').val()); // Assuming you have a hidden input field with leave type days
+		var leaveDays = calculateLeaveDays(startDate, endDate, leaveTypeDays);
+		$('#id_leave_days').val(leaveDays);
+	}
+
+	
+	
+{% comment %} 
+	// Event listener for #startdate
+	$(document).ready(function() {
+		// Event listener for start date change
+		$('#startdate').on('change', function() {
+			console.log("start date changed");
+			// Get today's date
+			var today = new Date();
+		
+			// Get the selected start date
+			var startDate = new Date(this.value);
+			
+			// Check if the selected start date is earlier than today's date
+			if (startDate < today) {
+				// Reset the value of the start date input to today's date
+				this.value = today.toISOString().slice(0,10);
+				console.log("Start date cannot be earlier than today. Resetting to today's date.");
+			}
+			updateLeaveDays();
+			//updateRemainingDays(); 
+		});
+	
+		// Event listener for end date change
+		$('#enddate').on('change', function() {
+			console.log("end date changed");
+			updateLeaveDays();
+			//updateRemainingDays(); 
+		});
+	});
+	
+
+	// Event listener for end date change
+	function calculateLeaveDays(startDateString, endDateString, leaveTypeDays) {
+		console.log("calculate leave days called")
+		var startDate = new Date(startDateString);
+		var endDate = new Date(endDateString);
+		var diffTime = Math.abs(endDate - startDate);
+		var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+		if (diffDays === 0) {
+			return 1;
+			} else if (diffDays < 1) {
+			return "to should be greater than from " ;
+			} else {
+			return diffDays + 1;
+			}
+	}
+
+
+	// Function to calculate and update leave days
+	function updateLeaveDays() {
+		console.log("update leave days called")
+		var startDate = $('#startdate').val();
+		console.log("start date",startDate)
+		var endDate = $('#enddate').val();
+		console.log("start date",endDate)
+		var leaveTypeDays = parseInt($('#leave_days').val()); // Assuming you have a hidden input field with leave type days
+		var leaveDays = calculateLeaveDays(startDate, endDate, leaveTypeDays);
+		$('#leave_days').val(leaveDays);
+	} {% endcomment %}
 
 	// Function to handle leave approval
 	function handleApproval(leaveId) {
@@ -400,99 +580,11 @@
 		});
 	}); {% endcomment %}
 	
-	function loadUpdateLeaveForm(element, leaveId) {
-		console.log("update leave form load called");
-		console.log("leave id", leaveId);
-	
-		// Construct the URL with a hardcoded path
-		const editUrl = `/app/employee/leave/edit/${leaveId}/`;
-	
-		// Fetch the URL using the provided leaveId
-		fetch(editUrl)
-			.then(response => response.text())
-			.then(data => {
-				//console.log("data", data);// Check if "edit_leave_modal" is present in the data
-				if (data.includes("edit_leave_modal")) {
-					console.log("Data contains edit_leave_modal");
-				} else {
-					console.log("Data does not contain edit_leave_modal");
-				}
-				
-				// Find the form element in the fetched data
-				var formElement = document.querySelector(`#update_form_` + leaveId);
-
-				if (!formElement) {
-					console.error("Form element not found in the fetched data");
-					return;
-				}
-				// Remove any existing modal content
-				var modalBody = document.querySelector('#edit_leave_modal .modal-body');
-				
-				console.log("Modal body element:", modalBody);
-				console.log("Form element:", formElement);
-				// Clear existing content in the modal body
-				modalBody.innerHTML = '';
-				
-				// Append the form to the modal body
-				modalBody.appendChild(formElement);
-
-				// Add CSS class to the form
-				formElement.classList.add('modal-form');
-
-				// Log the HTML content of the modal body after appending the form
-				console.log("Modal body content after appending form:", modalBody.innerHTML);
-
-				// Clone the form element
-				//var clonedFormElement = formElement.cloneNode(true);
-
-				// Append the cloned form to the modal body
-				//modalBody.appendChild(clonedFormElement);
-
-				// Show the modal for updating leaves
-				$('#edit_leave_modal').modal('show');
-				// Show the modal for updating leaves
-				// Check if the form is visible
-				//console.log("Is form visible?", formElement.offsetParent !== null);
-				//console.log("Is modal visible?", $('#edit_leave_modal').is(':visible'));ole.log("Modal body content after appending form:", modalBody.innerHTML);
-
-
-				console.log("Modal shown");
-				attachEventListeners();
-			})
-			.catch(error => {
-				console.error('Error:', error);
-			});
-	}
 	function attachEventListeners() {
-		// Event listener for #id_leavetype
-		// leave type based remaining_days load -Ajax
-		$('#id_leavetype').change(function() {
-			console.log('id_leavetype clicked');
-			var url = "{% url 'employee:ajax_load_remaining_days'%}";
-			var leavetype_id = $(this).val();
-			console.log('leavetype_id:', leavetype_id);
-			var leaveType = $(this).find("option:selected").text(); // Get the text of the selected leave type
-			console.log('leavetype name:', leaveType);
-			$.ajax({
-				url: url,
-				data: {
-					'leavetype': leaveType
-				},
-				success: function(data) {
-					console.log('Data received from server:', data);
-					var remainingDaysValue = $(data).val(); // Extract value from HTML response
-					$("#id_remaining_days").val(remainingDaysValue); // Set value of input field
-					console.log('Success function executed.');
-				},
-				error: function(xhr, status, error) {
-					console.error('Error:', error);
-				}
-			});
-		});
-		// Event listener for #id_startdate
+		// Event listener for #startdate
 		$(document).ready(function() {
 			// Event listener for start date change
-			$('#id_startdate').on('change', function() {
+			$('#startdate').on('change', function() {
 				console.log("start date changed");
 				// Get today's date
 				var today = new Date();
@@ -511,7 +603,7 @@
 			});
 		
 			// Event listener for end date change
-			$('#id_enddate').on('change', function() {
+			$('#enddate').on('change', function() {
 				console.log("end date changed");
 				updateLeaveDays();
 				//updateRemainingDays(); 
@@ -544,13 +636,13 @@
 	// Function to calculate and update leave days
 	function updateLeaveDays() {
 		console.log("update leave days called")
-		var startDate = $('#id_startdate').val();
+		var startDate = $('#startdate').val();
 		console.log("start date",startDate)
-		var endDate = $('#id_enddate').val();
+		var endDate = $('#enddate').val();
 		console.log("start date",endDate)
-		var leaveTypeDays = parseInt($('#id_leave_days').val()); // Assuming you have a hidden input field with leave type days
+		var leaveTypeDays = parseInt($('#leave_days').val()); // Assuming you have a hidden input field with leave type days
 		var leaveDays = calculateLeaveDays(startDate, endDate, leaveTypeDays);
-		$('#id_leave_days').val(leaveDays);
+		$('#leave_days').val(leaveDays);
 	}	
 
 	function submitUpdateForm(event,leaveId) {

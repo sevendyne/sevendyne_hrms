@@ -1,6 +1,7 @@
 import datetime
 import json
 from django.forms import formset_factory
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -93,6 +94,20 @@ def create_client(request):
 def clients(request):
     current_company = get_current_company(request)
     clients = Client.objects.filter(company=current_company,is_deleted=False)
+    
+    clid_query = request.GET.get("clid")
+    if clid_query:
+        clients = clients.filter(Q(clientid__icontains=clid_query))
+    
+    cl_name_query = request.GET.get("cl_name")
+    if cl_name_query:
+        clients = clients.filter(Q(firstname__icontains=cl_name_query) | Q(lastname__icontains=cl_name_query))
+    
+    cl_comp_query = request.GET.get("cl_comp")
+    if cl_comp_query:
+        clients = clients.filter(Q(company_name__icontains=cl_comp_query))
+    
+
     paginator = Paginator(clients,1000000000000)
     page_number = request.GET.get('page')
     clients = paginator.get_page(page_number)

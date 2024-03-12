@@ -2,7 +2,7 @@ import calendar
 import datetime
 import json
 from django.forms import formset_factory
-from django.db.models import Sum
+from django.db.models import Sum, Q
 from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.hashers import make_password
@@ -172,6 +172,7 @@ def delete_department(request,pk):
         "redirect" : "true",       
         "redirect_url" : reverse('employee:departments')
     }
+    print("status",response_data["status"])
     return HttpResponse(json.dumps(response_data), content_type='application/json')
    
 
@@ -524,7 +525,20 @@ def create_employee(request):
 @company_required
 def employees(request):
     current_company = get_current_company(request)
-    employees = Employee.objects.filter(is_deleted=False,is_blocked=False,company=current_company,)
+    employees = Employee.objects.filter(is_deleted=False,is_blocked=False,company=current_company)
+    
+    empid_query = request.GET.get("empid")
+    if empid_query:
+        employees = employees.filter(Q(employeeid__icontains=empid_query))
+    
+    emp_name_query = request.GET.get("emp_name")
+    if emp_name_query:
+        employees = employees.filter(Q(firstname__icontains=emp_name_query) | Q(lastname__icontains=emp_name_query))
+    
+    emp_des_query = request.GET.get("emp_des")
+    if emp_des_query:
+        employees = employees.filter(Q(designation__name__icontains=emp_des_query))
+    
     paginator = Paginator(employees,1000000000000)
     page_number = request.GET.get('page')
     employees = paginator.get_page(page_number)
@@ -532,7 +546,7 @@ def employees(request):
     departments = Department.objects.filter(company=current_company,is_deleted=False)
     designations = Designation.objects.filter(company=current_company,is_deleted=False)
     clients = Client.objects.filter(company=current_company,is_deleted=False)
-    print("clients",clients)
+    # print("clients",clients)
     context = {
         'departments': departments,
         'designations' : designations,
@@ -627,7 +641,7 @@ def delete_employee(request,pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Employee.objects.filter(pk=pk,is_deleted=False))
     
-    Employee.objects.filter(pk=pk).update(is_deleted=True,company=current_company,company_name=instance.company_name + "_deleted_" + str(instance.auto_id))
+    Employee.objects.filter(pk=pk).update(is_deleted=True,company=current_company,firstname=instance.firstname + "_deleted_" + str(instance.auto_id))
 
     response_data = {
         "status" : "true",        
@@ -922,11 +936,32 @@ def leaves(request):
 def leave_approvals(request):
     current_company = get_current_company(request)
     leaves = Leave.objects.filter(company=current_company,is_deleted=False)
+
+    employee_name_query = request.GET.get("employee_name")
+    if employee_name_query:
+        leaves = leaves.filter(Q(employee__firstname__icontains=employee_name_query) | Q(employee__lastname__icontains=employee_name_query))
+    
+    leave_type_query = request.GET.get("leave_type")
+    if leave_type_query:
+        leaves = leaves.filter(Q(leavetype__name__icontains=leave_type_query))
+    
+    leave_status_query = request.GET.get("leave_status")
+    if leave_status_query:
+        leaves = leaves.filter(Q(status__icontains=leave_status_query))
+    
+    leave_from_query = request.GET.get("leave_from")
+    if leave_from_query:
+        leaves = leaves.filter(Q(startdate__icontains=leave_from_query))
+    
+    leave_to_query = request.GET.get("leave_to")
+    if leave_to_query:
+        leaves = leaves.filter(Q(enddate__icontains=leave_to_query))    
+
     paginator = Paginator(leaves,1000000000000)
     page_number = request.GET.get('page')
     leaves = paginator.get_page(page_number)
     leavetypes = LeaveType.objects.filter(company=current_company,is_deleted=False)
-    print("leavetypes",leavetypes)
+    # print("leavetypes",leavetypes)
     context = {
         'leaves': leaves,
         "title": 'Leaves',
@@ -1348,6 +1383,18 @@ def attendance_register(request):
     company = get_current_company(request)
     employees = Employee.objects.filter(company=company,is_deleted=False).order_by('id')
 
+    employee_name_query = request.GET.get("employee_name")
+    if employee_name_query:
+        employees = employees.filter(Q(firstname__icontains=employee_name_query) | Q(lastname__icontains=employee_name_query))
+    
+    # month_query = request.GET.get("month")
+    # if month_query:
+    #     employees = employees.filter(Q(leavetype__name__icontains=month_query))
+    
+    # year_query = request.GET.get("year")
+    # if year_query:
+    #     employees = employees.filter(Q(status__icontains=year_query))
+    
     y = datetime.date.today().year   
     month = datetime.date.today().month
     

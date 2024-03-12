@@ -19,59 +19,40 @@
 				</ul>				
 			</div>
 			<div class="col-sm-2">
-				<a href="{% url 'employee:create_attendance_register' %}" class="btn btn-success"> Take Attendance </a> 
+				<a href="{% url 'employee:create_attendance_register' %}" class="btn btn-primary"> Take Attendance </a> 
 			</div>			
 		</div>
 	</div>
 	<!-- /Page Header -->
 	
 	<!-- Search Filter -->
-	{% comment %} <div class="row filter-row">
-		<div class="col-sm-6 col-md-3">  
-			<div class="input-block mb-3 form-focus">
-				<input type="text" class="form-control floating">
-				<label class="focus-label">Employee Name</label>
+	<form action="" method="GET">
+		<div class="row filter-row">
+			<div class="col-sm-6 col-md-9">  
+				<div class="input-block mb-3 form-focus">
+					<input type="text" class="form-control floating" name="employee_name">
+					<label class="focus-label">Employee Name</label>
+				</div>
 			</div>
+			{% comment %} <div class="col-sm-6 col-md-3"> 
+				<div class="input-block mb-3 form-focus select-focus">
+					<input type="text" class="form-control floating" name="month">
+					<label class="focus-label">Select Month</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-3"> 
+				<div class="input-block mb-3 form-focus select-focus">
+					<input type="text" class="form-control floating" name="year">
+					<label class="focus-label">Select Year</label>
+				</div>
+			</div> {% endcomment %}
+			<div class="col-sm-6 col-md-3">
+				<div class="d-grid">
+					<button class="btn btn-primary w-100" type="submit">Search</button>
+				</div>  
+			</div>   
 		</div>
-		<div class="col-sm-6 col-md-3"> 
-			<div class="input-block mb-3 form-focus select-focus">
-				<select class="select floating"> 
-					<option>-</option>
-					<option>Jan</option>
-					<option>Feb</option>
-					<option>Mar</option>
-					<option>Apr</option>
-					<option>May</option>
-					<option>Jun</option>
-					<option>Jul</option>
-					<option>Aug</option>
-					<option>Sep</option>
-					<option>Oct</option>
-					<option>Nov</option>
-					<option>Dec</option>
-				</select>
-				<label class="focus-label">Select Month</label>
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-3"> 
-			<div class="input-block mb-3 form-focus select-focus">
-				<select class="select floating"> 
-					<option>-</option>
-					<option>2019</option>
-					<option>2018</option>
-					<option>2017</option>
-					<option>2016</option>
-					<option>2015</option>
-				</select>
-				<label class="focus-label">Select Year</label>
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-3">  
-			<div class="d-grid">
-				<a href="#" class="btn btn-success"> Search </a>  
-			</div>
-		</div>     
-	</div> {% endcomment %}
+	</form>
 	<!-- /Search Filter -->
 	
 	<div class="row">
