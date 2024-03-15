@@ -1,0 +1,103 @@
+{% extends "sevendyne_admin/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Section: Design Block -->
+<section class="" style="margin-top: -3%;">    
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" >
+
+      <div class="container">
+        <h3 style="margin-top: 3%;color: #2c9792;">Job Details</h3>       
+
+        <div class="row gx-lg-5 align-items-center">     
+          <div class="col-md-6 mb-5 mb-lg-0"> 
+            <div class="card">
+              <div class="card-body py-5 px-md-5">
+
+                <div class="form-outline mb-4">  
+                  <label class="form-label" for="form3Example1" style="color: black; font-weight: bolder;">Company</label> 
+                  {{ instance.company }}  
+                </div>
+                <div class="form-outline mb-4"> 
+                  <label class="form-label" for="form3Example2" style="color: black; font-weight: bolder;">Job Title</label>
+                  {{ instance.job_title }}  
+                </div>  
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">Department</label>
+                  {{ instance.department }}
+                </div>
+                <!-- Username input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">Job Location</label>
+                  {{ instance.job_location }}     
+                </div>  
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">No. of vacancies</label>
+                  {{ instance.no_of_vacancies }}
+                </div> 
+                <!-- Address input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Experience</label>
+                  {{ instance.experience }}
+                </div> 
+                <!-- age input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Age</label>
+                  {{ instance.age }}
+                </div> 
+                <!-- experience input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Salary From</label>
+                  {{ instance.salary_from }}
+                </div> 
+                <!-- skills input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Salary To</label>
+                  {{ instance.salary_to }}
+                </div> 
+              </div>
+            </div>            
+          </div>
+          <div class="col-md-6 mb-5 mb-lg-0"> 
+            <div class="card">
+             
+
+              <div class="card-body py-5 px-md-5">
+
+                <!-- certifications input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Job Type</label>
+                  {{ instance.job_type }}
+                </div> 
+                <div class="form-outline mb-4">  
+                  <label class="form-label" for="form3Example1" style="color: black; font-weight: bolder;">Status</label> 
+                  {{ instance.status }}  
+                </div>
+                <div class="form-outline mb-4"> 
+                  <label class="form-label" for="form3Example2" style="color: black; font-weight: bolder;">Start Date</label>
+                  {{ instance.start_date }}  
+                </div>  
+                <!-- expired_date input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">Expiry Date</label>
+                  {{ instance.expired_date }}
+                </div>
+                <!-- github_profile input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">description</label>
+                  {{ instance.description }}     
+                </div>  
+               
+              </div>
+            </div>            
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ 
+{% endblock %}

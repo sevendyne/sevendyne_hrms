@@ -8,12 +8,13 @@ from job.forms import JobForm
 from job.models import JOBTYPE_CHOICES, STATUS_CHOICES, Job
 from django.core.paginator import Paginator
 from main.decorators import company_required
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required,user_passes_test
 
-from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company
+from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_admin_dashboard_permission, has_hrms_permission
 
 #  views here.
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_job(request):
     current_company = get_current_company(request)    
@@ -96,6 +97,7 @@ def create_job(request):
         return render(request, 'job/jobs.html', context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def jobs(request):
     current_company = get_current_company(request)
@@ -118,6 +120,7 @@ def jobs(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_job(request, pk):
     current_company = get_current_company(request)
@@ -166,6 +169,7 @@ def edit_job(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def job(request,pk):
     current_company = get_current_company(request)
@@ -179,6 +183,7 @@ def job(request,pk):
     return render(request, "job/jobs.html", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_job(request,pk):
     current_company = get_current_company(request)
@@ -194,4 +199,36 @@ def delete_job(request,pk):
         "redirect_url" : reverse('job:jobs')
     }
     return HttpResponse(json.dumps(response_data), content_type='application/json')
-   
+
+# All Jobs is for sevendyne admin dashboard
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def all_jobs(request):
+    jobs = Job.objects.filter(is_deleted=False)
+    paginator = Paginator(jobs,1000000000000)
+    page_number = request.GET.get('page')
+    jobs = paginator.get_page(page_number)
+    departments = Department.objects.filter(is_deleted=False)
+    
+    context = {
+        'jobs': jobs,
+        "title": 'Jobs',
+        'departments':departments,
+
+        'status_choices': STATUS_CHOICES,
+        'job_type_choices': JOBTYPE_CHOICES,
+    }
+    return render(request, "sevendyne_admin/jobs/all-jobs.html", context)
+
+
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def job_view(request,pk):
+    instance = get_object_or_404(Job.objects.filter(pk=pk,is_deleted=False))
+
+    context = {
+        'instance': instance,
+        'title': 'Job'
+    }
+    return render(request, "sevendyne_admin/jobs/job-view.html", context)

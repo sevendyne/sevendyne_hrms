@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User, Group
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse, JsonResponse
 from django.core.paginator import Paginator
 from client.models import Client
@@ -15,10 +15,11 @@ from employee import models
 from employee.forms import AttendanceDateForm, AttendanceRegisterForm, DepartmentForm, DesignationForm, EmployeeForm, HolidayForm, LeaveForm, LeaveTypeForm
 from employee.models import AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
 from main.decorators import company_required
-from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company
+from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission, has_hrms_permission
 
 # Department crud starts here
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_department(request):
     current_company = get_current_company(request)
@@ -81,6 +82,7 @@ def create_department(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def departments(request):
     current_company = get_current_company(request)
@@ -96,6 +98,7 @@ def departments(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_department(request, pk):
     current_company = get_current_company(request)
@@ -144,6 +147,7 @@ def edit_department(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def department(request, pk):
     current_company = get_current_company(request)
@@ -157,6 +161,7 @@ def department(request, pk):
     return render(request, "department/department.html", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_department(request,pk):
     current_company = get_current_company(request)
@@ -247,6 +252,7 @@ def delete_department(request,pk):
 #         return render(request, 'designations/designations.html', context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_designation(request):
     current_company = get_current_company(request)
@@ -310,6 +316,7 @@ def create_designation(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def designations(request):
     current_company = get_current_company(request)
@@ -327,6 +334,7 @@ def designations(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_designation(request, pk):
     current_company = get_current_company(request)
@@ -384,6 +392,7 @@ def edit_designation(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def designation(request,pk):
     current_company = get_current_company(request)
@@ -397,6 +406,7 @@ def designation(request,pk):
     return render(request, "designation/designations.html", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_designation(request,pk):
     current_company = get_current_company(request)
@@ -416,6 +426,7 @@ def delete_designation(request,pk):
 
 # Employee Profile crud starts here
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_employee(request):
     current_company = get_current_company(request)    
@@ -522,6 +533,7 @@ def create_employee(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def employees(request):
     current_company = get_current_company(request)
@@ -557,6 +569,7 @@ def employees(request):
     return render(request, "employee/employees.html", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def employees_list(request):
     current_company = get_current_company(request)
@@ -593,6 +606,7 @@ def employees_list(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_employee(request, pk):
     current_company = get_current_company(request)
@@ -659,6 +673,7 @@ def edit_employee(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def employee(request, pk):
     current_company = get_current_company(request)
@@ -671,6 +686,7 @@ def employee(request, pk):
     return render(request, 'employee/employee-profile.html', context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_employee(request,pk):
     current_company = get_current_company(request)
@@ -689,6 +705,7 @@ def delete_employee(request,pk):
    
 # Leave Type crud starts here
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_leave_type(request):
     current_company = get_current_company(request)
@@ -755,6 +772,7 @@ def create_leave_type(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def leave_types(request):
     current_company = get_current_company(request)
@@ -770,6 +788,7 @@ def leave_types(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_leave_type(request, pk):
     current_company = get_current_company(request)
@@ -819,6 +838,7 @@ def edit_leave_type(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def leave_type(request, pk):
     current_company = get_current_company(request)
@@ -832,6 +852,7 @@ def leave_type(request, pk):
     return render(request, "leave/leave.html", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_leave_type(request,pk):
     current_company = get_current_company(request)
@@ -851,6 +872,7 @@ def delete_leave_type(request,pk):
 
 # Leave crud starts here
 @login_required
+@user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
 def create_leave(request):
     employee = get_object_or_404(Employee, user=request.user)
     company = employee.company
@@ -952,6 +974,8 @@ def ajax_load_remaining_days(request):
 
 
 @login_required
+@user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
+@company_required
 def leaves(request):
     employee = get_object_or_404(Employee, user=request.user)
     company = employee.company
@@ -967,6 +991,7 @@ def leaves(request):
     return render(request, "leave/leaves.html", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def leave_approvals(request):
     current_company = get_current_company(request)
@@ -1052,6 +1077,7 @@ def leave_approvals(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_leave(request, pk):
     current_company = get_current_company(request)
@@ -1101,6 +1127,7 @@ def edit_leave(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def leave(request, pk):
     current_company = get_current_company(request)
@@ -1114,6 +1141,7 @@ def leave(request, pk):
     return render(request, "leave/leaves.html", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def leave_approval(request,pk):
     if request.method == 'POST':
@@ -1144,6 +1172,7 @@ def leave_approval(request,pk):
     return redirect('employee:leave_approvals')
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def leave_reject(request,pk):
     if request.method == 'POST':
@@ -1380,6 +1409,7 @@ def unreject_leave(request,id):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_attendance_register(request):     
     company=get_current_company(request)   
@@ -1459,6 +1489,7 @@ def create_attendance_register(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def attendance_register(request):
     company = get_current_company(request)
@@ -1522,6 +1553,7 @@ def attendance_register(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_attendance_register(request, pk):
     company=get_current_company(request)   
@@ -1608,6 +1640,7 @@ def edit_attendance_register(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_attendance_register(request,pk):
     current_company = get_current_company(request)
@@ -1627,6 +1660,7 @@ def delete_attendance_register(request,pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_holiday(request):
     current_company = get_current_company(request)
@@ -1687,6 +1721,7 @@ def create_holiday(request):
         return render(request, 'leave/holidays.html', context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def holidays(request):
     current_company = get_current_company(request)
@@ -1702,6 +1737,7 @@ def holidays(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_holiday(request, pk):
     current_company = get_current_company(request)
@@ -1750,6 +1786,7 @@ def edit_holiday(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def holiday(request,pk):
     current_company = get_current_company(request)
@@ -1763,6 +1800,7 @@ def holiday(request,pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_holiday(request,pk):
     current_company = get_current_company(request)

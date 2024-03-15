@@ -70,7 +70,7 @@ def generate_form_errors(args, formset=False):
 
 
 def has_hrms_permission(user):
-    # print("checking has_hrms_permission")
+    print("checking has_hrms_permission")
     if user.groups.filter(name='hrms_clients').exists():
         print("user exists in hrms clients group")
     else:

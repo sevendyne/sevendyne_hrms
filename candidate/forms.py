@@ -12,7 +12,7 @@ class CandidateForm(forms.ModelForm):
     
     class Meta:
         model = Candidate
-        exclude = ['creator','updator','auto_id','a_id','user','date_applied','is_deleted']
+        exclude = ['user','date_applied','is_deleted']
         widgets = {            
             'first_name': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter Candidate first name'}),
             'last_name': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter Candidate first name'}),

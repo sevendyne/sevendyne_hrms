@@ -3,18 +3,19 @@ import json
 from django.forms import formset_factory
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
 from django.core.paginator import Paginator
 from client.forms import ClientForm
 from client.models import Client
 from main.decorators import company_required
-from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company
+from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_hrms_permission
 from django.urls import reverse
 
 
 # Client Company crud starts here
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_client(request):
     current_company = get_current_company(request)    
@@ -92,6 +93,7 @@ def create_client(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def clients(request):
     current_company = get_current_company(request)
@@ -120,6 +122,7 @@ def clients(request):
     return render(request, "client/clients.html", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def clients_list(request):
     current_company = get_current_company(request)
@@ -149,6 +152,7 @@ def clients_list(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_client(request, pk):
     current_company = get_current_company(request)
@@ -199,6 +203,7 @@ def edit_client(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def client(request, pk):
     current_company = get_current_company(request)
@@ -212,6 +217,7 @@ def client(request, pk):
     return render(request, "client/client-profile.html", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_client(request,pk):
     current_company = get_current_company(request)

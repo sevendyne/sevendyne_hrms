@@ -4,37 +4,102 @@
 {% block content %}
 
 <!-- Section: Design Block -->
-<section class="" style="width: 70%;margin-top: -3%;margin-left: 25%;">    
+<section class="" style="margin-top: -3%;">    
     <div class="px-4 py-5 px-md-5 text-center text-lg-start" >
+
       <div class="container">
-        <div class="row gx-lg-5 align-items-center">            
-          <div class="col-lg-8 mb-5 mb-lg-0">           
+        <h3 style="margin-top: 3%;color: #2c9792;">Candidate Details</h3>       
+
+        <div class="row gx-lg-5 align-items-center">     
+          <div class="col-md-6 mb-5 mb-lg-0"> 
             <div class="card">
-              <h3 style="margin-top: 3%;color: #2c9792;">HRMS Client Creation Form</h3>
               <div class="card-body py-5 px-md-5">
-                      <div class="form-outline mb-4">  
-                        <label class="form-label" for="form3Example1" style="color: black; font-weight: bolder;">First name</label> 
-                        {{ instance.first_name }}  
-                      </div>
-                      <div class="form-outline mb-4"> 
-                        <label class="form-label" for="form3Example2" style="color: black; font-weight: bolder;">Last name</label>
-                        {{ instance.last_name }}  
-                      </div>  
-                  <!-- Email input -->
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">Email address</label>
-                    {{ instance.email }}
-                  </div>
-                  <!-- Username input -->
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">User Name</label>
-                    {{ instance.username }}     
-                  </div>  
-                  <!-- Password input -->
-                  <div class="form-outline mb-4">
-                    <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Password</label>
-                    {{ instance.password }}
-                  </div>                                   
+
+                <div class="form-outline mb-4">  
+                  <label class="form-label" for="form3Example1" style="color: black; font-weight: bolder;">First name</label> 
+                  {{ instance.first_name }}  
+                </div>
+                <div class="form-outline mb-4"> 
+                  <label class="form-label" for="form3Example2" style="color: black; font-weight: bolder;">Last name</label>
+                  {{ instance.last_name }}  
+                </div>  
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">Email address</label>
+                  {{ instance.email }}
+                </div>
+                <!-- Username input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">Photo</label>
+                  {{ instance.photo }}     
+                </div>  
+                <!-- Password input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Phone</label>
+                  {{ instance.phone_number }}
+                </div> 
+                <!-- Address input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Address</label>
+                  {{ instance.address }}
+                </div> 
+                <!-- education input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">education</label>
+                  {{ instance.education }}
+                </div> 
+                <!-- experience input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">experience</label>
+                  {{ instance.experience }}
+                </div> 
+                <!-- skills input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">skills</label>
+                  {{ instance.skills }}
+                </div> 
+              </div>
+            </div>            
+          </div>
+          <div class="col-md-6 mb-5 mb-lg-0"> 
+            <div class="card">
+             
+
+              <div class="card-body py-5 px-md-5">
+
+                <!-- certifications input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Certifications</label>
+                  {{ instance.certifications }}
+                </div> 
+                <div class="form-outline mb-4">  
+                  <label class="form-label" for="form3Example1" style="color: black; font-weight: bolder;">Projects</label> 
+                  {{ instance.projects }}  
+                </div>
+                <div class="form-outline mb-4"> 
+                  <label class="form-label" for="form3Example2" style="color: black; font-weight: bolder;">Additional Information</label>
+                  {{ instance.additional_information }}  
+                </div>  
+                <!-- linkedin_profile input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">Linkedin Profile address</label>
+                  {{ instance.linkedin_profile }}
+                </div>
+                <!-- github_profile input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">Github Profile</label>
+                  {{ instance.github_profile }}     
+                </div>  
+                <!-- resume input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Resume</label>
+                  {{ instance.resume }}
+                </div> 
+                <!-- date_applied input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Date Applied</label>
+                  {{ instance.date_applied }}
+                </div> 
               </div>
             </div>            
           </div>

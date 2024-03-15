@@ -872,8 +872,8 @@
 								<a href="#"><i class="la la-briefcase"></i> <span> Jobs </span> <span class="menu-arrow"></span></a>
 								<ul>
 									{% comment %} <li><a href="user-dashboard.html"> User Dasboard </a></li> {% endcomment %}
-									<li><a href="{% url 'job:create_job' %}"> Post Jobs </a></li>
-									<li><a href="{% url 'job:jobs' %}"> Manage Jobs </a></li>
+									<li><a href="{% url 'job:jobs' %}"> Post Jobs </a></li>
+									{% comment %} <li><a href="{% url 'job:jobs' %}"> Manage Jobs </a></li> {% endcomment %}
 									{% comment %} <li><a href="#"> Manage Resumes </a></li>
 									<li><a href="#"> Shortlist Candidates </a></li>
 									<li><a href="interview-questions.html"> Interview Questions </a></li>
@@ -884,22 +884,22 @@
 									<li><a href="apptitude-result.html"> Aptitude Results </a></li> {% endcomment %}
 								</ul>
 							</li>
-							{% comment %} <li class="submenu">
+							<li class="submenu">
 								<a href="#"><i class="la la-briefcase"></i> <span>Hire Candidates </span> <span class="menu-arrow"></span></a>
 								<ul>
-									<li><a href="user-dashboard.html"> User Dasboard </a></li>
+									{% comment %} <li><a href="user-dashboard.html"> User Dasboard </a></li>
 									<li><a href="#"> Post Jobs </a></li>
 									<li><a href="#"> Manage Jobs </a></li>
 									<li><a href="#"> Manage Resumes </a></li> 
 									<li><a href="#"> Shortlist Candidates </a></li>
 									<li><a href="interview-questions.html"> Interview Questions </a></li>
 									<li><a href="#"> Offer Approvals </a></li>
-									<li><a href="experiance-level.html"> Experience Level </a></li>
-									<li><a href="candidates.html"> Candidates List </a></li>
-									<li><a href="#"> Schedule Interview </a></li>
-									<li><a href="apptitude-result.html"> Aptitude Results </a></li>
+									<li><a href="experiance-level.html"> Experience Level </a></li> {% endcomment %}
+									<li><a href="{% url 'candidate:hrms_candidates' %}"> Candidates List </a></li>
+									{% comment %} <li><a href="#"> Schedule Interview </a></li>
+									<li><a href="apptitude-result.html"> Aptitude Results </a></li> {% endcomment %}
 								</ul>
-							</li> {% endcomment %}
+							</li>
 							{% comment %} <li class="submenu">
 								<a href="#"><i class="la la-briefcase"></i> <span>Hire Teams </span> <span class="menu-arrow"></span></a>
 								<ul>

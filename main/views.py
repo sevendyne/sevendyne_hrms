@@ -139,7 +139,8 @@ def admin_dashboard(request):
     }
     return render(request, "sevendyne_admin/sevendyne_admin.html", context=context)
 
-
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 # company crud starts here
 def create_company(request):
     # Check if the user is an HrmsClient and has already created a company
@@ -261,7 +262,8 @@ def create_company(request):
         return render(request, 'settings/settings.html', context)
 
 
-
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_company(request, pk):
     instance = get_object_or_404(Company.objects.filter(pk=pk, is_deleted=False))
@@ -313,7 +315,8 @@ def edit_company(request, pk):
         }
         return render(request, 'settings/create_company.html', context)
 
-
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def company(request, pk):
     instance = get_object_or_404(Company.objects.filter(pk=pk,is_deleted=False))

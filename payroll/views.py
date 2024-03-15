@@ -17,7 +17,7 @@ from employee.models import Employee
 
 from django.db import models
 from main.decorators import company_required
-from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission
+from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission, has_hrms_permission
 # from payroll import models
 from payroll.forms import PayrollItemForm, SalaryForm, SalarySettingForm
 from payroll.models import  PayrollItem, Salary, SalaryDynamicField, SalarySetting
@@ -52,6 +52,7 @@ def ajax_load_salary_components(request):
     
 # Create your views here.
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_salary_setting(request):
     current_company = get_current_company(request)    
@@ -122,6 +123,7 @@ def create_salary_setting(request):
         return render(request, 'payroll/salary-settings.html', context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def salary_settings(request):
     current_company = get_current_company(request)
@@ -137,6 +139,7 @@ def salary_settings(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_salary_setting(request, pk):
     current_company = get_current_company(request)
@@ -185,6 +188,7 @@ def edit_salary_setting(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def salary_setting(request,pk):
     current_company = get_current_company(request)
@@ -198,6 +202,7 @@ def salary_setting(request,pk):
     return render(request, "payroll/salary-settings.html", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_salary_setting(request,pk):
     current_company = get_current_company(request)
@@ -218,6 +223,7 @@ def delete_salary_setting(request,pk):
 
 #payroll crud starts here
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_payroll_item(request):
     current_company = get_current_company(request)    
@@ -277,6 +283,7 @@ def create_payroll_item(request):
         return render(request, 'payroll/payroll-items.html', context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def payroll_items(request):
     current_company = get_current_company(request)
@@ -292,6 +299,7 @@ def payroll_items(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_payroll_item(request, pk):
     current_company = get_current_company(request)
@@ -342,6 +350,7 @@ def edit_payroll_item(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def payroll_item(request,pk):
     current_company = get_current_company(request)
@@ -355,6 +364,7 @@ def payroll_item(request,pk):
     return render(request, "payroll_item/payrollitem.html',", context)
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_payroll_item(request,pk):
     current_company = get_current_company(request)
@@ -374,6 +384,7 @@ def delete_payroll_item(request,pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_salary(request):
     current_company = get_current_company(request)
@@ -493,6 +504,7 @@ def create_salary(request):
     
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def salaries(request):
     current_company = get_current_company(request)
@@ -528,6 +540,7 @@ def salaries(request):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_salary(request, pk):
     current_company = get_current_company(request)
@@ -575,6 +588,7 @@ def edit_salary(request, pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_salary(request,pk):
     current_company = get_current_company(request)
@@ -593,6 +607,7 @@ def delete_salary(request,pk):
 
 
 @login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def payslip(request,pk): 
     current_company = get_current_company(request)    

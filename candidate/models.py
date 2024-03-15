@@ -7,25 +7,25 @@ from main.models import BaseModel
 
 # Refer https://internshala.com/student/resume?detail_source=resume_direct#personal_details 
 #check internshala,naukri etc
-class Candidate(BaseModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class Candidate(models.Model):
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(_("First Name"),max_length=100)
     last_name = models.CharField(_("Last Name"),max_length=100)
     email = models.EmailField(_("Email"),unique=True)
-    photo = models.ImageField(_("Photo"),upload_to='photos/', null=True, blank=True)
+    photo = models.ImageField(_("Photo"),upload_to='candidates/photos/', null=True, blank=True)
     phone_number = PhoneNumberField(_("Phone Number"))
     address = models.TextField(_("Address"),null=True, blank=True)
     education = models.TextField(_("Highest Level Of Education"),null=True, blank=True)
     experience = models.TextField(_("Experience in years"),null=True, blank=True)
     skills = models.TextField(_("Skills")) #formset
-    certifications = models.FileField(upload_to='certificates/', null=True, blank=True) #formset
+    certifications = models.FileField(upload_to='candidates/certificates/', null=True, blank=True) #formset
     projects = models.URLField(_("Portfolio/ Work Samples/ Github Links"),null=True, blank=True) #formset
     additional_information = models.TextField(null=True, blank=True) # formset
     linkedin_profile = models.URLField(_("LinkedIn Profile Link"),null=True, blank=True)
     github_profile = models.URLField(_(" Github Links"),null=True, blank=True)
-    resume = models.FileField(upload_to='resumes/', null=True, blank=True)
+    resume = models.FileField(upload_to='candidates/resumes/', null=True, blank=True)
     date_applied = models.DateTimeField(auto_now_add=True)
-    
+    candidateid = models.CharField(_('Candidate ID'),max_length=255,unique=True,null=True,blank=True)
     is_blocked = models.BooleanField(_('Is Blocked'),help_text='button to toggle employee block and unblock',default=False)
     is_deleted = models.BooleanField(default=False)
 

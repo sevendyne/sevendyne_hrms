@@ -23,7 +23,7 @@ def user_login(request):
             # Authenticate the user
             user = authenticate(request, username=username, password=password)
             # print("Authenticated User:", user)
-            # print("User Groups:", user.groups.all())
+            print("User Group:", user.groups.all())
             # print("User Groups:", user.groups.all())
             
 
@@ -34,13 +34,13 @@ def user_login(request):
                 # Check if the user is a superuser
                 if user.is_superuser:
                     # Add the user to the 'sevendyne_admin' group
-                    sevendyne_admin_group = Group.objects.get(name='sevendyne_admin')
-                    user.groups.add(sevendyne_admin_group)
+                    sevendyne_admin = Group.objects.get(name='sevendyne_admin')
+                    user.groups.add(sevendyne_admin)
                     user.save()
 
                 # Check user groups and redirect accordingly
                 if user.groups.filter(name='sevendyne_admin').exists():
-                    print("sevendyne_admin")
+                    print("user belongs to sevendyne_admin")
                     return redirect('main:admin_dashboard')  
                 elif user.groups.filter(name='hrms_clients').exists():
                     print("user belongs to hrms_clients group ")
@@ -58,7 +58,7 @@ def user_login(request):
                 return render(request, "authentication/login.html", {"form": form, "error_message": error_message})
 
     # If the request method is not POST, render the login form
-    print("get request/ user not belongs to any user group")
+    print("get request/ any user group")
     return render(request, "authentication/login.html", {"form": form})
 
 
