@@ -10,7 +10,7 @@ class Client(BaseModel):
     firstname = models.CharField(_('Contact Person Firstname'),max_length=125)
     lastname = models.CharField(_('Contact Person Lastname'),max_length=125,null=False,blank=False)
     email = models.EmailField(_("Email"),unique=True)
-    phone = PhoneNumberField(_("Phone Number"))
+    phone = models.CharField(_("Phone Number"),max_length=255)
     address = models.TextField(_("Address"),null=True, blank=True)
     company_name = models.CharField(_('Client Company Name'),max_length=255) #client company foreign key
     clientid = models.CharField(_('Client ID'),max_length=255,unique=True,null=True,blank=True)

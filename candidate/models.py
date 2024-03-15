@@ -13,7 +13,7 @@ class Candidate(models.Model):
     last_name = models.CharField(_("Last Name"),max_length=100)
     email = models.EmailField(_("Email"),unique=True)
     photo = models.ImageField(_("Photo"),upload_to='candidates/photos/', null=True, blank=True)
-    phone_number = PhoneNumberField(_("Phone Number"))
+    phone_number = models.CharField(_("Phone Number"),max_length=255)
     address = models.TextField(_("Address"),null=True, blank=True)
     education = models.TextField(_("Highest Level Of Education"),null=True, blank=True)
     experience = models.TextField(_("Experience in years"),null=True, blank=True)

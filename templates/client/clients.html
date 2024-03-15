@@ -79,10 +79,11 @@
 				</div>
 				</div>
 				<h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="client-profile.html">{{ client.company_name }}</a></h4>
-				<h5 class="user-name m-t-10 mb-0 text-ellipsis"><a href="client-profile.html">{{ client.firstname }}</a></h5>
+				<div class="small text-muted">{{ client.firstname }}</div>
+				<div class="small text-muted">{{ client.clientid }}</div>
 				<div class="small text-muted">CEO</div>
-				<a href="#" class="btn btn-white btn-sm m-t-10">Message</a>
-				<a href="#" class="btn btn-white btn-sm m-t-10">View Profile</a>
+				{% comment %} <a href="#" class="btn btn-white btn-sm m-t-10">Message</a> {% endcomment %}
+				<a href="{% url 'client:client' pk=client.pk %}" class="btn btn-white btn-sm m-t-10">View Profile</a>
 			</div>
 		</div>
 		<!-- Edit Client Modal -->

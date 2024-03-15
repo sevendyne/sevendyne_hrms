@@ -1,7 +1,7 @@
 from datetime import date
 import datetime
 from django import forms
-from django.forms.widgets import TextInput, Select,URLInput, ClearableFileInput
+from django.forms.widgets import TextInput, Select,URLInput, FileInput
 from django.utils.translation import gettext_lazy as _
 from employee.models import AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
 
@@ -107,7 +107,7 @@ class EmployeeForm(forms.ModelForm):
             'designation': Select(attrs={'class': 'required form-control'}),
             'employeeid': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter employee id'}),
             'joindate' : DateInput(attrs={'class' : 'datetimepicker form-control'}),
-            'photo': forms.FileInput()
+            'photo': FileInput()
         }
         error_messages = {
             'phone': {
@@ -160,6 +160,7 @@ class LeaveForm(forms.ModelForm):
             'startdate' : DateInput(attrs={'class' : 'datetimepicker form-control'}),
             'enddate' : DateInput(attrs={'class' : 'datetimepicker form-control'}),
             'startdate' : DateInput(attrs={'class' : 'datetimepicker form-control'}),
+            'photo': forms.FileInput()
         }
         error_messages = {
             'reason': {

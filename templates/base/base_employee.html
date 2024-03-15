@@ -320,7 +320,7 @@
 							<span>Employee</span>
 						</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">My Profile</a>
+							{% comment %} <a class="dropdown-item" href="#">My Profile</a> {% endcomment %}
 							{% comment %} <a class="dropdown-item" href="{% url 'employee:leave_types' %}">Settings</a> {% endcomment %}
 							<a class="dropdown-item" href="{% url 'user:user_logout' %}">Logout</a>
 						</div>
@@ -461,8 +461,8 @@
 							<li class="submenu">
 								<a href="#"><i class="la la-rocket"></i> <span> Leave Management</span> <span class="menu-arrow"></span></a>
 								<ul>
-									<li><a href="#">Leave Request</a></li>
-									<li><a href="#">Leave Status</a></li>
+									<li><a href="{% url 'employee:leaves' %}">Leave Request & Status</a></li>
+									{% comment %} <li><a href="{% url 'employee:leaves' %}">Leave Status</a></li> {% endcomment %}
 									{% comment %} <li><a href="#">Task Board</a></li> {% endcomment %}
 								</ul>
 							</li>

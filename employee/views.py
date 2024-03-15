@@ -975,7 +975,6 @@ def ajax_load_remaining_days(request):
 
 @login_required
 @user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
-@company_required
 def leaves(request):
     employee = get_object_or_404(Employee, user=request.user)
     company = employee.company

@@ -670,10 +670,9 @@ def payslips_employee(request):
         # print("payslips",payslips)
         payslips = Salary.objects.filter(company=company,employee=employee,is_deleted=False)
         print("payslips",payslips)
-        salary_instance = Salary.objects.get(company=company,is_deleted=False)
         # Filter SalaryDynamicField objects for the current Salary instance, separated by category
-        additions_fields = SalaryDynamicField.objects.filter(company=company,employee=employee, salary=salary_instance, category='Additions')
-        deductions_fields = SalaryDynamicField.objects.filter(company=company,employee=employee, salary=salary_instance, category='Deductions')
+        additions_fields = SalaryDynamicField.objects.filter(company=company,employee=employee, category='Additions')
+        deductions_fields = SalaryDynamicField.objects.filter(company=company,employee=employee, category='Deductions')
         # Calculate total of additions
         total_additions = additions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
         
@@ -681,7 +680,7 @@ def payslips_employee(request):
         total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
         # Convert net_salary to words
         # Convert net_salary to words without specifying currency
-        net_salary_in_words = num2words(salary_instance.net_salary, lang='en')
+        # net_salary_in_words = num2words(salary_instance.net_salary, lang='en')
 
         # # Check if there's a fractional part to handle "paise"
         # net_salary_parts = str(salary_instance.net_salary).split('.')
@@ -693,7 +692,7 @@ def payslips_employee(request):
         #     net_salary_in_words += " RUPEES"
 
         # Convert the entire string to uppercase
-        net_salary_in_words = net_salary_in_words.upper()
+        # net_salary_in_words = net_salary_in_words.upper()
 
         context = {
             'payslips': payslips,
@@ -702,7 +701,7 @@ def payslips_employee(request):
             'deductions_fields': deductions_fields,
             'total_additions': total_additions,
             'total_deductions': total_deductions,
-            'net_salary_in_words': net_salary_in_words
+            # 'net_salary_in_words': net_salary_in_words
 
         }
         return render(request, "payroll/payslips-employee.html", context)
@@ -710,10 +709,10 @@ def payslips_employee(request):
         # Debugging: Print a message if the Employee object is not found
         print("Employee not found for the user.")
         return HttpResponse("Employee not found for the user.")
-    except Exception as e:
-        # Debugging: Print any other exceptions that might occur
-        print("Exception:", e)
-        return HttpResponse(f"An error occurred: {str(e)}")
+    # except Exception as e:
+    #     # Debugging: Print any other exceptions that might occur
+    #     print("Exception:", e)
+    #     return HttpResponse(f"An error occurred: {str(e)}")
     
 @login_required
 @user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
@@ -725,7 +724,7 @@ def employee_payslip(request,pk):
         company=employee.company
         currency=company.country.currency
         currency_symbol = company.country.currency_symbol
-        instance = Salary.objects.get(company=company,is_deleted=False)
+        instance = Salary.objects.get(pk=pk,employee=employee,company=company,is_deleted=False)
         # Filter SalaryDynamicField objects for the current Salary instance, separated by category
         additions_fields = SalaryDynamicField.objects.filter(company=company,employee=employee, salary=instance, category='Additions')
         deductions_fields = SalaryDynamicField.objects.filter(company=company,employee=employee, salary=instance, category='Deductions')

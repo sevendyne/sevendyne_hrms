@@ -80,6 +80,8 @@
 					</div>
 				</div>
 				<h4 class="user-name m-t-10 mb-0 text-ellipsis"><a href="profile.html">{{employee.firstname}}</a></h4>
+				<div class="small text-muted">{{employee.employeeid}}</div>
+				<div class="small text-muted">{{employee.designation}}</div>
 				<div class="small text-muted">{{employee.client_company}}</div>
 			</div>
 		</div>
@@ -293,11 +295,8 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="input-block mb-6">
-								<label class="col-form-label">Photo<span class="text-danger">*</span></label>
-								{{ form.photo }}
-								{% if form.photo.errors %}
-								<span class="error">{{ form.photo.errors.0 }}</span>
-								{% endif %}
+								<label class="col-form-label">Photo</label>
+								<input class="form-control floating" name="photo" type="file" accept="image/*">
 							</div>
 						</div>
 						<div class="col-sm-6">  
@@ -311,7 +310,7 @@
 						</div>
 						<div class="col-sm-6">  
 							<div class="input-block mb-3">
-								<label class="col-form-label">Joining Date <span class="text-danger">*</span></label>
+								<label class="col-form-label">Joining Date </label>
 								{{ form.joindate }}
 								{% if form.joindate.errors %}
 								<span class="error">{{ form.joindate.errors.0 }}</span>
@@ -320,7 +319,7 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="input-block mb-3">
-								<label class="col-form-label">Address <span class="text-danger">*</span></label>
+								<label class="col-form-label">Address</label>
 								{{ form.address }}
 								{% if form.address.errors %}
 								<span class="error">{{ form.address.errors.0 }}</span>

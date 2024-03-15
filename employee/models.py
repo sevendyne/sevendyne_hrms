@@ -55,12 +55,12 @@ class Employee(BaseModel):
     username = models.CharField(max_length=254)    
     password = models.CharField(max_length=100)
     email = models.EmailField(_("Email"),unique=True)
-    phone = models.CharField(_('Phone'),max_length=125)
+    phone = models.CharField(_("Phone Number"),max_length=255)
     address = models.TextField(_("Address"),null=True, blank=True)
     client_company = models.ForeignKey("client.Client",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False}) #client company foreign key
     department =  models.ForeignKey("employee.Department",verbose_name =_('Department'),on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})
     designation =  models.ForeignKey("employee.Designation",verbose_name =_('Role'),on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})
-    joindate = models.DateField(_('Joining Date'),help_text='joining date',blank=False,null=True)    
+    joindate = models.DateField(_('Joining Date'),help_text='joining date',blank=True,null=True)    
     employeeid = models.CharField(_('Employee ID'),max_length=125,unique=True,null=True,blank=True)
     photo = models.ImageField(_("Photo"), upload_to='employee_photos/', null=True, blank=True)
 

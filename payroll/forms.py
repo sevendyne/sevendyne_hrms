@@ -52,7 +52,7 @@ class SalaryForm(forms.ModelForm):
         model = Salary
         exclude = ['creator', 'updator', 'auto_id','a_id','company','is_deleted'] 
         widgets = {
-            'net_salary': forms.TextInput(attrs={'class': 'required form-control '}),
+            'net_salary': forms.TextInput(attrs={'readonly': 'readonly','class': 'required form-control '}),
             'employee': Select(attrs={'class': 'required form-control selectpicker'}),
             'date': DateInput(attrs={'class' : 'datetimepicker form-control'})       
         }

@@ -10,7 +10,11 @@
 		<div class="col-md-12">
 			<div class="welcome-box">
 				<div class="welcome-img">
-					<img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User Image">
+					{% if employee.photo %}
+						<img src="{{ employee.photo.url }}" alt="{{ employee.firstname }}'s profile photo">
+					{% else %}
+						<img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="Default User Image">
+					{% endif %}
 				</div>
 				<div class="welcome-det">
 					<h3>Welcome, {{ employee.get_full_name }}</h3>
@@ -189,7 +193,7 @@
 								</div>
 							</div>
 							<div class="request-btn">
-								<a class="btn btn-primary" href="#">Apply Leave</a>
+								<a class="btn btn-primary" href="{% url 'employee:leaves' %}">Apply Leave</a>
 							</div>
 						</div>
 					</div>
