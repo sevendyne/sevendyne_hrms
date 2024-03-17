@@ -748,7 +748,7 @@
 									<li><a href="{% url 'employee:employees' %}">All Employees</a></li>
 									<li><a href="{% url 'employee:holidays' %}">Holidays</a></li>
 									<li class="submenu">
-										<a href="{% url 'employee:leave_types' %}">Leave Management<span class="menu-arrow"></span></a>
+										<a href="#">Leave Management<span class="menu-arrow"></span></a>
 										<ul>
 											<li><a href="{% url 'employee:leave_approvals' %}">Leave Approval</a></li>
 											{% comment %} <li><a href="{% url 'employee:leave_requests' %}">Leave Request</a></li> {% endcomment %}
@@ -1942,6 +1942,10 @@
 
 		<!-- jQuery -->
        <script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+	   <script src="{%static 'assets/js/jquery.dataTables.min.js'%}"></script>
+	   <script src="{%static 'assets/js/dataTables.bootstrap4.min.js'%}"></script>
+
+	   
 		
 		<!-- Bootstrap Core JS -->
         <script src="{%static 'assets/js/bootstrap.bundle.min.js'%}"></script>
@@ -1962,6 +1966,57 @@
 		<!-- Custom JS -->
 		<script src="{%static 'assets/js/app.js'%}"></script>
 		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		
+		
+		<script>
+			
+			document.addEventListener('DOMContentLoaded', function() {
+				const links = document.querySelectorAll('.sidebar-vertical a');
+				const submenuLinks = document.querySelectorAll('.sidebar-vertical .submenu > a');
+	
+				// Function to handle link click
+				const handleLinkClick = (clickedLink) => {
+					links.forEach(link => {
+						if (link === clickedLink) {
+							link.classList.add('active');
+							localStorage.setItem('activeLink', clickedLink.getAttribute('href'));
+						} else {
+							link.classList.remove('active');
+						}
+					});
+				};
+	
+				// Check if there's an active link stored in localStorage
+				const activeLink = localStorage.getItem('activeLink');
+				if (activeLink) {
+					const activeLinkElement = document.querySelector(`.sidebar-vertical a[href="${activeLink}"]`);
+					if (activeLinkElement) {
+						handleLinkClick(activeLinkElement);
+					}
+				}
+	
+				// Add click event listener to links
+				links.forEach(link => {
+					link.addEventListener('click', function(event) {
+						event.preventDefault(); // Prevent default anchor behavior
+						const href = this.getAttribute('href');
+						handleLinkClick(this); // Handle the link click
+						if (href && href !== "#") {
+							window.location.href = href; // Navigate to the link's URL
+						}
+					});
+				});
+	
+				// Add click event listener to submenu links to prevent refreshing
+				submenuLinks.forEach(link => {
+					link.addEventListener('click', function(event) {
+						event.preventDefault(); // Prevent default anchor behavior
+					});
+				});
+			});
+
+			
+		</script>
 		
 		
 

@@ -8,8 +8,10 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 # from main.decorators import company_required
 from django.db.models import Q
+from candidate.models import Candidate
 from client.models import Client
 from employee.models import AttendanceRegister, Employee, Leave
+from job.models import Job
 from main.decorators import company_required
 
 from main.forms import CompanyForm
@@ -57,7 +59,10 @@ def hrms_dashboard(request):
     clients_count =clients.count()
     # Step 1: Get the current date
     current_date = datetime.date.today()
-
+    jobs = Job.objects.filter(company=company,is_deleted=False)
+    jobs_count =jobs.count()
+    candidates = Candidate.objects.filter(is_deleted=False,is_blocked=False)
+    candidates_count =candidates.count()
     # Step 2: Query the AttendanceRegister model for absent entries today
     absent_employees = AttendanceRegister.objects.filter(company=company,date=current_date, status='absent')[:4]
 
@@ -81,6 +86,8 @@ def hrms_dashboard(request):
             'company_name':company_name,
             'employees_count': employees_count,
             'clients_count':clients_count,
+            'candidates_count':candidates_count,
+            'jobs_count':jobs_count,
             'clients':clients,
             'absent_employees': absent_employees,
             'absent_employees_count': absent_employees_count
@@ -133,9 +140,17 @@ def admin_dashboard(request):
     monthly_hrms_clients = HrmsClient.objects.annotate(month=TruncMonth('created_at')).values('month').annotate(count=Count('id')).order_by('month')
     total_hrms_clients = hrms_clients.count()
 
+    candidates = Candidate.objects.filter(is_deleted=False,is_blocked=False)
+    candidates_count =candidates.count()
+
+    jobs = Job.objects.filter(is_deleted=False)
+    jobs_count =jobs.count()
+
     context = {
         'total_hrms_clients': total_hrms_clients,
-        'monthly_hrms_clients' : monthly_hrms_clients
+        'monthly_hrms_clients' : monthly_hrms_clients,
+        'candidates_count':candidates_count,
+        'jobs_count':jobs_count
     }
     return render(request, "sevendyne_admin/sevendyne_admin.html", context=context)
 
