@@ -12,7 +12,7 @@
         <title>HRMS admin template</title>
 		
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="{%static 'assets/img/logo_svd.png'%}">
+        {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{%static 'assets/img/logo_svd.png'%}"> {% endcomment %}
 		
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{%static 'assets/css/bootstrap.min.css'%}">
@@ -39,28 +39,28 @@
             <div class="header">
 			
 				<!-- Logo -->
-                <div class="header-left">
+                {% comment %} <div class="header-left">
                      <a href="{% url 'main:hrms_dashboard' %}" class="logo">
 						<img src="{%static 'assets/img/logo_svd.png'%}" width="40" height="40" alt="Logo">
 					</a>
 					<a href="{% url 'main:hrms_dashboard' %}" class="logo2">
 						<img src="{%static 'assets/img/logo_svd.png'%}" width="40" height="40" alt="Logo">
 					</a>
-                </div>
+                </div> {% endcomment %}
 				<!-- /Logo -->
 				
-				<a id="toggle_btn" href="javascript:void(0);">
+				{% comment %} <a id="toggle_btn" href="javascript:void(0);">
 					<span class="bar-icon">
 						<span></span>
 						<span></span>
 						<span></span>
 					</span>
-				</a>
+				</a> {% endcomment %}
 				
 				<!-- Header Title -->
-                <div class="page-title-box">
+                {% comment %} <div class="page-title-box">
 					<h3>Sevendyne HRMS</h3>
-                </div>
+                </div> {% endcomment %}
 				<!-- /Header Title -->
 				
 				<a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa-solid fa-bars"></i></a>

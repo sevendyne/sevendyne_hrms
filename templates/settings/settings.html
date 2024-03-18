@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<!-- /Page Header -->
-	{% if create %}
+	
 	<form id="create_update_form" method="POST" enctype="multipart/form-data">
 		{% csrf_token %}
 		<div class="row">
@@ -139,7 +139,7 @@
 			<button type="submit" class="btn btn-primary submit-btn" onclick="submitForm(event)">Save</button>
 		</div>
 	</form>
-	{% endif %}
+	
 </div>
 {% comment %} <script>
     $(document).ready(function () {

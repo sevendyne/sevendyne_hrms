@@ -7,10 +7,10 @@
         <meta name="description" content="Smarthr - Bootstrap Admin Template">
 		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
         <meta name="author" content="Dreamguys - Bootstrap Admin Template">
-        <title>Login - Sevendyne HRMS</title>
+        <title>Login - HRMS</title>
 		
 		<!-- Favicon -->
-        <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/logo_svd.png' %}">
+        {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/logo_svd.png' %}"> {% endcomment %}
 		
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
@@ -47,9 +47,9 @@
 					<div class="account-box">
 						<div class="account-wrapper">
 							<!-- Account Logo -->
-							<div class="account-logo">
+							{% comment %} <div class="account-logo">
 								<a href="#"><img src="{% static 'assets/img/01.png' %}" alt="Dreamguy's Technologies" style="width:71%"></a>
-							</div>
+							</div> {% endcomment %}
 							<!-- /Account Logo -->
 							
 							<h3 class="account-title">Login</h3>
@@ -86,7 +86,7 @@
 										<span class="fa-solid fa-eye-slash" id="toggle-password"></span>
 									</div>
 								</div>
-								<p style="font-size:smaller">Contact technical@sevendyne.com for username and password</p>          
+								{% comment %} <p style="font-size:smaller">Contact technical@sevendyne.com for username and password</p>           {% endcomment %}
 								<div class="input-block mb-4 text-center">
 									<button class="btn btn-primary account-btn" type="submit" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%)">Login</button>
 								</div>
@@ -95,6 +95,10 @@
 								</div> {% endcomment %}
 							</form>
 							<!-- /Account Form -->
+							<h3>Demo Accounts</h3>
+							<p> Admin Login - Username: admin, Password: admin</p>
+							<p> HRMS Client Login - Username: hrmsclient1, Password: password@123</p>
+							<p> Employee Login - Username: employee1, Password: password@123</p>
 							
 						</div>
 					</div>

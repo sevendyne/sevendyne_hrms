@@ -342,7 +342,7 @@ def edit_company(request, pk):
 
 
         }
-        return render(request, 'settings/create_company.html', context)
+        return render(request, 'settings/settings.html', context)
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
