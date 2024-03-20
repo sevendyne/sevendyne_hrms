@@ -2,5 +2,5 @@
 /migrations/*
 notes.txt
 db.sqlite3
-__pycache__/
-/__pycache__/*
+*.pyc
+*/__pycache__/
