@@ -1,6 +1,4 @@
-*.pyc
 /migrations/*
 notes.txt
-db.sqlite3
 *.pyc
 */__pycache__/
