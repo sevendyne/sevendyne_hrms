@@ -984,6 +984,7 @@ def leaves(request):
     page_number = request.GET.get('page')
     leaves = paginator.get_page(page_number)
     context = {
+         'company':company,
         'leaves': leaves,
         "title": 'Leaves'
     }

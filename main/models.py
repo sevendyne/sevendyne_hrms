@@ -37,6 +37,7 @@ class Company(models.Model):
     mobile = PhoneNumberField(_("Mobile Number"),blank=True,null=True)
     fax = models.CharField(_("Fax"),max_length=128,blank=True,null=True)
     website = models.URLField(_("Website"),null=True,blank=True)
+    logo = models.ImageField(_("Photo"), upload_to='logos/', null=True, blank=True)
     is_deleted = models.BooleanField(_("Is this company deleted ? "),default=False)
 
     class Meta:

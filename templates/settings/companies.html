@@ -22,6 +22,7 @@
 						<tr>
 							<th class="width-thirty">#</th>
 							<th>Name </th>
+							<th>Logo </th>
 							<th>Contact Person </th>							
 							<th>Country </th>							
 							<th>Email </th>							
@@ -35,6 +36,7 @@
 						<tr>
 							<td>{{forloop.counter}}</td>
 							<td>{{ company.name }}</td>
+							<td><img src="{{ company.logo.url }}" alt="{{ company.name }} Logo"></td>
 							<td>{{ company.contact_person }}</td>
 							<td>{{ company.country }}</td>
 							<td>{{ company.email }}</td>

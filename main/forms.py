@@ -1,6 +1,6 @@
 from datetime import date
 from django import forms
-from django.forms.widgets import TextInput, Select, Textarea
+from django.forms.widgets import TextInput, Select, Textarea, FileInput
 from django.utils.translation import gettext_lazy as _
 from main.models import Company
 # from dal import autocomplete
@@ -28,6 +28,7 @@ class CompanyForm(forms.ModelForm):
             'mobile': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter your mobile number'}),
             'fax': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter your fax'}),
             'website': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter your website url'}),
+            'logo': FileInput()
         }
         error_messages = {
             'name' : {

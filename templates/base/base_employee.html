@@ -56,28 +56,40 @@
 			<div class="header" style="background-color: white">
 				
 				<!-- Logo -->
-				{% comment %} <div class="header-left">
+				<div class="header-left">
 					<a href="{% url 'main:employee_dashboard' %}" class="logo">
-						<img src="{%static 'assets/img/logo_svd.png'%}" width="40" height="40" alt="Logo">
+						{% if company.logo %}									
+							<img src="{{ company.logo.url }}" width="40" height="40" alt="{{ company.name }}'s profile photo">
+						{% else %}
+							<img src="{%static 'assets/img/profiles/avatar-21.jpg'%}" width="40" height="40" alt="User Image">
+						{% endif %}
+							<span class="status online"></span></span>
+						{% comment %} <img src="{%static 'assets/img/logo_svd.png'%}" width="40" height="40" alt="Logo"> {% endcomment %}
 					</a>
 					<a href="{% url 'main:employee_dashboard' %}" class="logo2">
-						<img src="{%static 'assets/img/logo_svd.png'%}" width="60" height="60" alt="Logo">
+						{% if company.logo %}							
+							<img src="{{ company.logo.url }}" width="40" height="40" alt="{{ company.name }}'s profile photo">
+						{% else %}
+							<img src="{%static 'assets/img/profiles/avatar-21.jpg'%}" width="40" height="40" alt="User Image">
+						{% endif %}
+							<span class="status online"></span></span>
+						{% comment %} <img src="{%static 'assets/img/logo_svd.png'%}" width="60" height="60" alt="Logo"> {% endcomment %}
 					</a>
-				</div> {% endcomment %}
+				</div>
 				<!-- /Logo -->
 				
-				{% comment %} <a id="toggle_btn" href="javascript:void(0);">
+				<a id="toggle_btn" href="javascript:void(0);">
 					<span class="bar-icon">
 						<span></span>
 						<span></span>
 						<span></span>
 					</span>
-				</a> {% endcomment %}
+				</a>
 				
 				<!-- Header Title -->
-				{% comment %} <div class="page-title-box">
-					<h3>Sevendyne HRMS</h3>
-				</div> {% endcomment %}
+				<div class="page-title-box">
+					<h3>{{ company.name }} HRMS</h3>
+				</div>
 				<!-- /Header Title -->
 				
 				<a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa-solid fa-bars"></i></a>
@@ -315,7 +327,14 @@
 
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-							<span class="user-img"><img src="{%static 'assets/img/profiles/avatar-21.jpg'%}" alt="User Image">
+							<span class="user-img">
+								{% if employee.photo %}
+									
+									<img src="{{ employee.photo.url }}" alt="{{ employee.name }}'s profile photo">
+								{% else %}
+									<img src="{%static 'assets/img/profiles/avatar-21.jpg'%}" alt="User Image">
+								{% endif %}
+									<span class="status online"></span></span>
 							<span class="status online"></span></span>
 							<span>{{ employee.get_full_name }}</span>
 						</a>

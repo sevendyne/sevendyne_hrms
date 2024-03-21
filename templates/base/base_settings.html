@@ -298,9 +298,15 @@
 	
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
-							<span class="user-img"><img src="{%static 'assets/img/profiles/avatar-21.jpg'%}" alt="User Image">
-							<span class="status online"></span></span>
-							<span>Admin</span>
+							<span class="user-img">
+								{% if company.logo %}
+									
+									<img src="{{ company.logo.url }}" alt="{{ company.name }}'s profile photo">
+								{% else %}
+									<img src="{%static 'assets/img/profiles/avatar-21.jpg'%}" alt="User Image">
+								{% endif %}
+									<span class="status online"></span></span>
+							<span>{{ company_name }}</span>Admin
 						</a>
 						<div class="dropdown-menu">
 							{% comment %} <a class="dropdown-item" href="profile.html">My Profile</a>

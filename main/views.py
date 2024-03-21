@@ -54,7 +54,7 @@ def home_hrms(request):
 @company_required
 def hrms_dashboard(request):
     company=get_current_company(request)
-    # print("company name",company.name)
+    # print("company logo",company.logo)
     company_name = company.name
     employees_count = Employee.objects.filter(company=company,is_deleted=False).count()
     clients = Client.objects.filter(company=company,is_deleted=False)[:5]
@@ -85,6 +85,7 @@ def hrms_dashboard(request):
 
         context = {
             'hrms_client': hrms_client,
+            'company': company,
             'company_name':company_name,
             'employees_count': employees_count,
             'clients_count':clients_count,
@@ -119,6 +120,7 @@ def employee_dashboard(request):
         total_leave = Leave.objects.filter(employee=employee,company=company,is_deleted=False).count()
         remaining_leave = total_leave - approved_leave
         context = {
+            'company':company,
             'employee': employee,
             'approved_leave':approved_leave,
             'remaining_leave':remaining_leave
@@ -198,7 +200,7 @@ def create_company(request):
     #     return HttpResponse(json.dumps(response_data), content_type='application/json')
 
     if request.method == 'POST':
-        form = CompanyForm(request.POST)
+        form = CompanyForm(request.POST, request.FILES)
         if form.is_valid():
             print("company valid")
             name = form.cleaned_data['name']
@@ -213,6 +215,7 @@ def create_company(request):
             mobile = form.cleaned_data['mobile']
             fax = form.cleaned_data['fax']
             website = form.cleaned_data['website']
+            logo = form.cleaned_data['logo']
             auto_id = get_auto_id(Company)
             creator = request.user
             updator = request.user
@@ -232,6 +235,7 @@ def create_company(request):
                     mobile = mobile, 
                     fax = fax, 
                     website = website,
+                    logo = logo,
                     auto_id =auto_id,
                     creator = creator,
                     updator = updator
@@ -331,7 +335,7 @@ def edit_company(request, pk):
 
 
     if request.method == "POST":
-        form = CompanyForm(request.POST, instance=instance)
+        form = CompanyForm(request.POST, request.FILES, instance=instance)
 
         if form.is_valid():
             data = form.save(commit=False)
