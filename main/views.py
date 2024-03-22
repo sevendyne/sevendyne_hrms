@@ -30,6 +30,7 @@ from main.decorators import company_required
 from main.functions import generate_form_errors, has_admin_dashboard_permission, has_hrms_permission
 
 from hrms.models import HrmsClient
+from payroll.models import PayrollItem
 # def get_states(request):
 #     country_id = request.GET.get('country_id')
 #     if country_id:
@@ -219,9 +220,7 @@ def create_company(request):
             auto_id = get_auto_id(Company)
             creator = request.user
             updator = request.user
-            print("company name",name)
             if not Company.objects.filter(name=name).exists():
-                print("this company not exists")
                 data = Company.objects.create(                    
                     name = name, 
                     contact_person = contact_person, 
@@ -241,9 +240,7 @@ def create_company(request):
                     updator = updator
                 )
                 data.save()
-                print("data",data)
                 current_company = data
-                print("current_company:", current_company)
                 #create company access
                 # group = Group.objects.get(name="hrms_clients")
                 
@@ -267,6 +264,8 @@ def create_company(request):
 
                 # Add print statements to check if user=request.user is saved in CompanyAccess
                 # print(f"CompanyAccess saved - User: {company_access_instance.user}, Company: {company_access_instance.company}, Group: {company_access_instance.group}")
+                PayrollItem.objects.create(company=current_company,name="Basic Salary",category="Additions")
+                PayrollItem.objects.create(company=current_company,name="Leave",category="Deductions")
 
                 request.session["current_company"] = str(current_company.pk)
                 request.session.save()
