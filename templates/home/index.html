@@ -554,7 +554,8 @@
                            <p>
                               Our Technical training division is committed to delivering high-quality training programs to professionals seeking to enhance their skills and stay ahead in the rapidly evolving tech landscape. With a focus on excellence, we have worked with top brands like Collabera to provide comprehensive training in Java, C++, .Net, and other core technologies
                              </p>
-                          <button href="https://www.sevendyne.com/enroll/" class="btn-get-started mb-3" target="_blank" style="background:#fff;">Enroll Tech</button> <!-- Redirects to the enrollment page in a new tab -->
+                             <button onclick="window.open('https://www.sevendyne.com/enroll/', '_blank')" class="btn-get-started mb-3" style="background:#fff;">Enroll Tech</button>
+                             <!-- Redirects to the enrollment page in a new tab -->
       
                         </div>
                       </div>
@@ -625,13 +626,67 @@
       </section>
       <!-- End About-Us Section -->
 
+      
+    <!-- ======= Contact Section ======= -->
+    <section id="contact" class="padd-section mb-5">
+
+        <div class="container" data-aos="fade-up">
+          <div class="section-title text-center">
+            <h2>Contact Us</h2>
+            <p class="separator">Connect with Us to discuss our works</p>
+          </div>
+  
+          <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
+  
+            <div class="col-lg-3 col-md-4">
+  
+              <div class="info">
+                <div>
+                  <i class="bi bi-geo-alt"></i>                  
+                  <p>Sevendyne Consultancy Services LLP,<br>Noble Homes, <br> 5th floor, Market Rd,<br>Kochi 682011, India</p>
+                </div>
+  
+              </div>
+  
+            </div>
+  
+            <div class="col-lg-5 col-md-8">
+              <div class="form">
+                <!-- <form id="submit-form" action=""  role="form" class="php-email-form"> -->
+                <form id="submit-form" action="#" class="php-email-form">
+                  <div class="form-group">
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                  </div>
+                  <div class="form-group mt-3">
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                  </div>
+                  <div class="form-group mt-3">
+                    <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                  </div>
+                  <div class="form-group mt-3">
+                    <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+                  </div>
+                  <div class="my-3">
+                    <div class="loading">Loading</div>
+                    <div class="error-message"></div>
+                    <div class="sent-message">Your message has been sent. Thank you!</div>
+                  </div>
+                  <div class="text-center"><button type="submit">Send Message</button></div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section><!-- End Contact Section -->
+  
+
         <!-- Footer-->
         <footer class="footer-second ">
             <div class="container">
                 <div class="row align-items-center justify-content-center">
                     <div class="col-lg-6">
                         <div class="copy-rights-second">
-                            <p>Copyrights © 2024. All Rights Reserved  </p>
+                            <p>Copyrights © 2024. All Rights Reserved By Sevendyne </p>
                         </div>
                     </div>
                     <div class="col-lg-6">
@@ -665,7 +720,37 @@
 
         <!-- Custom JS -->
         <script src="{% static 'assets_home/js/script.js' %}"></script>
+        
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
+            $("#submit-form").submit((e) => {
+                e.preventDefault();
+                $.ajax({
+                    url: "https://script.google.com/macros/s/AKfycbyxzRzjygEh1l0AHrTD6uEXKGilEkmYjCeC0YGk1wABLOureKv6sv1aah09itDpLgL6GQ/exec",
+                    data: $("#submit-form").serialize(),
+                    method: "POST",
+                    success: function (response) {
+                        // Use SweetAlert for success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Your Message is sent to Sevendyne Inc.',
+                        }).then(() => {
+                            window.location.reload();
+                        });
+                    },
+                    error: function (err) {
+                        console.error("An error occurred:", err);
+                        // Use SweetAlert for error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'Something went wrong.',
+                        });
+                    }
+                });
+            });
+        
             $("#subscription-form").submit((e) => {
                 e.preventDefault();
                 $.ajax({
