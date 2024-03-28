@@ -663,7 +663,7 @@ $(document).ready(function() {
 	  const tableBody = $('#addTable tbody');
     const rowCount = tableBody.find('tr').length - 1;
 	var editAddTable = `<tr><td>${rowCount}</td></tr>`
-});
+	});
 
 });
 

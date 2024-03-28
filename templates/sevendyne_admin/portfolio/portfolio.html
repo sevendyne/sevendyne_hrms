@@ -1,0 +1,41 @@
+{% extends "sevendyne_admin/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- Section: Design Block -->
+<section class="" style="margin-top: -3%;">    
+    <div class="px-4 py-5 px-md-5 text-center text-lg-start" >
+
+      <div class="container">
+        <h3 style="margin-top: 3%;color: #2c9792;">Candidate Details</h3>       
+
+        <div class="row gx-lg-5 align-items-center">     
+          <div class="col-md-6 mb-5 mb-lg-0"> 
+            <div class="card">
+              <div class="card-body py-5 px-md-5">
+
+                <div class="form-outline mb-4">  
+                  <label class="form-label" for="form3Example1" style="color: black; font-weight: bolder;">Title</label> 
+                  {{ instance.title }}  
+                </div>
+                <div class="form-outline mb-4"> 
+                  <label class="form-label" for="form3Example2" style="color: black; font-weight: bolder;">Description</label>
+                  {{ instance.description }}  
+                </div>  
+                <!-- Email input -->
+                <div class="form-outline mb-4">
+                  <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">Image</label>
+                  {{ instance.image }}
+                </div>
+              </div>
+            </div>            
+          </div>
+         
+        </div>
+      </div>
+    </div>
+  </section>
+
+ 
+{% endblock %}

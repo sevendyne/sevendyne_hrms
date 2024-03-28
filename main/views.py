@@ -16,9 +16,9 @@ from main.decorators import company_required
 from django.db.models.functions import ExtractMonth, ExtractYear
 
 
-from main.forms import CompanyForm
+from main.forms import CompanyForm, PortfolioForm
 from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission
-from main.models import Company, CompanyAccess, State
+from main.models import Company, CompanyAccess, Portfolio, State
 
 from django.http import JsonResponse
 
@@ -48,7 +48,11 @@ from payroll.models import PayrollItem
 
 
 def home_hrms(request):
-    return render(request, "home/index.html")
+    portfolios = Portfolio.objects.filter(is_deleted=False)
+    context ={
+        "portfolios":portfolios
+    }
+    return render(request, "home/index.html", context=context)
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
@@ -185,6 +189,40 @@ def admin_dashboard(request):
 
     }
     return render(request, "sevendyne_admin/sevendyne_admin.html", context=context)
+
+
+def get_states(request):
+    country = request.GET.get('country', None)
+    print("country ajax",country)
+    if country:
+        states = State.objects.filter(country=country)
+
+    else:
+        states = None
+    if states:
+    #    states = [{'id': item.id, 'name':item.state} for item in items]  
+    #    data = {'status':'success','message':'Successfully fetched States!', 'items':states}
+    # else:
+    #      data = {'status':'error','message':'No States found!' , 'items':[]}
+    # return HttpResponse(json.dumps(data), content_type='application/json')
+    #         items = items.filter(Q(name__icontains=self.q))
+        return JsonResponse({'states': list(states)})
+    return JsonResponse({'error': 'Invalid request'})
+    # else:
+    #     return []
+    # country = request.GET.get('country', None)
+    # if country:
+    #     items = State.objects.filter(country=country)
+
+    # else:
+    #     items = None
+    # if items:
+    #     if self.q:
+    #         items = items.filter(Q(name__icontains=self.q))
+    #     return items
+    # else:
+    #     return []
+    
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
@@ -388,4 +426,139 @@ def company(request, pk):
 
     }
     return render(request, "settings/company.html", context)
+
+
+def create_portfolio(request):
+    if request.method == 'POST':
+        form = PortfolioForm(request.POST, request.FILES)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            description = form.cleaned_data['description']
+            image = form.cleaned_data['image']
+
+            if not Portfolio.objects.filter(title=title,is_deleted=False).exists():
+                Portfolio(                    
+                    title = title,
+                    description = description,
+                    image = image
+                ).save()
+                response_data = {
+                    "status": "true",
+                    "title": "Successfully Created",
+                    "message": "Portfolio created successfully.",
+                    "redirect": "true",
+                    "redirect_url": reverse('main:portfolios')
+                }
+                print("Redirect URL:", response_data["redirect_url"])
+            else:               
+                response_data = {
+                    "status": "false",
+                    "stable": "true",
+                    "title": "Already exists",
+                    "message": "Portfolio already exists",                        
+                }
+        else:
+            print('not valid')
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "form_error",
+                "title": "Form validation error",
+                "message": str(message),               
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = PortfolioForm()
+
+        context = {
+            "title": "Create Portfolio",
+            "form": form,
+            "redirect": "true",
+            "create":True
+        }
+        return render(request, 'sevendyne_admin/portfolio/create_portfolio.html', context)
+
+
+
+def portfolios(request):
+    portfolios = Portfolio.objects.filter(is_deleted=False)
+    paginator = Paginator(portfolios,1000000000000)
+    page_number = request.GET.get('page')
+    portfolios = paginator.get_page(page_number)
+    context = {
+        'portfolios': portfolios,
+        "title": 'Portfolio' 
+    }
+    return render(request, 'sevendyne_admin/portfolio/portfolios.html', context)
+
+
+def edit_portfolio(request, pk):
+    instance = get_object_or_404(Portfolio.objects.filter(pk=pk, is_deleted=False))    
+    if request.method == "POST":
+        form = PortfolioForm(request.POST, request.FILES,instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.updator = request.user
+            data.date_updated = datetime.datetime.now()
+            data.save()
+
+            response_data = {
+                "status": "true",
+                "redirect" : "true",
+                "title": "Successfully Updated",
+                "message": "Portfolio updated successfully.",                
+                "redirect_url": reverse('main:portfolios')
+            }
+
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "stable": "true",
+                "status": "false",
+                "message": str(message),
+                "title": "Form validation error"  
+            }
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = PortfolioForm(instance=instance)
+
+        context = {
+            "form": form,
+            "instance": instance,
+            "title": "Edit Portfolio :" + instance.title,
+            
+            "redirect": "true",
+            "url": reverse('main:portfolios'),
+        }
+        return render(request, 'sevendyne_admin/portfolio/create_portfolio.html', context)
+
+
+def portfolio(request, pk):
+    instance = get_object_or_404(Portfolio.objects.filter(pk=pk,is_deleted=False))
+
+    context = {
+        'instance': instance,
+        'title': 'Portfolio',
+
+    }
+    return render(request, "sevendyne_admin/portfolio/portfolio.html", context)
+
+
+def delete_portfolio(request,pk):
+    instance = get_object_or_404(Portfolio.objects.filter(pk=pk,is_deleted=False))
+    
+    Portfolio.objects.filter(pk=pk).update(is_deleted=True,title=instance.title + "_deleted")
+
+    response_data = {
+        "status" : "true",        
+        "title" : "Successfully Deleted",
+        "message" : "Portfolio Successfully Deleted.", 
+        "redirect" : "true",       
+        "redirect_url" : reverse('main:portfolios')
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+   
 

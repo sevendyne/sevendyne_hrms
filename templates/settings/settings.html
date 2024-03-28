@@ -173,7 +173,33 @@
   
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+
+<script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
 <script>
+	$(document).ready(function() {
+		$('#id_country').change(function() {
+			var countryId = $(this).val();
+
+			console.log('Selected Country ID:', countryId);  
+			$.ajax({
+				url: "/app/main/get-states/",
+				data: {'country': countryId},
+				dataType: 'json',
+				success: function (data) {
+					console.log('Received State Data:', data);  
+
+					$('#id_state').empty().append(
+						$.map(data.states, function(state) {
+							return '<option value="' + state + '">' + state + '</option>';
+						})
+					);
+				},
+				error: function (xhr, status, error) {
+					console.error("Failed to load state data:", status, error);
+				}
+			});
+		});
+	});
 	function submitForm(event) {
 	event.preventDefault();  // Prevent the default form submission behavior
 	var form = document.getElementById('create_update_form');
