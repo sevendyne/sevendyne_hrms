@@ -47,18 +47,45 @@ from payroll.models import PayrollItem
     # return HttpResponseRedirect(reverse('dashboard'))
 
 def job_portal(request):
+    keyword = request.GET.get('keyword')
+    category = request.GET.get('category')
+    location = request.GET.get('location')
+
+    # Fetch distinct job categories and job locations from existing job objects
+    job_categories = Job.objects.filter(is_deleted=False).values_list('job_category', flat=True).distinct()
+    job_locations = Job.objects.filter(is_deleted=False).values_list('job_location', flat=True).distinct()
+
+    # Start with a base filter that ensures is_deleted is False
+    filter_conditions = Q(is_deleted=False)
+
+    # Add keyword filter if keyword is present
+    if keyword:
+        filter_conditions &= Q(job_title__icontains=keyword) | Q(description__icontains=keyword)
+
+    # Add category filter if category is present
+    if category:
+        filter_conditions &= Q(job_category__icontains=category)
+
+    # Add location filter if location is present
+    if location:
+        filter_conditions &= Q(job_location__icontains=location)
+
+    # Filter jobs based on combined filter conditions
+    filtered_jobs = Job.objects.filter(filter_conditions)
     jobs = Job.objects.filter(is_deleted=False)
     full_time_jobs = Job.objects.filter(job_type='Full Time',is_deleted=False)
     part_time_jobs = Job.objects.filter(job_type='Part Time',is_deleted=False)
     internship_jobs = Job.objects.filter(job_type='Internship',is_deleted=False)
-    job_categories = Job.objects.filter(is_deleted=False).values('job_category')
+    # job_categories = Job.objects.filter(is_deleted=False).values('job_category')
 
     context = {
         'jobs': jobs,
+        'filtered_jobs': filtered_jobs,
         'full_time_jobs': full_time_jobs,
         'part_time_jobs': part_time_jobs,
         'internship_jobs': internship_jobs,
-        'job_categories':job_categories
+        'job_categories':job_categories,
+        'job_locations':job_locations
     }
     return render(request,"job_portal/index.html",context=context)
 
