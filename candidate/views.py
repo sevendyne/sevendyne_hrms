@@ -11,7 +11,7 @@ from candidate.models import Candidate
 from main.decorators import company_required
 
 from candidate.forms import CandidateForm
-from main.functions import generate_form_errors, get_a_id, get_auto_id
+from main.functions import generate_form_errors, get_a_id, get_auto_id, get_candidate_id
 from main.models import Company, State
 
 from django.http import JsonResponse
@@ -50,6 +50,8 @@ def create_candidate(request):
             github_profile = form.cleaned_data['github_profile']
             resume = form.cleaned_data['resume']
 
+            candidateid = get_candidate_id(request)
+
             if not Candidate.objects.filter(email=email).exists():
                 Candidate(                    
                     first_name = first_name, 
@@ -66,7 +68,8 @@ def create_candidate(request):
                     additional_information = additional_information, 
                     linkedin_profile = linkedin_profile, 
                     github_profile = github_profile,
-                    resume = resume
+                    resume = resume,
+                    candidateid = candidateid
                 ).save()
                 print("candidate details is saved in db")
                 response_data = {
@@ -101,7 +104,7 @@ def create_candidate(request):
         form = CandidateForm()
 
         context = {
-            "title": "Create Company",
+            "title": "Create Candidate",
             "form": form,
             "redirect": "true",
             "create":True
@@ -249,3 +252,85 @@ def hrms_candidates(request):
         "title": 'Companies' 
     }
     return render(request, "candidate/candidates.html", context)
+
+def candidate_application(request):
+    if request.method == 'POST':
+        form = CandidateForm(request.POST,request.FILES)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            email = form.cleaned_data['email']
+            photo = form.cleaned_data['photo']
+            phone_number = form.cleaned_data['phone_number']
+            address = form.cleaned_data['address']
+            education = form.cleaned_data['education']
+            experience = form.cleaned_data['experience']
+            skills = form.cleaned_data['skills']
+            certifications = form.cleaned_data['certifications']
+            projects = form.cleaned_data['projects']
+            additional_information = form.cleaned_data['additional_information']
+            linkedin_profile = form.cleaned_data['linkedin_profile']
+            github_profile = form.cleaned_data['github_profile']
+            resume = form.cleaned_data['resume']
+
+            candidateid = get_candidate_id(request)
+
+            if not Candidate.objects.filter(email=email).exists():
+                Candidate(                    
+                    first_name = first_name, 
+                    last_name = last_name,
+                    email = email, 
+                    photo = photo, 
+                    phone_number = phone_number,
+                    address = address, 
+                    education = education, 
+                    experience = experience, 
+                    skills = skills, 
+                    certifications = certifications, 
+                    projects = projects, 
+                    additional_information = additional_information, 
+                    linkedin_profile = linkedin_profile, 
+                    github_profile = github_profile,
+                    resume = resume,
+                    candidateid = candidateid
+                ).save()
+                print("candidate details is saved in db")
+                response_data = {
+                    "status": "true",
+                    "title": "Successfully Created",
+                    "message": "Candidate created successfully.",
+                    "redirect": "true",
+                    "redirect_url": reverse('candidate:candidates')
+                }
+                print("Redirect URL:", response_data["redirect_url"])
+            else:               
+                response_data = {
+                    "status": "false",
+                    "stable": "true",
+                    "title": "Already exists",
+                    "message": "Candidate already exists",                        
+                }
+                print("status inside", response_data["status"])
+            print("status outside", response_data["status"])
+        else:
+            print('not valid')
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "form_error",
+                "title": "Form validation error",
+                "message": str(message),               
+            }
+            print("status", response_data["status"])
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = CandidateForm()
+
+        context = {
+            "title": "Create Candidate",
+            "form": form,
+            "redirect": "true",
+            "create":True
+        }
+        return render(request, 'candidate/candidate_application.html', context)
+
