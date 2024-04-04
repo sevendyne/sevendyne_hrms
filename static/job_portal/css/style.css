@@ -391,3 +391,63 @@
     padding-right: 0;
     border-right: none;
 }
+
+
+/*--------------------------------------------------------------
+    # Clients Section
+    --------------------------------------------------------------*/
+    .clients {
+        padding:  0 0 30px 0;
+        overflow: hidden;
+        display: block;
+        box-sizing: border-box;
+    }
+    
+    .clients .swiper-slide img {
+        width:100%;
+        opacity: 0.5;
+        transition: 0.3s;
+        filter: grayscale(0);
+    }
+    
+    .clients .swiper-slide img:hover {
+        filter: none;
+        opacity: 1;
+    }
+    
+    .swiper-pointer-events {
+        touch-action: pan-y;
+    }
+    
+    .swiper {
+        margin-left: auto;
+        margin-right: auto;
+        position: relative;
+        overflow: hidden;
+        list-style: none;
+        padding: 0;
+        z-index: 1;
+    }
+    
+    .swiper-wrapper {
+        display: flex; /* Ensure all slides are in a row */
+    }
+    
+    /* .swiper-slide {
+        width: auto !important; Ensure each slide occupies its own space
+    } */
+    .clients-slider {
+        overflow: hidden;
+    }
+    
+    .swiper-wrapper {
+        display: flex;
+    }
+    
+    .swiper-slide {
+        margin-right: 0px; /* Adjust the space between slides as needed */
+        /* width:auto !important; */
+        height:20% !important;
+    }
+    
+    
