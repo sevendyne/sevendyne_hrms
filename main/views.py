@@ -128,6 +128,16 @@ def job_list(request):
     }
     return render(request,"job_portal/job-list.html",context=context)
 
+
+def about(request):
+    return render(request, 'job_portal/about.html')
+
+def terms_and_conditions(request):
+    return render(request, 'job_portal/terms_and_conditions.html')
+
+def privacy_policy(request):
+    return render(request, 'job_portal/privacy_policy.html')
+
 def home_hrms(request):
     return render(request, "home/index.html")
 
