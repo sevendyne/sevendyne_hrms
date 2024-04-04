@@ -5,6 +5,9 @@ from main.autocomplete_registery import StateAutocomplete
 urlpatterns = [
     path("", views.job_portal, name="job_portal"),
     path("jobs/", views.job_list, name="job_list"),
+    path('about/',views.about,name='about'),
+    path('terms_and_conditions/',views.terms_and_conditions,name='terms_and_conditions'),
+    path('privacy_policy/',views.privacy_policy,name='privacy_policy'),
     path("hrms/home/", views.home_hrms, name="home_hrms"),
     path("hrms/dashboard/", views.hrms_dashboard, name="hrms_dashboard"),
     path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),

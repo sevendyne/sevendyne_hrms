@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sevendyne - IT Consultancy & Services Company - App Development</title>
+    <meta content="We build amazing tech teams for your IT company.Our Services are App Development- Web App & Mobile App and HR Staffing Solutions" name="description">
+    <meta content="App Development, HR Staffing for Tech Companies,IT Recruitment and Consulting, Expert IT Consultancy, IT Solutions" name="keywords">
+    {% load static %}  
+    <!-- Favicons -->
+    <link href="{% static 'job_portal/img/logo.png' %}" rel="icon">
+    <link href="{% static 'job_portal/img/logo.png' %}" rel="apple-touch-icon">
+
+    <title>Terms and Service</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<body>
+    <main class="wrap">
+        <section class="container">
+            
+          <div class="container__heading d-flex">
+            <span><h2 style="display: inline;">PRIVACY POLICY</h2></span>
+            <!-- <div id="logo" class="d-flex"> -->
+            <a href="{% url 'main:job_portal' %}" style="display: inline;margin-left: 45%;"><img style="height:35px; width: 50px;display: inline;" src="{% static 'job_portal/img/logo.png' %}" alt="" title="" /></a>
+            <h1 style="display: inline;"><a href="{% url 'main:job_portal' %}"><span></span>Sevendyne</a></h1>                
+            <!-- </div> -->
+          </div>
+          <div class="container__content">
+            <p>At Sevendyne, we are committed to protecting your privacy. This Privacy Policy explains our practices regarding the collection, use, and disclosure of personal information we receive from users of our website (the "Site") and related services (the "Services"). </p>
+            <h1>1. INFORMATION COLLECTION AND USE</h1>
+            <p>We collect personal information that you provide to us when you use our Services, such as your name, email address, and payment information. </p>
+            <p>We may also collect information about your use of the Site and Services, including your IP address, browser type, and the pages you visit.  </p>
+            <p>We use this information to operate, maintain, and improve our Site and Services, as well as to communicate with you about your account and to provide customer support. </p>
+
+            <h1>2. COOKIES AND SIMILAR TECHNOLOGIES</h1>
+            <p>We use cookies, web beacons, and similar technologies to collect information about your use of the Site and Services. </p>
+            <p> Cookies are small data files that are placed on your computer or mobile device when you visit a website. </p>
+            <p>Web beacons are small graphic images that may be included on our Site and Services that allow us to count users who have visited those pages. </p>
+            <p>We use this information to personalize your experience, to remember your preferences and settings, and to understand how you interact with our Site and Services.</p>
+
+            <h1>3. INFORMATION SHARING AND DISCLOSUREs</h1>
+            <p>We may share your personal information with third-party service providers who perform services on our behalf, such as payment processing, data analysis, email delivery, hosting services, and customer service. </p>
+            <p>We require these service providers to use your personal information only for the purposes for which it was provided and to protect the confidentiality, integrity, and availability of your personal information. </p>
+            <p>We may also share your personal information with law enforcement, government officials, or other third parties when we are compelled to do so by a subpoena, court order, or similar legal procedure, or when we believe in good faith that the disclosure of personal information is necessary to prevent physical harm or financial loss, to report suspected illegal activity, or to investigate violations of our Terms of Service.</p>
+
+            <h1>4. DATA RETENTION</h1>
+            <p>We retain your personal information for as long as necessary to fulfill the purposes for which it was collected, unless a longer retention period is required or permitted by law.</p>
+
+            <h1>5. YOUR RIGHTS</h1>
+            <p>You have the right to access, correct, update, and delete your personal information at any time. You can do this by logging into your account or by contacting us at hr@sevendyne.com</p>
+            
+            <h1>6. CHANGES TO THIS PRIVACY POLICY</h1>
+            <p>We may update this Privacy Policy from time to time. If we make material changes to this Privacy Policy, we will notify you by email or by posting a notice on our Site prior to the effective date of the changes. Your continued use of our Site and Services following the effective date of any changes to this Privacy Policy constitutes your acceptance of those changes.</p>
+            
+            <h1>7. CONTACT Us</h1>
+            <p>If you have any questions or concerns about these Terms or our Services, please contact us at <a href="">hr@sevendyne.com</a></p>
+          </div>
+          <!-- <div class="container__nav">
+            <small>By clicking 'Accept' you are agreeing to our terms and conditions.</small>
+            <a class="button btn-primary" href="#">Accept</a>
+          </div> -->
+        </section>
+      </main>
+    <style>
+        .wrap {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-sizing: border-box;
+            /* height: 100vh; */
+            padding: 2rem;
+            background-color: #eee;
+            }
+
+            .container {
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            padding: 1rem;
+            background-color: #fff;
+            width: 768px;
+            /* height: 100%; */
+            border-radius: 0.25rem;
+            box-shadow: 0rem 1rem 2rem -0.25rem rgba(0, 0, 0, 0.25);
+            
+            &__heading {
+                padding: 1rem 0;
+                border-bottom: 1px solid #ccc;
+                text-align: center;
+                
+                & > h2 {
+                font-size: 1.75rem;
+                line-height: 1.75rem;
+                margin: 0;
+                }
+            }
+            
+            &__content {
+                flex-grow: 1;
+                overflow-y: scroll;
+            }
+            
+            &__nav {
+                border-top: 1px solid #ccc;
+                text-align: right;
+                padding: 2rem 0 1rem;
+                
+                & > .button {
+                background-color: #444499;
+                box-shadow: 0rem 0.5rem 1rem -0.125rem rgba(0, 0, 0, 0.25);
+                padding: 0.8rem 2rem;
+                border-radius: 0.5rem;
+                color: #fff;
+                text-decoration: none;
+                font-size: 0.9rem;
+                transition: transform 0.25s, box-shadow 0.25s;
+                
+                &:hover {
+                    box-shadow: 0rem 0rem 1rem -0.125rem rgba(0, 0, 0, 0.25);
+                    transform: translateY(-0.5rem);
+                }
+                }
+                
+                & > small {
+                color: #777;
+                margin-right: 1rem;
+                }
+            }
+            }
+    </style>
+</body>
+
+</html>

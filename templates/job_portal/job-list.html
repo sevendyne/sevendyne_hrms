@@ -22,6 +22,7 @@
 <!-- Header End -->
 
 
+
 <!-- Jobs Start -->
 <div id="jobs" class="container-xxl py-5">
     <div class="container">
@@ -50,104 +51,124 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div id="tab-1" class="tab-pane fade show p-0 active">                            
-                    {% for job in full_time_jobs %}
-                    <div class="job-item p-4 mb-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                {% comment %} <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;"> {% endcomment %}
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3">{{ job.job_title }}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                <div id="tab-1" class="tab-pane fade show p-0 active"> 
+                    {% if full_time_jobs %}                           
+                        {% for job in full_time_jobs %}
+                        <div class="job-item p-4 mb-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    {% comment %} <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;"> {% endcomment %}
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">{{ job.job_title }}</h5>
+                                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
+                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
+                                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
-                                    <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}">Apply Now</a>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}">Apply Now</a>
+                                    </div>
+                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                                 </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                             </div>
                         </div>
-                    </div>
-                    {% endfor %}
-                    <a class="btn btn-primary py-3 px-5" href="{% url 'main:job_list' %}">Browse More Jobs</a>
+                        {% endfor %}
+                        <a class="btn btn-primary py-3 px-5" href="{% url 'main:job_list' %}">Browse More Jobs</a>
+                    {% else %}
+                        <h5 style="font-weight:bolder">Currently no jobs available. Please submit your profile for future job openings. </h5>
+                            <a href="{% url 'candidate:candidate_application' %}" class="btn btn-primary">Submit your resume</a>
+                    {% endif %}
                 </div>
-                <div id="tab-2" class="tab-pane fade show p-0">                            
-                    {% for job in internship_jobs %}
-                    <div class="job-item p-4 mb-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;">
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3">{{ job.job_title }}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                <div id="tab-2" class="tab-pane fade show p-0">  
+                    {% if internship_jobs %}                           
+                        {% for job in internship_jobs %}
+                        <div class="job-item p-4 mb-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;">
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">{{ job.job_title }}</h5>
+                                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
+                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
+                                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
-                                    <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}">Apply Now</a>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}">Apply Now</a>
+                                    </div>
+                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                                 </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                             </div>
                         </div>
-                    </div>
-                    {% endfor %}
-                    <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}">Browse More Jobs</a>
+                        {% endfor %}
+                        <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}">Browse More Jobs</a>
+                    {% else %}
+                        <h5 style="font-weight:bolder">Currently no jobs available. Please submit your profile for future job openings. </h5>
+                            <a href="{% url 'candidate:candidate_application' %}" class="btn btn-primary">Submit your resume</a>
+                    {% endif %}
                 </div>
                 <div id="tab-3" class="tab-pane fade show p-0">
-                    {% for job in part_time_jobs %}
-                    <div class="job-item p-4 mb-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;">
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3">{{ job.job_title }}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                    {% if part_time_jobs %}  
+                        {% for job in part_time_jobs %}
+                        <div class="job-item p-4 mb-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;">
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">{{ job.job_title }}</h5>
+                                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
+                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
+                                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
-                                    <a class="btn btn-primary" href="">Apply Now</a>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}">Apply Now</a>
+                                    </div>
+                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                                 </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                             </div>
                         </div>
-                    </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        <h5 style="font-weight:bolder">Currently no jobs available. Please submit your profile for future job openings. </h5>
+                            <a href="{% url 'candidate:candidate_application' %}" class="btn btn-primary">Submit your resume</a>
+                    {% endif %}
                     {% comment %} <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}">Browse More Jobs</a> {% endcomment %}
                 </div>
                 <div id="tab-4" class="tab-pane fade show p-0">
-                    {% for job in contract_jobs %}
-                    <div class="job-item p-4 mb-4">
-                        <div class="row g-4">
-                            <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;">
-                                <div class="text-start ps-4">
-                                    <h5 class="mb-3">{{ job.job_title }}</h5>
-                                    <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
-                                    <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
-                                    <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                    {% if contract_jobs %} 
+                        {% for job in contract_jobs %}
+                        <div class="job-item p-4 mb-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;">
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">{{ job.job_title }}</h5>
+                                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
+                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
+                                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                                <div class="d-flex mb-3">
-                                    <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
-                                    <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}">Apply Now</a>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}">Apply Now</a>
+                                    </div>
+                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                                 </div>
-                                <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                             </div>
                         </div>
-                    </div>
-                    {% endfor %}
+                        {% endfor %}
+                    {% else %}
+                        <h5 style="font-weight:bolder">Currently no jobs available. Please submit your profile for future job openings. </h5>
+                            <a href="{% url 'candidate:candidate_application' %}" class="btn btn-primary">Submit your resume</a>
+                    {% endif %}
                     {% comment %} <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}">Browse More Jobs</a> {% endcomment %}
                 </div>
             </div>
