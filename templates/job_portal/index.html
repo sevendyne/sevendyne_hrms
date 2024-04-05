@@ -10,7 +10,7 @@
 <div class="container-fluid p-0" style="height:70vh;">
     <div class="owl-carousel header-carousel position-relative">
         <div class="owl-carousel-item position-relative">
-            <img class="img-fluid" src="{% static 'job_portal/img/carousel-1.jpg' %}" alt="" style="height:70vh;">
+            <img class="img-fluid" src="{% static 'job_portal/img/coverimage3.jpg' %}" alt="" style="height:70vh;">
             <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
                 <div class="container">
                     <div class="row justify-content-start">
@@ -18,7 +18,7 @@
                             <h1 class="display-3 text-white animated slideInDown mb-4">Unlock Your Potential with Our Comprehensive HRMS Software</h1>
                             <p class="fs-5 fw-medium text-white mb-4 pb-2">Empower your HR team with advanced tools to manage recruitment, employee data, performance, and more efficiently.</p>
                             {% comment %} <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Search A Job</a> {% endcomment %}
-                            <a href="{% url 'user:register' %}" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Build Teams With Us</a>
+                            <a href="{% url 'user:register' %}" target="_blank" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Build Teams With Us</a>
                         </div>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
 <!-- Jobs Start -->
 <div id="jobs" class="container-xxl py-5">
     <div class="container">
-        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job Listing</h1>
+        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job/Training Opportunities</h1>
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
             <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
                 <li class="nav-item">
@@ -166,17 +166,17 @@
                                 <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                                     <div class="d-flex mb-3">
                                         <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="{% url 'candidate:create_intern' %}">Apply Now</a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:create_intern' %}" target="_blank">Apply Now</a>
                                     </div>
                                     <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                                 </div>
                             </div>
                         </div>
                         {% endfor %}
-                        <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}">Browse More Jobs</a>
+                        <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}" target="_blank">Browse More Internships</a>
                     {% else %}
-                        <h5 style="font-weight:bolder">Currently no internships available. Please submit your profile for future job openings. </h5>
-                            <a href="{% url 'candidate:create_intern' %}" class="btn btn-primary">Submit your resume</a>
+                        <h5 style="font-weight:bolder">Introducing our "Enroll in Our Low-Cost Internship Training Programme" and Propel Your Career Forward!</h5>
+                            <a href="{% url 'candidate:create_intern' %}" class="btn btn-primary mt-3">Apply for Training Programme</a>
                     {% endif %}                    
                 </div>
                 <div id="tab-2" class="tab-pane fade show p-0">  
@@ -196,17 +196,17 @@
                                 <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                                     <div class="d-flex mb-3">
                                         <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}">Apply Now</a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}" target="_blank">Apply Now</a>
                                     </div>
                                     <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                                 </div>
                             </div>
                         </div>
                         {% endfor %}
-                        <a class="btn btn-primary py-3 px-5" href="{% url 'main:job_list' %}">Browse More Jobs</a>
+                        <a class="btn btn-primary py-3 px-5" href="{% url 'main:job_list' %}" target="_blank">Browse More Jobs</a>
                     {% else %}
                         <h5 style="font-weight:bolder">Currently no jobs available. Please submit your profile for future job openings. </h5>
-                            <a href="{% url 'candidate:candidate_application' %}" class="btn btn-primary">Submit your resume</a>
+                            <a href="{% url 'candidate:candidate_application' %}" target="_blank" class="btn btn-primary">Submit your resume</a>
                     {% endif %}
                 </div>
                 <div id="tab-3" class="tab-pane fade show p-0">
@@ -235,7 +235,7 @@
                         {% endfor %}
                     {% else %}
                         <h5 style="font-weight:bolder">Currently no jobs available. Please submit your profile for future job openings. </h5>
-                            <a href="{% url 'candidate:candidate_application' %}" class="btn btn-primary">Submit your resume</a>
+                            <a href="{% url 'candidate:candidate_application' %}" target="_blank" class="btn btn-primary">Submit your resume</a>
                     {% endif %}
                     {% comment %} <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}">Browse More Jobs</a> {% endcomment %}
                 </div>
@@ -256,7 +256,7 @@
                                 <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
                                     <div class="d-flex mb-3">
                                         <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
-                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}">Apply Now</a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}" target="_blank">Apply Now</a>
                                     </div>
                                     <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
                                 </div>
@@ -265,7 +265,7 @@
                         {% endfor %}
                     {% else %}
                         <h5 style="font-weight:bolder">Currently no jobs available. Please submit your profile for future job openings. </h5>
-                            <a href="{% url 'candidate:candidate_application' %}" class="btn btn-primary">Submit your resume</a>
+                            <a href="{% url 'candidate:candidate_application' %}" target="_blank" class="btn btn-primary">Submit your resume</a>
                     {% endif %}
                     {% comment %} <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}">Browse More Jobs</a> {% endcomment %}
                 </div>
@@ -281,10 +281,10 @@
         <div class="row g-5 align-items-center">
             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                 <div class="row g-0 about-bg rounded overflow-hidden">
-                    <div class="col-6 text-start">
+                    <div class="col-12 text-start">
                         <img class="img-fluid w-100" src="{% static 'job_portal/img/about1.png' %}">
                     </div>
-                    <div class="col-6 text-start">
+                    {% comment %} <div class="col-6 text-start">
                         <img class="img-fluid" src="{% static 'job_portal/img/about2.png' %}" style="width: 85%; margin-top: 15%;">
                     </div>
                     <div class="col-6 text-end">
@@ -292,7 +292,7 @@
                     </div>
                     <div class="col-6 text-end">
                         <img class="img-fluid w-100" src="{% static 'job_portal/img/about4.png' %}">
-                    </div>
+                    </div> {% endcomment %}
                 </div>
             </div>
             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
@@ -302,7 +302,8 @@
                 <p><i class="fa fa-check text-primary me-3"></i>Staffing Skills</p>
                 <p><i class="fa fa-check text-primary me-3"></i>Technology Solutions</p>   
                 <p>We help you to find remote tech talent for your company.</p>
-                <p class="mb-4">Contact us today to learn more about how we can help your business achieve staffing success through our comprehensive staffing solutions.</p>                     
+                <p class="mb-4">Contact us today to learn more about how we can help your business achieve staffing success through our comprehensive staffing solutions.</p>   
+                <a class="btn btn-primary py-3 px-5 mt-3" href="{% url 'main:about' %}" target="_blank">Read More</a>                  
             </div>
         </div>
     </div>
