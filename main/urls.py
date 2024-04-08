@@ -8,6 +8,14 @@ urlpatterns = [
     path('about/',views.about,name='about'),
     path('terms_and_conditions/',views.terms_and_conditions,name='terms_and_conditions'),
     path('privacy_policy/',views.privacy_policy,name='privacy_policy'),
+
+
+    path('portfolio/create/', views.create_portfolio, name='create_portfolio'),
+    path('portfolios/', views.portfolios, name="portfolios"),
+    re_path(r'^portfolio/edit/(?P<pk>.*)/$', views.edit_portfolio, name='edit_portfolio'),
+    re_path(r'^portfolio/(?P<pk>.*)/$', views.portfolio, name='portfolio'),
+    re_path(r'^delete-portfolio/(?P<pk>.*)/$', views.delete_portfolio, name='delete_portfolio'),
+
     path("hrms/home/", views.home_hrms, name="home_hrms"),
     path("hrms/dashboard/", views.hrms_dashboard, name="hrms_dashboard"),
     path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),

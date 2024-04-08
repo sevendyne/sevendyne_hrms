@@ -1,0 +1,81 @@
+{% extends "job_portal/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- Header End -->
+<div class="container-xxl py-5 bg-dark page-header mb-5">
+    <div class="container my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Client Works</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">Portfolio</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Header End -->
+
+ <!-- ======= Team Section ======= -->
+ <section id="team" class="padd-section text-center" style="margin-bottom:3%;margin-top:3%">
+
+    <div class="container" data-aos="fade-up">
+      <div class="section-title text-center">
+        <div class="common-title-section">
+            <h1>Our Clients</h1>
+        </div>
+        {% comment %} <h2>Our Clients</h2> {% endcomment %}
+        <p class="separator">We specialize in assembling exceptional tech teams tailored to the unique needs of global companies</p>
+      </div>
+
+      <div class="row">
+
+        {% for p in portfolios %}
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3" data-aos="zoom-in" >
+          <div class="team-block bottom">
+            <img src="{{ p.image.url }}" class="img-responsive" alt="img">
+            <div class="team-content" style="background: -webkit-linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%);color:white;">
+              <span>{{ p.title }}</span>
+              <h4>{{ p.description }}</h4>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        
+      </div>
+    </div>
+  </section>
+  <!-- End Team Section -->
+
+
+
+<!-- About Start -->
+{% comment %} <div id="about" class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="row g-0 about-bg rounded overflow-hidden">
+                    <div class="col-12 text-start">
+                        <img class="img-fluid w-100" src="{% static 'job_portal/img/about1.png' %}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                <h1 class="mb-4">We Help To Get The Best Job And Find A Talent</h1>
+                <p class="mb-4">Building a strong team is crucial for the success of any organization, as it allows individuals to collaborate and leverage their unique skills and experiences to achieve common goals.</p>
+                <p><i class="fa fa-check text-primary me-3"></i>Resource Support</p>
+                <p><i class="fa fa-check text-primary me-3"></i>Staffing Skills</p>
+                <p><i class="fa fa-check text-primary me-3"></i>Technology Solutions</p>   
+                <p>We help you to find remote tech talent for your company.</p>
+                <p class="mb-4">Contact us today to learn more about how we can help your business achieve staffing success through our comprehensive staffing solutions.</p>                     
+            </div>
+        </div>
+    </div> {% endcomment %}
+</div>
+<!-- About End -->
+
+
+{% endblock %}

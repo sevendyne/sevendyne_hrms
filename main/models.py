@@ -129,3 +129,17 @@ class State(models.Model):
     def __str__(self): 
         return "%s" %(self.name)
 
+
+class Portfolio(models.Model):
+    title = models.CharField(_('Title'), max_length=80)
+    description = models.CharField(_('Description'), max_length=200)
+    image = models.ImageField(upload_to='portfolio_images/')
+    is_deleted = models.BooleanField(default=False)   
+
+    class Meta:
+        db_table = ('main_portfolio')
+        verbose_name = _('portfolio')
+        verbose_name_plural = _('portfolio')
+
+    def __str__(self):
+        return self.title
