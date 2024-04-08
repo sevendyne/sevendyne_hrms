@@ -138,11 +138,25 @@ def terms_and_conditions(request):
 def privacy_policy(request):
     return render(request, 'job_portal/privacy_policy.html')
 
+
+def portfolios_home(request):
+    portfolios = Portfolio.objects.filter(is_deleted=False)
+    paginator = Paginator(portfolios,1000000000000)
+    page_number = request.GET.get('page')
+    portfolios = paginator.get_page(page_number)
+    context = {
+        'portfolios': portfolios,
+        "title": 'Portfolio' 
+    }
+    return render(request, 'job_portal/portfolio.html', context)
+
+
 def home_hrms(request):
     return render(request, "home/index.html")
 
 
-
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def create_portfolio(request):
     if request.method == 'POST':
         form = PortfolioForm(request.POST, request.FILES)
@@ -195,6 +209,8 @@ def create_portfolio(request):
 
 
 
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def portfolios(request):
     portfolios = Portfolio.objects.filter(is_deleted=False)
     paginator = Paginator(portfolios,1000000000000)
@@ -207,6 +223,8 @@ def portfolios(request):
     return render(request, 'sevendyne_admin/portfolio/portfolios.html', context)
 
 
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def edit_portfolio(request, pk):
     instance = get_object_or_404(Portfolio.objects.filter(pk=pk, is_deleted=False))    
     if request.method == "POST":
@@ -251,6 +269,8 @@ def edit_portfolio(request, pk):
         return render(request, 'sevendyne_admin/portfolio/create_portfolio.html', context)
 
 
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def portfolio(request, pk):
     instance = get_object_or_404(Portfolio.objects.filter(pk=pk,is_deleted=False))
 
@@ -262,6 +282,8 @@ def portfolio(request, pk):
     return render(request, "sevendyne_admin/portfolio/portfolio.html", context)
 
 
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def delete_portfolio(request,pk):
     instance = get_object_or_404(Portfolio.objects.filter(pk=pk,is_deleted=False))
     
