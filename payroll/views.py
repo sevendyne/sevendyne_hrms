@@ -912,7 +912,6 @@ def employee_payslip(request,pk):
 
 
 def email_payslip(request):
-
     pk=request.GET.get('pk')
     current_company = get_current_company(request)  
     instance = Salary.objects.get(pk=pk,company=current_company,is_deleted=False)
