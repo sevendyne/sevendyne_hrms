@@ -49,6 +49,7 @@ def create_candidate(request):
             linkedin_profile = form.cleaned_data['linkedin_profile']
             github_profile = form.cleaned_data['github_profile']
             resume = form.cleaned_data['resume']
+            job_type = form.cleaned_data['job_type']
 
             candidateid = get_candidate_id(request)
 
@@ -69,9 +70,9 @@ def create_candidate(request):
                     linkedin_profile = linkedin_profile, 
                     github_profile = github_profile,
                     resume = resume,
+                    job_type = job_type,
                     candidateid = candidateid
                 ).save()
-                print("candidate details is saved in db")
                 response_data = {
                     "status": "true",
                     "title": "Successfully Created",
@@ -87,10 +88,7 @@ def create_candidate(request):
                     "title": "Already exists",
                     "message": "Candidate already exists",                        
                 }
-                print("status inside", response_data["status"])
-            print("status outside", response_data["status"])
         else:
-            print('not valid')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
@@ -98,7 +96,6 @@ def create_candidate(request):
                 "title": "Form validation error",
                 "message": str(message),               
             }
-            print("status", response_data["status"])
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = CandidateForm()

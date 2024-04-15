@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+{% extends "job_portal/base.html" %}
+{% load static %}
+
+{% block content %}
+{% comment %} <!DOCTYPE html>
 
 {% load static %}
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
@@ -8,26 +12,26 @@
         <meta name="description" content="Smarthr - Bootstrap Admin Template">
 		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
         <meta name="author" content="Dreamguys - Bootstrap Admin Template">
-        <title>Register - HRMS admin template</title>
+        <title>Register - HRMS admin template</title> {% endcomment %}
 		
 		<!-- Favicon -->
         {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/logo_svd.png' %}"> {% endcomment %}
 		
 		<!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+        {% comment %} <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}"> {% endcomment %}
 
 		<!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+        {% comment %} <link rel="stylesheet" href="assets/css/bootstrap.min.css"> {% endcomment %}
 		
 		<!-- Main CSS -->
-        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+        {% comment %} <link rel="stylesheet" href="{% static 'assets/css/style.css' %}"> {% endcomment %}
 
 		 
-    </head>
-    <body class="account-page">
+    {% comment %} </head>
+    <body class="account-page"> {% endcomment %}
 	
 		<!-- Main Wrapper -->
-        <div class="main-wrapper">
+        <div class="main-wrapper" style="display:flex;justify-content:center">
 			{% comment %} <div class="account-content"> {% endcomment %}
 				{% comment %} <div class="container"> {% endcomment %}
 				
@@ -39,7 +43,7 @@
 					
 					<div class="account-box" style="width:70%;margin-top:3%">
 						<div class="account-wrapper">
-							<h1 class="account-title" style="text-align:center;color:#2b5697;">Application Form</h1>
+							<h1 class="account-title" style="text-align:center;color:#2b5697;">Job Application Form</h1>
 							{% comment %} <p class="account-subtitle">Access to our dashboard</p> {% endcomment %}
 							
 							<!-- Account Form -->
@@ -157,6 +161,13 @@
 												{% endif %}
 												<label class="form-label">Github Profile</label>
 											</div>
+											<div class="input-block mb-4">
+												{{ form.job_type }}
+												{% if form.job_type.errors %}
+												<span class="error">{{ form.job_type.errors.0 }}</span>
+												{% endif %}
+												<label class="form-label">Select Job Type</label>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -174,13 +185,15 @@
 		<!-- /Main Wrapper -->
 
 		<!-- jQuery -->
-		<script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
+		{% comment %} <script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script> {% endcomment %}
 		
 		<!-- Bootstrap Core JS -->
-        <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+        {% comment %} <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script> {% endcomment %}
 		
 		<!-- Custom JS -->
-		<script src="{% static 'assets/js/app.js' %}"></script>
-		
+		{% comment %} <script src="{% static 'assets/js/app.js' %}"></script> {% endcomment %}
+{% comment %} 		
     </body>
-</html>
+</html> {% endcomment %}
+
+{% endblock %}

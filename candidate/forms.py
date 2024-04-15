@@ -28,7 +28,8 @@ class CandidateForm(forms.ModelForm):
             'additional_information': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter additional information'}),
             'linkedin_profile': URLInput(attrs={'class': 'required form-control', 'placeholder': 'Enter LinkedIn profile link'}),
             'github_profile': URLInput(attrs={'class': 'required form-control', 'placeholder': 'Enter GitHub profile link'}),
-            'resume': ClearableFileInput(attrs={'class': 'required form-control'})
+            'resume': ClearableFileInput(attrs={'class': 'required form-control'}),
+            'job_type': forms.Select(attrs={'class': 'required form-control', 'placeholder': 'Select job type'}),
         }
         error_messages = {
             'first_name' : {
@@ -45,6 +46,9 @@ class CandidateForm(forms.ModelForm):
             },
             'skills' : {
                 'required' : _("Skills field is required."),
+            },
+            'job_type': {
+                'required': _("Job Type field is required."),
             }
         }
 
