@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.db.models import Q
 from candidate.models import Candidate
 from client.models import Client
-from employee.models import AttendanceRegister, Employee, Leave
+from employee.models import AttendanceRegister, Employee, Leave, LeaveType
 from job.models import Job
 from main.decorators import company_required
 from django.db.models.functions import ExtractMonth, ExtractYear
@@ -30,7 +30,7 @@ from main.decorators import company_required
 from main.functions import generate_form_errors, has_admin_dashboard_permission, has_hrms_permission
 
 from hrms.models import HrmsClient
-from payroll.models import PayrollItem
+from payroll.models import PayrollItem, SalarySetting
 # def get_states(request):
 #     country_id = request.GET.get('country_id')
 #     if country_id:
@@ -517,8 +517,16 @@ def create_company(request):
                 # Add print statements to check if user=request.user is saved in CompanyAccess
                 # print(f"CompanyAccess saved - User: {company_access_instance.user}, Company: {company_access_instance.company}, Group: {company_access_instance.group}")
                 PayrollItem.objects.create(company=current_company,name="Basic Salary",category="Additions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
+                PayrollItem.objects.create(company=current_company,name="DA",category="Additions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
+                PayrollItem.objects.create(company=current_company,name="HRA",category="Additions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
+                PayrollItem.objects.create(company=current_company,name="ESI",category="Additions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
+                PayrollItem.objects.create(company=current_company,name="Basic Salary",category="Additions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
                 PayrollItem.objects.create(company=current_company,name="Leave",category="Deductions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
-
+                PayrollItem.objects.create(company=current_company,name="PF",category="Deductions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
+                PayrollItem.objects.create(company=current_company,name="TDS",category="Deductions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
+                SalarySetting.objects.create(company=current_company,da=5,hra=5,pf_emp=5,pf_org=5,esi_emp=5,esi_org=5,tds=0, auto_id=get_auto_id(SalarySetting),a_id = get_a_id(SalarySetting,request),creator = request.user,updator = request.user)
+                LeaveType.objects.create(company=current_company,name="Casual Leave",days=12, auto_id=get_auto_id(LeaveType),a_id = get_a_id(LeaveType,request),creator = request.user,updator = request.user)
+                
                 request.session["current_company"] = str(current_company.pk)
                 request.session.save()
                 response_data = {

@@ -242,7 +242,6 @@ def delete_selected_candidates(request):
 def hrms_candidates(request):
     instances = Candidate.objects.filter(is_deleted=False,is_blocked=False)
     
-
     skills_query = request.GET.get("skills")
     if skills_query:
         instances = instances.filter(Q(skills__icontains=skills_query))
