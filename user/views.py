@@ -51,11 +51,13 @@ def user_login(request):
                     print("user belongs to hrms_clients group ")
                     # Check if the associated HrmsClient is enabled
                     if hasattr(user, 'hrmsclient') and user.hrmsclient.is_enabled:
+                        print("hrms client is enabled ")
                         # Log in the user
                         login(request, user)
                         return redirect('main:hrms_dashboard') 
                     else:
-                        error_message = "Your account is not enabled. Please contact the administrator."
+                        print("hrms client is not enabled ")
+                        error_message = "Your account is not enabled. Please contact technical@sevendyne.com"
                         return render(request, "authentication/login.html", {"form": form, "error_message": error_message})
                 elif user.groups.filter(name='employee_group').exists():
                     print("user belongs to employee group ")
@@ -111,8 +113,8 @@ def register(request):
             message = "Registration Successful! Sevendyne will send you the credentials via email for login after verification.Thank you!"
             return render(request, "authentication/register.html", {"message": message})
         else:
-            messages.info(request, "Username already exists.") 
-        return redirect('user:register')       
+            message = "Username already exists."
+        return render(request, "authentication/register.html", {"message": message})      
     else:   
         return render(request, "authentication/register.html")
 
