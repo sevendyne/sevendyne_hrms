@@ -36,7 +36,9 @@
 						<tr>
 							<td>{{forloop.counter}}</td>
 							<td>{{ company.name }}</td>
+							{% if company.logo %}
 							<td><img src="{{ company.logo.url }}" alt="{{ company.name }} Logo"></td>
+							{% endif %}
 							<td>{{ company.contact_person }}</td>
 							<td>{{ company.country }}</td>
 							<td>{{ company.email }}</td>
