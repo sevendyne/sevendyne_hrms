@@ -78,7 +78,7 @@
                 <h2>Training Programs</h2>
             </div>
             <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
-                <div class="col-lg-3 col-md-4">
+                {% comment %} <div class="col-lg-3 col-md-4">
                     <div class="card" style="width: 17rem;">
                         <img class="card-img-top" src="{% static 'job_portal/img/employee-development-and-training-program.png' %}" alt="Card image cap">
                         <div class="card-body" style="background-color: #e5efe9;">
@@ -86,7 +86,7 @@
                             <p>Elevate your skills, gain hands-on experience, and broaden your career horizons through mentorship and real-world projects.</p>
                         </div>
                     </div>
-                </div>
+                </div> {% endcomment %}
                 <div class="col-lg-4 col-md-8">
                     <div class="form">
                        <form  id="create_form" method="POST" action="{% url 'candidate:create_intern' %}" enctype="multipart/form-data">

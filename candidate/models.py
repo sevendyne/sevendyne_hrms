@@ -5,6 +5,11 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 from main.models import BaseModel
 
+JOBTYPE_CHOICES = (
+    ('Full Time', "Full Time"),
+    ('Part Time',"Part Time"),
+    ('Contract',"Contract")
+)
 
 DOMAIN_CHOICES = (
     ('Full Stack Development', "Full Stack Development"),
@@ -32,8 +37,9 @@ class Candidate(models.Model):
     github_profile = models.URLField(_(" Github Links"),null=True, blank=True)
     resume = models.FileField(upload_to='candidates/resumes/', null=True, blank=True)
     date_applied = models.DateTimeField(auto_now_add=True)
-    candidateid = models.CharField(_('Candidate ID'),max_length=255,unique=True,null=True,blank=True)
-    is_blocked = models.BooleanField(_('Is Blocked'),help_text='button to toggle employee block and unblock',default=False)
+    candidateid = models.CharField(_('Candidate ID'),max_length=255,unique=True,null=True,blank=True)    
+    job_type = models.CharField(_("Select Job Type"),max_length=255, choices=JOBTYPE_CHOICES,default='Full Time')
+    is_blocked = models.BooleanField(_('Is Blocked'),help_text='button to toggle candidate block and unblock',default=False)
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
