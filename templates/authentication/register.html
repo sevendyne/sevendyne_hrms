@@ -32,7 +32,9 @@
 				<div class="container">
 					<!-- Add this hidden div for the popup message -->
 					<div id="signupMessage" class="alert alert-danger alert-dismissible fade show" style="display: none;" role="alert">
-						Registration Successful! Sevendyne will send you the credentials via email for login after verification.Thank you!
+						{% if message %}
+							{{ message }}
+						{% endif %}
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
