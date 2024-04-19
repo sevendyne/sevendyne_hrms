@@ -92,7 +92,8 @@ def departments(request):
     departments = paginator.get_page(page_number)
     context = {
         'departments': departments,
-        "title": 'Departments' 
+        "title": 'Departments' ,
+        "is_departments" : True
     }
     return render(request, "department/departments.html", context)
 
@@ -328,7 +329,9 @@ def designations(request):
     context = {
         'designations': designations,
         'departments' : departments,
-        "title": 'Designation' 
+        "title": 'Designation',
+        "is_designations" : True
+
     }
     return render(request, "designation/designations.html", context)
 
@@ -564,7 +567,8 @@ def employees(request):
         'designations' : designations,
         "clients" : clients,
         'employees': employees,
-        "title": 'Employees' 
+        "title": 'Employees',
+        "is_employees" : True 
     }
     return render(request, "employee/employees.html", context)
 
@@ -600,7 +604,8 @@ def employees_list(request):
         'designations' : designations,
         "clients" : clients,
         'employees': employees,
-        "title": 'Employees' 
+        "title": 'Employees',
+        "is_employees" : True
     }
     return render(request, "employee/employees-list.html", context)
 
@@ -782,7 +787,8 @@ def leave_types(request):
     leave_types = paginator.get_page(page_number)
     context = {
         'leave_types': leave_types,
-        "title": 'Leave Types' 
+        "title": 'Leave Types',
+        "is_leave_types" : True
     }
     return render(request, "settings/leave-type.html", context)
 
@@ -986,7 +992,8 @@ def leaves(request):
     context = {
          'company':company,
         'leaves': leaves,
-        "title": 'Leaves'
+        "title": 'Leaves',
+        "is_leaves" : True
     }
     return render(request, "leave/leaves.html", context)
 
@@ -1071,7 +1078,8 @@ def leave_approvals(request):
         'total_employees': total_employees,
         'planned_leaves': planned_leaves,
         'unplanned_leaves': unplanned_leaves,
-        'pending_requests': pending_requests
+        'pending_requests': pending_requests,
+        "is_leave_approvals" : True
     }
     return render(request, "leave/leaves-approval.html", context)
 
@@ -1546,7 +1554,8 @@ def attendance_register(request):
         'att_list' :att_list,
         'n' : range(n),
         'nn' : range(nn),
-        "employees" : employees
+        "employees" : employees,
+        "is_attendance_register" : True
     }
     return render(request, 'attendance/attendance.html', context=context)
     # return render(request, 'attendance-register/attendance_register.html', context=context)
@@ -1731,7 +1740,8 @@ def holidays(request):
     holidays = paginator.get_page(page_number)
     context = {
         'holidays': holidays,
-        "title": 'Holidays' 
+        "title": 'Holidays',
+        "is_holidays": True 
     }
     return render(request, "leave/holidays.html", context)
 
@@ -1746,7 +1756,8 @@ def employee_holidays(request):
     holidays = paginator.get_page(page_number)
     context = {
         'holidays': holidays,
-        "title": 'Holidays' 
+        "title": 'Holidays',
+        "is_holidays": True  
     }
     return render(request, "leave/employee_holidays.html", context)
 
