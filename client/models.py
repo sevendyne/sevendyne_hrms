@@ -13,7 +13,7 @@ class Client(BaseModel):
     phone = models.CharField(_("Phone Number"),max_length=255)
     address = models.TextField(_("Address"),null=True, blank=True)
     company_name = models.CharField(_('Client Company Name'),max_length=255) #client company foreign key
-    clientid = models.CharField(_('Client ID'),max_length=255,unique=True,null=True,blank=True)
+    clientid = models.CharField(_('Client ID'),max_length=255,null=True,blank=True)
     photo = models.ImageField(_("Photo"), upload_to='client_photos/', null=True, blank=True)
     is_deleted = models.BooleanField(_('Is This Client Deleted ?'),help_text='button to toggle employee deleted and undelete',default=False)
    
@@ -21,6 +21,7 @@ class Client(BaseModel):
         verbose_name = _('Client')
         verbose_name_plural = _('Clients')
         ordering = ['company_name']
+        unique_together = ('company', 'clientid')
 
     def __str__(self):
         return  self.company_name 

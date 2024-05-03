@@ -258,7 +258,7 @@ def delete_department(request,pk):
 def create_designation(request):
     current_company = get_current_company(request)
     if request.method == 'POST':
-        form = DesignationForm(request.POST)
+        form = DesignationForm(request.POST, current_company=current_company)
         if form.is_valid():
             name = form.cleaned_data['name']
             department = form.cleaned_data['department']
@@ -304,15 +304,14 @@ def create_designation(request):
             }
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
-        form = DesignationForm()
+        form = DesignationForm(current_company=current_company)
         print("form get request")
         context = {
             "title": "Create Designation",
             "form": form,
             "redirect": "true",
             "create":True
-        }
-        
+        }        
         return render(request, 'designation/designations.html', context)
 
 
@@ -434,7 +433,7 @@ def delete_designation(request,pk):
 def create_employee(request):
     current_company = get_current_company(request)    
     if request.method == 'POST':
-        form = EmployeeForm(request.POST, request.FILES)
+        form = EmployeeForm(request.POST, request.FILES, current_company=current_company)
         if form.is_valid():
             firstname = form.cleaned_data['firstname']
             lastname = form.cleaned_data['lastname']
@@ -524,7 +523,7 @@ def create_employee(request):
             print("error message",response_data["message"])
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
-        form = EmployeeForm()
+        form = EmployeeForm(current_company=current_company)
 
         context = {
             "title": "Create Employee",
@@ -1211,211 +1210,6 @@ def leave_reject(request,pk):
     return redirect('employee:leave_approvals')
 
 
-# class LeaveManager(models.Manager):
-# 	def get_queryset(self):
-# 		'''
-# 		overrides objects.all() 
-# 		return all leaves including pending or approved
-# 		'''
-# 		return super().get_queryset()
-
-
-
-# 	def all_pending_leaves(self):
-# 		'''
-# 		gets all pending leaves -> Leave.objects.all_pending_leaves()
-# 		'''
-# 		return super().get_queryset().filter(status = 'pending').order_by('-created')# applying FIFO 
-
-
-
-
-# 	def all_cancel_leaves(self):
-# 		return super().get_queryset().filter(status = 'cancelled').order_by('-created')
-
-
-
-
-# 	def all_rejected_leaves(self):
-# 		return super().get_queryset().filter(status = 'rejected').order_by('-created')
-
-
-
-
-# 	def all_approved_leaves(self):
-# 		'''
-# 		gets all approved leaves -> Leave.objects.all_approved_leaves()
-# 		'''
-# 		return super().get_queryset().filter(status = 'approved')
-
-
-
-# 	def current_year_leaves(self):
-# 		'''
-# 		returns all leaves in current year; Leave.objects.all_leaves_current_year()
-# 		or add all_leaves_current_year().count() -> int total 
-# 		this include leave approved,pending,rejected,cancelled
-
-# 		'''
-# 		return super().get_queryset().filter(startdate__year = datetime.date.today().year)
-
-
-
-
-# ---------------------LEAVE DASHBOARD-------------------------------------------
-
-
-
-def leave_creation(request):
-	if not request.user.is_authenticated:
-		return redirect('accounts:login')
-	if request.method == 'POST':
-		form = LeaveCreationForm(data = request.POST)
-		if form.is_valid():
-			instance = form.save(commit = False)
-			user = request.user
-			instance.user = user
-			instance.save()
-
-
-			# print(instance.defaultdays)
-			messages.success(request,'Leave Request Sent,wait for Admins response',extra_tags = 'alert alert-success alert-dismissible show')
-			return redirect('dashboard:createleave')
-
-		messages.error(request,'failed to Request a Leave,please check entry dates',extra_tags = 'alert alert-warning alert-dismissible show')
-		return redirect('dashboard:createleave')
-
-
-	dataset = dict()
-	form = LeaveCreationForm()
-	dataset['form'] = form
-	dataset['title'] = 'Apply for Leave'
-	return render(request,'dashboard/create_leave.html',dataset)
-	
-
-
-
-
-
-
-
-def leaves_list(request):
-	if not (request.user.is_staff and request.user.is_superuser):
-		return redirect('/')
-	leaves = Leave.objects.all_pending_leaves()
-	return render(request,'dashboard/leaves_recent.html',{'leave_list':leaves,'title':'leaves list - pending'})
-
-
-
-def leaves_approved_list(request):
-	if not (request.user.is_superuser and request.user.is_staff):
-		return redirect('/')
-	leaves = Leave.objects.all_approved_leaves() #approved leaves -> calling model manager method
-	return render(request,'dashboard/leaves_approved.html',{'leave_list':leaves,'title':'approved leave list'})
-
-
-
-def leaves_view(request,id):
-	if not (request.user.is_authenticated):
-		return redirect('/')
-
-	leave = get_object_or_404(Leave, id = id)
-	print(leave.user)
-	employee = Employee.objects.filter(user = leave.user)[0]
-	print(employee)
-	return render(request,'dashboard/leave_detail_view.html',{'leave':leave,'employee':employee,'title':'{0}-{1} leave'.format(leave.user.username,leave.status)})
-
-
-
-
-
-
-
-
-
-def approve_leave(request,id):
-	if not (request.user.is_superuser and request.user.is_authenticated):
-		return redirect('/')
-	leave = get_object_or_404(Leave, id = id)
-	user = leave.user
-	employee = Employee.objects.filter(user = user)[0]
-	leave.approve_leave
-
-	messages.error(request,'Leave successfully approved for {0}'.format(employee.get_full_name),extra_tags = 'alert alert-success alert-dismissible show')
-	return redirect('dashboard:userleaveview', id = id)
-
-
-def cancel_leaves_list(request):
-	if not (request.user.is_superuser and request.user.is_authenticated):
-		return redirect('/')
-	leaves = Leave.objects.all_cancel_leaves()
-	return render(request,'dashboard/leaves_cancel.html',{'leave_list_cancel':leaves,'title':'Cancel leave list'})
-
-
-
-def unapprove_leave(request,id):
-	if not (request.user.is_authenticated and request.user.is_superuser):
-		return redirect('/')
-	leave = get_object_or_404(Leave, id = id)
-	leave.unapprove_leave
-	return redirect('dashboard:leaveslist') #redirect to unapproved list
-
-
-
-
-def cancel_leave(request,id):
-	if not (request.user.is_superuser and request.user.is_authenticated):
-		return redirect('/')
-	leave = get_object_or_404(Leave, id = id)
-	leave.leaves_cancel
-
-	messages.success(request,'Leave is canceled',extra_tags = 'alert alert-success alert-dismissible show')
-	return redirect('dashboard:canceleaveslist')#work on redirecting to instance leave - detail view
-
-
-# Current section -> here
-def uncancel_leave(request,id):
-	if not (request.user.is_superuser and request.user.is_authenticated):
-		return redirect('/')
-	leave = get_object_or_404(Leave, id = id)
-	leave.status = 'pending'
-	leave.is_approved = False
-	leave.save()
-	messages.success(request,'Leave is uncanceled,now in pending list',extra_tags = 'alert alert-success alert-dismissible show')
-	return redirect('dashboard:canceleaveslist')#work on redirecting to instance leave - detail view
-
-
-
-def leave_rejected_list(request):
-
-	dataset = dict()
-	leave = Leave.objects.all_rejected_leaves()
-
-	dataset['leave_list_rejected'] = leave
-	return render(request,'dashboard/rejected_leaves_list.html',dataset)
-
-
-
-def reject_leave(request,id):
-	dataset = dict()
-	leave = get_object_or_404(Leave, id = id)
-	leave.reject_leave
-	messages.success(request,'Leave is rejected',extra_tags = 'alert alert-success alert-dismissible show')
-	return redirect('dashboard:leavesrejected')
-
-	# return HttpResponse(id)
-
-
-def unreject_leave(request,id):
-	leave = get_object_or_404(Leave, id = id)
-	leave.status = 'pending'
-	leave.is_approved = False
-	leave.save()
-	messages.success(request,'Leave is now in pending list ',extra_tags = 'alert alert-success alert-dismissible show')
-
-	return redirect('dashboard:leavesrejected')
-
-
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
@@ -1433,7 +1227,7 @@ def create_attendance_register(request):
             for f in attendanceregister_formset:
                 is_attended = f.cleaned_data['is_attended'] 
                 employee_pk = f.cleaned_data['employee_pk'] 
-                employee = Employee.objects.get(pk=employee_pk) 
+                employee = Employee.objects.get(pk=employee_pk,company=company) 
                 is_fn = False 
                 is_an = False
                 if not AttendanceRegister.objects.filter(employee = employee,date = date,company=company).exists():
@@ -1477,7 +1271,7 @@ def create_attendance_register(request):
             'date': datetime.datetime.today().date()
         }
         date_form = AttendanceDateForm(initial= initial_data)               
-        employees = Employee.objects.filter(is_deleted=False).order_by('id')
+        employees = Employee.objects.filter(is_deleted=False,company=company).order_by('id')
         initial_dict = []
         for s in employees:
             init_dict={

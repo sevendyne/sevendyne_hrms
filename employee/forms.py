@@ -3,6 +3,7 @@ import datetime
 from django import forms
 from django.forms.widgets import TextInput, Select,URLInput, FileInput
 from django.utils.translation import gettext_lazy as _
+from client.models import Client
 from employee.models import AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
 
 
@@ -46,6 +47,16 @@ class DesignationForm(forms.ModelForm):
         autocomplete = {
             'department': 'on',  # or 'off' if you want to disable autocomplete
         }
+
+    def __init__(self, *args, **kwargs):
+        current_company = kwargs.pop('current_company', None)
+        super(DesignationForm, self).__init__(*args, **kwargs)
+        
+        if current_company:
+            # Filter departments by current company
+            self.fields['department'].queryset = Department.objects.filter(company=current_company, is_deleted=False)
+            
+
 
 # class DesignationFormset(forms.ModelForm):    
 #     class Meta:
@@ -126,6 +137,21 @@ class EmployeeForm(forms.ModelForm):
                 'required': _("password field is required."),
             }
         }
+    
+    def __init__(self, *args, **kwargs):
+        current_company = kwargs.pop('current_company', None)
+        super(EmployeeForm, self).__init__(*args, **kwargs)
+        
+        if current_company:
+            # Filter departments by current company
+            self.fields['department'].queryset = Department.objects.filter(company=current_company, is_deleted=False)
+            
+            # Filter designations by current company
+            self.fields['designation'].queryset = Designation.objects.filter(company=current_company, is_deleted=False)
+
+            # Filter client companies by current company
+            self.fields['client_company'].queryset = Client.objects.filter(company=current_company, is_deleted=False)
+
 
 
 class LeaveTypeForm(forms.ModelForm):
