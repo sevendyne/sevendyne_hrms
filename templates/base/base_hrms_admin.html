@@ -404,7 +404,10 @@
 											{% comment %} <li><a href="leaves.html">Leaves (Admin) <span class="badge rounded-pill bg-primary float-end">1</span></a></li>
 											<li><a href="leaves-employee.html">Leaves (Employee)</a></li> {% endcomment %}
 											<li><a href="{% url 'employee:leave_types' %}">Leave Settings</a></li>
-											<li><a href="{% url 'employee:attendance_register' %}">Attendance</a></li> 
+											{% if hrms_client.is_attendance_enabled %}
+												<li><a href="{% url 'employee:attendance_register' %}">Attendance</a></li>
+											{% endif %}
+											{% comment %} <li><a href="{% url 'employee:attendance_register' %}">Attendance</a></li>  {% endcomment %}
 											{% comment %} <li><a href="attendance.html">Attendance (Admin)</a></li>
 											<li><a href="attendance-employee.html">Attendance (Employee)</a></li> {% endcomment %}
 											<li><a href="{% url 'employee:departments' %}">Departments</a></li>
@@ -775,7 +778,10 @@
 									{% comment %} <li><a href="leaves-employee.html">Leaves (Employee)</a></li>
 									<li><a href="leave-{% url 'employee:leave_types' %}">Leave Settings</a></li>
 									<li><a href="attendance.html">Attendance (Admin)</a></li> {% endcomment %}
-									<li><a href="{% url 'employee:attendance_register' %}" >Attendance</a></li> 
+									{% if hrms_client.is_attendance_enabled %}
+										<li><a href="{% url 'employee:attendance_register' %}">Attendance</a></li>
+									{% endif %}
+									{% comment %} <li><a href="{% url 'employee:attendance_register' %}" >Attendance</a></li>  {% endcomment %}
 									<li ><a href="{% url 'employee:departments' %}" >Departments</a></li>
 									<li ><a href="{% url 'employee:designations' %}" >Designations</a></li>
 									{% comment %} <li><a href="timesheet.html">Timesheet</a></li>
