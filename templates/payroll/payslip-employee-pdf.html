@@ -1,0 +1,262 @@
+{% load static %}
+<html>
+	<head>
+			<meta charset="UTF-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		
+			<title>Payslip for the month of  {{ instance.date|date:"F Y" }}</title>
+			<style>
+				body {
+					font-family: Arial, sans-serif;
+					margin: 0;
+					padding: 0;
+					background-color: #f2f2f2;
+				}
+
+				.container {
+					max-width: 800px;
+					margin: 0 auto;
+					padding: 20px;
+					background-color: #fff;
+					box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+				}
+
+				.logo-container {
+					float: right;
+					margin-top: -30px;
+				}
+
+				table {
+					width: 100%;
+					border-collapse: collapse;
+				}
+
+				table td, table th {
+					border: 1px solid #ddd;
+					padding: 8px;
+				}
+
+				table th {
+					background-color: #f2f2f2;
+					text-align: left;
+				}
+
+				.highlight {
+					background-color: rgb(190, 214, 239);
+					text-align: center;
+					font-weight: bold;
+				}
+				/* Adjust the layout for the earnings and deductions sections */
+				.container {
+					max-width: 800px;
+					margin: 0 auto;
+					padding: 20px;
+					background-color: #fff;
+					box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+					overflow: hidden; /* Ensure contents do not overflow */
+				}
+
+				/* Adjust the layout for the earnings and deductions tables */
+				{% comment %} .container table {
+					width: 100%;
+					border-collapse: collapse;
+					margin-top: 20px; /* Add some margin between the table sections */
+				} {% endcomment %}
+
+				/* Adjust the layout for the earnings and deductions table cells */
+				{% comment %} .container table td, .container table th {
+					border: 1px solid #ddd;
+					padding: 8px;
+				} {% endcomment %}
+
+				/* Adjust the layout for the earnings and deductions table headers */
+				{% comment %} .container table th {
+					background-color: #f2f2f2;
+					text-align: left;
+				} {% endcomment %}
+
+				/* Adjust the layout for the earnings and deductions table highlight row */
+				{% comment %} .container .highlight {
+					background-color: rgb(190, 214, 239);
+					text-align: center;
+					font-weight: bold;
+				} {% endcomment %}
+
+				/* Adjust the layout for the earnings and deductions sections */
+				{% comment %} .container .earnings-section,
+				.container .deductions-section {
+					width: 50%;
+					float: left; /* Float both sections to the left */
+				} {% endcomment %}
+				/* Adjust the layout for the earnings and deductions sections */
+				.container .earnings-section,
+				.container .deductions-section {
+					width: 48%; /* Decrease width slightly to allow for margin */
+					float: left; /* Float both sections to the left */
+					margin-right: 4%; /* Add margin between the sections */
+				}
+
+				/* Adjust the layout for the earnings and deductions tables */
+				.container table {
+					width: 100%;
+					border-collapse: collapse;
+					margin-top: 20px; /* Add some margin between the table sections */
+				}
+
+				/* Adjust the layout for the earnings and deductions table headers */
+				.container table th {
+					background-color: #f2f2f2;
+					text-align: center; /* Center-align table headers */
+				}
+
+				/* Adjust the layout for the earnings and deductions table cells */
+				.container table td {
+					border: 1px solid #ddd;
+					padding: 8px;
+					text-align: left; /* Left-align table cells */
+				}
+
+				/* Adjust the layout for the earnings and deductions table highlight row */
+				.container .highlight {
+					background-color: rgb(190, 214, 239);
+					text-align: center;
+					font-weight: bold;
+				}
+				.container .highlight1 {
+					background-color: lightgrey;
+					text-align: center;
+					font-weight: bold;
+				}
+			</style>
+	</head>
+	<body>
+		<div class="container">
+			<div class="logo-container">
+			<img src="{{ instance.company.logo }}" width="100" height="80">
+			</div>
+			<h2 style="text-align: center;"><u>PAYSLIP FOR THE MONTH OF  {{ instance.date|date:"F Y" }}</u></h2>
+			<table>
+				<tr>
+					<td colspan="2">
+						<strong>{{ instance.company.name }}</strong><br>
+						{{ instance.company.address }},<br>
+						{{ instance.company.state }}, {{ instance.company.country }}, {{ instance.company.postal_code }}
+					</td>
+					<td colspan="2">
+						<strong>PAYSLIP ###ID</strong><br>
+						Salary Month: {{ instance.date|date:"F Y" }}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<strong>{{ instance.employee.get_full_name }}</strong><br>
+						{{ instance.employee.designation }}<br>
+						Employee ID: {{ instance.employee.employeeid }}<br>
+						Joining Date: {{ instance.employee.joindate }}
+					</td>
+				</tr>
+			</table>
+
+			<table>
+				<thead>
+					<tr class="highlight1">
+						<td colspan="2" style="text-align: center;"><strong>Total Earnings</strong></td>
+						<td colspan="2" style="text-align: center;"><strong>Total Deductions</strong></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<!-- Earnings -->
+						<td style="padding: 5px; border-bottom: 1px solid #ddd;">
+							{% for additions_field in additions_fields %}
+							<strong>{{ additions_field.field_name }}</strong><br>
+							{% endfor %}
+						</td>
+						<td style="padding: 5px; text-align: right; border-bottom: 1px solid #ddd;">
+							{% for additions_field in additions_fields %}
+							{{ additions_field.field_value }}<br>
+							{% endfor %}
+						</td>
+						
+						<!-- Deductions -->
+						<td style="padding: 5px; border-bottom: 1px solid #ddd;">
+							{% for deductions_field in deductions_fields %}
+							<strong>{{ deductions_field.field_name }}</strong><br>
+							{% endfor %}
+						</td>
+						<td style="padding: 5px; text-align: right; border-bottom: 1px solid #ddd;">
+							{% for deductions_field in deductions_fields %}
+							{{ deductions_field.field_value }}<br>
+							{% endfor %}
+						</td>
+					</tr>
+					<tr>
+						<td ><strong>Total Earnings</strong></td>
+						<td style="text-align: right;"><strong>{{ total_additions }}</strong></td>
+						<td ><strong>Total Deductions</strong></td>
+						<td style="text-align: right;"><strong>{{ total_deductions }}</strong></td>
+					</tr>
+					{% comment %} <tr class="highlight">
+						<td colspan="4" style="text-align: center;"><strong>Net Salary: {{currency_symbol}} {{ instance.net_salary }} ({{currency}} {{ net_salary_in_words }}.)</strong></td>
+					</tr> {% endcomment %}
+				</tbody>
+			</table>		
+			
+			<table>
+				<tr class="highlight">
+					<td colspan="4" style="text-align: center;"><strong>Net Salary: {{currency_symbol}} {{ instance.net_salary }} ({{currency}} {{ net_salary_in_words }}.)</strong></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- /Page Content -->
+		<script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
+		<script>
+			$(document).ready(function() {
+				// JavaScript code to generate PDF when the PDF button is clicked
+				$('#pdf-button').click(function() {
+					var pk = '{{ pk }}';  // Get the primary key from the template context
+					$.ajax({
+						url: '/app/payroll/employee/payslip/pdf/',  // URL contains only the primary key
+						type: 'GET',
+						data: {
+							pk: pk  // Pass the primary key as a parameter
+						},
+						success: function(data) {
+							// Display or download the PDF based on your requirement
+							// For example, you can display it in a new tab
+							var blob = new Blob([data], { type: 'application/pdf' });
+							var url = window.URL.createObjectURL(blob);
+							window.open(url);
+						}
+					});
+				});
+			});
+			
+		</script>
+		<!-- jQuery -->
+		<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+		<script src="{%static 'assets/js/jquery.dataTables.min.js'%}"></script>
+		<script src="{%static 'assets/js/dataTables.bootstrap4.min.js'%}"></script>
+		 <!-- Bootstrap Core JS -->
+		 <script src="{%static 'assets/js/bootstrap.bundle.min.js'%}"></script>
+		 <script src="{%static 'assets/js/moment.min.js'%}"></script>
+		 <script src="{%static 'assets/js/bootstrap-datetimepicker.min.js'%}"></script>
+		 
+		 <!-- Slimscroll JS -->
+		 <script src="{%static 'assets/js/jquery.slimscroll.min.js'%}"></script>
+		 
+		 <!-- Select2 JS -->
+		 <script src="{%static 'assets/js/select2.min.js' %}"></script>
+		 
+		  <!-- Theme Settings JS -->
+		 <script src="{%static 'assets/js/layout.js'%}"></script>
+		 <script src="{%static 'assets/js/theme-settings.js'%}"></script>
+		 <script src="{%static 'assets/js/greedynav.js'%}"></script>
+		 
+		 <!-- Custom JS -->
+		 <script src="{%static 'assets/js/app.js'%}"></script>
+		 
+	</body>
+</html> 

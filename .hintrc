@@ -7,8 +7,17 @@
       "default",
       {
         "ignore": [
-          "user-select"
+          "user-select",
+          "-webkit-text-size-adjust",
+          "-webkit-tap-highlight-color",
+          "text-align: -webkit-match-parent"
         ]
+      }
+    ],
+    "axe/name-role-value": [
+      "default",
+      {
+        "button-name": "off"
       }
     ]
   }

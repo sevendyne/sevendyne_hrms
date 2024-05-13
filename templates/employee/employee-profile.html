@@ -50,6 +50,20 @@
 								<div class="col-md-7">
 									<ul class="personal-info">
 										<li>
+											<div class="title">User Group:</div>
+											<div class="text">
+												{% if employee.user.groups.exists %}
+													<ul>
+														{% for group in employee.user.groups.all %}
+															<li>{{ group.name }}</li>
+														{% endfor %}
+													</ul>
+												{% else %}
+													No groups
+												{% endif %}
+											</div>
+										</li>
+										<li>
 											<div class="title">Phone:</div>
 											<div class="text"><a href="">{{ employee.phone }}</a></div>
 										</li>

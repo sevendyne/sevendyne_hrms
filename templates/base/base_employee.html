@@ -11,8 +11,8 @@
         <title>HRMS Employee Dashboard</title>
 		
 		<!-- Favicon -->
-        {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{%static 'assets/img/logo_svd.png'%}"> {% endcomment %}
-		
+		<link href="{% static 'job_portal/img/logo1.png'%}" rel="icon">
+
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{%static 'assets/css/bootstrap.min.css'%}">
         <link rel="stylesheet" href="{%static 'assets/css/bootstrap-datetimepicker.min.css'%}">
@@ -379,6 +379,7 @@
 											<li><a  class="active" href="{% url 'main:employee_dashboard' %}">Employee Dashboard</a></li>
 										</ul> {% endcomment %}
 									</li>
+									
 									{% comment %} <li class="submenu">
 										<a href="#"><i class="la la-cube"></i> <span> Apps</span> <span class="menu-arrow"></span></a>
 										<ul>
@@ -409,6 +410,9 @@
 									</li> {% endcomment %}
 									
 								</ul>
+								<li> 
+									<a href="{% url 'employee:employee_holidays' %}"><i class=""></i> <span>Holidays</span></a>
+								</li>
 								<button class="viewmoremenu">More Menu</button>
 								<ul class="hidden-links hidden">
 									
@@ -477,6 +481,9 @@
 									<li><a  class="" href="{% url 'main:employee_dashboard' %}">Employee Dashboard</a></li>
 								</ul>
 							</li> 
+							<li> 
+								<a href="{% url 'employee:employee_holidays' %}"><i class=""></i> <span>Holidays</span></a>
+							</li>
 							<li class="submenu">
 								<a href="#"><i class="la la-rocket"></i> <span> Leave Management</span> <span class="menu-arrow"></span></a>
 								<ul>

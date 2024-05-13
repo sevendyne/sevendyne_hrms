@@ -20,6 +20,30 @@
 		</div>
 	</div>
 	<!-- /Page Header -->
+
+	<!-- Search Filter -->
+	<form action="" method="GET">
+		<div class="row filter-row">
+			<div class="col-sm-6 col-md-3">  
+				<div class="input-block mb-3 form-focus">
+					<input type="text" class="form-control floating" name="skills">
+					<label class="focus-label">Skills</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-3">  
+				<div class="input-block mb-3 form-focus">
+					<input type="text" class="form-control floating" name="experience">
+					<label class="focus-label">Experience in years</label>
+				</div>
+			</div>
+			<div class="col-sm-6 col-md-3">
+				<div class="d-grid">
+					<button class="btn btn-primary w-100" type="submit">Search</button>
+				</div>  
+			</div>    
+		</div>
+	</form>
+	<!-- Search Filter -->
 	
 	<div class="row">
 		<div class="col-md-12">
@@ -31,6 +55,7 @@
 							<th>Candidate ID</th>
 							<th>Skills</th>
 							<th>Experience in years</th>
+							<th>Job Status</th>
 							{% comment %} <th>Created Date</th> {% endcomment %}
 							{% comment %} <th class="text-center">Action</th> {% endcomment %}
 						</tr>
@@ -62,7 +87,166 @@
 									</div>
 								</div> {% endcomment %}
 							</td>
+							<td>
+								{% if instance.status == "Job Offered" %}
+									<button class="btn btn-sm btn-primary" disabled>Job Offer Sent</button>
+								{% elif instance.status == "Offer a Job" %}
+									<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_job">Offer a Job</button>
+								
+								{% elif instance.status == "Interested in the Job" %}
+									<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_interview_date">Schedule Interview Date & Time</button>
+								{% elif instance.status == "Interview Scheduled" %}
+									<button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_interview_status">Interview Scheduled</button>									
+								{% elif instance.status == "Interview Done" %}
+									{% if instance.id in interview_statuses %}
+									<button class="btn btn-sm btn-primary" disabled>{{ interview_statuses.1 }}</button>
+									{% else %}
+											<button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_interview_status">Add Interview Status</button>									
+									{% endif %}
+									{% comment %} {% else %}
+										<button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#add_interview_status">Add Interview Status</button>									
+									{% endif %}									 {% endcomment %}
+								{% else %}
+									<a class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#add_job">Interested to Hire</a>
+								{% endif %}
+							</td>							
 						</tr>
+						
+						<!-- Create Job Offer Modal -->
+						<div id="add_job" class="modal custom-modal fade" role="dialog">
+							<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Job Offer To Candidate</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form id="create_form_{{instance.id}}" method="POST" action="{% url 'job:create_candidate_job' pk=instance.id %}" enctype="multipart/form-data">
+											{% csrf_token %}
+											<div class="row">
+												<div class="col-md-12">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Job Title</label>
+														<input class="form-control" name="job_title" type="text">
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Job Location</label>
+														<input class="form-control" name="job_location" type="text">
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-6">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Salary Range From</label>
+														<input class="form-control" name="salary_from" type="text">
+													</div>
+												</div>
+												<div class="col-md-6">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Salary Range To</label>
+														<input class="form-control" name="salary_to" type="text">
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-md-12">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Description</label>
+														<input class="form-control" name="description" type="text">
+													</div>
+												</div>
+											</div>
+											<div class="submit-section">
+												<button class="btn btn-primary submit-btn" onclick="submitCreateForm(event,'{{instance.id}}')">Submit</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /Create Job Offers Modal -->
+
+						<!-- Schedule interview date & time Modal -->
+						<div id="add_interview_date" class="modal custom-modal fade" role="dialog">
+							<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Schedule Interview</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form id="create_interview_form_{{instance.id}}" method="POST" action="{% url 'job:create_candidate_interview' pk=instance.id %}" enctype="multipart/form-data">
+											{% csrf_token %}
+											<div class="row">
+												<div class="col-md-12">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Interview Date & Time</label>
+														<input class="form-control" name="date_time" type="datetime-local">
+													</div>
+												</div>
+											</div>
+											
+											<div class="row">
+												<div class="col-md-12">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Additional Information (if any)</label>
+														<input class="form-control" name="additional_information" type="text">
+													</div>
+												</div>
+											</div>
+											<div class="submit-section">
+												<button class="btn btn-primary submit-btn" onclick="submitCreateInterviewForm(event,'{{instance.id}}')">Submit</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /Schedule interview date & time Modal -->
+						<!-- Update Interview Status Modal -->
+						<div id="add_interview_status" class="modal custom-modal fade" role="dialog">
+							<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Update Interview Status</h5>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<form id="create_interview_status_form_{{instance.id}}" method="POST" action="{% url 'job:update_candidate_interview_status' pk=instance.id %}" enctype="multipart/form-data">
+											{% csrf_token %}
+											<div class="row">
+												<div class="col-md-12">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Update Interview Status</label>
+														<select class="select2 form-control" name="interview_status">
+															{% for choice in interview_choices %}
+																<option value="{{ choice.0 }}">{{ choice.1 }}</option>
+															{% endfor %}
+														</select>
+														
+													</div>
+												</div>
+											</div>
+											<div class="submit-section">
+												<button class="btn btn-primary submit-btn" onclick="submitCreateInterviewStatusForm(event,'{{instance.id}}')">Submit</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /Update Interview Status Modal -->
 						{% endfor %}
 					</tbody>
 				</table>
@@ -71,5 +255,223 @@
 	</div>
 </div>
 <!-- /Page Content -->
+
+
+<script>
+	function submitCreateForm(event,jobId) {
+		event.preventDefault();  // Prevent the default form submission behavior
+		var form = document.getElementById('create_form_' + jobId);
+		var formData = new FormData(form);
+	
+		fetch(form.action, {
+			method: 'POST',
+			body: formData,
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+			// Corrected variable name here
+			if (data.status === 'true') {
+			showSweetAlert(data.message, data.status, data.redirect_url);
+			} else if (data.status === 'form_error') {
+			showSweetAlert(data.message, 'form_error');
+			} else if (data.status === 'false') {
+			showSweetAlert(data.message, data.status);
+			} else {
+			showSweetAlert(data.message, 'error');
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+		}
+	
+		function showSweetAlert(message, status, redirectUrl) {	
+		if (status === 'true') {
+			Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+	
+			didClose: () => {
+				if (redirectUrl) {
+				// Combine the redirect URL with the current protocol and host to get the full URL
+				var fullRedirectUrl = window.location.origin + redirectUrl;
+				window.location.href = fullRedirectUrl;
+				}
+			}
+			});
+		} else if (status === 'form_error') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Validation Error!',
+			html: message,  // Display form errors as HTML
+			showConfirmButton: true,
+			allowOutsideClick: false,
+			});
+		} else if (status === 'false') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		} else {
+			Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		}
+	}
+	function submitCreateInterviewForm(event,interviewId) {
+		event.preventDefault();  // Prevent the default form submission behavior
+		var form = document.getElementById('create_interview_form_' + interviewId);
+		var formData = new FormData(form);
+	
+		fetch(form.action, {
+			method: 'POST',
+			body: formData,
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+			// Corrected variable name here
+			if (data.status === 'true') {
+			showSweetAlert(data.message, data.status, data.redirect_url);
+			} else if (data.status === 'form_error') {
+			showSweetAlert(data.message, 'form_error');
+			} else if (data.status === 'false') {
+			showSweetAlert(data.message, data.status);
+			} else {
+			showSweetAlert(data.message, 'error');
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+		}
+	
+		function showSweetAlert(message, status, redirectUrl) {	
+		if (status === 'true') {
+			Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+	
+			didClose: () => {
+				if (redirectUrl) {
+				// Combine the redirect URL with the current protocol and host to get the full URL
+				var fullRedirectUrl = window.location.origin + redirectUrl;
+				window.location.href = fullRedirectUrl;
+				}
+			}
+			});
+		} else if (status === 'form_error') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Validation Error!',
+			html: message,  // Display form errors as HTML
+			showConfirmButton: true,
+			allowOutsideClick: false,
+			});
+		} else if (status === 'false') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		} else {
+			Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		}
+	}
+	function submitCreateInterviewStatusForm(event,interviewStatusId) {
+		event.preventDefault();  // Prevent the default form submission behavior
+		var form = document.getElementById('create_interview_status_form_' + interviewStatusId);
+		var formData = new FormData(form);
+	
+		fetch(form.action, {
+			method: 'POST',
+			body: formData,
+		})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data);
+			// Corrected variable name here
+			if (data.status === 'true') {
+			showSweetAlert(data.message, data.status, data.redirect_url);
+			} else if (data.status === 'form_error') {
+			showSweetAlert(data.message, 'form_error');
+			} else if (data.status === 'false') {
+			showSweetAlert(data.message, data.status);
+			} else {
+			showSweetAlert(data.message, 'error');
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+		}
+	
+		function showSweetAlert(message, status, redirectUrl) {	
+		if (status === 'true') {
+			Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+	
+			didClose: () => {
+				if (redirectUrl) {
+				// Combine the redirect URL with the current protocol and host to get the full URL
+				var fullRedirectUrl = window.location.origin + redirectUrl;
+				window.location.href = fullRedirectUrl;
+				}
+			}
+			});
+		} else if (status === 'form_error') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Validation Error!',
+			html: message,  // Display form errors as HTML
+			showConfirmButton: true,
+			allowOutsideClick: false,
+			});
+		} else if (status === 'false') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		} else {
+			Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		}
+	}
+</script>	
+
 
 {% endblock %}

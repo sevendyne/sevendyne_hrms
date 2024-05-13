@@ -1,0 +1,470 @@
+{% extends "job_portal/base.html" %}
+{% load static %}
+
+{% block content %}
+
+ 
+<!-- Page Content -->
+<style>
+    /* Hide video controls */
+    video::-webkit-media-controls {
+        display: none !important;
+    }
+</style>
+<!-- Carousel Start -->
+<div class="container-fluid p-0" style="height:70vh;">
+    <div class="owl-carousel header-carousel position-relative">
+        <div class="owl-carousel-item position-relative">
+            {% comment %} <video autoplay muted loop id="backgroundVideo" class="img-fluid" style="width: 100vw; height: 69.5vh; ">
+                <source src="{% static 'job_portal/videos/cover_video3.mp4' %}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>     
+               {% endcomment %}
+            <img class="img-fluid" src="{% static 'job_portal/img/hrmscover9.png' %}" alt="" style="height:70vh;">
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-10 col-lg-8">
+                            <h1 class="text-white animated slideInDown mb-4">Unlock Success with Sevendyne's IT Mastery</h1>
+                            <p class="fs-5 fw-medium text-white mb-4 pb-2">Empower your company with our range of IT services, including tech development, staff management and resource nourishment</p>
+                            {% comment %} <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Search A Job</a> {% endcomment %}
+                           {% comment %} <a href="{% url 'user:signup' %}" target="_blank" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Build Teams With Us</a> {% endcomment %}
+                            <a href="{% url 'main:portfolios_home' %}" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Explore Our Client Works</a> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <!-- <div class="owl-carousel-item position-relative">
+            <img class="img-fluid" src="{% static 'job_portal/img/carousel-2.jpg' %}" alt="">
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-10 col-lg-8">
+                            <h1 class="display-3 text-white animated slideInDown mb-4">Find The Best Startup Job That Fit You</h1>
+                            <p class="fs-5 fw-medium text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea elitr.</p>
+                            {% comment %} <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Search A Job</a> {% endcomment %}
+                            <a href="{% url 'user:signup' %}" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Build Teams With Us</a>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Carousel End -->
+
+
+<!-- Search Start -->
+<div id="index" class="container-fluid bg-primary mb-1 wow fadeIn" data-wow-delay="0.1s" style="padding: 15px;">
+    <div class="container">
+        <div class="row g-2">
+            <h3 style="text-align:center;color:white;">Our Clients</h3>
+        </div>
+    </div>
+</div>
+<!-- Search End -->
+
+ <!-- ======= Clients Section ======= -->
+ <section id="clients" class="clients mb-3 " style="margin-top:0%">
+    <div class="container" data-aos="zoom-out">
+        <div class="clients-slider swiper">
+            <div class="swiper-wrapper align-items-center" style="height:40%;">
+                {% comment %} <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/getmy-1.png' %}" class="img-fluid" alt=""></div> {% endcomment %}
+                {% comment %} <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/orka.jpg' %}" class="img-fluid" alt="" ></div> {% endcomment %}
+                {% comment %} <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/redrhino-1.png' %}" class="img-fluid" alt="" ></div> {% endcomment %}
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/rdp-1.png' %}" class="img-fluid" alt="" ></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/tsapi-1.png' %}" class="img-fluid" alt="" ></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/np.png' %}" class="img-fluid" alt="" ></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/cygnus.png' %}" class="img-fluid" alt="" ></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/csr.png' %}" class="img-fluid" alt="" ></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/KE_logo.png' %}" class="img-fluid" alt="" ></div>
+            </div>
+        </div>
+    </div>
+</section> 
+
+
+<!-- End Clients Section -->
+
+
+<!-- Category Start -->
+{% comment %} <div class="container-xxl py-5">
+    <div class="container">
+        <h1 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Explore By Category</h1>
+        <div class="row g-4">
+            {% for category in job_categories %}
+            <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
+                <a class="cat-item rounded p-4" href="">
+                    <i class="fa fa-3x fa-mail-bulk text-primary mb-4"></i>
+                    <h6 class="mb-3">{{category.job_category}}</h6>
+                </a>
+            </div>
+            {% endfor %} 
+        </div>
+    </div>
+</div> {% endcomment %}
+<!-- Category End -->
+
+<!-- Jobs Start -->
+ <!-- Heading Start -->
+ {% comment %} <div id="index" class="container-fluid bg-primary mb-1 wow fadeIn" data-wow-delay="0.1s" style="padding: 15px;">
+    <div class="container">
+        <div class="row g-2">
+            <h3 style="text-align:center;color:white;">Job/Training Opportunities</h3>           
+        </div>
+    </div>
+</div> {% endcomment %}
+<!-- Heading End -->
+<div id="jobs" class="padd-section" style="background-color: #d9e1e5b8;padding-top:5%;padding-bottom:5%">
+    <div class="container">       
+        <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job/Training Opportunities</h2>
+        <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
+            <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#tab-1">
+                        <h6 class="mt-n1 mb-0">Internship</h6>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
+                        <h6 class="mt-n1 mb-0">Full Time</h6>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-3">
+                        <h6 class="mt-n1 mb-0">Part Time</h6>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="d-flex align-items-center text-start mx-3 me-0 pb-3" data-bs-toggle="pill" href="#tab-4">
+                        <h6 class="mt-n1 mb-0">Contract</h6>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="tab-1" class="tab-pane fade show p-0 active"> 
+                    {% if internship_jobs %}                           
+                        {% for job in internship_jobs %}
+                        <div class="job-item p-4 mb-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;">
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">{{ job.job_title }}</h5>
+                                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
+                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
+                                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:create_intern' %}" target="_blank">Apply Now</a>
+                                    </div>
+                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}" target="_blank">Browse More Internships</a>
+                    {% else %}
+                        <h5 style="font-weight:bolder">Enroll in Our Internship Training Programme and Propel Your Career Forward!</h5>
+                        {% comment %} <h6>Elevate your skills, gain hands-on experience, and broaden your career horizons through mentorship and real-world projects.</h6>     {% endcomment %}
+                        <p>Our Technical training division is committed to delivering high-quality training programs to professionals seeking to enhance their skills and stay ahead in the rapidly evolving tech landscape.
+                            With a focus on excellence, we have worked with top brands like Collabera to provide comprehensive training in Python, Java, C++, .Net, and other core technologies
+                        </p>
+                        
+                        <a href="{% url 'candidate:create_intern' %}" class="btn btn-primary mt-3">Apply for Training Programme</a>
+                    {% endif %}                    
+                </div>
+                <div id="tab-2" class="tab-pane fade show p-0">  
+                    {% if full_time_jobs %}                           
+                        {% for job in full_time_jobs %}
+                        <div class="job-item p-4 mb-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    {% comment %} <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;"> {% endcomment %}
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">{{ job.job_title }}</h5>
+                                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
+                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
+                                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}" target="_blank">Apply Now</a>
+                                    </div>
+                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <a class="btn btn-primary py-3 px-5" href="{% url 'main:job_list' %}" target="_blank">Browse More Jobs</a>
+                    {% else %}
+                        <h5 style="font-weight:bolder">Currently no jobs available. Please submit your profile for future job openings. </h5>
+                            <a href="{% url 'candidate:candidate_application' %}" target="_blank" class="btn btn-primary">Submit your resume</a>
+                    {% endif %}
+                </div>
+                <div id="tab-3" class="tab-pane fade show p-0">
+                    {% if part_time_jobs %}  
+                        {% for job in part_time_jobs %}
+                        <div class="job-item p-4 mb-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;">
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">{{ job.job_title }}</h5>
+                                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
+                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
+                                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}">Apply Now</a>
+                                    </div>
+                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <h5 style="font-weight:bolder">Currently no jobs available. Please submit your profile for future job openings. </h5>
+                            <a href="{% url 'candidate:candidate_application' %}" target="_blank" class="btn btn-primary">Submit your resume</a>
+                    {% endif %}
+                    {% comment %} <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}">Browse More Jobs</a> {% endcomment %}
+                </div>
+                <div id="tab-4" class="tab-pane fade show p-0">
+                    {% if contract_jobs %} 
+                        {% for job in contract_jobs %}
+                        <div class="job-item p-4 mb-4">
+                            <div class="row g-4">
+                                <div class="col-sm-12 col-md-8 d-flex align-items-center">
+                                    <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;">
+                                    <div class="text-start ps-4">
+                                        <h5 class="mb-3">{{ job.job_title }}</h5>
+                                        <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
+                                        <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
+                                        <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>{{ job.salary_from }} - {{ job.salary_to }}</span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-4 d-flex flex-column align-items-start align-items-md-end justify-content-center">
+                                    <div class="d-flex mb-3">
+                                        <a class="btn btn-light btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
+                                        <a class="btn btn-primary" href="{% url 'candidate:candidate_application' %}" target="_blank">Apply Now</a>
+                                    </div>
+                                    <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: {{ job.expired_date }}</small>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <h5 style="font-weight:bolder">Currently no jobs available. Please submit your profile for future job openings. </h5>
+                            <a href="{% url 'candidate:candidate_application' %}" target="_blank" class="btn btn-primary">Submit your resume</a>
+                    {% endif %}
+                    {% comment %} <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}">Browse More Jobs</a> {% endcomment %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Jobs End -->
+
+<!-- About Start -->
+
+ <!-- Heading Start -->
+ {% comment %} <div id="index" class="container-fluid bg-primary mb-1 wow fadeIn" data-wow-delay="0.1s" style="padding: 15px;">
+    <div class="container">
+        <div class="row g-2">
+            <h3 style="text-align:center;color:white;">About Us</h3>           
+        </div>
+    </div>
+</div> {% endcomment %}
+<!-- Heading End -->
+<div id="about" class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="row g-0 about-bg rounded overflow-hidden">
+                    <div class="col-12 text-start">
+                        <img class="img-fluid w-100" src="{% static 'job_portal/img/about1.png' %}">
+                    </div>
+                    {% comment %} <div class="col-6 text-start">
+                        <img class="img-fluid" src="{% static 'job_portal/img/about2.png' %}" style="width: 85%; margin-top: 15%;">
+                    </div>
+                    <div class="col-6 text-end">
+                        <img class="img-fluid" src="{% static 'job_portal/img/about3.jpg' %}" style="width: 85%;">
+                    </div>
+                    <div class="col-6 text-end">
+                        <img class="img-fluid w-100" src="{% static 'job_portal/img/about4.png' %}">
+                    </div> {% endcomment %}
+                </div>
+            </div>
+          <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+              <h2 class="mb-4">Empowering Your Business with IT Excellence</h2>
+              <p class="mb-4">At Sevendyne, we specialize in providing top-notch IT consultancy services to help you excel in today's digital landscape. Our core expertise lies in three key areas:</p>
+              <p><i class="fa fa-check text-primary me-3"></i>Tech Development</p>
+              <p><i class="fa fa-check text-primary me-3"></i>Staff Management</p>
+              <p><i class="fa fa-check text-primary me-3"></i>Resource Nourishment</p>   
+              <p>Partner with us to discover remote tech talent tailored to your company's needs.</p>
+              <p class="mb-4">Reach out today to explore how our comprehensive IT solutions can drive your business forward.</p>   
+              <a class="btn btn-primary py-3 px-5 mt-3" href="{% url 'main:about' %}">Learn More</a>                  
+          </div>
+
+        </div>
+    </div>
+</div>
+<!-- About End -->
+
+
+<!-- ======= Contact Section ======= -->
+ <!-- Heading Start -->
+ {% comment %} <div id="index" class="container-fluid bg-primary mb-1 wow fadeIn" data-wow-delay="0.1s" style="padding: 15px;">
+    <div class="container">
+        <div class="row g-2">
+            <h3 style="text-align:center;color:white;">Contact Us</h3>           
+        </div>
+    </div>
+</div> {% endcomment %}
+<!-- Heading End -->
+<section id="contact" class="padd-section" style="background-color: #d9e1e5b8;padding-top:0%;">
+    <div class="container mb-5"> 
+        <div class="section-title text-center" style="padding-top:3%">
+            <h2>Contact Us</h2>
+            <p class="separator">Connect with Us to discuss our works</p>
+        </div>
+
+        <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-lg-3 col-md-4">
+                <div class="info">
+                    <div>
+                        <i class="bi bi-geo-alt"></i>                  
+                        <p>Sevendyne Consultancy Services LLP,<br>Mayur Business Center, <br>  Chittoor Rd, Pullepady Junction,<br> Shenoys, Ernakulam,  <br> Kerala 682035, India<br> hr@sevendyne.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-8">
+                <div class="form">
+                    <!-- <form id="submit-form" action=""  role="form" class="php-email-form"> -->
+                    <form id="submit-form" action="#" class="php-email-form">
+                        <div class="form-group">
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
+                        </div>
+                        <div class="form-group mt-3">
+                            <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
+                        </div>
+                        <div class="my-3">
+                            <div class="loading">Loading</div>
+                            <div class="error-message"></div>
+                            <div class="sent-message">Your message has been sent. Thank you!</div>
+                        </div>
+                        <div class="text-center"><button class="btn btn-primary" type="submit">Send Message</button></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.4393644935!2d76.28172197582408!3d9.980518090123939!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3b062b0821db2203%3A0x8309f97355b9a850!2sSevendyne%20Consultancy%20Services%20LLP!5e0!3m2!1sen!2sin!4v1713151457334!5m2!1sen!2sin" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe><div class="container" data-aos="fade-up">
+   
+</section><!-- End Contact Section -->
+
+
+<!-- Testimonial Start -->
+{% comment %} <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <h1 class="text-center mb-5">Our Clients Say!!!</h1>
+        <div class="owl-carousel testimonial-carousel">
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded" src="{% static 'job_portal/img/testimonial-1.jpg' %}" style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1">Client Name</h5>
+                        <small>Profession</small>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded" src="{% static 'job_portal/img/testimonial-2.jpg' %}" style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1">Client Name</h5>
+                        <small>Profession</small>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded" src="{% static 'job_portal/img/testimonial-3.jpg' %}" style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1">Client Name</h5>
+                        <small>Profession</small>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-item bg-light rounded p-4">
+                <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
+                <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore diam</p>
+                <div class="d-flex align-items-center">
+                    <img class="img-fluid flex-shrink-0 rounded" src="{% static 'job_portal/img/testimonial-4.jpg' %}" style="width: 50px; height: 50px;">
+                    <div class="ps-3">
+                        <h5 class="mb-1">Client Name</h5>
+                        <small>Profession</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> {% endcomment %}
+<!-- Testimonial End -->
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+
+<script>
+    $("#submit-form").submit((e) => {
+        e.preventDefault();
+        $.ajax({
+            url: "https://script.google.com/macros/s/AKfycbyxzRzjygEh1l0AHrTD6uEXKGilEkmYjCeC0YGk1wABLOureKv6sv1aah09itDpLgL6GQ/exec",
+            data: $("#submit-form").serialize(),
+            method: "POST",
+            success: function (response) {
+                // Use SweetAlert for success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Your Message is sent to Sevendyne Inc.',
+                }).then(() => {
+                    window.location.reload();
+                });
+            },
+            error: function (err) {
+                console.error("An error occurred:", err);
+                // Use SweetAlert for error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Something went wrong.',
+                });
+            }
+        });
+    });
+</script>
+
+
+{% endblock %}

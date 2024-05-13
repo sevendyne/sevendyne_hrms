@@ -11,8 +11,8 @@
         <title>HRMS Admin Dashboard</title>
 		
 		<!-- Favicon -->
-        {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{%static 'assets/img/logo_svd.png'%}"> {% endcomment %}
-		
+		<link href="{% static 'job_portal/img/logo1.png'%}" rel="icon">
+
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{%static 'assets/css/bootstrap.min.css'%}">
 		
@@ -396,15 +396,18 @@
 									<li class="menu-title"> 
 										<span>Employees</span>
 									</li>
-									<li class="submenu">
+									<li class="submenu" style="position:fixed;z-index: 1001;">
 										<a href="#" class="noti-dot"><i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span></a>
-										<ul>
+										<ul class="submenu-toggle">
 											<li><a href="{% url 'employee:employees' %}">All Employees</a></li>
 											<li><a href="{% url 'employee:holidays' %}">Holidays</a></li>
 											{% comment %} <li><a href="leaves.html">Leaves (Admin) <span class="badge rounded-pill bg-primary float-end">1</span></a></li>
 											<li><a href="leaves-employee.html">Leaves (Employee)</a></li> {% endcomment %}
 											<li><a href="{% url 'employee:leave_types' %}">Leave Settings</a></li>
-											<li><a href="{% url 'employee:attendance_register' %}">Attendance</a></li> 
+											{% if hrms_client.is_attendance_enabled %}
+												<li><a href="{% url 'employee:attendance_register' %}">Attendance</a></li>
+											{% endif %}
+											{% comment %} <li><a href="{% url 'employee:attendance_register' %}">Attendance</a></li>  {% endcomment %}
 											{% comment %} <li><a href="attendance.html">Attendance (Admin)</a></li>
 											<li><a href="attendance-employee.html">Attendance (Employee)</a></li> {% endcomment %}
 											<li><a href="{% url 'employee:departments' %}">Departments</a></li>
@@ -757,16 +760,16 @@
 								<span>Employees</span>
 							</li>
 							<li class="submenu">
-								<a href="#" class="noti-dot">
+								<a href="#" >
 									<i class="la la-user"></i> <span> Employees</span> <span class="menu-arrow"></span>
 								</a>
 								<ul>
-									<li><a href="{% url 'employee:employees' %}">All Employees</a></li>
-									<li><a href="{% url 'employee:holidays' %}">Holidays</a></li>
+									<li><a href="{% url 'employee:employees' %}" >All Employees</a></li>
+									<li ><a href="{% url 'employee:holidays' %}" >Holidays</a></li>
 									<li class="submenu">
 										<a href="#">Leave Management<span class="menu-arrow"></span></a>
 										<ul>
-											<li><a href="{% url 'employee:leave_approvals' %}">Leave Approval</a></li>
+											<li ><a href="{% url 'employee:leave_approvals' %}">Leave Approval</a></li>
 											{% comment %} <li><a href="{% url 'employee:leave_requests' %}">Leave Request</a></li> {% endcomment %}
 											{% comment %} <li><a href="{% url 'employee:leave_approval' %}">Leave Approval</a></li> {% endcomment %}
 											{% comment %} <li><a href="#">Leave Report</a></li> {% endcomment %}
@@ -775,9 +778,12 @@
 									{% comment %} <li><a href="leaves-employee.html">Leaves (Employee)</a></li>
 									<li><a href="leave-{% url 'employee:leave_types' %}">Leave Settings</a></li>
 									<li><a href="attendance.html">Attendance (Admin)</a></li> {% endcomment %}
-									<li><a href="{% url 'employee:attendance_register' %}">Attendance</a></li> 
-									<li><a href="{% url 'employee:departments' %}">Departments</a></li>
-									<li><a href="{% url 'employee:designations' %}">Designations</a></li>
+									{% if hrms_client.is_attendance_enabled %}
+										<li><a href="{% url 'employee:attendance_register' %}">Attendance</a></li>
+									{% endif %}
+									{% comment %} <li><a href="{% url 'employee:attendance_register' %}" >Attendance</a></li>  {% endcomment %}
+									<li ><a href="{% url 'employee:departments' %}" >Departments</a></li>
+									<li ><a href="{% url 'employee:designations' %}" >Designations</a></li>
 									{% comment %} <li><a href="timesheet.html">Timesheet</a></li>
 									<li><a href="shift-scheduling.html">Shift & Schedule</a></li>
 									<li><a href="overtime.html">Overtime</a></li> {% endcomment %}
@@ -1955,7 +1961,17 @@
 				</div> 
 			</div> 
 		</div> 
+		<style>
+			{% comment %} Initially hide submenu items */ {% endcomment %}
+			.submenu-toggle {
+				display: none;
+			}
 
+			 {% comment %} Show submenu items when the "active" class is present */ {% endcomment %}
+			.submenu-toggle.active {
+				display: block;
+			}
+		</style>
 		<!-- jQuery -->
        <script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
 	   <script src="{%static 'assets/js/jquery.dataTables.min.js'%}"></script>

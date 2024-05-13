@@ -12,8 +12,8 @@
         <title>HRMS admin template</title>
 		
 		<!-- Favicon -->
-        {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{%static 'assets/img/logo_svd.png'%}"> {% endcomment %}
-		
+		<link href="{% static 'job_portal/img/logo1.png'%}" rel="icon">
+
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{%static 'assets/css/bootstrap.min.css'%}">
 
@@ -382,6 +382,9 @@
 							</li> {% endcomment %}
 							<li> 
 								<a href="{% url 'employee:leave_types' %}"><i class="la la-cogs"></i> <span>Leave Type</span></a>
+							</li>
+							<li> 
+								<a href="{% url 'main:email_settings' %}"><i class="la la-cogs"></i> <span>Email Settings</span></a>
 							</li>
 							{% comment %} <li> 
 								<a href="toxbox-setting.html"><i class="la la-comment"></i> <span>ToxBox Settings</span></a>

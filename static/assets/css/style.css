@@ -2547,6 +2547,15 @@ input[type=file].form-control {
   width: 230px;
   z-index: 1001;
 }
+/* .sidebar {
+  width: 270px;
+  position: fixed;
+  left: 0;
+  padding: 102px 1rem .2rem;
+  height: 100%;
+  overflow: hidden;
+  z-index: 19;
+} */
 @media (max-width: 991px) {
   .sidebar,
   .two-col-bar {

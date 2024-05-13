@@ -1,0 +1,49 @@
+{% extends "job_portal/base.html" %}
+{% load static %}
+
+{% block content %}
+
+    <main class="wrap" style="padding:3%">
+        <section class="container">
+            
+          <div class="container__heading d-flex">
+            <!-- <div id="logo" class="d-flex"> -->
+              <a href="{% url 'main:job_portal' %}" style="display: inline;"><img style="height:35px; width: 50px;display: inline;" src="{% static 'job_portal/img/logo.png' %}" alt="" title="" /></a>
+            <span><h2 style="display: inline;">PRIVACY POLICY</h2></span>
+            
+            {% comment %} <h1 style="display: inline;"><a href="{% url 'main:job_portal' %}"><span></span>Sevendyne</a></h1>                 {% endcomment %}
+            <!-- </div> -->
+          </div>
+          <div class="container__content">
+            <p>At Sevendyne, we are committed to protecting your privacy. This Privacy Policy explains our practices regarding the collection, use, and disclosure of personal information we receive from users of our website (the "Site") and related services (the "Services"). </p>
+            <h3>1. INFORMATION COLLECTION AND USE</h3>
+            <p>We collect personal information that you provide to us when you use our Services, such as your name, email address, and payment information. </p>
+            <p>We may also collect information about your use of the Site and Services, including your IP address, browser type, and the pages you visit.  </p>
+            <p>We use this information to operate, maintain, and improve our Site and Services, as well as to communicate with you about your account and to provide customer support. </p>
+
+            <h3>2. COOKIES AND SIMILAR TECHNOLOGIES</h3>
+            <p>We use cookies, web beacons, and similar technologies to collect information about your use of the Site and Services. </p>
+            <p> Cookies are small data files that are placed on your computer or mobile device when you visit a website. </p>
+            <p>Web beacons are small graphic images that may be included on our Site and Services that allow us to count users who have visited those pages. </p>
+            <p>We use this information to personalize your experience, to remember your preferences and settings, and to understand how you interact with our Site and Services.</p>
+
+            <h3>3. INFORMATION SHARING AND DISCLOSUREs</h3>
+            <p>We may share your personal information with third-party service providers who perform services on our behalf, such as payment processing, data analysis, email delivery, hosting services, and customer service. </p>
+            <p>We require these service providers to use your personal information only for the purposes for which it was provided and to protect the confidentiality, integrity, and availability of your personal information. </p>
+            <p>We may also share your personal information with law enforcement, government officials, or other third parties when we are compelled to do so by a subpoena, court order, or similar legal procedure, or when we believe in good faith that the disclosure of personal information is necessary to prevent physical harm or financial loss, to report suspected illegal activity, or to investigate violations of our Terms of Service.</p>
+
+            <h3>4. DATA RETENTION</h3>
+            <p>We retain your personal information for as long as necessary to fulfill the purposes for which it was collected, unless a longer retention period is required or permitted by law.</p>
+
+            <h3>5. YOUR RIGHTS</h3>
+            <p>You have the right to access, correct, update, and delete your personal information at any time. You can do this by logging into your account or by contacting us at hr@sevendyne.com</p>
+            
+            <h3>6. CHANGES TO THIS PRIVACY POLICY</h3>
+            <p>We may update this Privacy Policy from time to time. If we make material changes to this Privacy Policy, we will notify you by email or by posting a notice on our Site prior to the effective date of the changes. Your continued use of our Site and Services following the effective date of any changes to this Privacy Policy constitutes your acceptance of those changes.</p>
+            
+            <h3>7. CONTACT Us</h3>
+            <p>If you have any questions or concerns about these Terms or our Services, please contact us at <a href="">hr@sevendyne.com</a></p>
+          </div>
+        </section>
+      </main>
+{% endblock %}

@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 
 from main.decorators import company_required
 from main.functions import generate_form_errors, has_admin_dashboard_permission, has_hrms_permission
-from hrms.forms import HrmsClientForm
+from hrms.forms import HrmsClientEditForm, HrmsClientForm
 from hrms.models import HrmsClient
 
 
@@ -153,7 +153,7 @@ def edit_hrms_client(request, pk):
     
 
     if request.method == "POST":
-        form = HrmsClientForm(request.POST, instance=instance)
+        form = HrmsClientEditForm(request.POST, instance=instance)
 
         if form.is_valid():
             data = form.save(commit=False)
@@ -198,7 +198,7 @@ def edit_hrms_client(request, pk):
 
         return HttpResponse(json.dumps(response_data), content_type='application/javascript')
     else:
-        form = HrmsClientForm(instance=instance)
+        form = HrmsClientEditForm(instance=instance)
 
         context = {
             "form": form,
