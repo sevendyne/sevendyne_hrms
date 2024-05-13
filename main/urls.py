@@ -21,8 +21,6 @@ urlpatterns = [
     path("admin/dashboard/", views.admin_dashboard, name="admin_dashboard"),
     path("employee/dashboard/", views.employee_dashboard, name="employee_dashboard"),
 
-	# path('state-autocomplete/',StateAutocomplete.as_view(),name='state_autocomplete'),
-    # path('get_states/', views.get_states, name='get_states'),
 	path('company/create/', views.create_company, name='create_company'),
     path('companies/', views.companies, name="companies"),
     re_path(r'^company/edit/(?P<pk>.*)/$', views.edit_company, name='edit_company'),
@@ -33,7 +31,5 @@ urlpatterns = [
     re_path(r'^email-setting/edit/(?P<pk>.*)/$', views.edit_email_setting, name='edit_email_setting'),
     re_path(r'^delete-email-setting/(?P<pk>.*)/$', views.delete_email_setting, name='delete_email_setting'),    
     re_path(r'^email-setting/(?P<pk>.*)/$', views.email_setting, name='email_setting')
-    
-   
 ]
 

@@ -1,12 +1,7 @@
-import datetime
-from datetime import date
 from decimal import Decimal
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 from django.utils.translation import gettext_lazy as _
-from django.core.validators import MaxValueValidator,MinValueValidator
-from employee.models import Employee
-
+from django.core.validators import MinValueValidator
 from main.models import BaseModel
 
 
@@ -27,7 +22,6 @@ class SalarySetting(BaseModel):
     tds = models.DecimalField(_('TDS '),default=0,decimal_places=2, max_digits=15,validators=[MinValueValidator(Decimal('0.00'))],null=True,blank=True)
     is_deleted = models.BooleanField(_('Is This Salary Settings Deleted ?'),help_text='button to toggle employee deleted and undelete',default=False,null=True,blank=True)
 
-   
     class Meta:
         verbose_name = _('Salary Settings')
         verbose_name_plural = _('Salary Settings')
@@ -43,7 +37,6 @@ class PayrollItem(BaseModel):
     category = models.CharField(max_length=128, choices=CATEGORY_CHOICES, default='Additions')
     is_deleted = models.BooleanField(_('Is This Employee Deleted ?'),help_text='button to toggle employee deleted and undelete',default=False)
 
-   
     class Meta:
         verbose_name = _('Payroll Item')
         verbose_name_plural = _('Payroll Items')
@@ -51,6 +44,7 @@ class PayrollItem(BaseModel):
 
     def __str__(self):
         return f"{self.name} - {self.category}"
+
 
 class Salary(BaseModel):  
     company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})      

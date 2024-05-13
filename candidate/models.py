@@ -51,8 +51,6 @@ class Candidate(models.Model):
         ordering = ['-date_applied']
 
 
-
-# Create your models here.
 class Intern(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(_("Email"),unique=True)

@@ -1,8 +1,7 @@
 from django.urls import path, re_path
 from employee import views
 
-urlpatterns = [
-    
+urlpatterns = [    
     path('department/create/', views.create_department, name='create_department'),
     path("departments/", views.departments, name="departments"),
     re_path(r'^department/edit/(?P<pk>.*)/$', views.edit_department, name='edit_department'),
@@ -45,8 +44,7 @@ urlpatterns = [
     path("holidays/", views.holidays, name='holidays'),
     re_path(r'^holiday/edit/(?P<pk>.*)/$', views.edit_holiday, name='edit_holiday'),
     re_path(r'^delete-holiday/(?P<pk>.*)/$', views.delete_holiday, name='delete_holiday'),    
-    re_path(r'^holiday/(?P<pk>.*)/$', views.holiday, name='holiday'),
-    
-    path("holidays/employee/", views.employee_holidays, name='employee_holidays'),
+    re_path(r'^holiday/(?P<pk>.*)/$', views.holiday, name='holiday'),    
+    path("holidays/employee/", views.employee_holidays, name='employee_holidays')
 ]
 

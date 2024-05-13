@@ -1,6 +1,7 @@
 from django import forms
 from django.forms.widgets import TextInput
 
+
 class LoginForm(forms.Form):
     username = forms.CharField(
         label='Username',

@@ -1,6 +1,5 @@
 import datetime
 import json
-from django.forms import formset_factory
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -59,7 +58,6 @@ def create_client(request):
                     "redirect": "true",
                     "redirect_url": reverse('client:clients')
                 }
-                print("Redirect URL:", response_data["redirect_url"])
             else:               
                 response_data = {
                     "status": "false",
@@ -67,10 +65,7 @@ def create_client(request):
                     "title": "Already exists",
                     "message": "Client already exists",                        
                 }
-                print("status inside", response_data["status"])
-            print("status outside", response_data["status"])
         else:
-            print('not valid form validation error')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
@@ -78,7 +73,6 @@ def create_client(request):
                 "title": "Form validation error",
                 "message": str(message),               
             }
-            print("error message",response_data["message"])
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = ClientForm()
@@ -101,16 +95,13 @@ def clients(request):
     
     clid_query = request.GET.get("clid")
     if clid_query:
-        clients = clients.filter(Q(clientid__icontains=clid_query))
-    
+        clients = clients.filter(Q(clientid__icontains=clid_query))    
     cl_name_query = request.GET.get("cl_name")
     if cl_name_query:
-        clients = clients.filter(Q(firstname__icontains=cl_name_query) | Q(lastname__icontains=cl_name_query))
-    
+        clients = clients.filter(Q(firstname__icontains=cl_name_query) | Q(lastname__icontains=cl_name_query))    
     cl_comp_query = request.GET.get("cl_comp")
     if cl_comp_query:
-        clients = clients.filter(Q(company_name__icontains=cl_comp_query))
-    
+        clients = clients.filter(Q(company_name__icontains=cl_comp_query))    
 
     paginator = Paginator(clients,1000000000000)
     page_number = request.GET.get('page')
@@ -130,16 +121,13 @@ def clients_list(request):
     
     clid_query = request.GET.get("clid")
     if clid_query:
-        clients = clients.filter(Q(clientid__icontains=clid_query))
-    
+        clients = clients.filter(Q(clientid__icontains=clid_query))    
     cl_name_query = request.GET.get("cl_name")
     if cl_name_query:
-        clients = clients.filter(Q(firstname__icontains=cl_name_query) | Q(lastname__icontains=cl_name_query))
-    
+        clients = clients.filter(Q(firstname__icontains=cl_name_query) | Q(lastname__icontains=cl_name_query))    
     cl_comp_query = request.GET.get("cl_comp")
     if cl_comp_query:
-        clients = clients.filter(Q(company_name__icontains=cl_comp_query))
-    
+        clients = clients.filter(Q(company_name__icontains=cl_comp_query))    
 
     paginator = Paginator(clients,1000000000000)
     page_number = request.GET.get('page')
@@ -157,17 +145,13 @@ def clients_list(request):
 def edit_client(request, pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Client.objects.filter(pk=pk,company=current_company, is_deleted=False))    
-    print("Client id",instance.pk)
     if request.method == "POST":
         form = ClientForm(request.POST, instance=instance)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-            print("updated Client",data.company)
-
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -175,29 +159,23 @@ def edit_client(request, pk):
                 "message": "Client updated successfully.",                
                 "redirect_url": reverse('client:clients')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = ClientForm(instance=instance)
-
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Client :" + instance.company,
-            
+            "title": "Edit Client :" + instance.company,            
             "redirect": "true",
-            "url": reverse('client:edit_client', kwargs={'pk': instance.pk}),
-
+            "url": reverse('client:edit_client', kwargs={'pk': instance.pk})
         }
         return render(request, 'client/clients.html', context)
 
@@ -208,23 +186,20 @@ def edit_client(request, pk):
 def client(request, pk):
     current_company = get_current_company(request)
     client = get_object_or_404(Client.objects.filter(pk=pk,company=current_company,is_deleted=False))
-
     context = {
         'client': client,
-        'title': 'Client',
-
+        'title': 'Client'
     }
     return render(request, "client/client-profile.html", context)
+
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_client(request,pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Client.objects.filter(pk=pk,company=current_company,is_deleted=False))
-    
+    instance = get_object_or_404(Client.objects.filter(pk=pk,company=current_company,is_deleted=False))    
     Client.objects.filter(pk=pk).update(is_deleted=True,company_name=instance.company_name + "_deleted_" + str(instance.auto_id))
-
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",

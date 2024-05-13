@@ -1,10 +1,7 @@
-from calendar import monthrange
-from datetime import datetime
 from django.db import models
-from main.models import BaseModel
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
-from phonenumber_field.modelfields import PhoneNumberField
+from main.models import BaseModel
 
 
 LEAVE_STATUS = (
@@ -129,7 +126,7 @@ class LeaveType(BaseModel):
     def __str__(self):
         return self.name
 
-#tuple for status
+
 class Leave(BaseModel):
     company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})  
     employee = models.ForeignKey("employee.Employee", on_delete=models.CASCADE, limit_choices_to={'is_deleted': False})
@@ -150,95 +147,7 @@ class Leave(BaseModel):
 
     def __str__(self):
         return f"{self.employee} - {self.leavetype}"
-
-    # @property
-    # def leave_days(self):
-    #     days_count = ''
-    #     startdate = self.startdate
-    #     enddate = self.enddate
-    #     if startdate > enddate:
-    #         return
-    #     elif startdate == enddate:
-    #         days_count = '1 day'
-    #     else:
-    #         diff = enddate - startdate
-    #         if diff.days == 1:
-    #             days_count = '{0} day'.format(diff.days)
-    #         else:
-    #             days_count = '{0} days'.format(diff.days)
-    #     return "{0}, {1}".format(days_count, self.leavetype)
-
-    # @property
-    # def remaining_days(self):
-    #     if self.leavetype.days is not None:
-    #         approved_leave_days = Leave.objects.filter(employee=self.employee, leavetype=self.leavetype, is_approved=True).count()
-    #         remaining_days = self.leavetype.days - approved_leave_days
-    #         return max(0, remaining_days)
-    #     return None
-
-
-# 	@property
-# 	def pretty_leave(self):
-# 		'''
-# 		i don't like the __str__ of leave object - this is a pretty one :-)
-# 		'''
-# 		leave = self.leavetype
-# 		user = self.user
-# 		employee = user.employee_set.first().get_full_name
-# 		return ('{0} - {1}'.format(employee,leave))	
-
-
-# 	@property
-# 	def leave_approved(self):
-# 		return self.is_approved == True
-
-
-# 	@property
-# 	def approve_leave(self):
-# 		if not self.is_approved:
-# 			self.is_approved = True
-# 			self.status = 'approved'
-# 			self.save()
-
-
-# 	@property
-# 	def unapprove_leave(self):
-# 		if self.is_approved:
-# 			self.is_approved = False
-# 			self.status = 'pending'
-# 			self.save()
-
-
-
-# 	@property
-# 	def leaves_cancel(self):
-# 		if self.is_approved or not self.is_approved:
-# 			self.is_approved = False
-# 			self.status = 'cancelled'
-# 			self.save()
-
-
-
-# 	# def uncancel_leave(self):
-# 	# 	if  self.is_approved or not self.is_approved:
-# 	# 		self.is_approved = False
-# 	# 		self.status = 'pending'
-# 	# 		self.save()
-
-
-
-# 	@property
-# 	def reject_leave(self):
-# 		if self.is_approved or not self.is_approved:
-# 			self.is_approved = False
-# 			self.status = 'rejected'
-# 			self.save()
-
-
-
-# 	@property
-# 	def is_rejected(self):
-# 		return self.status == 'rejected'
+    
 
 class AttendanceRegister(BaseModel):  
     company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})  
