@@ -184,80 +184,8 @@ def delete_department(request,pk):
         "redirect_url" : reverse('employee:departments')
     }
     return HttpResponse(json.dumps(response_data), content_type='application/json')
-   
-
-
-# Designation crud starts here
-# @login_required
-# @company_required
-# def create_designation(request):
-#     Designationformset = formset_factory(DesignationFormset)
-#     if request.method == 'POST':
-#         designation_formset = Designationformset(request.POST, prefix='designation_formset')
-#         form =DesignationForm(request.POST)
-#         if designation_formset.is_valid() and form.is_valid():
-#             department = form.cleaned_data['department']
-
-#             for form in designation_formset:
-#                 name = form.cleaned_data['name']                               
-#                 auto_id = get_auto_id(Designation)
-#                 creator = request.user
-#                 updator = request.user
-               
-#                 if Designation.objects.filter(name=name,is_deleted=False).exists():
-#                     is_ok =False
-#                 else:
-#                     Designation(
-#                         department=department,
-#                         name = name,
-#                         auto_id = auto_id,
-#                         creator = creator,
-#                         updator = updator
-#                     ).save() 
-#                     is_ok=True               
-#             if is_ok ==True:
-#                 response_data = {
-#                     "status": "true",
-#                     "title": "Successfully Created",
-#                     "message": "Designation created successfully.",
-#                     "redirect": "true",
-#                     "redirect_url": reverse('employee:designations')
-#                 }
-#             elif is_ok ==False:
-#                 response_data = {
-#                     "stable": "true",
-#                     "title": "Already exists",
-#                     "warning" : True
-#                 }
-#             else :
-#                 response_data = {
-#                     "stable": "true",
-#                     "title": "Formset Error",
-#                     "warning" : True
-#                 }
-#             return HttpResponse(json.dumps(response_data), content_type='application/javascript')
-
-#         else:
-#             message = generate_form_errors(designation_formset, formset=True)
-#             response_data = {
-#                 "stable": "true",
-#                 "status": "false",
-#                 "message": str(message),
-#                 "title": "Form validation error"                
-#             }
-#         return HttpResponse(json.dumps(response_data), content_type='application/javascript')
-#     else:
-#         designation_formset = Designationformset(prefix='designation_formset')
-#         form = DesignationForm()
-#         context = {
-#             "title": "Create Designation",
-#             "designation_formset": designation_formset,
-#             'form':form,
-#             "redirect": "true",
-#             "create":True
-#         }
-#         return render(request, 'designations/designations.html', context)
-
+ 
+ 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
