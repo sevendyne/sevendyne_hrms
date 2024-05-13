@@ -1,243 +1,244 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
-
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-
-        <meta name="description" content="Smarthr - Bootstrap Admin Template">
-		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
-        <meta name="author" content="Dreamguys - Bootstrap Admin Template">
-        <title>HRMS Admin Dashboard</title>
+<html>
+	<head>
+			<meta charset="UTF-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		
-		<!-- Favicon -->
-        {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{%static 'assets/img/logo_svd.png'%}"> {% endcomment %}
-		
-		<!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="{%static 'assets/css/bootstrap.min.css'%}">
-		
-		<!-- Include datetime picker CSS -->
-		<link rel="stylesheet" href="{%static 'assets/css/bootstrap-datetimepicker.min.css'%}">
-
-		<!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
-    	<link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/all.min.css'%}">
-
-		<!-- Lineawesome CSS -->
-        <link rel="stylesheet" href="{%static 'assets/css/line-awesome.min.css'%}">
-		<link rel="stylesheet" href="{%static 'assets/css/material.css'%}">
-
-		<!-- Lineawesome CSS -->
-        <link rel="stylesheet" href="{%static 'assets/css/line-awesome.min.css'%}">
-		
-		<!-- Main CSS -->
-        <link rel="stylesheet" href="{%static 'assets/css/style.css'%}">
-		<style>
-			@media screen and (max-width: 767px) {
+			<title>Payslip for the month of  {{ instance.date|date:"F Y" }}</title>
+			<style>
 				body {
-					transform: rotate(90deg);
-					transform-origin: top left;
-					width: 100vw;
-					height: 100vh;
-					overflow-x: hidden;
-					position: fixed;
-					top: 0;
-					left: 0;
-					padding: 0;
+					font-family: Arial, sans-serif;
 					margin: 0;
+					padding: 0;
+					background-color: #f2f2f2;
 				}
-				
-				.content {
-					transform: rotate(-90deg);
-					transform-origin: top left;
-					width: 100vh; /* Swap width and height for proper display */
-					height: 100vw;
-					overflow-x: hidden;
-					overflow-y: auto;
-					position: fixed;
-					top: 100%; /* Adjust positioning */
-					left: 0; /* Adjust positioning */
+
+				.container {
+					max-width: 800px;
+					margin: 0 auto;
+					padding: 20px;
+					background-color: #fff;
+					box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 				}
-				
-				.content .main-wrapper {
-					width: 100%; /* Adjust wrapper width */
-					padding: 20px; /* Adjust padding if necessary */
+
+				.logo-container {
+					float: right;
+					margin-top: -30px;
 				}
-			}
-		</style>
-		
-		
+
+				table {
+					width: 100%;
+					border-collapse: collapse;
+				}
+
+				table td, table th {
+					border: 1px solid #ddd;
+					padding: 8px;
+				}
+
+				table th {
+					background-color: #f2f2f2;
+					text-align: left;
+				}
+
+				.highlight {
+					background-color: rgb(190, 214, 239);
+					text-align: center;
+					font-weight: bold;
+				}
+				/* Adjust the layout for the earnings and deductions sections */
+				.container {
+					max-width: 800px;
+					margin: 0 auto;
+					padding: 20px;
+					background-color: #fff;
+					box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+					overflow: hidden; /* Ensure contents do not overflow */
+				}
+
+				/* Adjust the layout for the earnings and deductions tables */
+				{% comment %} .container table {
+					width: 100%;
+					border-collapse: collapse;
+					margin-top: 20px; /* Add some margin between the table sections */
+				} {% endcomment %}
+
+				/* Adjust the layout for the earnings and deductions table cells */
+				{% comment %} .container table td, .container table th {
+					border: 1px solid #ddd;
+					padding: 8px;
+				} {% endcomment %}
+
+				/* Adjust the layout for the earnings and deductions table headers */
+				{% comment %} .container table th {
+					background-color: #f2f2f2;
+					text-align: left;
+				} {% endcomment %}
+
+				/* Adjust the layout for the earnings and deductions table highlight row */
+				{% comment %} .container .highlight {
+					background-color: rgb(190, 214, 239);
+					text-align: center;
+					font-weight: bold;
+				} {% endcomment %}
+
+				/* Adjust the layout for the earnings and deductions sections */
+				{% comment %} .container .earnings-section,
+				.container .deductions-section {
+					width: 50%;
+					float: left; /* Float both sections to the left */
+				} {% endcomment %}
+				/* Adjust the layout for the earnings and deductions sections */
+				.container .earnings-section,
+				.container .deductions-section {
+					width: 48%; /* Decrease width slightly to allow for margin */
+					float: left; /* Float both sections to the left */
+					margin-right: 4%; /* Add margin between the sections */
+				}
+
+				/* Adjust the layout for the earnings and deductions tables */
+				.container table {
+					width: 100%;
+					border-collapse: collapse;
+					margin-top: 20px; /* Add some margin between the table sections */
+				}
+
+				/* Adjust the layout for the earnings and deductions table headers */
+				.container table th {
+					background-color: #f2f2f2;
+					text-align: center; /* Center-align table headers */
+				}
+
+				/* Adjust the layout for the earnings and deductions table cells */
+				.container table td {
+					border: 1px solid #ddd;
+					padding: 8px;
+					text-align: left; /* Left-align table cells */
+				}
+
+				/* Adjust the layout for the earnings and deductions table highlight row */
+				.container .highlight {
+					background-color: rgb(190, 214, 239);
+					text-align: center;
+					font-weight: bold;
+				}
+				.container .highlight1 {
+					background-color: lightgrey;
+					text-align: center;
+					font-weight: bold;
+				}
+			</style>
 	</head>
 	<body>
+		<div class="container">
+			<div class="logo-container">
+			<img src="{{ instance.company.logo }}" width="100" height="80">
+			</div>
+			<h2 style="text-align: center;"><u>PAYSLIP FOR THE MONTH OF  {{ instance.date|date:"F Y" }}</u></h2>
+			<table>
+				<tr>
+					<td colspan="2">
+						<strong>{{ instance.company.name }}</strong><br>
+						{{ instance.company.address }},<br>
+						{{ instance.company.state }}, {{ instance.company.country }}, {{ instance.company.postal_code }}
+					</td>
+					<td colspan="2">
+						<strong>PAYSLIP ###ID</strong><br>
+						Salary Month: {{ instance.date|date:"F Y" }}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="4">
+						<strong>{{ instance.employee.get_full_name }}</strong><br>
+						{{ instance.employee.designation }}<br>
+						Employee ID: {{ instance.employee.employeeid }}<br>
+						Joining Date: {{ instance.employee.joindate }}
+					</td>
+				</tr>
+			</table>
 
-<!-- Page Content -->
-<div class="content container-fluid">
-	<div class="main-wrapper">
-		<!-- Page Wrapper -->
-		<div class="page-wrapper">
-				
-	<!-- Page Header -->
-	{% comment %} <div class="page-header">
-		<div class="row align-items-center">
-			<div class="col">
-				<h3 class="page-title">Payslip</h3>
-				<ul class="breadcrumb">
-					<li class="breadcrumb-item"><a href="admin-dashboard.html">Dashboard</a></li>
-					<li class="breadcrumb-item active">Payslip</li>
-				</ul>
-			</div>
-			<div class="col-auto float-end ms-auto">
-				<div class="btn-group btn-group-sm">
-					<button id="pdf-button" class="btn btn-white">PDF</button>
-				</div>
-			</div>
-		</div>
-	</div> {% endcomment %}
-	<!-- /Page Header -->
-	
-	<div class="row" >
-		<div class="col-md-12">
-			<div class="card">
-				<div class="card-body">
-					<h4 class="payslip-title">Payslip for the month of  {{ instance.date|date:"F Y" }}</h4>
-					
-					
-					<div class="row">
-						<div class="col-sm-6 m-b-20">
-							{% comment %} <img src="{%static 'assets/img/logo_svd.png'%}" class="inv-logo" alt="Logo" style="width:21%"> {% endcomment %}
-							<ul class="list-unstyled mb-0">
-								<li>{{ instance.company.name }}</li>
-								<li>{{ instance.company.address }},</li>
-								<li>{{ instance.company.state }}, {{ instance.company.country }}, {{ instance.company.postal_code }}</li>
-							</ul>
-						</div>
-						<div class="col-sm-6 m-b-20">
-							<div class="invoice-details">
-								<h3 class="text-uppercase">Payslip ###id</h3>
-								<ul class="list-unstyled">
-									<li>Salary Month: <span>{{ instance.date|date:"F Y" }}</span></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-lg-12 m-b-20">
-							<ul class="list-unstyled">
-								<li><h5 class="mb-0"><strong>{{ instance.employee.get_full_name }}</strong></h5></li>
-								<li><span>{{ instance.employee.designation }}</span></li>
-								<li>Employee ID: {{ instance.employee.employeeid }}</li>
-								<li>Joining Date: {{ instance.employee.joindate }}</li>
-							</ul>
-						</div>
-					</div>
-					<div class="row" style="display: flex;">
-						<div style="width:30%;float:left;">
-							<h4 style="margin-bottom: 10px;"><strong>Earnings</strong></h4>
-							<table style="border: 1px solid black; border-collapse: collapse; width: 100%;">
-								<tbody>
-									{% for additions_field in additions_fields %}
-									<tr>
-										<td style="padding: 5px;"><strong>{{ additions_field.field_name }}</strong></td>
-										<td style="padding: 5px; text-align: right;">{{ additions_field.field_value }}</td>
-									</tr>
-									{% endfor %}
-									<tr>
-										<td style="padding: 5px;"><strong>Total Earnings</strong></td>
-										<td style="padding: 5px; text-align: right;"><strong>{{ total_additions }}</strong></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-						<div style="width:30%; float:right;">
-							<h4 style="margin-bottom: 10px;"><strong>Deductions</strong></h4>
-							<table style="border: 1px solid black; border-collapse: collapse; width: 100%;">
-								<tbody>
-									{% for deductions_field in deductions_fields %}
-									<tr>
-										<td style="padding: 5px;"><strong>{{ deductions_field.field_name }}</strong></td>
-										<td style="padding: 5px; text-align: right;">{{ deductions_field.field_value }}</td>
-									</tr>
-									{% endfor %}
-									<tr>
-										<td style="padding: 5px;"><strong>Total Deductions</strong></td>
-										<td style="padding: 5px; text-align: right;"><strong>{{ total_deductions }}</strong></td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					</div>
-					
-					
-					
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<!-- /Page Content -->
-<script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
-<script>
-    $(document).ready(function() {
-        // JavaScript code to generate PDF when the PDF button is clicked
-        $('#pdf-button').click(function() {
-            var pk = '{{ pk }}';  // Get the primary key from the template context
-            $.ajax({
-                url: '/app/payroll/payslip/pdf/',  // URL contains only the primary key
-                type: 'GET',
-				data: {
-					pk: pk  // Pass the primary key as a parameter
-				},
-                success: function(data) {
-                    // Display or download the PDF based on your requirement
-                    // For example, you can display it in a new tab
-                    var blob = new Blob([data], { type: 'application/pdf' });
-                    var url = window.URL.createObjectURL(blob);
-                    window.open(url);
-                }
-            });
-        });
-    });
-	<style>
-		@page {
-			size: 297mm 210mm;
-			margin: 0;
-			padding: 0;
-		}
-
-		body {
-			{% comment %} font-family: 'Open Sans', sans-serif; {% endcomment %}
-			padding: 0;
-			margin: 0;
-			font-size: 22px;
-			font-weight: 700;
-			color: black;
-			box-sizing: border-box;
-		}
-		p {
-			padding: 0;
-			margin: 0;
-		}
-		.card {
+			<table>
+				<thead>
+					<tr class="highlight1">
+						<td colspan="2" style="text-align: center;"><strong>Total Earnings</strong></td>
+						<td colspan="2" style="text-align: center;"><strong>Total Deductions</strong></td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<!-- Earnings -->
+						<td style="padding: 5px; border-bottom: 1px solid #ddd;">
+							{% for additions_field in additions_fields %}
+							<strong>{{ additions_field.field_name }}</strong><br>
+							{% endfor %}
+						</td>
+						<td style="padding: 5px; text-align: right; border-bottom: 1px solid #ddd;">
+							{% for additions_field in additions_fields %}
+							{{ additions_field.field_value }}<br>
+							{% endfor %}
+						</td>
+						
+						<!-- Deductions -->
+						<td style="padding: 5px; border-bottom: 1px solid #ddd;">
+							{% for deductions_field in deductions_fields %}
+							<strong>{{ deductions_field.field_name }}</strong><br>
+							{% endfor %}
+						</td>
+						<td style="padding: 5px; text-align: right; border-bottom: 1px solid #ddd;">
+							{% for deductions_field in deductions_fields %}
+							{{ deductions_field.field_value }}<br>
+							{% endfor %}
+						</td>
+					</tr>
+					<tr>
+						<td ><strong>Total Earnings</strong></td>
+						<td style="text-align: right;"><strong>{{ total_additions }}</strong></td>
+						<td ><strong>Total Deductions</strong></td>
+						<td style="text-align: right;"><strong>{{ total_deductions }}</strong></td>
+					</tr>
+					{% comment %} <tr class="highlight">
+						<td colspan="4" style="text-align: center;"><strong>Net Salary: {{currency_symbol}} {{ instance.net_salary }} ({{currency}} {{ net_salary_in_words }}.)</strong></td>
+					</tr> {% endcomment %}
+				</tbody>
+			</table>		
 			
-			width: 1400px;
-			height: 991px;
-			max-width: 100%;
-			min-height: 100%;
-			position: relative;
-		}
-	</style>
-	
-</script>
-	
-		
+			<table>
+				<tr class="highlight">
+					<td colspan="4" style="text-align: center;"><strong>Net Salary: {{currency_symbol}} {{ instance.net_salary }} ({{currency}} {{ net_salary_in_words }}.)</strong></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- /Page Content -->
+		<script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
+		<script>
+			$(document).ready(function() {
+				// JavaScript code to generate PDF when the PDF button is clicked
+				$('#pdf-button').click(function() {
+					var pk = '{{ pk }}';  // Get the primary key from the template context
+					$.ajax({
+						url: '/app/payroll/payslip/pdf/',  // URL contains only the primary key
+						type: 'GET',
+						data: {
+							pk: pk  // Pass the primary key as a parameter
+						},
+						success: function(data) {
+							// Display or download the PDF based on your requirement
+							// For example, you can display it in a new tab
+							var blob = new Blob([data], { type: 'application/pdf' });
+							var url = window.URL.createObjectURL(blob);
+							window.open(url);
+						}
+					});
+				});
+			});
+			
+		</script>
 		<!-- jQuery -->
 		<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
 		<script src="{%static 'assets/js/jquery.dataTables.min.js'%}"></script>
 		<script src="{%static 'assets/js/dataTables.bootstrap4.min.js'%}"></script>
- 
-		
-		 
 		 <!-- Bootstrap Core JS -->
 		 <script src="{%static 'assets/js/bootstrap.bundle.min.js'%}"></script>
 		 <script src="{%static 'assets/js/moment.min.js'%}"></script>
@@ -257,6 +258,5 @@
 		 <!-- Custom JS -->
 		 <script src="{%static 'assets/js/app.js'%}"></script>
 		 
-		 
 	</body>
-</html>
+</html> 

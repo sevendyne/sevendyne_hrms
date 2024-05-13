@@ -32,6 +32,7 @@
                                 <th style="width:15%">First Name</th>
                                 <th style="width:15%">Last Name</th>
                                 <th style="width:15%">Skills</th>
+                                <th style="width:15%">Status</th>
                                 <th style="width:15%">Actions</th>
                             </tr>
                         </thead>                        
@@ -42,6 +43,7 @@
                                 <td>{{instance.first_name}}</td>
                                 <td>{{instance.last_name}}</td>
                                 <td>{{instance.skills}}</td>
+                                <td>{{instance.status}}</td>
                                 <td>                                    
                                     <a href="{% url 'candidate:candidate' pk=instance.pk %}" class="btn btn-default btn-icon waves-effect waves-circle waves-float"title="View candidate"><i class="zmdi zmdi-eye" ></i></a>                                    
                                     <a href="{% url 'candidate:edit_candidate' pk=instance.pk %}" class="btn btn-default btn-icon waves-effect waves-circle waves-float"title="Edit candidate" ><i class="zmdi zmdi-edit"></i></a>                                    

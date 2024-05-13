@@ -11,5 +11,8 @@ urlpatterns = [
     path('candidate/delete-selected/', views.delete_selected_candidates, name='delete_selected_hrms_candidates'),
     re_path(r'^candidate/(?P<pk>.*)/$', views.candidate, name='candidate'),
    
+    path('apply/', views.candidate_application, name='candidate_application'),
+
+    path('enroll/',views.create_intern,name='create_intern')
 ]
 

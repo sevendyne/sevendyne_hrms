@@ -8,11 +8,11 @@
         <meta name="description" content="Smarthr - Bootstrap Admin Template">
 		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
         <meta name="author" content="Dreamguys - Bootstrap Admin Template">
-        <title>Register - HRMS admin template</title>
+        <title>Sign Up - Sevendyne HRMS</title>
 		
 		<!-- Favicon -->
-        {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/logo_svd.png' %}"> {% endcomment %}
-		
+		<link href="{% static 'job_portal/img/logo1.png'%}" rel="icon">
+
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
 
@@ -30,6 +30,16 @@
         <div class="main-wrapper">
 			<div class="account-content">
 				<div class="container">
+					<!-- Add this hidden div for the popup message -->
+					<div id="signupMessage" class="alert alert-danger alert-dismissible fade show" style="display: none;" role="alert">
+						{% if message %}
+							{{ message }}
+						{% endif %}
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				
 				
 					<!-- Account Logo -->
 					{% comment %} <div class="account-logo">
@@ -39,8 +49,8 @@
 					
 					<div class="account-box">
 						<div class="account-wrapper">
-							<h3 class="account-title">Register</h3>
-							<p class="account-subtitle">Access to our dashboard</p>
+							<h3 class="account-title">Sign Up</h3>
+							<p class="account-subtitle">Access to hrms dashboard</p>
 							
 							<!-- Account Form -->
 							<form action="" method="post">
@@ -73,7 +83,7 @@
 									<input class="form-control" type="password" id="confirm-password" name="confirm-password" required>
 								</div> {% endcomment %}
 								<div class="input-block mb-4 text-center">
-									<button class="btn btn-primary account-btn" type="submit" value="Register" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%)">Register</button>
+									<button class="btn btn-primary account-btn" type="submit" value="Register" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%)">Sign Up</button>
 								</div>
 								<div class="account-footer">
 									<p>Already have an account? <a href="{% url 'user:user_login' %}">Login</a></p>
@@ -95,6 +105,21 @@
 		
 		<!-- Custom JS -->
 		<script src="{% static 'assets/js/app.js' %}"></script>
+		<!-- JavaScript to display popup message if registration success -->
+		<script>
+			// Check if login failed, then display the error message
+			{% if message %}
+				document.getElementById('signupMessage').style.display = 'block';
+			{% endif %}
+			// Function to close the error message div when the close button is clicked
+			document.addEventListener('DOMContentLoaded', function() {
+				document.querySelectorAll('.close').forEach(function(closeBtn) {
+					closeBtn.addEventListener('click', function() {
+						this.closest('.alert').style.display = 'none';
+					});
+				});
+			});
+		</script>
 		
     </body>
 </html>

@@ -19,9 +19,15 @@
 			<div class="col-auto float-end ms-auto">
 				<div class="btn-group btn-group-sm">
 					{% comment %} <button class="btn btn-white">CSV</button> {% endcomment %}
-					{% comment %} <button href="templates/payroll/payslip-pdf.html"  class="btn btn-white">PDF</button> {% endcomment %}
+					{% comment %} <button href="templates/payroll/payslip-pdf.html"  class="btn btn-white">Email</button> {% endcomment %}
 					<button id="pdf-button" class="btn btn-white">PDF</button>
-					<button href="{% url 'payroll:print_payslip' pk=pk %}" class="btn btn-white"><i class="fa-solid fa-print fa-lg"></i> Print</button>
+					<a href="{% url 'payroll:print_payslip' pk=pk %}" class="btn btn-white">
+						<i class="fa-solid fa-print fa-lg"></i> Print
+					</a>
+					{% comment %} <a href="#" id="email-button" class="btn btn-white">
+						<i class="fa-solid fa-envelope fa-lg"></i> Email
+					</a>   {% endcomment %}
+					{% comment %} <button href="{% url 'payroll:print_payslip' pk=pk %}" class="btn btn-white"><i class="fa-solid fa-print fa-lg"></i> Print</button> {% endcomment %}
 				</div>
 			</div>
 		</div>
@@ -37,7 +43,9 @@
 					
 					<div class="row">
 						<div class="col-sm-6 m-b-20">
-							{% comment %} <img src="{%static 'assets/img/logo_svd.png'%}" class="inv-logo" alt="Logo" style="width:21%"> {% endcomment %}
+							{% if instance.company.logo %}
+								<img src="{{ instance.company.logo.url }}" class="inv-logo" alt="Company Logo" style="width: 11%">
+							{% endif %}
 							<ul class="list-unstyled mb-0">
 								<li>{{ instance.company.name }}</li>
 								<li>{{ instance.company.address }},</li>
@@ -129,6 +137,25 @@
                 }
             });
         });
+
+		$('#email-button').click(function() {
+			var pk = '{{ pk }}';
+			$.ajax({
+				url: '/app/payroll/payslip/email/',
+				type: 'GET',
+				data: {
+					pk: pk
+				},
+				success: function(data) {
+					// Handle success response
+					alert("Email sent successfully");
+				},
+				error: function(xhr, status, error) {
+					// Handle error response
+					alert("Error sending email");
+				}
+			});
+		});
     });
 </script>
 

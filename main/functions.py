@@ -1,3 +1,4 @@
+from candidate.models import Candidate
 from main.models import Company, CompanyAccess
 
 
@@ -113,4 +114,35 @@ def company_access(request):
         
     return companies
         
-  
+def get_candidate_id(request):
+    candidate_id = "SVD1001" # user defined number
+    if Candidate.objects.filter(is_deleted=False).exists():
+        candidate_id = Candidate.objects.filter(is_deleted=False).latest('id').candidateid
+    print(candidate_id)
+    if candidate_id:
+        rev_admn_no =  candidate_id[::-1]  
+        length = len(rev_admn_no) 
+        rev_numbers = "" 
+        for i in range(length):
+            if not rev_admn_no[i].isnumeric():
+                break;
+            else:
+                rev_numbers += rev_admn_no[i]
+        numbers = rev_numbers[::-1]
+        
+        int_number = int(numbers)
+        length_number = len(numbers)
+        
+        code = rev_admn_no[length_number:]
+        if numbers[:1]:
+            a = length_number - len(str(int_number))
+            b = numbers[:a]
+            len0 = len(b)
+        last_admn_code = code[::-1]
+        next_no = int(int_number) + 1
+        if len0 :
+            candidate_id = str(last_admn_code) + str(b)+ str(next_no)
+        else:
+            candidate_id = str(last_admn_code) + str(next_no)
+    
+    return candidate_id 

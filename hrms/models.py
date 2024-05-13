@@ -10,6 +10,8 @@ class HrmsClient(models.Model):
     username = models.CharField(max_length=254)    
     password = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
+    is_attendance_enabled = models.BooleanField(default=False)
+    is_enabled = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):

@@ -50,19 +50,19 @@ class Designation(BaseModel):
 
 class Employee(BaseModel):  
     company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False}) 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     firstname = models.CharField(_('Firstname'),max_length=125)
     lastname = models.CharField(_('Lastname'),max_length=125)
     username = models.CharField(max_length=254)    
     password = models.CharField(max_length=100)
-    email = models.EmailField(_("Email"),unique=True)
+    email = models.EmailField(_("Email"))
     phone = models.CharField(_("Phone Number"),max_length=255)
     address = models.TextField(_("Address"),null=True, blank=True)
     client_company = models.ForeignKey("client.Client",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False}) #client company foreign key
     department =  models.ForeignKey("employee.Department",verbose_name =_('Department'),on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})
     designation =  models.ForeignKey("employee.Designation",verbose_name =_('Role'),on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})
     joindate = models.DateField(_('Joining Date'),help_text='joining date',blank=True,null=True)    
-    employeeid = models.CharField(_('Employee ID'),max_length=125,unique=True,null=True,blank=True)
+    employeeid = models.CharField(_('Employee ID'),max_length=125,null=True,blank=True)
     photo = models.ImageField(_("Photo"), upload_to='employee_photos/', null=True, blank=True)
 
     is_blocked = models.BooleanField(_('Is This Employee Blocked ?'),help_text='button to toggle employee block and unblock',default=False)
@@ -73,6 +73,7 @@ class Employee(BaseModel):
         verbose_name = _('Employee')
         verbose_name_plural = _('Employees')
         ordering = ['firstname']
+        unique_together = ('user','company', 'employeeid','email')
 
     def __str__(self):
         return self.get_full_name

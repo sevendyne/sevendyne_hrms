@@ -32,9 +32,7 @@ def user_login(request):
             # print("User Groups:", user.groups.all())
             
 
-            if user is not None:
-                # Log in the user
-                login(request, user)
+            if user is not None:                
 
                 # Check if the user is a superuser
                 if user.is_superuser:
@@ -46,12 +44,25 @@ def user_login(request):
                 # Check user groups and redirect accordingly
                 if user.groups.filter(name='sevendyne_admin').exists():
                     print("user belongs to sevendyne_admin")
+                    # Log in the user
+                    login(request, user)
                     return redirect('main:admin_dashboard')  
                 elif user.groups.filter(name='hrms_clients').exists():
                     print("user belongs to hrms_clients group ")
-                    return redirect('main:hrms_dashboard') 
+                    # Check if the associated HrmsClient is enabled
+                    if hasattr(user, 'hrmsclient') and user.hrmsclient.is_enabled:
+                        print("hrms client is enabled ")
+                        # Log in the user
+                        login(request, user)
+                        return redirect('main:hrms_dashboard') 
+                    else:
+                        print("hrms client is not enabled ")
+                        error_message = "Your account is not enabled. Please contact technical@sevendyne.com"
+                        return render(request, "authentication/login.html", {"form": form, "error_message": error_message})
                 elif user.groups.filter(name='employee_group').exists():
                     print("user belongs to employee group ")
+                    # Log in the user
+                    login(request, user)
                     return redirect('main:employee_dashboard')  
                 else:
                     print("user not an admin,employee or hrms client")
@@ -76,7 +87,7 @@ def register(request):
 
         hashed_password = make_password(password)
 
-        if not HrmsClient.objects.filter(username=username,is_deleted=False).exists():
+        if not HrmsClient.objects.filter(username=username).exists():
             user, created = User.objects.get_or_create(username=username, defaults={'password': hashed_password, 'email': email, 'first_name': first_name, 'last_name': last_name})
             print("user",user)
             # if created:
@@ -99,11 +110,11 @@ def register(request):
                 password = password,
                 email = email                  
             )
-            messages.success(request,"Registration Successful! You can now log in.")
-            return redirect('user:user_login') 
+            message = "Registration Successful! Sevendyne will send you the credentials via email for login after verification.Thank you!"
+            return render(request, "authentication/register.html", {"message": message})
         else:
-            messages.info(request, "Username already exists.") 
-        return redirect('user:register')       
+            message = "Username already exists/existed."
+        return render(request, "authentication/register.html", {"message": message})      
     else:   
         return render(request, "authentication/register.html")
 

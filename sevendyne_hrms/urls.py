@@ -9,7 +9,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('app/',include(('user.urls','user'),namespace='user')),
-    path('',general_views.home_hrms,name='home_hrms'),
+    path('',general_views.job_portal,name='job_portal'),
     path('app/hrms/dashboard/',general_views.hrms_dashboard,name='hrms_dashboard'),
     path('app/sevendyne/dashboard/',general_views.admin_dashboard,name='sevendyne_dashboard'),
     path('app/main/',include(('main.urls','main'),namespace='main')),

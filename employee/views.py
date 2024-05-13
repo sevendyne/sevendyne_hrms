@@ -1,6 +1,10 @@
 import calendar
 import datetime
 import json
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from django.core.mail import EmailMessage
 from django.forms import formset_factory
 from django.db.models import Sum, Q
 from django.urls import reverse
@@ -16,6 +20,8 @@ from employee.forms import AttendanceDateForm, AttendanceRegisterForm, Departmen
 from employee.models import AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
 from main.decorators import company_required
 from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission, has_hrms_permission
+from main.models import EmailSetting
+from sevendyne_hrms import settings
 
 # Department crud starts here
 @login_required
@@ -92,7 +98,8 @@ def departments(request):
     departments = paginator.get_page(page_number)
     context = {
         'departments': departments,
-        "title": 'Departments' 
+        "title": 'Departments' ,
+        "is_departments" : True
     }
     return render(request, "department/departments.html", context)
 
@@ -257,7 +264,7 @@ def delete_department(request,pk):
 def create_designation(request):
     current_company = get_current_company(request)
     if request.method == 'POST':
-        form = DesignationForm(request.POST)
+        form = DesignationForm(request.POST, current_company=current_company)
         if form.is_valid():
             name = form.cleaned_data['name']
             department = form.cleaned_data['department']
@@ -303,15 +310,14 @@ def create_designation(request):
             }
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
-        form = DesignationForm()
+        form = DesignationForm(current_company=current_company)
         print("form get request")
         context = {
             "title": "Create Designation",
             "form": form,
             "redirect": "true",
             "create":True
-        }
-        
+        }        
         return render(request, 'designation/designations.html', context)
 
 
@@ -328,7 +334,9 @@ def designations(request):
     context = {
         'designations': designations,
         'departments' : departments,
-        "title": 'Designation' 
+        "title": 'Designation',
+        "is_designations" : True
+
     }
     return render(request, "designation/designations.html", context)
 
@@ -431,7 +439,7 @@ def delete_designation(request,pk):
 def create_employee(request):
     current_company = get_current_company(request)    
     if request.method == 'POST':
-        form = EmployeeForm(request.POST, request.FILES)
+        form = EmployeeForm(request.POST, request.FILES, current_company=current_company)
         if form.is_valid():
             firstname = form.cleaned_data['firstname']
             lastname = form.cleaned_data['lastname']
@@ -451,64 +459,78 @@ def create_employee(request):
             company =current_company
             creator = request.user
             updator = request.user
-
-            if not Employee.objects.filter(username=username,company=current_company,is_deleted=False).exists():
-                existing_user = User.objects.filter(username=username).first()
-                if existing_user:
-                    user.groups.add(employee_group)
+            if not Employee.objects.filter(username=username).exists():            
+                if not Employee.objects.filter(username=username,company=current_company,email=email,employeeid=employeeid,is_deleted=False).exists():
+                    existing_user = User.objects.filter(username=username)
                     hashed_password = make_password(password)
-                    user.save()
-                hashed_password = make_password(password)
-                user, created = User.objects.get_or_create(username=username, defaults={'password': hashed_password, 'email': email, 'first_name': firstname, 'last_name': lastname})
+                    if existing_user:
+                        user = existing_user
+                        employee_group, created = Group.objects.get_or_create(name='employee_group')
+                        user.groups.add(employee_group)    
+                        print()                
+                        user.save()
+                        print("Existing Employee's groups:", user.groups.all())  
+                        response_data = {
+                            "status": "false",
+                            "stable": "true",
+                            "title": "Already existed an employee",
+                            "message": "Already existed an employee with same details(username,employee id and email). Create with different details"                   
+                        }                    
+                                        
+                    else:
+                        user, created = User.objects.get_or_create(username=username, defaults={'password': hashed_password, 'email': email, 'first_name': firstname, 'last_name': lastname})
+                        # Get or create the 'employee_group' group
+                        employee_group, created = Group.objects.get_or_create(name='employee_group')
+                        # Add the user to the 'employee_group' group
+                        user.groups.add(employee_group)
 
-                if created:
-                    # Get or create the 'hrms_clients' group
-                    employee_group, created = Group.objects.get_or_create(name='employee_group')
+                        # Save the user to update group membership
+                        user.save()
 
-                    # Add the user to the 'hrms_clients' group
-                    user.groups.add(employee_group)
+                        print("New Employee's groups:", user.groups.all())
 
-                    # Save the user to update group membership
-                    user.save()
-
-                Employee( 
-                    user = user,
-                    firstname = firstname,
-                    lastname = lastname,
-                    email = email,
-                    username = username,
-                    password = password,
-                    phone = phone,
-                    address = address,
-                    client_company = client_company,
-                    department = department,
-                    designation = designation,
-                    employeeid = employeeid,
-                    joindate = joindate,
-                    photo = photo,
-                    auto_id = auto_id,
-                    a_id = a_id,
-                    company =company,
-                    creator = creator,
-                    updator = updator
-                ).save()
-                response_data = {
-                    "status": "true",
-                    "title": "Successfully Created",
-                    "message": "Employee created successfully.",
-                    "redirect": "true",
-                    "redirect_url": reverse('employee:employees')
-                }
-                print("Redirect URL:", response_data["redirect_url"])
+                        Employee( 
+                            user = user,
+                            firstname = firstname,
+                            lastname = lastname,
+                            email = email,
+                            username = username,
+                            password = password,
+                            phone = phone,
+                            address = address,
+                            client_company = client_company,
+                            department = department,
+                            designation = designation,
+                            employeeid = employeeid,
+                            joindate = joindate,
+                            photo = photo,
+                            auto_id = auto_id,
+                            a_id = a_id,
+                            company =company,
+                            creator = creator,
+                            updator = updator
+                        ).save()
+                        response_data = {
+                            "status": "true",
+                            "title": "Successfully Created",
+                            "message": "Employee created successfully.",
+                            "redirect": "true",
+                            "redirect_url": reverse('employee:employees')
+                        }
+                else:               
+                    response_data = {
+                        "status": "false",
+                        "stable": "true",
+                        "title": "Already exists",
+                        "message": "Employee already exists",                        
+                    }
             else:               
                 response_data = {
                     "status": "false",
                     "stable": "true",
-                    "title": "Already exists",
-                    "message": "Employee already exists",                        
+                    "title": "Username already taken",
+                    "message": "Username already exists",                        
                 }
-                print("status inside", response_data["status"])
-            print("status outside", response_data["status"])
         else:
             print('not valid form validation error')
             message = generate_form_errors(form, formset=False)
@@ -521,7 +543,7 @@ def create_employee(request):
             print("error message",response_data["message"])
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
-        form = EmployeeForm()
+        form = EmployeeForm(current_company=current_company)
 
         context = {
             "title": "Create Employee",
@@ -564,7 +586,8 @@ def employees(request):
         'designations' : designations,
         "clients" : clients,
         'employees': employees,
-        "title": 'Employees' 
+        "title": 'Employees',
+        "is_employees" : True 
     }
     return render(request, "employee/employees.html", context)
 
@@ -600,7 +623,8 @@ def employees_list(request):
         'designations' : designations,
         "clients" : clients,
         'employees': employees,
-        "title": 'Employees' 
+        "title": 'Employees',
+        "is_employees" : True
     }
     return render(request, "employee/employees-list.html", context)
 
@@ -613,7 +637,7 @@ def edit_employee(request, pk):
     instance = get_object_or_404(Employee.objects.filter(pk=pk,company=current_company, is_deleted=False))    
     print("Employee id",instance.pk)
     if request.method == "POST":
-        form = EmployeeForm(request.POST, instance=instance)
+        form = EmployeeForm(request.POST, request.FILES, instance=instance)
 
         if form.is_valid():
             data = form.save(commit=False)
@@ -626,12 +650,19 @@ def edit_employee(request, pk):
             user.first_name = data.firstname
             user.last_name = data.lastname
             user.email = data.email
+            # Remove user from hrms_clients group if exists
+            hrms_clients_group = Group.objects.get(name='hrms_clients')
+            user.groups.remove(hrms_clients_group)
+            # Add user to employee_group
+            employee_group, created = Group.objects.get_or_create(name='employee_group')
+            user.groups.add(employee_group)
             user.save()
 
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
             # print("updated Client",data.company)
+            print("edited Employee's groups:", user.groups.all())
 
             response_data = {
                 "status": "true",
@@ -782,7 +813,8 @@ def leave_types(request):
     leave_types = paginator.get_page(page_number)
     context = {
         'leave_types': leave_types,
-        "title": 'Leave Types' 
+        "title": 'Leave Types',
+        "is_leave_types" : True
     }
     return render(request, "settings/leave-type.html", context)
 
@@ -877,7 +909,6 @@ def create_leave(request):
     employee = get_object_or_404(Employee, user=request.user)
     company = employee.company
     if request.method == 'POST':
-        print("leave type post request")
         form = LeaveForm(request.POST)
         if form.is_valid():
             startdate = form.cleaned_data['startdate']
@@ -891,33 +922,67 @@ def create_leave(request):
             company = company
             creator = request.user
             updator = request.user
-            print("leave type", leavetype)
-            print("leave_days",leave_days)
             if int(leave_days)<=int(remaining_days):
-                print("next step is saving in leave model db")
-                Leave( 
-                    startdate = startdate,
-                    enddate = enddate,                   
-                    leavetype = leavetype,
-                    reason = reason,
-                    leave_days = leave_days,
-                    auto_id = auto_id,
-                    a_id = a_id,
-                    company = company,
-                    employee = employee,
-                    creator = creator,
-                    updator = updator
-                ).save()
-                leave= Leave.objects.all()
-                print("leaves saved in db model",leave)
-                response_data = {
-                    "status": "true",
-                    "title": "Leave Request",
-                    "message": "Requested for Leave successfully.",
-                    "redirect": "true",
-                    "redirect_url": reverse('employee:leaves')
-                }
-                print("Redirect URL:", response_data["redirect_url"])
+                if not Leave.objects.filter(employee=employee,company=company,startdate=startdate,enddate=enddate,is_deleted=False).exists():
+                    leave = Leave( 
+                        startdate = startdate,
+                        enddate = enddate,                   
+                        leavetype = leavetype,
+                        reason = reason,
+                        leave_days = leave_days,
+                        auto_id = auto_id,
+                        a_id = a_id,
+                        company = company,
+                        employee = employee,
+                        creator = creator,
+                        updator = updator
+                    )
+                    leave.save()
+
+                    # name = form.cleaned_data['name']
+                    # email = form.cleaned_data['email']
+                    # content = form.cleaned_data['content']
+                    # content += "<br />"
+                    # link = request.build_absolute_uri(reverse('sales:print_sale',kwargs={'pk':pk}))
+                    # content += '<a href="%s">%s</a>' %(link,link)
+                    
+                    # template_name = 'email/email.html'
+                    # subject = "Purchase Details (#%s) | %s" %(str(instance.auto_id),current_shop.name)          
+                    # context = {
+                    #     'name' : name,
+                    #     'subject' : subject,
+                    #     'content' : content,
+                    #     'email' : email
+                    # }
+                    # html_content = render_to_string(template_name,context)
+                    # send_email(email,subject,content,html_content) 
+
+                    
+                    # Send email notification
+                    subject = 'Leave Request Submitted by %s ' %str(employee)
+                    accept_url = request.build_absolute_uri(reverse('employee:leave_approval', kwargs={'pk': leave.id}))
+                    reject_url = request.build_absolute_uri(reverse('employee:leave_reject', kwargs={'pk': leave.id}))
+                    html_message = render_to_string('leave/email_templates/email_notification.html', {'leave': leave, 'accept_url': accept_url, 'reject_url': reject_url})
+                    plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
+                    from_email = settings.DEFAULT_FROM_EMAIL
+                    to_email = company.email
+                    # to_email = EmailSetting.objects.get(company=company).email  # Fetch recipient email from EmailSetting
+                    send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
+                    
+                    response_data = {
+                        "status": "true",
+                        "title": "Leave Request",
+                        "message": "Requested for Leave successfully.",
+                        "redirect": "true",
+                        "redirect_url": reverse('employee:leaves')
+                    }
+                else:               
+                    response_data = {
+                        "status": "false",
+                        "stable": "true",
+                        "title": "Already applied on these dates",
+                        "message": "already applied on these days",                        
+                    }
             else:               
                 response_data = {
                     "status": "false",
@@ -925,10 +990,7 @@ def create_leave(request):
                     "title": "Can't apply for these much leave days",
                     "message": "Leave days is greater than the remaining days",                        
                 }
-                print("status inside", response_data["status"])
-            print("status outside", response_data["status"])
         else:
-            print('not valid')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
@@ -940,7 +1002,7 @@ def create_leave(request):
     else:
         form = LeaveForm()
         context = {
-            "title": "Create Leave",
+            "title": "Apply Leave",
             "form": form,
             "redirect": "true",
             "create":True
@@ -950,22 +1012,16 @@ def create_leave(request):
 def ajax_load_remaining_days(request):
     employee = get_object_or_404(Employee, user=request.user)
     company = employee.company
-    print("company",company)
     leavetype = request.GET.get('leavetype')
-    print("leave type ",leavetype)
     name = leavetype
-    print("leave name", name)
     approved_leave_days_count = Leave.objects.filter(company=company,employee=employee, leavetype__name=name, is_approved=True).count()
-    print("approved_leave_days_count",approved_leave_days_count)
     if LeaveType.objects.filter(name=name,company=company,is_deleted=False).exists():
         # leavetypes  = LeaveType.objects.filter(is_deleted=False,name=name,company=company)
         leavetype = get_object_or_404(LeaveType, is_deleted=False,name=name,company=company)
         leavetype_days = leavetype.days
-        print("leavetype_days",leavetype_days)
         data = leavetype_days - approved_leave_days_count
-        print("data - remaining days",data)
+        
     else:
-        print("leave type not found")
         data="Data Not Found"
     context = {
         'data' : data
@@ -979,14 +1035,14 @@ def leaves(request):
     employee = get_object_or_404(Employee, user=request.user)
     company = employee.company
     leaves = Leave.objects.filter(company=company,is_deleted=False)
-    print("leaves",leaves)
     paginator = Paginator(leaves,1000000000000)
     page_number = request.GET.get('page')
     leaves = paginator.get_page(page_number)
     context = {
          'company':company,
         'leaves': leaves,
-        "title": 'Leaves'
+        "title": 'Leaves',
+        "is_leaves" : True
     }
     return render(request, "leave/leaves.html", context)
 
@@ -1071,7 +1127,8 @@ def leave_approvals(request):
         'total_employees': total_employees,
         'planned_leaves': planned_leaves,
         'unplanned_leaves': unplanned_leaves,
-        'pending_requests': pending_requests
+        'pending_requests': pending_requests,
+        "is_leave_approvals" : True
     }
     return render(request, "leave/leaves-approval.html", context)
 
@@ -1082,7 +1139,6 @@ def leave_approvals(request):
 def edit_leave(request, pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company, is_deleted=False))    
-    print("leave id",instance.pk)
     if request.method == "POST":
         form = LeaveForm(request.POST, instance=instance)
 
@@ -1091,7 +1147,6 @@ def edit_leave(request, pk):
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-            print("updated leave",data.name)
 
             response_data = {
                 "status": "true",
@@ -1151,6 +1206,31 @@ def leave_approval(request,pk):
         if not instance.is_approved:
             Leave.objects.filter(pk=pk).update(is_approved=True,status='Approved',employee=instance.employee)
 
+            # Send email notification to employee
+            employee = instance.employee
+            subject = 'Leave Request Approved'
+            message = render_to_string('email_templates/leave_approved.html', {'leave': instance})
+            email = EmailMessage(subject, message, to=[employee.email])
+            email.send()
+
+            # name = form.cleaned_data['name']
+			# email = form.cleaned_data['email']
+			# content = form.cleaned_data['content']
+			# content += "<br />"
+			# link = request.build_absolute_uri(reverse('sales:print_sale',kwargs={'pk':pk}))
+			# content += '<a href="%s">%s</a>' %(link,link)
+			
+			# template_name = 'email/email.html'
+			# subject = "Purchase Details (#%s) | %s" %(str(instance.auto_id),current_shop.name)          
+			# context = {
+			# 	'name' : name,
+			# 	'subject' : subject,
+			# 	'content' : content,
+			# 	'email' : email
+			# }
+			# html_content = render_to_string(template_name,context)
+			# send_email(email,subject,content,html_content) 
+    
             response_data = {
                 "status" : "true",        
                 "title" : "Successfully Approved",
@@ -1182,6 +1262,13 @@ def leave_reject(request,pk):
         if not instance.is_approved:
             Leave.objects.filter(pk=pk).update(is_rejected=True,status='Rejected',employee=instance.employee)
 
+             # Send email notification to employee
+            employee = instance.employee
+            subject = 'Leave Request Rejected'
+            message = render_to_string('email_templates/leave_rejected.html', {'leave': instance})
+            email = EmailMessage(subject, message, to=[employee.email])
+            email.send()
+    
             response_data = {
                 "status" : "true",        
                 "title" : "Rejected",
@@ -1203,211 +1290,6 @@ def leave_reject(request,pk):
     return redirect('employee:leave_approvals')
 
 
-# class LeaveManager(models.Manager):
-# 	def get_queryset(self):
-# 		'''
-# 		overrides objects.all() 
-# 		return all leaves including pending or approved
-# 		'''
-# 		return super().get_queryset()
-
-
-
-# 	def all_pending_leaves(self):
-# 		'''
-# 		gets all pending leaves -> Leave.objects.all_pending_leaves()
-# 		'''
-# 		return super().get_queryset().filter(status = 'pending').order_by('-created')# applying FIFO 
-
-
-
-
-# 	def all_cancel_leaves(self):
-# 		return super().get_queryset().filter(status = 'cancelled').order_by('-created')
-
-
-
-
-# 	def all_rejected_leaves(self):
-# 		return super().get_queryset().filter(status = 'rejected').order_by('-created')
-
-
-
-
-# 	def all_approved_leaves(self):
-# 		'''
-# 		gets all approved leaves -> Leave.objects.all_approved_leaves()
-# 		'''
-# 		return super().get_queryset().filter(status = 'approved')
-
-
-
-# 	def current_year_leaves(self):
-# 		'''
-# 		returns all leaves in current year; Leave.objects.all_leaves_current_year()
-# 		or add all_leaves_current_year().count() -> int total 
-# 		this include leave approved,pending,rejected,cancelled
-
-# 		'''
-# 		return super().get_queryset().filter(startdate__year = datetime.date.today().year)
-
-
-
-
-# ---------------------LEAVE DASHBOARD-------------------------------------------
-
-
-
-def leave_creation(request):
-	if not request.user.is_authenticated:
-		return redirect('accounts:login')
-	if request.method == 'POST':
-		form = LeaveCreationForm(data = request.POST)
-		if form.is_valid():
-			instance = form.save(commit = False)
-			user = request.user
-			instance.user = user
-			instance.save()
-
-
-			# print(instance.defaultdays)
-			messages.success(request,'Leave Request Sent,wait for Admins response',extra_tags = 'alert alert-success alert-dismissible show')
-			return redirect('dashboard:createleave')
-
-		messages.error(request,'failed to Request a Leave,please check entry dates',extra_tags = 'alert alert-warning alert-dismissible show')
-		return redirect('dashboard:createleave')
-
-
-	dataset = dict()
-	form = LeaveCreationForm()
-	dataset['form'] = form
-	dataset['title'] = 'Apply for Leave'
-	return render(request,'dashboard/create_leave.html',dataset)
-	
-
-
-
-
-
-
-
-def leaves_list(request):
-	if not (request.user.is_staff and request.user.is_superuser):
-		return redirect('/')
-	leaves = Leave.objects.all_pending_leaves()
-	return render(request,'dashboard/leaves_recent.html',{'leave_list':leaves,'title':'leaves list - pending'})
-
-
-
-def leaves_approved_list(request):
-	if not (request.user.is_superuser and request.user.is_staff):
-		return redirect('/')
-	leaves = Leave.objects.all_approved_leaves() #approved leaves -> calling model manager method
-	return render(request,'dashboard/leaves_approved.html',{'leave_list':leaves,'title':'approved leave list'})
-
-
-
-def leaves_view(request,id):
-	if not (request.user.is_authenticated):
-		return redirect('/')
-
-	leave = get_object_or_404(Leave, id = id)
-	print(leave.user)
-	employee = Employee.objects.filter(user = leave.user)[0]
-	print(employee)
-	return render(request,'dashboard/leave_detail_view.html',{'leave':leave,'employee':employee,'title':'{0}-{1} leave'.format(leave.user.username,leave.status)})
-
-
-
-
-
-
-
-
-
-def approve_leave(request,id):
-	if not (request.user.is_superuser and request.user.is_authenticated):
-		return redirect('/')
-	leave = get_object_or_404(Leave, id = id)
-	user = leave.user
-	employee = Employee.objects.filter(user = user)[0]
-	leave.approve_leave
-
-	messages.error(request,'Leave successfully approved for {0}'.format(employee.get_full_name),extra_tags = 'alert alert-success alert-dismissible show')
-	return redirect('dashboard:userleaveview', id = id)
-
-
-def cancel_leaves_list(request):
-	if not (request.user.is_superuser and request.user.is_authenticated):
-		return redirect('/')
-	leaves = Leave.objects.all_cancel_leaves()
-	return render(request,'dashboard/leaves_cancel.html',{'leave_list_cancel':leaves,'title':'Cancel leave list'})
-
-
-
-def unapprove_leave(request,id):
-	if not (request.user.is_authenticated and request.user.is_superuser):
-		return redirect('/')
-	leave = get_object_or_404(Leave, id = id)
-	leave.unapprove_leave
-	return redirect('dashboard:leaveslist') #redirect to unapproved list
-
-
-
-
-def cancel_leave(request,id):
-	if not (request.user.is_superuser and request.user.is_authenticated):
-		return redirect('/')
-	leave = get_object_or_404(Leave, id = id)
-	leave.leaves_cancel
-
-	messages.success(request,'Leave is canceled',extra_tags = 'alert alert-success alert-dismissible show')
-	return redirect('dashboard:canceleaveslist')#work on redirecting to instance leave - detail view
-
-
-# Current section -> here
-def uncancel_leave(request,id):
-	if not (request.user.is_superuser and request.user.is_authenticated):
-		return redirect('/')
-	leave = get_object_or_404(Leave, id = id)
-	leave.status = 'pending'
-	leave.is_approved = False
-	leave.save()
-	messages.success(request,'Leave is uncanceled,now in pending list',extra_tags = 'alert alert-success alert-dismissible show')
-	return redirect('dashboard:canceleaveslist')#work on redirecting to instance leave - detail view
-
-
-
-def leave_rejected_list(request):
-
-	dataset = dict()
-	leave = Leave.objects.all_rejected_leaves()
-
-	dataset['leave_list_rejected'] = leave
-	return render(request,'dashboard/rejected_leaves_list.html',dataset)
-
-
-
-def reject_leave(request,id):
-	dataset = dict()
-	leave = get_object_or_404(Leave, id = id)
-	leave.reject_leave
-	messages.success(request,'Leave is rejected',extra_tags = 'alert alert-success alert-dismissible show')
-	return redirect('dashboard:leavesrejected')
-
-	# return HttpResponse(id)
-
-
-def unreject_leave(request,id):
-	leave = get_object_or_404(Leave, id = id)
-	leave.status = 'pending'
-	leave.is_approved = False
-	leave.save()
-	messages.success(request,'Leave is now in pending list ',extra_tags = 'alert alert-success alert-dismissible show')
-
-	return redirect('dashboard:leavesrejected')
-
-
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
@@ -1425,7 +1307,7 @@ def create_attendance_register(request):
             for f in attendanceregister_formset:
                 is_attended = f.cleaned_data['is_attended'] 
                 employee_pk = f.cleaned_data['employee_pk'] 
-                employee = Employee.objects.get(pk=employee_pk) 
+                employee = Employee.objects.get(pk=employee_pk,company=company) 
                 is_fn = False 
                 is_an = False
                 if not AttendanceRegister.objects.filter(employee = employee,date = date,company=company).exists():
@@ -1469,7 +1351,7 @@ def create_attendance_register(request):
             'date': datetime.datetime.today().date()
         }
         date_form = AttendanceDateForm(initial= initial_data)               
-        employees = Employee.objects.filter(is_deleted=False).order_by('id')
+        employees = Employee.objects.filter(is_deleted=False,company=company).order_by('id')
         initial_dict = []
         for s in employees:
             init_dict={
@@ -1546,7 +1428,8 @@ def attendance_register(request):
         'att_list' :att_list,
         'n' : range(n),
         'nn' : range(nn),
-        "employees" : employees
+        "employees" : employees,
+        "is_attendance_register" : True
     }
     return render(request, 'attendance/attendance.html', context=context)
     # return render(request, 'attendance-register/attendance_register.html', context=context)
@@ -1731,9 +1614,26 @@ def holidays(request):
     holidays = paginator.get_page(page_number)
     context = {
         'holidays': holidays,
-        "title": 'Holidays' 
+        "title": 'Holidays',
+        "is_holidays": True 
     }
     return render(request, "leave/holidays.html", context)
+
+@login_required
+@user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
+def employee_holidays(request):
+    employee = get_object_or_404(Employee, user=request.user)
+    company = employee.company
+    holidays = Holiday.objects.filter(company=company,is_deleted=False).order_by('date')
+    paginator = Paginator(holidays,1000000000000)
+    page_number = request.GET.get('page')
+    holidays = paginator.get_page(page_number)
+    context = {
+        'holidays': holidays,
+        "title": 'Holidays',
+        "is_holidays": True  
+    }
+    return render(request, "leave/employee_holidays.html", context)
 
 
 @login_required

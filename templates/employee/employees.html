@@ -114,6 +114,12 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="input-block mb-3">
+										<label class="col-form-label">Photo</label>
+										<input class="form-control floating" name="photo" type="file" accept="image/*">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="input-block mb-3">
 										<label class="col-form-label">Username <span class="text-danger">*</span></label>
 										<input class="form-control" type="text" name="username" value="{{employee.username}}">
 									</div>
@@ -128,6 +134,13 @@
 									<div class="input-block mb-3">
 										<label class="col-form-label">Password</label>
 										<input class="form-control" type="password" name="password" value="{{employee.password}}">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="input-block mb-3">
+										<label class="col-form-label">Address</label>
+										<input class="form-control" type="text" name="address" value="{{employee.address}}">
+									
 									</div>
 								</div>
 								{% comment %} <div class="col-sm-6">

@@ -128,8 +128,21 @@
                       <span class="error">{{ form.password.errors.0 }}</span>
                     {% endif %}
                     <label class="form-label">Password</label>
-                  </div>                 
-  
+                  </div>      
+                  <div class="form-outline mb-4">
+                    {{ form.is_attendance_enabled }}
+                    {% if form.is_attendance_enabled.errors %}
+                      <span class="error">{{ form.is_attendance_enabled.errors.0 }}</span>
+                    {% endif %}
+                    <label class="form-label">Is Attendance Enabled?</label>
+                  </div>            
+                  <div class="form-outline mb-4">
+                    {{ form.is_enabled }}
+                    {% if form.is_enabled.errors %}
+                      <span class="error">{{ form.is_enabled.errors.0 }}</span>
+                    {% endif %}
+                    <label class="form-label">Is Enabled?</label>
+                  </div>   
                   <!-- Submit button -->
                   <button type="submit" class="btn btn-primary btn-block mb-4" onclick="submitForm(event)">
                     Update HRMS Client

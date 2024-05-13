@@ -3,9 +3,10 @@ import json
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from candidate.models import Candidate
 from employee.models import Department
-from job.forms import JobForm
-from job.models import JOBTYPE_CHOICES, STATUS_CHOICES, Job
+from job.forms import CandidateInterviewForm, CandidateInterviewStatusForm, CandidateJobForm, CandidateJobStatusForm, JobApplicantForm, JobApplicantStatusForm, JobForm
+from job.models import INTERVIEW_CHOICES, JOBTYPE_CHOICES, STATUS_CHOICES, CandidateInterview, CandidateJob, Job, JobApplicant
 from django.core.paginator import Paginator
 from main.decorators import company_required
 from django.contrib.auth.decorators import login_required,user_passes_test
@@ -232,3 +233,580 @@ def job_view(request,pk):
         'title': 'Job'
     }
     return render(request, "sevendyne_admin/jobs/job-view.html", context)
+
+
+#  candidate job views here.
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def create_candidate_job(request,pk):
+    candidate = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))
+    current_company = get_current_company(request)    
+    if request.method == 'POST':
+        form = CandidateJobForm(request.POST)
+        if form.is_valid():
+            job_title = form.cleaned_data['job_title']
+            job_location = form.cleaned_data['job_location']
+            salary_from = form.cleaned_data['salary_from']
+            salary_to = form.cleaned_data['salary_to']
+            description = form.cleaned_data['description']
+
+            status = "Job Offered"
+            
+            auto_id = get_auto_id(Job)
+            a_id = get_a_id(Job,request)
+            company =current_company
+            creator = request.user
+            updator = request.user
+
+            if not CandidateJob.objects.filter(job_title=job_title,company=company,is_deleted=False).exists():
+                CandidateJob(  
+                    candidate = candidate,                  
+                    job_title = job_title,
+                    job_location = job_location,
+                    salary_from = salary_from,
+                    salary_to = salary_to,
+                    description = description,
+                    status = status,
+                    auto_id = auto_id, 
+                    a_id = a_id,
+                    company =company,
+                    creator = creator,
+                    updator = updator
+                ).save()
+
+                # Updating Candidate status to "Job Offered"
+                candidate.status = status
+                candidate.save()
+                
+                response_data = {
+                    "status": "true",
+                    "title": "Successfully Created",
+                    "message": "Job offered successfully.",
+                    "redirect": "true",
+                    "redirect_url": reverse('candidate:hrms_candidates')
+                }
+            else:               
+                response_data = {
+                    "status": "false",
+                    "stable": "true",
+                    "title": "Already exists",
+                    "message": "Job already offered",                        
+                }
+        else:
+            print("candidate job - form error")
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "form_error",
+                "title": "Form validation error",
+                "message": str(message),               
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = CandidateJobForm()
+        context = {
+            "title": "Create Job Offer",
+            "form": form,
+            "redirect": "true",
+            "create":True
+        }
+        
+        return render(request, 'candidate/candidates.html', context)
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+
+def candidate_jobs(request):
+    current_company = get_current_company(request)
+    jobs = CandidateJob.objects.filter(is_deleted=False)
+
+    paginator = Paginator(jobs,1000000000000)
+    page_number = request.GET.get('page')
+    instances = paginator.get_page(page_number)
+    context = {
+        'instances': instances,
+        "title": 'Candidate Job Offers'
+    }
+    return render(request, "sevendyne_admin/candidate/candidate-jobs.html", context)
+
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+# @company_required
+def edit_candidate_job(request, pk):
+    current_company = get_current_company(request)
+    instance = get_object_or_404(CandidateJob.objects.filter(pk=pk, is_deleted=False))    
+    candidate = instance.candidate
+    
+    if request.method == "POST":
+        form = CandidateJobStatusForm(request.POST, instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.updator = request.user
+            data.date_updated = datetime.datetime.now()
+            data.save()
+
+            # Update candidate status
+            # candidate = data.candidate
+            candidate.status = data.status
+            candidate.save()
+
+
+            response_data = {
+                "status": "true",
+                "redirect" : "true",
+                "title": "Successfully Updated",
+                "message": "Candidate Job Status updated successfully.",                
+                "redirect_url": reverse('job:candidate_jobs')
+            }
+
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "stable": "true",
+                "status": "false",
+                "message": str(message),
+                "title": "Form validation error"  
+            }
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = CandidateJobStatusForm(instance=instance)
+       
+        context = {
+            "form": form,
+            "instance": instance,
+            "title": "Edit Job :" + instance.job_title,
+            
+            "redirect": "true",
+            "url": reverse('job:edit_candidate_job', kwargs={'pk': instance.pk}),
+
+        }
+        return render(request, 'sevendyne_admin/candidate/edit_candidate_job.html', context)
+
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def candidate_job(request,pk):
+    instance = get_object_or_404(CandidateJob.objects.filter(pk=pk,is_deleted=False))
+
+    context = {
+        'instance': instance,
+        'title': 'Job',
+
+    }
+    return render(request, "sevendyne_admin/candidate/candidate-job.html", context)
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def delete_candidate_job(request,pk):
+    instance = get_object_or_404(CandidateJob.objects.filter(pk=pk,is_deleted=False))
+    
+    CandidateJob.objects.filter(pk=pk).update(is_deleted=True,job_title=instance.job_title + "_deleted_" + str(instance.auto_id))
+
+    response_data = {
+        "status" : "true",        
+        "title" : "Successfully Deleted",
+        "message" : "Job Successfully Deleted.", 
+        "redirect" : "true",       
+        "redirect_url" : reverse('job:jobs')
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+
+#  candidate interview views here.
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def create_candidate_interview(request,pk):
+    candidate = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))
+    current_company = get_current_company(request)   
+    candidate_job = get_object_or_404(CandidateJob.objects.filter(candidate=candidate,company=current_company,is_deleted=False))
+     
+    if request.method == 'POST':
+        form = CandidateInterviewForm(request.POST)
+        if form.is_valid():
+            date_time = form.cleaned_data['date_time']
+            additional_information = form.cleaned_data['additional_information']
+            auto_id = get_auto_id(CandidateInterview)
+            a_id = get_a_id(CandidateInterview,request)
+            company =current_company
+            creator = request.user
+            updator = request.user
+
+            if not CandidateInterview.objects.filter(candidate=candidate,date_time=date_time,company=company,is_deleted=False).exists():
+                CandidateInterview(  
+                    candidate = candidate,                  
+                    date_time = date_time,
+                    additional_information = additional_information,
+                    auto_id = auto_id, 
+                    a_id = a_id,
+                    company =company,
+                    creator = creator,
+                    updator = updator
+                ).save()
+
+                status = "Interview Scheduled"
+
+                # Updating Candidate status to "Job Offered"
+                candidate.status = status                
+                candidate.save()
+                candidate_job.status = status
+                candidate_job.save()
+
+                
+                response_data = {
+                    "status": "true",
+                    "title": "Successfully Created",
+                    "message": "Interview Scheduled successfully.",
+                    "redirect": "true",
+                    "redirect_url": reverse('candidate:hrms_candidates')
+                }
+            else:               
+                response_data = {
+                    "status": "false",
+                    "stable": "true",
+                    "title": "Interview scheduled at same date and time",
+                    "message": "Interview already scheduled",                        
+                }
+        else:
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "form_error",
+                "title": "Form validation error",
+                "message": str(message),               
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = CandidateInterviewForm()
+        context = {
+            "title": "Schedule Job Interview",
+            "form": form,
+            "redirect": "true",
+            "create":True
+        }
+        
+        return render(request, 'candidate/candidates.html', context)
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+
+def candidate_interviews(request):
+    jobs = CandidateInterview.objects.filter(is_deleted=False)
+
+    paginator = Paginator(jobs,1000000000000)
+    page_number = request.GET.get('page')
+    instances = paginator.get_page(page_number)
+    context = {
+        'instances': instances,
+        "title": 'Candidate Job Interviews'
+    }
+    return render(request, "sevendyne_admin/candidate/candidate-interviews.html", context)
+
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+# @company_required
+def edit_candidate_interview(request, pk):
+    instance = get_object_or_404(CandidateInterview.objects.filter(pk=pk, is_deleted=False))    
+    if request.method == "POST":
+        form = CandidateInterviewForm(request.POST, instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.updator = request.user
+            data.date_updated = datetime.datetime.now()
+            data.save()
+
+            response_data = {
+                "status": "true",
+                "redirect" : "true",
+                "title": "Successfully Updated",
+                "message": "Candidate Interview updated successfully.",                
+                "redirect_url": reverse('job:candidate_interviews')
+            }
+
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "stable": "true",
+                "status": "false",
+                "message": str(message),
+                "title": "Form validation error"  
+            }
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = CandidateInterviewForm(instance=instance)
+       
+        context = {
+            "form": form,
+            "instance": instance,
+            "title": "Edit Interview :" + instance.candidate,
+            
+            "redirect": "true",
+            "url": reverse('job:edit_candidate_interview', kwargs={'pk': instance.pk}),
+
+        }
+        return render(request, 'sevendyne_admin/candidate/edit_candidate_interview.html', context)
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def update_candidate_interview_status(request, pk):
+    current_company = get_current_company(request)
+    instance = get_object_or_404(CandidateInterview.objects.filter(candidate__id=pk, is_deleted=False))    
+    
+    if request.method == "POST":
+        form = CandidateInterviewStatusForm(request.POST,instance=instance)
+        # interview_status = form.cleaned_data['interview_status']
+        # if interview_status:
+        # auto_id = get_auto_id(CandidateInterview)
+        # a_id = get_a_id(CandidateInterview,request)
+        # company =current_company
+        # creator = request.user
+        # updator = request.user
+
+        data = form.save(commit=False)
+        data.updator = request.user
+        # data.creator = creator
+        # data.company = company
+        # data.auto_id = auto_id
+        # data.a_id = a_id
+        data.date_updated = datetime.datetime.now()
+        data.save()
+
+        
+        response_data = {
+            "status": "true",
+            "redirect" : "true",
+            "title": "Successfully Updated",
+            "message": "Candidate Interview Status updated successfully.",                
+            "redirect_url": reverse('candidate:candidates')
+        }
+
+        # else:
+        #     message = generate_form_errors(form, formset=False)
+
+        #     response_data = {
+        #         "stable": "true",
+        #         "status": "false",
+        #         "message": str(message),
+        #         "title": "Form validation error"  
+        #     }
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = CandidateInterviewForm(instance=instance)
+        context = {
+            "form": form,
+            "instance": instance,
+            "title": "Edit Interview Status:" ,
+            
+            "redirect": "true",
+            "url": reverse('job:update_candidate_interview_status', kwargs={'pk': instance.pk}),
+
+        }
+        return render(request, 'candidate/candidates.html', context)
+
+
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def candidate_interview(request,pk):
+    instance = get_object_or_404(CandidateInterview.objects.filter(pk=pk,is_deleted=False))
+
+    context = {
+        'instance': instance,
+        'title': 'Job',
+
+    }
+    return render(request, "sevendyne_admin/candidate/candidate-interview.html", context)
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def delete_candidate_interview(request,pk):
+    instance = get_object_or_404(CandidateInterview.objects.filter(pk=pk,is_deleted=False))
+    
+    CandidateInterview.objects.filter(pk=pk).update(is_deleted=True,job_title=instance.job_title + "_deleted_" + str(instance.auto_id))
+
+    response_data = {
+        "status" : "true",        
+        "title" : "Successfully Deleted",
+        "message" : "Interview Successfully Deleted.", 
+        "redirect" : "true",       
+        "redirect_url" : reverse('job:job_interviews')
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+
+#  candidate job views here.
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def create_job_applicant(request,pk):
+    job = get_object_or_404(Job.objects.filter(pk=pk,is_deleted=False))
+    company = job.company
+    if request.method == 'POST':
+        form = JobApplicantForm(request.POST)
+        if form.is_valid():
+            candidate = form.cleaned_data['candidate']
+
+            hiring_status = "Applicant"
+            
+            auto_id = get_auto_id(Job)
+            a_id = get_a_id(Job,request)
+            creator = request.user
+            updator = request.user
+
+            if not JobApplicant.objects.filter(job=job,candidate=candidate,company=company,is_deleted=False).exists():
+                JobApplicant(  
+                    candidate = candidate,                  
+                    job = job,
+                    hiring_status = hiring_status,
+                    auto_id = auto_id, 
+                    a_id = a_id,
+                    company =company,
+                    creator = creator,
+                    updator = updator
+                ).save()                
+                
+                response_data = {
+                    "status": "true",
+                    "title": "Successfully Applied",
+                    "message": "Job Applied successfully.",
+                    "redirect": "true",
+                    "redirect_url": reverse('job:job_applicants')
+                }
+            else:               
+                response_data = {
+                    "status": "false",
+                    "stable": "true",
+                    "title": "Already exists",
+                    "message": "Job Applicant already exists",                        
+                }
+        else:
+            print("candidate job - form error")
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "form_error",
+                "title": "Form validation error",
+                "message": str(message),               
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = CandidateJobForm()
+        context = {
+            "title": "Apply to Job",
+            "form": form,
+            "redirect": "true",
+            "create":True
+        }
+        
+        return render(request, 'job/job-applicants.html', context)
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+
+def job_applicants(request):
+    jobs = JobApplicant.objects.filter(is_deleted=False)
+
+    paginator = Paginator(jobs,1000000000000)
+    page_number = request.GET.get('page')
+    instances = paginator.get_page(page_number)
+    context = {
+        'instances': instances,
+        "title": 'Job Applicants'
+    }
+    return render(request, "sevendyne_admin/candidate/job-applicants.html", context)
+
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def edit_job_applicant_status(request, pk):
+    current_company = get_current_company(request)
+    instance = get_object_or_404(Job.objects.filter(pk=pk, is_deleted=False))    
+    # candidate = instance.candidate
+    
+    if request.method == "POST":
+        form = JobApplicantStatusForm(request.POST, instance=instance)
+
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.updator = request.user
+            data.date_updated = datetime.datetime.now()
+            data.save()
+
+           
+
+            response_data = {
+                "status": "true",
+                "redirect" : "true",
+                "title": "Successfully Updated",
+                "message": "Job Applicant Status updated successfully.",                
+                "redirect_url": reverse('job:job_applicants')
+            }
+
+        else:
+            message = generate_form_errors(form, formset=False)
+
+            response_data = {
+                "stable": "true",
+                "status": "false",
+                "message": str(message),
+                "title": "Form validation error"  
+            }
+
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = JobApplicantStatusForm(instance=instance)
+       
+        context = {
+            "form": form,
+            "instance": instance,
+            "title": "Edit Job Applicant Status :" + instance.job_title,
+            
+            "redirect": "true",
+            "url": reverse('job:edit_job_applicant', kwargs={'pk': instance.pk}),
+
+        }
+        return render(request, 'job/jobs.html', context)
+
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def job_applicant(request,pk):
+    instance = get_object_or_404(JobApplicant.objects.filter(pk=pk,is_deleted=False))
+
+    context = {
+        'instance': instance,
+        'title': 'Job Applicant',
+
+    }
+    return render(request, "sevendyne_admin/candidate/candidate-job.html", context)
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def delete_job_applicant(request,pk):
+    instance = get_object_or_404(JobApplicant.objects.filter(pk=pk,is_deleted=False))
+    
+    JobApplicant.objects.filter(pk=pk).update(is_deleted=True,job_title=instance.job_title + "_deleted_" + str(instance.auto_id))
+
+    response_data = {
+        "status" : "true",        
+        "title" : "Successfully Deleted",
+        "message" : "Job Applicant Successfully Deleted.", 
+        "redirect" : "true",       
+        "redirect_url" : reverse('job:job_applicants')
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+

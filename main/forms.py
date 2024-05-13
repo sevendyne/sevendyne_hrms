@@ -2,7 +2,7 @@ from datetime import date
 from django import forms
 from django.forms.widgets import TextInput, Select, Textarea, FileInput
 from django.utils.translation import gettext_lazy as _
-from main.models import Company
+from main.models import Company, EmailSetting, Portfolio
 # from dal import autocomplete
 
 class DateInput(forms.DateInput):
@@ -48,5 +48,42 @@ class CompanyForm(forms.ModelForm):
             },
             'country' : {
                 'required' : _("Country field is required."),
+            }
+        }
+
+
+class PortfolioForm(forms.ModelForm):    
+    class Meta:
+        model = Portfolio
+        exclude = ['is_deleted']
+        widgets = {
+            'title': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter title'}),
+            'description': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter Description'}),
+            'image': FileInput()
+        }
+        error_messages = {
+            'title' : {
+                'required' : _("title field is required."),
+            },
+            'description' : {
+                'required' : _("description field is required."),
+            }
+        }
+
+
+class EmailSettingForm(forms.ModelForm):    
+    class Meta:
+        model = EmailSetting
+        exclude = ['creator','updator','auto_id','a_id','company','is_deleted']
+        widgets = {
+            'email': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter email'}),
+            'password': forms.PasswordInput(),
+        }
+        error_messages = {
+            'email' : {
+                'required' : _("title field is required.")
+            },
+            'password' : {
+                'required' : _("password field is required.")
             }
         }

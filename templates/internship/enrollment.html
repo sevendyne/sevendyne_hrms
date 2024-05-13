@@ -1,0 +1,281 @@
+{% extends "job_portal/base.html" %}
+{% load static %}
+
+{% block content %}
+    <!-- Introduction Section -->
+    <!--<section id="introduction" class="padd-section text-center">-->
+    <!--    <div class="container" data-aos="fade-up">-->
+    <!--        <div class="section-title text-center">-->
+    <!--            <h2>Welcome to Sevendyne Training Programs</h2>-->
+    <!--            <p class="separator">Unlock Your Potential: Dive Into Exciting Training Programs!</p>-->
+    <!--        </div>-->
+    <!--        <p>At Sevendyne, we offer comprehensive training programs designed for professionals from diverse backgrounds, including App developers, Design engineers, Accountants, Marketing managers, and more. Elevate your skills, gain hands-on experience, and broaden your career horizons through mentorship and real-world projects. Enroll now and embark on a journey of continuous learning and growth!</p>-->
+    <!--    </div>-->
+    <!--</section>-->
+    
+    <!-- ======= Testimonials Section ======= -->
+    {% comment %} <section id="testimonials" class="padd-section text-center mt-3"style="background-color: #e5efe9;">
+      <div class="container" data-aos="fade-up">
+        <div class="row justify-content-center">
+
+          <div class="col-md-8">
+
+            <div class="testimonials-content"style="background-color: #f5f7f6;">
+              <div id="carousel-example-generic" class="carousel slide" data-bs-ride="carousel" >
+
+                <div class="carousel-inner" role="listbox">
+
+                  <div class="carousel-item  active">
+                    <div class="top-top">
+
+                       <h2 style="color:#23677d">Welcome to Sevendyne Training Programs</h2>
+                       <p class="separator">Unlock Your Potential: Dive Into Exciting Training Programs!</p>
+                      <p>At Sevendyne, we offer comprehensive training programs designed for professionals from diverse backgrounds, including App developers, Design engineers, Accountants, Marketing managers, and more. Elevate your skills, gain hands-on experience, and broaden your career horizons through mentorship and real-world projects. Enroll now and embark on a journey of continuous learning and growth!</p>
+     
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section> {% endcomment %}
+    <!-- End Testimonials Section -->
+    
+    <!-- ======= Clients Section ======= -->
+    {% comment %} <section id="clients" class="clients mb-3" style="margin-top:1%">
+      
+      <div class="container" data-aos="zoom-out">
+
+        <div class="clients-slider swiper">
+  
+          <div class="swiper-wrapper align-items-center">
+            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/getmy-1.png' %}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/orka.jpg' %}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/redrhino-1.png' %}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/rdp-1.png' %}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/tsapi-1.png' %}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/np.png' %}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/csr.png' %}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/collabera.png' %}" class="img-fluid" alt=""></div>
+            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/cygnus.png' %}" class="img-fluid" alt=""></div>
+          </div>
+        </div>
+
+      </div>
+    </section> {% endcomment %}
+    <!-- End Clients Section -->
+    
+
+    
+    <!-- Training Programs Section -->
+    <section id="features" class="padd-section text-center" style="margin-top:7%;margin-bottom:3%">
+        <div class="container" data-aos="fade-up">
+            <div class="section-title text-center">
+                <h2>Training Programs</h2>
+            </div>
+            <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                {% comment %} <div class="col-lg-3 col-md-4">
+                    <div class="card" style="width: 17rem;">
+                        <img class="card-img-top" src="{% static 'job_portal/img/employee-development-and-training-program.png' %}" alt="Card image cap">
+                        <div class="card-body" style="background-color: #e5efe9;">
+                            <p class="card-text">Join our comprehensive training program designed for professionals from diverse backgrounds including App developers, Design engineers, Accountants, Marketing managers, and more.</p>
+                            <p>Elevate your skills, gain hands-on experience, and broaden your career horizons through mentorship and real-world projects.</p>
+                        </div>
+                    </div>
+                </div> {% endcomment %}
+                <div class="col-lg-4 col-md-8">
+                    <div class="form">
+                       <form  id="create_form" method="POST" action="{% url 'candidate:create_intern' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                {{ form.name }}
+                                {% if form.name.errors %}
+                                <span class="error">{{ form.name.errors.0 }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="form-group mt-3">
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                <span class="error">{{ form.email.errors.0 }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="form-group mt-3">
+                                {{ form.phone }}
+                                {% if form.phone.errors %}
+                                <span class="error">{{ form.phone.errors.0 }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="form-group mt-3">
+                                {{ form.intern_linkedin }}
+                                {% if form.intern_linkedin.errors %}
+                                <span class="error">{{ form.intern_linkedin.errors.0 }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="form-group mt-3">
+                                {{ form.intern_git }}
+                                {% if form.intern_git.errors %}
+                                <span class="error">{{ form.intern_git.errors.0 }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="form-group mt-3">
+                                {{ form.resume.label }}
+                                {{ form.resume }}
+                                {% if form.resume.errors %}
+                                <span class="error">{{ form.resume.errors.0 }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="form-group mt-3">
+                                {{ form.skills }}
+                                {% if form.skills.errors %}
+                                <span class="error">{{ form.skills.errors.0 }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="form-group mt-3">
+                            {{ form.domain.label }}
+                                {{ form.domain }}
+                                {% if form.domain.errors %}
+                                <span class="error">{{ form.domain.errors.0 }}</span>
+                                {% endif %}
+                            </div>                
+                            <div class="text-center mt-5"><button type="submit" onclick="submitCreateForm(event)" style="background-color:#6a8d78;">Enroll Now</button></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- ======= Testimonials Section ======= -->
+    {% comment %} <section id="testimonials" class="padd-section text-center mt-5"style="background-color: #e5efe9;">
+      <div class="container" data-aos="fade-up">
+        <div class="row justify-content-center">
+
+          <div class="col-md-8">
+
+            <div class="testimonials-content"style="background-color: #f5f7f6;">
+              <div id="carousel-example-generic" class="carousel slide" data-bs-ride="carousel" >
+
+                <div class="carousel-inner" role="listbox">
+
+                  <div class="carousel-item  active">
+                    <div class="top-top">
+
+                       <h2>Our Client Works</h2>
+                       <!--<p class="separator">Unlock Your Potential: Dive Into Exciting Training Programs!</p>-->
+                      
+                        <p>We've trained resources in fullstack development, Java, .Net, and other skills from Malaysia, India, and more. Join our satisfied clients and unlock your full potential with Sevendyne Training Programs!</p>
+                      <!--<h4>Kimberly Tran<span>manager</span></h4>-->
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section> {% endcomment %}
+    <!-- End Testimonials Section -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+  <script>
+    function submitCreateForm(event) {
+    event.preventDefault();  // Prevent the default form submission behavior
+    var form = document.getElementById('create_form');
+    var formData = new FormData(form);
+    
+    fetch(form.action, {
+      method: 'POST',
+      body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data);
+      console.log("status", data.status);
+      console.log('data.redirect_url:', data.redirect_url);
+    
+      // Corrected variable name here
+      if (data.status === 'true') {
+      console.log("status is true");
+      console.log("redirect url", data.redirect_url);
+      showSweetAlert(data.message, data.status, data.redirect_url);
+      } else if (data.status === 'form_error') {
+      console.log("status is form_error");
+      showSweetAlert(data.message, 'form_error');
+      } else if (data.status === 'false') {
+      console.log("status is false");
+      showSweetAlert(data.message, data.status);
+      } else {
+      console.log("status is neither true or false");
+      showSweetAlert(data.message, 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+    }
+    
+    function showSweetAlert(message, status, redirectUrl) {
+    console.log('showSweetAlert called');
+    console.log('message:', message);
+    console.log('status:', status);
+    console.log('redirectUrl:', redirectUrl);
+    
+    if (status === 'true') {
+      Swal.fire({
+      icon: 'success',
+      title: 'Success!',
+      text: message,
+      showConfirmButton: true,
+      allowOutsideClick: false, // Prevent closing on outside click
+    
+      didClose: () => {
+        console.log('Redirecting to:', redirectUrl);
+        if (redirectUrl) {
+        // Combine the redirect URL with the current protocol and host to get the full URL
+        var fullRedirectUrl = window.location.origin + redirectUrl;
+        console.log('Full Redirect URL:', fullRedirectUrl);
+        window.location.href = fullRedirectUrl;
+        }
+      }
+      });
+    } else if (status === 'form_error') {
+      console.log('Showing form error alert');
+      Swal.fire({
+      icon: 'error',
+      title: 'Form Validation Error!',
+      html: message,  // Display form errors as HTML
+      showConfirmButton: true,
+      allowOutsideClick: false,
+      });
+    } else if (status === 'false') {
+      console.log('Showing form error alert');
+      Swal.fire({
+      icon: 'error',
+      title: 'Form Error!',
+      text: 'Error: ' + message,
+      showConfirmButton: true,
+      allowOutsideClick: false, // Prevent closing on outside click
+      });
+    } else {
+      console.log('Showing error alert');
+      Swal.fire({
+      icon: 'error',
+      title: 'Error!',
+      text: 'Error: ' + message,
+      showConfirmButton: true,
+      allowOutsideClick: false, // Prevent closing on outside click
+      });
+    }
+    }
+    
+</script>
+
+{% endblock %}

@@ -15,6 +15,9 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from num2words import num2words
 from django.utils.text import slugify
+from django.core.mail import send_mail
+from django.utils.translation import gettext_lazy as _
+from django.core.mail import EmailMultiAlternatives
 
 from weasyprint import HTML
 
@@ -690,7 +693,6 @@ def payslip(request,pk):
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def print_payslip(request,pk): 
-    print("print payslip get")
     current_company = get_current_company(request)    
     currency=current_company.country.currency
     currency_symbol = current_company.country.currency_symbol
@@ -739,6 +741,57 @@ def print_payslip(request,pk):
     return render(request, "payroll/print_payslip.html", context)
 
 
+def print_employee_payslip(request,pk): 
+    salaries = Salary.objects.filter(is_deleted=False)
+    instance = Salary.objects.get(pk=pk,is_deleted=False)
+
+    current_company = instance.company  
+    currency=current_company.country.currency
+    currency_symbol = current_company.country.currency_symbol
+    # Access the Employee instance directly from the Salary instance
+    employee = instance.employee
+    dynamic_fields =  SalaryDynamicField.objects.filter(company=current_company,employee=employee,is_deleted=False)
+    # Filter SalaryDynamicField objects for the current Salary instance, separated by category
+    additions_fields = SalaryDynamicField.objects.filter(company=current_company,employee=employee, salary=instance, category='Additions')
+    deductions_fields = SalaryDynamicField.objects.filter(company=current_company,employee=employee, salary=instance, category='Deductions')
+     # Calculate total of additions
+    total_additions = additions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+    
+    # Calculate total of deductions
+    total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+    # Convert net_salary to words
+    # Convert net_salary to words without specifying currency
+    net_salary_in_words = num2words(instance.net_salary, lang='en')
+
+    # # Check if there's a fractional part to handle "paise"
+    # net_salary_parts = str(instance.net_salary).split('.')
+    # if len(net_salary_parts) > 1 and int(net_salary_parts[1]) > 0:
+    #     rupees_part = num2words(net_salary_parts[0], lang='en')
+    #     paise_part = num2words(net_salary_parts[1], lang='en')
+    #     net_salary_in_words = f"{rupees_part} INDIAN RUPEES AND {paise_part} PAISE"
+    # else:
+    #     net_salary_in_words += " RUPEES"
+
+    # Convert the entire string to uppercase
+    net_salary_in_words = net_salary_in_words.upper()
+
+    context = {
+        'pk':pk,
+        'instance': instance,
+        'title': 'PaySlip',
+        'currency': currency,
+        'currency_symbol':currency_symbol,
+        'dynamic_fields': dynamic_fields,
+        'additions_fields': additions_fields,
+        'deductions_fields': deductions_fields,
+        'total_additions': total_additions,
+        'total_deductions': total_deductions,
+        'net_salary_in_words': net_salary_in_words
+    }
+    return render(request, "payroll/print_employee_payslip.html", context)
+
+
+
 def generate_payslip_pdf(request):
     print("generate pdf view request")
     pk=request.GET.get('pk')
@@ -766,6 +819,7 @@ def generate_payslip_pdf(request):
     # Convert net_salary to words
     # Convert net_salary to words without specifying currency
     net_salary_in_words = num2words(instance.net_salary, lang='en')
+   
     template_path = 'payroll/payslip-pdf.html'
     context = {
         'instance': instance,
@@ -791,6 +845,67 @@ def generate_payslip_pdf(request):
     if pisa_status.err:
         return HttpResponse("we had some errors <pre>" + html + "</pre>")
     return response
+
+
+def generate_employee_payslip_pdf(request):
+    print("generate pdf view request")
+    pk=request.GET.get('pk')
+    # current_company = get_current_company(request)    
+    # currency=current_company.country.currency
+    # currency_symbol = current_company.country.currency_symbol
+    instance = Salary.objects.get(pk=pk,is_deleted=False)
+    # Access the Employee instance directly from the Salary instance
+    employee = instance.employee
+    
+    current_company = instance.company 
+    currency=current_company.country.currency
+    currency_symbol = current_company.country.currency_symbol
+    # Get the employee's name
+    # employee_name = instance.employee.get_full_name()
+
+    # Get the month from the date field of the Salary model
+    salary_month = instance.date.strftime('%B %Y')
+
+    dynamic_fields =  SalaryDynamicField.objects.filter(company=current_company,employee=employee,is_deleted=False)
+    # Filter SalaryDynamicField objects for the current Salary instance, separated by category
+    additions_fields = SalaryDynamicField.objects.filter(company=current_company,employee=employee, salary=instance, category='Additions')
+    deductions_fields = SalaryDynamicField.objects.filter(company=current_company,employee=employee, salary=instance, category='Deductions')
+     # Calculate total of additions
+    total_additions = additions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+    
+    # Calculate total of deductions
+    total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+    # Convert net_salary to words
+    # Convert net_salary to words without specifying currency
+    net_salary_in_words = num2words(instance.net_salary, lang='en')
+   
+    template_path = 'payroll/payslip-employee-pdf.html'
+    context = {
+        'instance': instance,
+        'title': 'PaySlip',
+        'currency': currency,
+        'currency_symbol':currency_symbol,
+        'dynamic_fields': dynamic_fields,
+        'additions_fields': additions_fields,
+        'deductions_fields': deductions_fields,
+        'total_additions': total_additions,
+        'total_deductions': total_deductions,
+        'net_salary_in_words': net_salary_in_words
+    }
+    
+    response = HttpResponse(content_type = 'application/pdf')
+    # Generate a slugified version of the employee name and concatenate it with the month
+    filename = f"payslip_{slugify(employee)}_{salary_month}.pdf"
+
+    response['Content-Disposition'] = f'filename="{filename}"'  
+    template = get_template(template_path)
+    html = template.render(context)
+    pisa_status = pisa.CreatePDF(html,dest=response)
+    if pisa_status.err:
+        return HttpResponse("we had some errors <pre>" + html + "</pre>")
+    return response
+
+
 
 @login_required
 @user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
@@ -885,6 +1000,7 @@ def employee_payslip(request,pk):
         net_salary_in_words = net_salary_in_words.upper()
         print("instance.company",instance.company)
         context = {
+            'pk':pk,
             'instance': instance,
             'title': 'PaySlip',
             'currency': currency,
@@ -905,4 +1021,44 @@ def employee_payslip(request,pk):
         # Debugging: Print any other exceptions that might occur
         print("Exception:", e)
         return HttpResponse(f"An error occurred: {str(e)}")
-    
+
+
+
+def email_payslip(request):
+    pk=request.GET.get('pk')
+    current_company = get_current_company(request)  
+    instance = Salary.objects.get(pk=pk,company=current_company,is_deleted=False)
+    employee = instance.employee
+    # Logic to retrieve employee's email address and other necessary information
+    # employee_email = employee.email
+    employee_email = "shamrifari@gmail.com"
+    print("employee mail",employee_email)
+    # company_email = current_company.email
+    company_email = "shamrifari@gmail.com"
+    print("company_email",company_email)
+    print("employee name", employee.get_full_name)
+
+    # Retrieve month and year from the date field
+    salary_month = instance.date.strftime("%B %Y")
+    print("salary_month",salary_month)
+
+    # Construct email content
+    subject = _("Your Payslip for the Month of %(month_year)s") % {'month_year': salary_month}
+    message = _(
+        f"Dear {employee.get_full_name},\n\nPlease find attached your payslip for the month of {salary_month}.\n\n"
+        "Regards,\nHR Team"
+    )
+
+    # Create EmailMultiAlternatives object
+    email = EmailMultiAlternatives(subject, message, [company_email], [employee_email])
+
+    # Generate payslip PDF and attach it to the email
+    payslip_pdf = generate_payslip_pdf(request)
+    payslip_filename = f"payslip_{employee.get_full_name.replace(' ', '_')}_{salary_month}.pdf"
+    email.attach(payslip_filename, payslip_pdf, 'application/pdf')
+
+    try:
+        email.send()
+        return HttpResponse("Email sent successfully")
+    except Exception as e:
+        return HttpResponse(f"Error sending email: {str(e)}")

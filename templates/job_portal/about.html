@@ -1,0 +1,53 @@
+{% extends "job_portal/base.html" %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- Header End -->
+<div class="container-xxl py-5 bg-dark page-header mb-5">
+    <div class="container my-5 pt-5 pb-4">
+        <h1 class="display-3 text-white mb-3 animated slideInDown">About Us</h1>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb text-uppercase">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                <li class="breadcrumb-item text-white active" aria-current="page">About</li>
+            </ol>
+        </nav>
+    </div>
+</div>
+<!-- Header End -->
+
+
+
+<!-- About Us Section -->
+<div id="about" class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="row g-0 about-bg rounded overflow-hidden">
+                    <div class="col-12 text-start">
+                        <img class="img-fluid w-100" src="{% static 'job_portal/img/about1.png' %}">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+                <h1 class="mb-4">Unlock Success with Sevendyne's Comprehensive IT Solutions</h1>
+                <p class="mb-4">At Sevendyne, we empower your business with a full spectrum of IT services tailored to your needs:</p>
+                <ul class="mb-4">
+                    <li>Tech Development: From software to applications, we deliver cutting-edge solutions</li>
+                    <li>Staff Management: Our expertise ensures efficient and effective team coordination</li>
+                    <li>Resource Nourishment: We provide skill training and development to enhance your team's capabilities</li>
+                </ul>
+                <p class="mb-4">Our focus is on finding the right remote tech talent to propel your business forward. Contact us today to explore how our comprehensive IT solutions can drive your success.</p>                     
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End About Us Section -->
+
+
+
+
+{% endblock %}

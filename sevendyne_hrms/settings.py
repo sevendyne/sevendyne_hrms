@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-1rwq8_f!3*dk-(2c2@89zlzyck5n57-j!s5*1pqd7h^fx%$n3v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['13.201.223.74','127.0.0.1']
+ALLOWED_HOSTS = ['13.201.223.74','127.0.0.1','hrms.sevendyne.com']
 
 
 # Application definition
@@ -146,3 +146,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGIN_URL = '/app/login/'
 LOGOUT_URL = '/app/logout/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'sevendyne.technical@gmail.com'
+EMAIL_HOST_PASSWORD = 'itze zzmq jiqt otqk'
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'sevendyne.technical@gmail.com'
+DEFAULT_REPLY_TO_EMAIL = 'sevendyne.technical@gmail.com'
+DEFAULT_BCC_EMAIL = 'sevendyne.technical@gmail.com'
+SERVER_EMAIL = 'sevendyne.technical@gmail.com'
+ADMIN_EMAIL = 'sevendyne.technical@gmail.com'
+
+# app password"#7dynehrms"

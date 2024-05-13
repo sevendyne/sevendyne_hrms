@@ -30,8 +30,8 @@
                             <tr>
                                 <th style="width:5%">Sl. No.</th>
                                 <th style="width:15%">First Name</th>
-                                <th style="width:15%">Last Name</th>
-                                <th style="width:15%">User Name</th>
+                                <th style="width:15%">Email</th>
+                                <th style="width:15%">Status</th>
                                 <th style="width:15%">Actions</th>
                             </tr>
                         </thead>                        
@@ -40,8 +40,14 @@
                             <tr>
                                 <td>{{forloop.counter}}</td>
                                 <td>{{instance.first_name}}</td>
-                                <td>{{instance.last_name}}</td>
-                                <td>{{instance.username}}</td>
+                                <td>{{instance.email}}</td>
+                                <td>
+                                {% if instance.is_enabled %}
+                                    <span style="color: green;">Enabled</span>
+                                {% else %}
+                                    <span style="color: red;">Disabled</span>
+                                {% endif %}
+                                </td>
                                 <td>                                    
                                     <a href="{% url 'hrms:hrms_client' pk=instance.pk %}" class="btn btn-default btn-icon waves-effect waves-circle waves-float"title="View hrms_client"><i class="zmdi zmdi-eye" ></i></a>                                    
                                     <a href="{% url 'hrms:edit_hrms_client' pk=instance.pk %}" class="btn btn-default btn-icon waves-effect waves-circle waves-float"title="Edit hrms_client" ><i class="zmdi zmdi-edit"></i></a>                                    
@@ -54,7 +60,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>  
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
