@@ -1,27 +1,27 @@
+import json
 import calendar
 import datetime
-import json
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
-from django.core.mail import EmailMessage
-from django.forms import formset_factory
-from django.db.models import Sum, Q
+
 from django.urls import reverse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.core.mail import send_mail
+from django.utils.html import strip_tags
+from django.forms import formset_factory
+from main.decorators import company_required
+from django.template.loader import render_to_string
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.models import User, Group
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.http import HttpResponse, JsonResponse
-from django.core.paginator import Paginator
-from client.models import Client
-from employee import models
+from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission, has_hrms_permission
 from employee.forms import AttendanceDateForm, AttendanceRegisterForm, DepartmentForm, DesignationForm, EmployeeForm, HolidayForm, LeaveForm, LeaveTypeForm
 from employee.models import AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
-from main.decorators import company_required
-from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission, has_hrms_permission
-from main.models import EmailSetting
+from django.contrib.auth.models import User, Group
+from django.core.paginator import Paginator
+from django.core.mail import EmailMessage
+from django.http import HttpResponse
 from sevendyne_hrms import settings
+from client.models import Client
+from django.db.models import Q
+
 
 # Department crud starts here
 @login_required
@@ -55,7 +55,6 @@ def create_department(request):
                     "redirect": "true",
                     "redirect_url": reverse('employee:departments')
                 }
-                print("Redirect URL:", response_data["redirect_url"])
             else:               
                 response_data = {
                     "status": "false",
@@ -63,10 +62,7 @@ def create_department(request):
                     "title": "Already exists",
                     "message": "Department already exists",                        
                 }
-                print("status inside", response_data["status"])
-            print("status outside", response_data["status"])
         else:
-            print('not valid')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
@@ -77,7 +73,6 @@ def create_department(request):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = DepartmentForm()
-
         context = {
             "title": "Create Department",
             "form": form,
@@ -113,13 +108,11 @@ def edit_department(request, pk):
     print("department id",instance.pk)
     if request.method == "POST":
         form = DepartmentForm(request.POST, instance=instance)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -127,28 +120,23 @@ def edit_department(request, pk):
                 "message": "Department updated successfully.",                
                 "redirect_url": reverse('employee:departments')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = DepartmentForm(instance=instance)
-
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Department :" + instance.name,
-            
+            "title": "Edit Department :" + instance.name,            
             "redirect": "true",
-            "url": reverse('employee:edit_department', kwargs={'pk': instance.pk}),
+            "url": reverse('employee:edit_department', kwargs={'pk': instance.pk})
         }
         return render(request, 'department/departments.html', context)
 
@@ -159,11 +147,9 @@ def edit_department(request, pk):
 def department(request, pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Department.objects.filter(pk=pk,company=current_company,is_deleted=False))
-
     context = {
         'instance': instance,
-        'title': 'Department',
-
+        'title': 'Department'
     }
     return render(request, "department/department.html", context)
 
@@ -172,10 +158,8 @@ def department(request, pk):
 @company_required
 def delete_department(request,pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Department.objects.filter(pk=pk,company=current_company,is_deleted=False))
-    
+    instance = get_object_or_404(Department.objects.filter(pk=pk,company=current_company,is_deleted=False))    
     Department.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
-
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",
@@ -201,7 +185,6 @@ def create_designation(request):
             company =current_company
             creator = request.user
             updator = request.user
-
             if not Designation.objects.filter(name=name,department=department,company=current_company,is_deleted=False).exists():
                 Designation(                    
                     name = name,
@@ -219,7 +202,6 @@ def create_designation(request):
                     "redirect": "true",
                     "redirect_url": reverse('employee:designations')
                 }
-                print("Redirect URL:", response_data["redirect_url"])
             else:               
                 response_data = {
                     "status": "false",
@@ -228,7 +210,6 @@ def create_designation(request):
                     "message": "Designation already exists",                        
                 }
         else:
-            print('not valid')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
@@ -239,7 +220,6 @@ def create_designation(request):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = DesignationForm(current_company=current_company)
-        print("form get request")
         context = {
             "title": "Create Designation",
             "form": form,
@@ -274,19 +254,14 @@ def designations(request):
 @company_required
 def edit_designation(request, pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Designation.objects.filter(pk=pk,company=current_company, is_deleted=False))    
-    print("edit request, designation name",instance.name)
+    instance = get_object_or_404(Designation.objects.filter(pk=pk,company=current_company, is_deleted=False)) 
     if request.method == "POST":
-        print("post request")
         form = DesignationForm(request.POST, instance=instance)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-            print("updated Designation",data.name)
-
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -294,35 +269,26 @@ def edit_designation(request, pk):
                 "message": "Designation updated successfully.",                
                 "redirect_url": reverse('employee:designations')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = DesignationForm(instance=instance)
         departments = Department.objects.filter(company=current_company,is_deleted=False)
-        print("edit get request - designation")
-        print("instance",instance)
-        print("departmet",instance.department)
-        print("designation",instance.name)
         context = {
             "form": form,
             "instance": instance,
             "departments":departments,
             'pk': pk,
-            "title": "Edit Designation :" + instance.name,
-            
+            "title": "Edit Designation :" + instance.name,            
             "redirect": "true",
-            "url": reverse('employee:edit_designation', kwargs={'pk': instance.pk}),
-
+            "url": reverse('employee:edit_designation', kwargs={'pk': instance.pk})
         }
         return render(request, 'designation/designations.html', context)
 
@@ -333,23 +299,20 @@ def edit_designation(request, pk):
 def designation(request,pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Designation.objects.filter(pk=pk,company=current_company,is_deleted=False))
-
     context = {
         'instance': instance,
-        'title': 'Designations',
-
+        'title': 'Designations'
     }
     return render(request, "designation/designations.html", context)
+
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_designation(request,pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Designation.objects.filter(pk=pk,company=current_company,is_deleted=False))
-    
+    instance = get_object_or_404(Designation.objects.filter(pk=pk,company=current_company,is_deleted=False))    
     Designation.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
-
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",
@@ -403,20 +366,12 @@ def create_employee(request):
                             "stable": "true",
                             "title": "Already existed an employee",
                             "message": "Already existed an employee with same details(username,employee id and email). Create with different details"                   
-                        }                    
-                                        
+                        }             
                     else:
                         user, created = User.objects.get_or_create(username=username, defaults={'password': hashed_password, 'email': email, 'first_name': firstname, 'last_name': lastname})
-                        # Get or create the 'employee_group' group
                         employee_group, created = Group.objects.get_or_create(name='employee_group')
-                        # Add the user to the 'employee_group' group
                         user.groups.add(employee_group)
-
-                        # Save the user to update group membership
                         user.save()
-
-                        print("New Employee's groups:", user.groups.all())
-
                         Employee( 
                             user = user,
                             firstname = firstname,
@@ -460,7 +415,6 @@ def create_employee(request):
                     "message": "Username already exists",                        
                 }
         else:
-            print('not valid form validation error')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
@@ -468,11 +422,9 @@ def create_employee(request):
                 "title": "Form validation error",
                 "message": str(message),               
             }
-            print("error message",response_data["message"])
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = EmployeeForm(current_company=current_company)
-
         context = {
             "title": "Create Employee",
             "form": form,
@@ -491,24 +443,20 @@ def employees(request):
     
     empid_query = request.GET.get("empid")
     if empid_query:
-        employees = employees.filter(Q(employeeid__icontains=empid_query))
-    
+        employees = employees.filter(Q(employeeid__icontains=empid_query))    
     emp_name_query = request.GET.get("emp_name")
     if emp_name_query:
-        employees = employees.filter(Q(firstname__icontains=emp_name_query) | Q(lastname__icontains=emp_name_query))
-    
+        employees = employees.filter(Q(firstname__icontains=emp_name_query) | Q(lastname__icontains=emp_name_query))    
     emp_des_query = request.GET.get("emp_des")
     if emp_des_query:
         employees = employees.filter(Q(designation__name__icontains=emp_des_query))
     
     paginator = Paginator(employees,1000000000000)
     page_number = request.GET.get('page')
-    employees = paginator.get_page(page_number)
-    
+    employees = paginator.get_page(page_number)    
     departments = Department.objects.filter(company=current_company,is_deleted=False)
     designations = Designation.objects.filter(company=current_company,is_deleted=False)
     clients = Client.objects.filter(company=current_company,is_deleted=False)
-    # print("clients",clients)
     context = {
         'departments': departments,
         'designations' : designations,
@@ -528,12 +476,10 @@ def employees_list(request):
     
     empid_query = request.GET.get("empid")
     if empid_query:
-        employees = employees.filter(Q(employeeid__icontains=empid_query))
-    
+        employees = employees.filter(Q(employeeid__icontains=empid_query))    
     emp_name_query = request.GET.get("emp_name")
     if emp_name_query:
-        employees = employees.filter(Q(firstname__icontains=emp_name_query) | Q(lastname__icontains=emp_name_query))
-    
+        employees = employees.filter(Q(firstname__icontains=emp_name_query) | Q(lastname__icontains=emp_name_query))    
     emp_des_query = request.GET.get("emp_des")
     if emp_des_query:
         employees = employees.filter(Q(designation__name__icontains=emp_des_query))
@@ -545,7 +491,6 @@ def employees_list(request):
     departments = Department.objects.filter(company=current_company,is_deleted=False)
     designations = Designation.objects.filter(company=current_company,is_deleted=False)
     clients = Client.objects.filter(company=current_company,is_deleted=False)
-    # print("clients",clients)
     context = {
         'departments': departments,
         'designations' : designations,
@@ -563,14 +508,11 @@ def employees_list(request):
 def edit_employee(request, pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Employee.objects.filter(pk=pk,company=current_company, is_deleted=False))    
-    print("Employee id",instance.pk)
     if request.method == "POST":
         form = EmployeeForm(request.POST, request.FILES, instance=instance)
 
         if form.is_valid():
             data = form.save(commit=False)
-
-            # Update associated User instance
             user = instance.user
             user.username = data.username
             user.email = data.email
@@ -578,10 +520,8 @@ def edit_employee(request, pk):
             user.first_name = data.firstname
             user.last_name = data.lastname
             user.email = data.email
-            # Remove user from hrms_clients group if exists
             hrms_clients_group = Group.objects.get(name='hrms_clients')
             user.groups.remove(hrms_clients_group)
-            # Add user to employee_group
             employee_group, created = Group.objects.get_or_create(name='employee_group')
             user.groups.add(employee_group)
             user.save()
@@ -589,7 +529,6 @@ def edit_employee(request, pk):
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-            print("edited Employee's groups:", user.groups.all())
 
             response_data = {
                 "status": "true",
@@ -598,7 +537,6 @@ def edit_employee(request, pk):
                 "message": "Employee updated successfully.",                
                 "redirect_url": reverse('employee:employees')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
             print(message)
@@ -608,24 +546,15 @@ def edit_employee(request, pk):
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = EmployeeForm(instance=instance)
-        
-        print("employee edit form request")
-        print("instance",instance)
-        print("departmet",instance.department)
-        print("designation",instance.designation)
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Employee :" + instance.firstname,
-            
+            "title": "Edit Employee :" + instance.firstname,            
             "redirect": "true",
-            "url": reverse('employee:edit_employee', kwargs={'pk': instance.pk}),
-
-
+            "url": reverse('employee:edit_employee', kwargs={'pk': instance.pk})
         }
         return render(request, 'employee/employees.html', context)
 
@@ -638,8 +567,7 @@ def employee(request, pk):
     employee = get_object_or_404(Employee.objects.filter(pk=pk,company=current_company,is_deleted=False))
     context = {
         'employee': employee,
-        'title': 'Employee',
-
+        'title': 'Employee'
     }
     return render(request, 'employee/employee-profile.html', context)
 
@@ -648,10 +576,8 @@ def employee(request, pk):
 @company_required
 def delete_employee(request,pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Employee.objects.filter(pk=pk,is_deleted=False))
-    
+    instance = get_object_or_404(Employee.objects.filter(pk=pk,is_deleted=False))    
     Employee.objects.filter(pk=pk).update(is_deleted=True,company=current_company,firstname=instance.firstname + "_deleted_" + str(instance.auto_id))
-
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",
@@ -660,6 +586,7 @@ def delete_employee(request,pk):
         "redirect_url" : reverse('employee:employees')
     }
     return HttpResponse(json.dumps(response_data), content_type='application/json')
+
    
 # Leave Type crud starts here
 @login_required
@@ -667,9 +594,7 @@ def delete_employee(request,pk):
 @company_required
 def create_leave_type(request):
     current_company = get_current_company(request)
-    print("current comapny",current_company)
     if request.method == 'POST':
-        print("leave type post request")
         form = LeaveTypeForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
@@ -679,7 +604,6 @@ def create_leave_type(request):
             company = current_company
             creator = request.user
             updator = request.user
-
             if not LeaveType.objects.filter(name=name,company=current_company,is_deleted=False).exists():
                 LeaveType(                    
                     name = name,
@@ -697,7 +621,6 @@ def create_leave_type(request):
                     "redirect": "true",
                     "redirect_url": reverse('employee:leave_types')
                 }
-                print("Redirect URL:", response_data["redirect_url"])
             else:               
                 response_data = {
                     "status": "false",
@@ -705,10 +628,7 @@ def create_leave_type(request):
                     "title": "Already exists",
                     "message": "Leave Type already exists",                        
                 }
-                print("status inside", response_data["status"])
-            print("status outside", response_data["status"])
         else:
-            print('not valid')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
@@ -719,7 +639,6 @@ def create_leave_type(request):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = LeaveTypeForm()
-
         context = {
             "title": "Create Leave Type",
             "form": form,
@@ -751,18 +670,14 @@ def leave_types(request):
 @company_required
 def edit_leave_type(request, pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(LeaveType.objects.filter(pk=pk,company=current_company, is_deleted=False))    
-    print("department id",instance.pk)
+    instance = get_object_or_404(LeaveType.objects.filter(pk=pk,company=current_company, is_deleted=False))   
     if request.method == "POST":
         form = LeaveTypeForm(request.POST, instance=instance)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-            print("updated department",data.name)
-
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -770,28 +685,23 @@ def edit_leave_type(request, pk):
                 "message": "Leave Type updated successfully.",                
                 "redirect_url": reverse('employee:leave_types')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = LeaveTypeForm(instance=instance)
-
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit LeaveType :" + instance.name,
-            
+            "title": "Edit LeaveType :" + instance.name,            
             "redirect": "true",
-            "url": reverse('employee:edit_leave_type', kwargs={'pk': instance.pk}),
+            "url": reverse('employee:edit_leave_type', kwargs={'pk': instance.pk})
         }
         return render(request, 'settings/leave-type.html', context)
 
@@ -802,23 +712,20 @@ def edit_leave_type(request, pk):
 def leave_type(request, pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(LeaveType.objects.filter(pk=pk,company=current_company,is_deleted=False))
-
     context = {
         'instance': instance,
-        'title': 'Leave Type',
-
+        'title': 'Leave Type'
     }
     return render(request, "leave/leave.html", context)
+
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_leave_type(request,pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(LeaveType.objects.filter(pk=pk,company=current_company,is_deleted=False))
-    
+    instance = get_object_or_404(LeaveType.objects.filter(pk=pk,company=current_company,is_deleted=False))    
     LeaveType.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
-
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",
@@ -925,8 +832,7 @@ def ajax_load_remaining_days(request):
     if LeaveType.objects.filter(name=name,company=company,is_deleted=False).exists():
         leavetype = get_object_or_404(LeaveType, is_deleted=False,name=name,company=company)
         leavetype_days = leavetype.days
-        data = leavetype_days - approved_leave_days_count
-        
+        data = leavetype_days - approved_leave_days_count        
     else:
         data="Data Not Found"
     context = {
@@ -945,7 +851,7 @@ def leaves(request):
     page_number = request.GET.get('page')
     leaves = paginator.get_page(page_number)
     context = {
-         'company':company,
+        'company':company,
         'leaves': leaves,
         "title": 'Leaves',
         "is_leaves" : True
@@ -961,20 +867,16 @@ def leave_approvals(request):
 
     employee_name_query = request.GET.get("employee_name")
     if employee_name_query:
-        leaves = leaves.filter(Q(employee__firstname__icontains=employee_name_query) | Q(employee__lastname__icontains=employee_name_query))
-    
+        leaves = leaves.filter(Q(employee__firstname__icontains=employee_name_query) | Q(employee__lastname__icontains=employee_name_query))    
     leave_type_query = request.GET.get("leave_type")
     if leave_type_query:
-        leaves = leaves.filter(Q(leavetype__name__icontains=leave_type_query))
-    
+        leaves = leaves.filter(Q(leavetype__name__icontains=leave_type_query))    
     leave_status_query = request.GET.get("leave_status")
     if leave_status_query:
-        leaves = leaves.filter(Q(status__icontains=leave_status_query))
-    
+        leaves = leaves.filter(Q(status__icontains=leave_status_query))    
     leave_from_query = request.GET.get("leave_from")
     if leave_from_query:
-        leaves = leaves.filter(Q(startdate__icontains=leave_from_query))
-    
+        leaves = leaves.filter(Q(startdate__icontains=leave_from_query))    
     leave_to_query = request.GET.get("leave_to")
     if leave_to_query:
         leaves = leaves.filter(Q(enddate__icontains=leave_to_query))    
@@ -983,8 +885,6 @@ def leave_approvals(request):
     page_number = request.GET.get('page')
     leaves = paginator.get_page(page_number)
     leavetypes = LeaveType.objects.filter(company=current_company,is_deleted=False)
-   
-    # Get today's date
     today = datetime.date.today()
     # Count the number of employees marked as present today for the current company
     today_presents = AttendanceRegister.objects.filter(
@@ -993,13 +893,11 @@ def leave_approvals(request):
         status='present',
         is_deleted=False
     ).count()
-
     # Get the total number of employees in the current company
     total_employees = Employee.objects.filter(
         company=current_company,
         is_deleted=False
     ).count()
-
     # Planned leaves (approved leave requests for today)
     planned_leaves = Leave.objects.filter(
         company=current_company,
@@ -1008,7 +906,6 @@ def leave_approvals(request):
         is_approved=True,
         is_deleted=False
     ).count()
-
     # Unplanned leaves (absences today without an approved leave request)
     total_absent = AttendanceRegister.objects.filter(
         company=current_company,
@@ -1017,7 +914,6 @@ def leave_approvals(request):
         is_deleted=False
     ).count()
     unplanned_leaves = total_absent - planned_leaves
-
     # Pending leave requests
     pending_requests = Leave.objects.filter(
         company=current_company,
@@ -1047,13 +943,11 @@ def edit_leave(request, pk):
     instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company, is_deleted=False))    
     if request.method == "POST":
         form = LeaveForm(request.POST, instance=instance)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -1061,28 +955,23 @@ def edit_leave(request, pk):
                 "message": "Leave updated successfully.",                
                 "redirect_url": reverse('employee:leave_approvals')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = LeaveForm(instance=instance)
-
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Leave",
-            
+            "title": "Edit Leave",            
             "redirect": "true",
-            "url": reverse('employee:edit_leave', kwargs={'pk': instance.pk}),
+            "url": reverse('employee:edit_leave', kwargs={'pk': instance.pk})
         }
         return render(request, 'leave/leaves-approval.html', context)
 
@@ -1093,13 +982,12 @@ def edit_leave(request, pk):
 def leave(request, pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company,is_deleted=False))
-
     context = {
         'instance': instance,
-        'title': 'Leave',
-
+        'title': 'Leave'
     }
     return render(request, "leave/leaves.html", context)
+
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
@@ -1135,8 +1023,6 @@ def leave_approval(request,pk):
                 "message": "This leave request is already processed.",                        
             }
             return HttpResponse(json.dumps(response_data), content_type='application/json')
-
-    # Redirect or show an error for non-POST requests
     return redirect('employee:leave_approvals')
 
 @login_required
@@ -1145,18 +1031,15 @@ def leave_approval(request,pk):
 def leave_reject(request,pk):
     if request.method == 'POST':
         current_company = get_current_company(request)
-        instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company,is_deleted=False))
-        
+        instance = get_object_or_404(Leave.objects.filter(pk=pk,company=current_company,is_deleted=False))        
         if not instance.is_approved:
             Leave.objects.filter(pk=pk).update(is_rejected=True,status='Rejected',employee=instance.employee)
-
-             # Send email notification to employee
+            # Send email notification to employee
             employee = instance.employee
             subject = 'Leave Request Rejected'
             message = render_to_string('email_templates/leave_rejected.html', {'leave': instance})
             email = EmailMessage(subject, message, to=[employee.email])
-            email.send()
-    
+            email.send()    
             response_data = {
                 "status" : "true",        
                 "title" : "Rejected",
@@ -1173,8 +1056,6 @@ def leave_reject(request,pk):
                 "message": "This leave request is already processed.",                        
             }
             return HttpResponse(json.dumps(response_data), content_type='application/json')
-
-    # Redirect or show an error for non-POST requests
     return redirect('employee:leave_approvals')
 
 
@@ -1187,9 +1068,7 @@ def create_attendance_register(request):
     if request.method == 'POST':     
         date_form = AttendanceDateForm(request.POST)               
         attendanceregister_formset = AttendanceRegisterFormSet(request.POST,prefix='attendanceregister_formset')   
-
         if attendanceregister_formset.is_valid() and date_form.is_valid(): 
-
             date = date_form.cleaned_data['date']
             an_fn = date_form.cleaned_data['an_fn']
             for f in attendanceregister_formset:
@@ -1208,8 +1087,7 @@ def create_attendance_register(request):
                         creator = request.user,
                         updator = request.user,  
                     ).save() 
-                att = AttendanceRegister.objects.filter(employee = employee,date = date,company=company)[0]  
-                
+                att = AttendanceRegister.objects.filter(employee = employee,date = date,company=company)[0]                  
                 if an_fn == "FN" :
                     att.is_fn = is_attended
                 if an_fn == "AN" :
@@ -1223,8 +1101,7 @@ def create_attendance_register(request):
                 "redirect_url" : reverse('employee:attendance_register')
             }
         else:
-            message = generate_form_errors(date_form,formset=False)
-      
+            message = generate_form_errors(date_form,formset=False)      
             response_data = {
                 "status": "false",
                 "stable": "true",
@@ -1232,7 +1109,6 @@ def create_attendance_register(request):
                 "message": str(message)
             }
         return HttpResponse(json.dumps(response_data), content_type='application/javascript')
-
     else:
         att = AttendanceRegister.objects.filter(company=company,is_deleted=False).values('is_attended','is_fn','is_an')
         initial_data={
@@ -1257,26 +1133,15 @@ def create_attendance_register(request):
         return render(request, 'attendance-register/create_attendance_register.html', context=context)
 
 
-
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def attendance_register(request):
     company = get_current_company(request)
     employees = Employee.objects.filter(company=company,is_deleted=False).order_by('id')
-
     employee_name_query = request.GET.get("employee_name")
     if employee_name_query:
-        employees = employees.filter(Q(firstname__icontains=employee_name_query) | Q(lastname__icontains=employee_name_query))
-    
-    # month_query = request.GET.get("month")
-    # if month_query:
-    #     employees = employees.filter(Q(leavetype__name__icontains=month_query))
-    
-    # year_query = request.GET.get("year")
-    # if year_query:
-    #     employees = employees.filter(Q(status__icontains=year_query))
-    
+        employees = employees.filter(Q(firstname__icontains=employee_name_query) | Q(lastname__icontains=employee_name_query))    
     y = datetime.date.today().year   
     month = datetime.date.today().month
     
@@ -1320,15 +1185,12 @@ def attendance_register(request):
         "is_attendance_register" : True
     }
     return render(request, 'attendance/attendance.html', context=context)
-    # return render(request, 'attendance-register/attendance_register.html', context=context)
-
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def edit_attendance_register(request, pk):
     company=get_current_company(request)   
-    # instance = get_object_or_404(AttendanceRegister.objects.filter(pk=pk, is_deleted=False,company=company))
     AttendanceRegisterFormSet = formset_factory(AttendanceRegisterForm, extra=0)       
     is_class = request.GET.get('is_class')
     if is_class:
@@ -1359,15 +1221,12 @@ def edit_attendance_register(request, pk):
                         creator = request.user,
                         updator = request.user,  
                     ).save() 
-                att = AttendanceRegister.objects.filter(employee = employee,date = date,company=company)[0]  
-                
+                att = AttendanceRegister.objects.filter(employee = employee,date = date,company=company)[0]                  
                 if an_fn == "FN" :
                     att.is_fn = is_attended
                 if an_fn == "AN" :
                     att.is_an = is_attended    
-
                 att.save()
-
                 response_data = {
                     "status": "true",
                     "title": "Successfully Updated",
@@ -1376,8 +1235,7 @@ def edit_attendance_register(request, pk):
                     "redirect_url" : reverse('employee:attendance_register', kwargs={'pk': pk})
                 }
         else:
-            message = generate_form_errors(date_form,formset=False)
-      
+            message = generate_form_errors(date_form,formset=False)      
             response_data = {
                 "status": "false",
                 "stable": "true",
@@ -1399,8 +1257,7 @@ def edit_attendance_register(request, pk):
                 'employee_pk' : s.pk, 
             }
             initial_dict.append(init_dict) 
-        attendanceregister_formset = AttendanceRegisterFormSet(prefix='attendanceregister_formset',initial=initial_dict)
-        
+        attendanceregister_formset = AttendanceRegisterFormSet(prefix='attendanceregister_formset',initial=initial_dict)        
         context = {
             "title": "Edit Attendance Register",
             "attendanceregister_formset": attendanceregister_formset,
@@ -1415,10 +1272,8 @@ def edit_attendance_register(request, pk):
 @company_required
 def delete_attendance_register(request,pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(AttendanceRegister.objects.filter(pk=pk,is_deleted=False,company=current_company))
-    
+    instance = get_object_or_404(AttendanceRegister.objects.filter(pk=pk,is_deleted=False,company=current_company))    
     AttendanceRegister.objects.filter(pk=pk,company=current_company).update(is_deleted=True,date=instance.date + "_deleted_" + str(instance.auto_id))
-
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",
@@ -1445,7 +1300,6 @@ def create_holiday(request):
             company =current_company
             creator = request.user
             updator = request.user
-
             if not Holiday.objects.filter(name = name,company=company,date=date,is_deleted=False).exists():
                 Holiday(
                     name = name,
@@ -1455,7 +1309,6 @@ def create_holiday(request):
                     company =company,
                     creator = creator,
                     updator = updator
-
                 ).save()
                 response_data = {
                     "status": "true",
@@ -1487,9 +1340,9 @@ def create_holiday(request):
             "form": form,
             "redirect": "true",
             "create":True
-        }
-        
+        }        
         return render(request, 'leave/holidays.html', context)
+    
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
@@ -1532,13 +1385,11 @@ def edit_holiday(request, pk):
     instance = get_object_or_404(Holiday.objects.filter(pk=pk, company=current_company, is_deleted=False))    
     if request.method == "POST":
         form = HolidayForm(request.POST, instance=instance)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -1546,29 +1397,23 @@ def edit_holiday(request, pk):
                 "message": "Holiday updated successfully.",                
                 "redirect_url": reverse('employee:holidays')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
-        form = HolidayForm(instance=instance)
-       
+        form = HolidayForm(instance=instance)       
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Holiday :" + instance.name,
-            
+            "title": "Edit Holiday :" + instance.name,            
             "redirect": "true",
-            "url": reverse('employee:edit_holiday', kwargs={'pk': instance.pk}),
-
+            "url": reverse('employee:edit_holiday', kwargs={'pk': instance.pk})
         }
         return render(request, 'leave/holidays.html', context)
 
@@ -1579,7 +1424,6 @@ def edit_holiday(request, pk):
 def holiday(request,pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Holiday.objects.filter(pk=pk,company=current_company,is_deleted=False))
-
     context = {
         'instance': instance,
         'title': 'Holiday'
@@ -1592,10 +1436,8 @@ def holiday(request,pk):
 @company_required
 def delete_holiday(request,pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Holiday.objects.filter(pk=pk,company=current_company,is_deleted=False))
-    
+    instance = get_object_or_404(Holiday.objects.filter(pk=pk,company=current_company,is_deleted=False))    
     Holiday.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
-
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",

@@ -70,24 +70,6 @@ class CompanyAccess(models.Model):
         return self.company.name + ' ' + self.group.name  
     
 
-    
-
-# class CompanyTheme(models.Model):
-#     name = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})
-#     logo = models.ImageField('Light Logo',upload_to="company/",blank=True,null=True)     
-#     favicon = models.ImageField('Favicon',upload_to="company/",blank=True,null=True)
-#     is_deleted = models.BooleanField(_("Is this theme deleted ? "),default=False)
-
-#     class Meta:
-#         db_table = 'company theme'
-#         verbose_name = _('company theme')
-#         verbose_name_plural = _('company themes')
-#         ordering = ('name',)
-        
-#     def __str__(self):
-#         return self.name
-
-
 class Country(models.Model):
     name = models.CharField(max_length=128)
     iso3 = models.CharField(max_length=128)

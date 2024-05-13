@@ -9,13 +9,12 @@ class DateInput(forms.DateInput):
     input_type = 'date'
     value = date.today() 
 
-class CompanyForm(forms.ModelForm):
-    
+
+class CompanyForm(forms.ModelForm):    
     class Meta:
         model = Company
         exclude = ['creator','updator','auto_id','is_deleted']
-        widgets = {
-            
+        widgets = {            
             'name': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter your company name'}),
             'contact_person': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter name of the contact person'}),
             'address': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter your address'}),

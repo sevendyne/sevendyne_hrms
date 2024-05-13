@@ -2,8 +2,6 @@ from django.urls import path, re_path
 from payroll import views
 
 urlpatterns = [
-
-    # path('ajax_load_da', views.ajax_load_da, name='ajax_load_da'),
     path('ajax_load_salary_components', views.ajax_load_salary_components, name='ajax_load_salary_components'),
     path('fetch_total_working_days/', views.fetch_total_working_days, name='fetch_total_working_days'),
         
@@ -28,15 +26,8 @@ urlpatterns = [
     path('employee/payslip/pdf/', views.generate_employee_payslip_pdf, name='generate_employee_payslip_pdf'),
    
     path('payslip/email/', views.email_payslip, name='email_payslip'),
-    # path('employees/payslips/hrms-dashboard/', views.employees_payslips, name='employees_payslips'),
     re_path(r'^payslip/(?P<pk>.*)/$', views.payslip, name='payslip'),
-   
-   
     path('payslips/employee/employee-dashboard/', views.payslips_employee, name='payslips_employee'),
-    re_path(r'^employee/payslip/employee/(?P<pk>.*)/$', views.employee_payslip, name='employee_payslip'),
-      
-    re_path(r'^employee/payslip/print/(?P<pk>.*)/$', views.print_employee_payslip, name='print_employee_payslip'), 
-    
-    # re_path(r'^generate/payslip/(?P<pk>.*)/$', views.generate_payslip, name='generate_payslip')
-    
+    re_path(r'^employee/payslip/employee/(?P<pk>.*)/$', views.employee_payslip, name='employee_payslip'),      
+    re_path(r'^employee/payslip/print/(?P<pk>.*)/$', views.print_employee_payslip, name='print_employee_payslip')
 ]

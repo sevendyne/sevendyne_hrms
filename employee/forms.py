@@ -12,8 +12,7 @@ class DateInput(forms.DateInput):
     value = date.today() 
 
 
-class DepartmentForm(forms.ModelForm):
-    
+class DepartmentForm(forms.ModelForm):    
     class Meta:
         model = Department
         exclude = ['creator','updator','auto_id','a_id','company','is_deleted']
@@ -27,8 +26,7 @@ class DepartmentForm(forms.ModelForm):
         }
 
 
-class DesignationForm(forms.ModelForm):
-    
+class DesignationForm(forms.ModelForm):    
     class Meta:
         model = Designation
         exclude = ['creator','updator','auto_id','a_id','company','is_deleted']
@@ -47,7 +45,6 @@ class DesignationForm(forms.ModelForm):
         autocomplete = {
             'department': 'on',  # or 'off' if you want to disable autocomplete
         }
-
     def __init__(self, *args, **kwargs):
         current_company = kwargs.pop('current_company', None)
         super(DesignationForm, self).__init__(*args, **kwargs)
@@ -56,50 +53,6 @@ class DesignationForm(forms.ModelForm):
             # Filter departments by current company
             self.fields['department'].queryset = Department.objects.filter(company=current_company, is_deleted=False)
             
-
-
-# class DesignationFormset(forms.ModelForm):    
-#     class Meta:
-#         model = Designation
-#         exclude = ['creator', 'updator', 'auto_id', 'is_deleted','department']
-#         widgets = {
-#             'name': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter Designation name'})
-#         }
-#         error_messages = {
-#             'name': {
-#                 'required': _("Name field is required."),
-#             }
-#         }
-
-# class DesignationForm(forms.ModelForm):    
-    # class Meta:
-    #     model = Designation
-    #     exclude = ['creator', 'updator', 'auto_id', 'is_deleted']
-    #     widgets = {
-    #         'section':Select(attrs={'class':'required form-control'}),
-    #     }
-    #     error_messages = {
-    #         'section': {
-    #             'required': _("section field is required."),
-    #         }            
-    #     }
-
-# class DesignationEditForm(forms.ModelForm):    
-#     class Meta:
-#         model = Designation
-#         exclude = ['creator', 'updator', 'auto_id','is_deleted']
-#         widgets = {
-#             'department':Select(attrs={'class':'requird form-control'}),
-#             'name': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Name'}),
-#         }
-#         error_messages = {
-#             'department': {
-#                 'required': _("department field is required."),
-#             },    
-#             'name': {
-#                 'required': _("name field is required."),
-#             }        
-#         }
         
 class EmployeeForm(forms.ModelForm):
     class Meta:
@@ -140,22 +93,18 @@ class EmployeeForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         current_company = kwargs.pop('current_company', None)
-        super(EmployeeForm, self).__init__(*args, **kwargs)
-        
+        super(EmployeeForm, self).__init__(*args, **kwargs)        
         if current_company:
             # Filter departments by current company
-            self.fields['department'].queryset = Department.objects.filter(company=current_company, is_deleted=False)
-            
+            self.fields['department'].queryset = Department.objects.filter(company=current_company, is_deleted=False)            
             # Filter designations by current company
             self.fields['designation'].queryset = Designation.objects.filter(company=current_company, is_deleted=False)
-
             # Filter client companies by current company
             self.fields['client_company'].queryset = Client.objects.filter(company=current_company, is_deleted=False)
 
 
 
-class LeaveTypeForm(forms.ModelForm):
-    
+class LeaveTypeForm(forms.ModelForm):    
     class Meta:
         model = LeaveType
         exclude = ['creator','updator','auto_id','a_id','company','is_deleted','is_active']
@@ -174,8 +123,7 @@ class LeaveTypeForm(forms.ModelForm):
 
 
 class LeaveForm(forms.ModelForm):
-    remaining_days = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly', 'class': 'form-control'}))
-    
+    remaining_days = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly', 'class': 'form-control'}))    
     class Meta:
         model = Leave
         exclude = ['creator', 'updator', 'auto_id','a_id','company','is_deleted','employee','is_approved','status'] 
@@ -204,36 +152,11 @@ class LeaveForm(forms.ModelForm):
         }
 
 
-# class LeaveCreationForm(forms.ModelForm):
-# 	reason = forms.CharField(required=False, widget=forms.Textarea(attrs={'rows': 4, 'cols': 40}))
-# 	class Meta:
-# 		model = Leave
-# 		exclude = ['user','defaultdays','hrcomments','status','is_approved','updated','created']
-
-
-
-# 	def clean_enddate(self):
-# 		enddate = self.cleaned_data['enddate']
-# 		startdate = self.cleaned_data['startdate']
-# 		today_date = datetime.date.today()
-
-# 		if (startdate or enddate) < today_date:# both dates must not be in the past
-# 			raise forms.ValidationError("Selected dates are incorrect,please select again")
-
-# 		elif startdate >= enddate:# TRUE -> FUTURE DATE > PAST DATE,FALSE other wise
-# 			raise forms.ValidationError("Selected dates are wrong")
-
-# 		return enddate
-
-
-
 class AttendanceRegisterForm(forms.ModelForm):
-
     ATTENDANCE_CHOICES = (                
         ('True', 'Present'), 
         ('False', 'Absent'),                
-        )
-    
+        )    
     employee_name = forms.CharField(widget=forms.TextInput(attrs={'class': 'required  form-control'}))
     employee_pk = forms.CharField(widget=forms.TextInput(attrs={'class': 'required  form-control'}))
     is_attended = forms.CharField(
@@ -265,8 +188,7 @@ class AttendanceDateForm(forms.ModelForm):
     an_fn_CHOICES = (                
         ('FN', 'Forenoon'), 
         ('AN', 'Afternoon'),
-        )
-    
+        )    
     an_fn = forms.CharField(
         max_length=20,
         widget=forms.Select(choices = an_fn_CHOICES,attrs={'class' : ' form-control', 'placeholder': 'Select FN/AN'}),
