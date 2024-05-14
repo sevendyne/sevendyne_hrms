@@ -34,18 +34,6 @@
 					<label class="focus-label">Employee Name</label>
 				</div>
 			</div>
-			{% comment %} <div class="col-sm-6 col-md-3"> 
-				<div class="input-block mb-3 form-focus select-focus">
-					<input type="text" class="form-control floating" name="month">
-					<label class="focus-label">Select Month</label>
-				</div>
-			</div>
-			<div class="col-sm-6 col-md-3"> 
-				<div class="input-block mb-3 form-focus select-focus">
-					<input type="text" class="form-control floating" name="year">
-					<label class="focus-label">Select Year</label>
-				</div>
-			</div> {% endcomment %}
 			<div class="col-sm-6 col-md-3">
 				<div class="d-grid">
 					<button class="btn btn-primary w-100" type="submit">Search</button>
@@ -74,7 +62,6 @@
 							<td>{{forloop.counter}}</td>  
 							<td>
 								<h2 class="table-avatar">
-									{% comment %} <a class="avatar avatar-xs" href="profile.html"><img src="assets/img/profiles/avatar-09.jpg" alt="User Image"></a> {% endcomment %}
 									<a href="profile.html">{{employee.get_full_name }}</a>
 								</h2>
 							</td>

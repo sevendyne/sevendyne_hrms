@@ -109,83 +109,57 @@
         </div>
     </section>
 {% endblock %}
-<!-- {% block filter_box %}
-    <aside class="chat toggled">
-        <form method="get" action="">
-            <div class="card">
-                <select name="month" id="" style="margin-left:160%;background-color: #c9b31a;color: white;height: 50px;padding: 15px;width:30%;display:inline-block;">
-                  <option value="">Select Month</option>
-                  <option value="1">January</option>
-                  <option value="2">February</option>
-                  <option value="3">March</option>
-                  <option value="4">April</option>
-                  <option value="5">May</option>
-                  <option value="6">June</option>
-                  <option value="7">July</option>
-                  <option value="8">August</option>
-                  <option value="9">September</option>
-                  <option value="10">October</option>
-                  <option value="11">November</option>
-                  <option value="12">December</option>
-                </select>
-                <button class="btn" style="background-color: #4a5b97;color: white;height: 50px;width:30%;margin-top:-5px" type="submit"><h4 style="color: white;">Submit</h4></button>
-
-
-            </div>
-        </form>
-    </aside>
-{% endblock %} -->
 {% block static %}
-	{% load static %}
+{% load static %}
   <style>
-    .dash {
-    width : 12%;
-    margin-top : 0%;
-    margin-bottom: 1%;
-    margin-left: 85%;    
-    background-color: #32a7a7;    
-    height: 40px;
-    text-align: center;
-    justify-content: center;
-    
-  }
-  .inner-card{        
-    background-color: #fff;        
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
-} 
-.lightgreen.inner-card{
-    background: linear-gradient(91deg, #8bc34a, #d0e7b6);
-}
-.pink-400.inner-card{
-    background: linear-gradient(91deg, #e91e63, #f8bbd0);
-}
-.blue.inner-card{
-    background: linear-gradient(91deg, #2196f3, #a6d5fa);
-}
-.teal.inner-card{
-    background: linear-gradient(91deg, #009688, #b2dfdb);
-}
-.bluegrey.inner-card{
-    background: linear-gradient(91deg, #607d8b, #bfcbd0);
-}
-.green.inner-card{
-    background: linear-gradient(91deg, #4caf50, #b7dfb9);
-}
-.purple-400.inner-card{
-    background: linear-gradient(91deg, #9c27b0, #d7a8df);
-}
-.cyan-600.inner-card{
-    background: linear-gradient(91deg, #00bcd4, #99e4ed);
-}
-.brown.inner-card{
-    background: linear-gradient(91deg, #795548, #5c5958);
-}
-.grey-600.inner-card{
-    background: linear-gradient(91deg, #9e9e9e, #444040);
-}
-.orange.inner-card{
-    background: linear-gradient(91deg, #ff9800, #d3a45f);
-}
+        .dash {
+            width : 12%;
+            margin-top : 0%;
+            margin-bottom: 1%;
+            margin-left: 85%;    
+            background-color: #32a7a7;    
+            height: 40px;
+            text-align: center;
+            justify-content: center;
+            
+        }
+        .inner-card{        
+            background-color: #fff;        
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); 
+        } 
+        .lightgreen.inner-card{
+            background: linear-gradient(91deg, #8bc34a, #d0e7b6);
+        }
+        .pink-400.inner-card{
+            background: linear-gradient(91deg, #e91e63, #f8bbd0);
+        }
+        .blue.inner-card{
+            background: linear-gradient(91deg, #2196f3, #a6d5fa);
+        }
+        .teal.inner-card{
+            background: linear-gradient(91deg, #009688, #b2dfdb);
+        }
+        .bluegrey.inner-card{
+            background: linear-gradient(91deg, #607d8b, #bfcbd0);
+        }
+        .green.inner-card{
+            background: linear-gradient(91deg, #4caf50, #b7dfb9);
+        }
+        .purple-400.inner-card{
+            background: linear-gradient(91deg, #9c27b0, #d7a8df);
+        }
+        .cyan-600.inner-card{
+            background: linear-gradient(91deg, #00bcd4, #99e4ed);
+        }
+        .brown.inner-card{
+            background: linear-gradient(91deg, #795548, #5c5958);
+        }
+        .grey-600.inner-card{
+            background: linear-gradient(91deg, #9e9e9e, #444040);
+        }
+        .orange.inner-card{
+            background: linear-gradient(91deg, #ff9800, #d3a45f);
+        }
   </style>
-  {{form.media}}
+{{form.media}}
 {% endblock %}
