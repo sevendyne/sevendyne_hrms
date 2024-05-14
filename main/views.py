@@ -251,6 +251,7 @@ def delete_portfolio(request,pk):
 def hrms_dashboard(request):
     company=get_current_company(request)
     company_name = company.name
+    employees = Employee.objects.filter(company=company,is_deleted=False)
     employees_count = Employee.objects.filter(company=company,is_deleted=False).count()
     clients = Client.objects.filter(company=company,is_deleted=False)[:5]
     clients_count =clients.count()
@@ -272,6 +273,8 @@ def hrms_dashboard(request):
             'candidates_count':candidates_count,
             'jobs_count':jobs_count,
             'clients':clients,
+            'candidates':candidates,
+            'employees':employees,
             'absent_employees': absent_employees,
             'absent_employees_count': absent_employees_count
         }    
@@ -287,7 +290,6 @@ def employee_dashboard(request):
     try:
         employee = get_object_or_404(Employee, user=request.user, is_deleted=False)
         company=employee.company
-        print(employee)
         approved_leave = Leave.objects.filter(employee=employee,company=company,is_approved=True,is_deleted=False).count()
         total_leave = Leave.objects.filter(employee=employee,company=company,is_deleted=False).count()
         remaining_leave = total_leave - approved_leave

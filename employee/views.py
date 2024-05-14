@@ -105,7 +105,6 @@ def departments(request):
 def edit_department(request, pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Department.objects.filter(pk=pk,company=current_company, is_deleted=False))    
-    print("department id",instance.pk)
     if request.method == "POST":
         form = DepartmentForm(request.POST, instance=instance)
         if form.is_valid():
@@ -357,10 +356,8 @@ def create_employee(request):
                     if existing_user:
                         user = existing_user
                         employee_group, created = Group.objects.get_or_create(name='employee_group')
-                        user.groups.add(employee_group)    
-                        print()                
+                        user.groups.add(employee_group)   
                         user.save()
-                        print("Existing Employee's groups:", user.groups.all())  
                         response_data = {
                             "status": "false",
                             "stable": "true",
@@ -539,7 +536,6 @@ def edit_employee(request, pk):
             }
         else:
             message = generate_form_errors(form, formset=False)
-            print(message)
             response_data = {
                 "stable": "true",
                 "status": "false",

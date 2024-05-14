@@ -684,7 +684,6 @@ def print_employee_payslip(request,pk):
 
 
 def generate_payslip_pdf(request):
-    print("generate pdf view request")
     pk=request.GET.get('pk')
     current_company = get_current_company(request)    
     currency=current_company.country.currency
@@ -729,7 +728,6 @@ def generate_payslip_pdf(request):
 
 
 def generate_employee_payslip_pdf(request):
-    print("generate pdf view request")
     pk=request.GET.get('pk')
     instance = Salary.objects.get(pk=pk,is_deleted=False)
     employee = instance.employee    
@@ -821,7 +819,6 @@ def employee_payslip(request,pk):
         net_salary_in_words = num2words(instance.net_salary, lang='en')
         # Convert the entire string to uppercase
         net_salary_in_words = net_salary_in_words.upper()
-        print("instance.company",instance.company)
         context = {
             'pk':pk,
             'instance': instance,

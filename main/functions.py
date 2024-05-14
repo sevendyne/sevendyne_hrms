@@ -58,12 +58,10 @@ def has_hrms_permission(user):
 
 
 def has_employee_dashboard_permission(user):
-    print("checking employee permission")
     return user.groups.filter(name='employee_group').exists()
 
 
 def has_admin_dashboard_permission(user):
-    print("checking admin permission")
     return user.groups.filter(name='sevendyne_admin').exists()
 
 
@@ -92,7 +90,7 @@ def get_candidate_id(request):
     candidate_id = "SVD1001" # user defined number
     if Candidate.objects.filter(is_deleted=False).exists():
         candidate_id = Candidate.objects.filter(is_deleted=False).latest('id').candidateid
-    print(candidate_id)
+    
     if candidate_id:
         rev_admn_no =  candidate_id[::-1]  
         length = len(rev_admn_no) 

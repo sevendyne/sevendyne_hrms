@@ -75,7 +75,6 @@
 									{% if form.username.errors %}
 									<span class="error">{{ form.username.errors.0 }}</span>
 									{% endif %}
-									{% comment %} <input class="form-control" type="text" value="admin@dreamguystech.com"> {% endcomment %}
 								</div>
 								<div class="input-block mb-4">
 									<div class="row align-items-center">
@@ -93,17 +92,12 @@
 										{% if form.password.errors %}
 										<span class="error">{{ form.password.errors.0 }}</span>
 										{% endif %}
-										{% comment %} <input class="form-control" type="password" value="123456" id="password"> {% endcomment %}
 										<span class="fa-solid fa-eye-slash" id="toggle-password"></span>
 									</div>
 								</div>
-								{% comment %} <p style="font-size:smaller">Contact technical@sevendyne.com for username and password</p>           {% endcomment %}
 								<div class="input-block mb-4 text-center">
 									<button class="btn btn-primary account-btn" type="submit" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%)">Login</button>
 								</div>
-								{% comment %} <div class="account-footer">
-									<p>Don't have an account yet? <a href="register.html">Register</a></p>
-								</div> {% endcomment %}
 							</form>
 							<div class="account-footer">
 								<p>Sign Up/Register <a href="{% url 'user:signup' %}">Sign Up</a></p>

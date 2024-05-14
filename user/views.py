@@ -39,7 +39,6 @@ def user_login(request):
                     login(request, user)
                     return redirect('main:employee_dashboard')  
                 else:
-                    print("user not an admin,employee or hrms client")
                     return redirect('user:user_login')
             else:
                 # Authentication failed, show an error message

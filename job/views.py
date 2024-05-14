@@ -293,7 +293,6 @@ def create_candidate_job(request,pk):
                     "message": "Job already offered",                        
                 }
         else:
-            print("candidate job - form error")
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
