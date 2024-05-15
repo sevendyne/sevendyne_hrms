@@ -46,8 +46,25 @@
 							</div>
 						</div>
 					</div>
-				</section>
+				</section>				
 			</div>
+		</div>
+		<div class="col-lg-4 col-md-4">
+			<section>
+				<h5 class="dash-title">Upcoming Holiday</h5>
+				<div class="card">
+					<div class="card-body text-center">
+						{% comment %} <h4 class="holiday-title mb-0">Mon 20 May 2019 - Ramzan</h4> {% endcomment %}
+						{% if upcoming_holidays %}
+                            {% for holiday in upcoming_holidays %}
+                                <h4 class="holiday-title mb-0">{{ holiday.date|date:"D d M Y" }} - {{ holiday.name }}</h4>
+                            {% endfor %}
+                        {% else %}
+                            <p>No upcoming holidays</p>
+                        {% endif %}
+					</div>
+				</div>
+			</section>
 		</div>
 	</div>
 

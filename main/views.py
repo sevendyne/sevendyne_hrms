@@ -17,7 +17,7 @@ from django.db.models import Q
 from main.decorators import company_required
 from main.functions import generate_form_errors, has_admin_dashboard_permission, has_hrms_permission
 from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission
-from employee.models import AttendanceRegister, Employee, Leave, LeaveType
+from employee.models import AttendanceRegister, Employee, Holiday, Leave, LeaveType
 from main.models import Company, CompanyAccess, EmailSetting, Portfolio
 from main.forms import CompanyForm, EmailSettingForm, PortfolioForm
 from payroll.models import PayrollItem, SalarySetting
@@ -295,17 +295,19 @@ def employee_dashboard(request):
         # total_leave = Leave.objects.filter(company=company,is_deleted=False).count()
          # Get the total leave days across all leave types
         total_leave = LeaveType.objects.filter(company=company, is_deleted=False).aggregate(total_leave=Sum('days'))['total_leave']
-
         # If total_leave is None (no leave records found), set it to 0
         total_leave = total_leave or 0
-
-        print("Total leave taken by the company across all leave types:", total_leave)
         remaining_leave = total_leave - approved_leave
+        # Get upcoming holidays
+        today = datetime.date.today()
+        upcoming_holidays = Holiday.objects.filter(company=company, date__gte=today).order_by('date')
+
         context = {
             'company':company,
             'employee': employee,
             'approved_leave':approved_leave,
-            'remaining_leave':remaining_leave
+            'remaining_leave':remaining_leave,
+            'upcoming_holidays': upcoming_holidays
         }    
         return render(request, "dashboard/employee-dashboard.html", context=context)
     except Employee.DoesNotExist:
