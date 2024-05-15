@@ -1,3 +1,4 @@
+from decimal import Decimal
 import json
 import datetime
 
@@ -20,7 +21,7 @@ from main.functions import generate_form_errors, get_a_id, get_auto_id, get_curr
 from employee.models import AttendanceRegister, Employee, Holiday, Leave, LeaveType
 from main.models import Company, CompanyAccess, EmailSetting, Portfolio
 from main.forms import CompanyForm, EmailSettingForm, PortfolioForm
-from payroll.models import PayrollItem, SalarySetting
+from payroll.models import PayrollItem, Salary, SalaryDynamicField, SalarySetting
 from candidate.models import Candidate
 from hrms.models import HrmsClient
 from client.models import Client
@@ -300,14 +301,27 @@ def employee_dashboard(request):
         remaining_leave = total_leave - approved_leave
         # Get upcoming holidays
         today = datetime.date.today()
-        upcoming_holidays = Holiday.objects.filter(company=company, date__gte=today).order_by('date')
+        upcoming_holidays = Holiday.objects.filter(company=company, date__gte=today).order_by('date')        
+        next_holiday = Holiday.objects.filter(company=company, date__gte=today).order_by('date').first()
+        # Fetch the last created payslip for the employee
+        last_payslip = Salary.objects.filter(employee=employee, company=company, is_deleted=False).order_by('-date').first()
+        # Fetch all salary dynamic fields related to the last payslip
+        additions_fields = SalaryDynamicField.objects.filter(salary=last_payslip, category='Additions')
+        deductions_fields = SalaryDynamicField.objects.filter(salary=last_payslip, category='Deductions')
+
+        total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
 
         context = {
             'company':company,
             'employee': employee,
             'approved_leave':approved_leave,
             'remaining_leave':remaining_leave,
-            'upcoming_holidays': upcoming_holidays
+            'upcoming_holidays': upcoming_holidays,
+            'next_holiday':next_holiday,
+            'last_payslip': last_payslip,
+            'additions_fields': additions_fields,
+            'deductions_fields': deductions_fields,
+            'total_deductions': total_deductions
         }    
         return render(request, "dashboard/employee-dashboard.html", context=context)
     except Employee.DoesNotExist:
