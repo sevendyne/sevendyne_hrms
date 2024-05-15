@@ -22,24 +22,24 @@
 	
 	<!-- Leave Statistics -->
 	<div class="row">
-		<div class="col-md-3 d-flex">
+		{% comment %} <div class="col-md-3 d-flex">
 			<div class="stats-info w-100">
 				<h6>Today Presents</h6>
 				<h4>{{ today_presents }} / {{  total_employees }}</h4>
 			</div>
-		</div>
+		</div> {% endcomment %}
 		<div class="col-md-3 d-flex">
 			<div class="stats-info w-100">
 				<h6>Planned Leaves</h6>
 				<h4>{{ planned_leaves|default:"0" }} <span>Today</span></h4>
 			</div>
 		</div>
-		<div class="col-md-3 d-flex">
+		{% comment %} <div class="col-md-3 d-flex">
 			<div class="stats-info w-100">
 				<h6>Unplanned Leaves</h6>
 				<h4>{{ unplanned_leaves|default:"0" }} <span>Today</span></h4>
 			</div>
-		</div>
+		</div> {% endcomment %}
 		<div class="col-md-3 d-flex">
 			<div class="stats-info w-100">
 				<h6>Pending Requests</h6>

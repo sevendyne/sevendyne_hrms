@@ -11,6 +11,7 @@ from django.contrib.auth.models import Group
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.db.models import Count
+from django.db.models import Sum
 from django.db.models import Q
 
 from main.decorators import company_required
@@ -291,7 +292,14 @@ def employee_dashboard(request):
         employee = get_object_or_404(Employee, user=request.user, is_deleted=False)
         company=employee.company
         approved_leave = Leave.objects.filter(employee=employee,company=company,is_approved=True,is_deleted=False).count()
-        total_leave = Leave.objects.filter(employee=employee,company=company,is_deleted=False).count()
+        # total_leave = Leave.objects.filter(company=company,is_deleted=False).count()
+         # Get the total leave days across all leave types
+        total_leave = LeaveType.objects.filter(company=company, is_deleted=False).aggregate(total_leave=Sum('days'))['total_leave']
+
+        # If total_leave is None (no leave records found), set it to 0
+        total_leave = total_leave or 0
+
+        print("Total leave taken by the company across all leave types:", total_leave)
         remaining_leave = total_leave - approved_leave
         context = {
             'company':company,
