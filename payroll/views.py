@@ -25,6 +25,40 @@ from payroll.forms import PayrollItemForm, SalaryForm, SalarySettingForm
 from employee.models import AttendanceRegister, Employee, Holiday
 
 
+def get_last_payslip(request):
+    if request.method == 'GET' and 'employee_id' in request.GET:
+        employee_id = request.GET.get('employee_id')
+        # Fetch the last created payslip for the employee
+        try:
+            last_payslip = Salary.objects.filter(employee_id=employee_id, is_deleted=False).order_by('-date').first()
+            # If there's no payslip found for the employee, return an error response
+            if not last_payslip:
+                return JsonResponse({'error': 'No payslip found for the selected employee'}, status=404)
+            
+            # Fetch all salary dynamic fields related to the last payslip
+            additions_fields = SalaryDynamicField.objects.filter(salary=last_payslip, category='Additions', is_deleted=False)
+            deductions_fields = SalaryDynamicField.objects.filter(salary=last_payslip, category='Deductions', is_deleted=False)
+            
+            # Calculate total deductions
+            total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+            
+            # Prepare the data to send back to the client-side
+            payslip_data = {
+                'basic_salary': last_payslip.net_salary,  # Assuming 'net_salary' is considered as basic salary
+                'net_salary': last_payslip.net_salary,
+                'date': last_payslip.date,
+                'additions_fields': list(additions_fields.values()),  # Convert QuerySet to list of dictionaries
+                'deductions_fields': list(deductions_fields.values()),  # Convert QuerySet to list of dictionaries
+                'total_deductions': total_deductions,
+                # Include other relevant fields here
+            }
+            return JsonResponse(payslip_data)
+        except Salary.DoesNotExist:
+            return JsonResponse({'error': 'No payslip found for the selected employee'}, status=404)
+    else:
+        return JsonResponse({'error': 'Invalid request method or missing employee_id parameter'}, status=400)
+
+
 def ajax_load_salary_components(request):
     basic_salary = float(request.GET.get('basic_salary', 0))
     company=get_current_company(request)

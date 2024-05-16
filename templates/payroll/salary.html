@@ -365,6 +365,45 @@
     }
 
     function attachEventListeners() {
+		// Add an event listener to the employee selection field
+		$('#id_employee').on('change', function() {
+			var employeeId = $(this).val(); // Get the selected employee ID
+			var url = "{% url 'payroll:get_last_payslip' %}";
+			// Make an AJAX request to fetch the last payslip details
+			$.ajax({
+				url: url,
+				method: 'GET',
+				data: {'employee_id': employeeId},
+				success: function(response) {
+					// Populate the form fields with the received payslip data
+					$('input[name="Basic Salary"]').val(response.basic_salary);
+					$('#id_net_salary').val(response.net_salary);
+					$('#id_date').val(response.date);
+					
+					// Populate additions fields
+					response.additions_fields.forEach(function(field) {
+						// Assuming the field name matches the ID of the input element
+						$('#' + field.field_name).val(field.field_value);
+					});
+					
+					// Populate deductions fields
+					response.deductions_fields.forEach(function(field) {
+						// Assuming the field name matches the ID of the input element
+						$('#' + field.field_name).val(field.field_value);
+					});
+					
+					// Populate total deductions
+					$('#total_deductions').val(response.total_deductions);
+					
+					// You can populate other fields here based on the received data
+				},
+				error: function(xhr, status, error) {
+					console.error('Error:', error);
+					// You can handle error cases here, such as displaying an error message to the user
+				}
+			});
+		});
+
         $('input[name="Basic Salary"]').on('input', function() {
             var url = "{% url 'payroll:ajax_load_salary_components' %}";
             var basicSalary = parseFloat($(this).val());

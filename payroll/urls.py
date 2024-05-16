@@ -2,6 +2,7 @@ from django.urls import path, re_path
 from payroll import views
 
 urlpatterns = [
+    path('get_last_payslip', views.get_last_payslip, name='get_last_payslip'),    
     path('ajax_load_salary_components', views.ajax_load_salary_components, name='ajax_load_salary_components'),
     path('fetch_total_working_days/', views.fetch_total_working_days, name='fetch_total_working_days'),
         

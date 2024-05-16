@@ -308,7 +308,6 @@ def employee_dashboard(request):
         # Fetch all salary dynamic fields related to the last payslip
         additions_fields = SalaryDynamicField.objects.filter(salary=last_payslip, category='Additions')
         deductions_fields = SalaryDynamicField.objects.filter(salary=last_payslip, category='Deductions')
-
         total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
 
         context = {
