@@ -27,7 +27,6 @@ from hrms.models import HrmsClient
 def create_hrms_client(request):
     
     if request.method == 'POST':
-        # print("post")
         form = HrmsClientForm(request.POST)
         if form.is_valid():
             first_name = form.cleaned_data['first_name']
@@ -36,13 +35,10 @@ def create_hrms_client(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']            
             
-            # print("valid")
             if not HrmsClient.objects.filter(username=username,is_deleted=False).exists():
                 existing_user = User.objects.filter(username=username).first()
                 if existing_user:
-                    # print(f"User with username '{username}' already exists.")
                     user.groups.add(hrms_clients_group)
-                    # print("added existing user to hrms_clients group")
                     # Hash the password
                     hashed_password = make_password(password)
                     # Save the user to update group membership
@@ -51,26 +47,13 @@ def create_hrms_client(request):
                 hashed_password = make_password(password)
                 # Try to get the user, create one if it doesn't exist
                 user, created = User.objects.get_or_create(username=username, defaults={'password': hashed_password, 'email': email, 'first_name': first_name, 'last_name': last_name})
-                # print("user,created",user,created)
                 if created:
-                    # print("user is created")
-                    # Get or create the 'hrms_clients' group
+                   # Get or create the 'hrms_clients' group
                     hrms_clients_group, created = Group.objects.get_or_create(name='hrms_clients')
 
                     # Add the user to the 'hrms_clients' group
                     user.groups.add(hrms_clients_group)
-                    # print("added to hrms_clients group")
-
-                    # Save the user to update group membership
                     user.save()
-
-                
-
-                    # Check if the user is in the 'hrms_clients' group
-                    # if hrms_clients_group in user.groups.all():
-                    #     print("User successfully added to the 'hrms_clients' group.")
-                    # else:
-                    #     print("Failed to add user to the 'hrms_clients' group.")
 
                 HrmsClient(  
                     user = user,                  
@@ -80,7 +63,6 @@ def create_hrms_client(request):
                     password = password,
                     email = email                  
                 ).save()
-                print("hrms client is saved in db")
                 response_data = {
                     "status": "true",
                     "title": "Successfully Created",
@@ -88,7 +70,6 @@ def create_hrms_client(request):
                     "redirect": "true",
                     "redirect_url": reverse('hrms:hrms_clients')
                 }
-                print("Redirect URL:", response_data["redirect_url"])
             else:               
                 response_data = {
                     "status": "false",
@@ -96,20 +77,14 @@ def create_hrms_client(request):
                     "title": "HRMS Client already exists",
                     "message": "HRMS Client with this username and password already exists",                        
                 }
-                print("status inside", response_data["status"])
-            print("status outside", response_data["status"])
-            
         else:
-            print('not valid')
             message = generate_form_errors(form, formset=False)
-            print("message",message)
             response_data = {
                 "stable": "true",
                 "status": "form_error",  # Change status to 'form_error'
                 "title": "Form validation error",
                 "message": str(message),               
             }
-            print("status", response_data["status"])
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = HrmsClientForm()
@@ -130,7 +105,6 @@ def hrms_clients(request):
     
     instances = HrmsClient.objects.filter(is_deleted=False)
     query = request.GET.get("q")
-    print("hrms search q",query)
     if query:
         instances = instances.filter(Q(first_name__icontains=query) | Q(last_name__icontains=query))
     
@@ -147,11 +121,8 @@ def hrms_clients(request):
 
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
-def edit_hrms_client(request, pk):
-    
+def edit_hrms_client(request, pk):    
     instance = get_object_or_404(HrmsClient.objects.filter(pk=pk, is_deleted=False))
-    
-
     if request.method == "POST":
         form = HrmsClientEditForm(request.POST, instance=instance)
 
@@ -167,11 +138,6 @@ def edit_hrms_client(request, pk):
             user.last_name = data.last_name
             user.email = data.email
             user.save()
-            print("username",user.username)
-            print("password",user.password)
-            print("first name",user.first_name)
-            print("last name",user.last_name)
-            print("email",user.email)
 
             # Update HrmsClient instance
             data.updator = request.user
@@ -185,7 +151,6 @@ def edit_hrms_client(request, pk):
                 "message": "HrmsClient updated successfully.",                
                 "redirect_url": reverse('hrms:hrms_clients')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
 

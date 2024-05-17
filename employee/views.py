@@ -937,26 +937,7 @@ def create_leave(request):
                         creator = creator,
                         updator = updator
                     )
-                    leave.save()
-
-                    # name = form.cleaned_data['name']
-                    # email = form.cleaned_data['email']
-                    # content = form.cleaned_data['content']
-                    # content += "<br />"
-                    # link = request.build_absolute_uri(reverse('sales:print_sale',kwargs={'pk':pk}))
-                    # content += '<a href="%s">%s</a>' %(link,link)
-                    
-                    # template_name = 'email/email.html'
-                    # subject = "Purchase Details (#%s) | %s" %(str(instance.auto_id),current_shop.name)          
-                    # context = {
-                    #     'name' : name,
-                    #     'subject' : subject,
-                    #     'content' : content,
-                    #     'email' : email
-                    # }
-                    # html_content = render_to_string(template_name,context)
-                    # send_email(email,subject,content,html_content) 
-
+                    leave.save()                   
                     
                     # Send email notification
                     subject = 'Leave Request Submitted by %s ' %str(employee)

@@ -559,7 +559,6 @@ def salaries(request):
     year_query = request.GET.get("year")
     if year_query:
         salaries = salaries.filter(Q(date__year__icontains=year_query))    
-
     
     paginator = Paginator(salaries,1000000000000)
     page_number = request.GET.get('page')
@@ -593,7 +592,6 @@ def edit_salary(request, pk):
                 "message": "Salary updated successfully.",                
                 "redirect_url": reverse('payroll:salaries')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
             response_data = {
@@ -602,7 +600,6 @@ def edit_salary(request, pk):
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = SalaryForm(instance=instance)
