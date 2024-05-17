@@ -1,14 +1,19 @@
+import calendar
 from num2words import num2words
 from weasyprint import HTML
 from xhtml2pdf import pisa
+
 import json
 import datetime
+from io import BytesIO
 from decimal import Decimal, InvalidOperation
 
 from django.urls import reverse
 from django.utils.text import slugify
 from django.core.mail import send_mail
+from django.utils.html import strip_tags
 from django.template.loader import get_template
+from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.utils.translation import gettext_lazy as _
@@ -16,6 +21,7 @@ from django.http import HttpResponse, JsonResponse
 from django.core.mail import EmailMultiAlternatives
 from django.core.paginator import Paginator
 from django.db.models import Sum, Q
+from sevendyne_hrms import settings
 from django.utils import timezone
 
 from main.decorators import company_required
@@ -41,12 +47,14 @@ def get_last_payslip(request):
             
             # Calculate total deductions
             total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+            # Get today's date
+            today_date = datetime.date.today()
             
             # Prepare the data to send back to the client-side
             payslip_data = {
                 'basic_salary': last_payslip.net_salary,  # Assuming 'net_salary' is considered as basic salary
                 'net_salary': last_payslip.net_salary,
-                'date': last_payslip.date,
+                'date': today_date,
                 'additions_fields': list(additions_fields.values()),  # Convert QuerySet to list of dictionaries
                 'deductions_fields': list(deductions_fields.values()),  # Convert QuerySet to list of dictionaries
                 'total_deductions': total_deductions,
@@ -410,7 +418,10 @@ def delete_payroll_item(request,pk):
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_salary(request):
-    current_company = get_current_company(request)    
+    current_company = get_current_company(request)   
+    currency=current_company.country.currency
+    currency_symbol = current_company.country.currency_symbol
+     
     if request.method == 'POST':
         form = SalaryForm(request.POST, current_company=current_company)
         if form.is_valid():
@@ -436,29 +447,32 @@ def create_salary(request):
                     creator=creator,
                     updator=updator
                 )
-                additions_fields = PayrollItem.objects.filter(company=current_company, category='Additions', is_deleted=False)
-                deductions_fields = PayrollItem.objects.filter(company=current_company, category='Deductions', is_deleted=False)
+                payroll_additions_fields = PayrollItem.objects.filter(company=current_company, category='Additions', is_deleted=False)
+                payroll_deductions_fields = PayrollItem.objects.filter(company=current_company, category='Deductions', is_deleted=False)
 
                 # Save dynamic fields for additions
-                for item in additions_fields:
+                for item in payroll_additions_fields:
                     field_name = item.name
-                    field_value = request.POST.get(field_name, 0)
-                    try:
-                        field_value = Decimal(field_value)
-                    except (InvalidOperation, ValueError):
-                        # If conversion fails, log the error and use 0 as a default value
-                        print(f"Invalid input for {field_name}: {field_value}. Defaulting to 0.")
-                        field_value = Decimal('0.00')
+                    # Check if the same field already exists for the current employee's salary
+                    if not SalaryDynamicField.objects.filter(company=current_company, employee=employee, salary=salary, field_name=field_name).exists():
+    
+                        field_value = request.POST.get(field_name, 0)
+                        try:
+                            field_value = Decimal(field_value)
+                        except (InvalidOperation, ValueError):
+                            # If conversion fails, log the error and use 0 as a default value
+                            print(f"Invalid input for {field_name}: {field_value}. Defaulting to 0.")
+                            field_value = Decimal('0.00')
 
-                    # Check if field_value is NaN (Not a Number)
-                    if field_value.is_nan():
-                        # If so, default it to 0
-                        field_value = Decimal('0.00')
-        
-                    SalaryDynamicField.objects.create(company=current_company,employee=employee, salary=salary, field_name=field_name, field_value=field_value, category='Additions')
+                        # Check if field_value is NaN (Not a Number)
+                        if field_value.is_nan():
+                            # If so, default it to 0
+                            field_value = Decimal('0.00')
+            
+                        SalaryDynamicField.objects.create(company=current_company,employee=employee, salary=salary, field_name=field_name, field_value=field_value, category='Additions')
 
                 # Save dynamic fields for deductions
-                for item in deductions_fields:
+                for item in payroll_deductions_fields:
                     field_name = item.name
                     field_value = request.POST.get(field_name, 0)
                     try:
@@ -475,6 +489,70 @@ def create_salary(request):
                         field_value = Decimal('0.00')
                     SalaryDynamicField.objects.create(company=current_company,employee=employee, salary=salary, field_name=field_name, field_value=field_value, category='Deductions')
        
+                # Send payslip as email 
+                # Filter SalaryDynamicField objects for the current Salary instance, separated by category
+                additions_fields = SalaryDynamicField.objects.filter(company=current_company,employee=employee, salary=salary, category='Additions')
+                deductions_fields = SalaryDynamicField.objects.filter(company=current_company,employee=employee, salary=salary, category='Deductions')
+                
+                 # Calculate total of additions
+                total_additions = additions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')    
+                # Calculate total of deductions
+                total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+                # Convert net_salary to words without specifying currency
+                net_salary_in_words = num2words(net_salary, lang='en')
+                # Convert the entire string to uppercase
+                net_salary_in_words = net_salary_in_words.upper()
+    
+                # Generate payslip PDF
+                payslip_pdf = generate_email_payslip_pdf(request, pk=salary.id)
+                # Assuming you have the content of the PDF in `payslip_pdf_content`
+                
+                # Ensure payslip_pdf_response is an HttpResponse object
+                if isinstance(payslip_pdf, HttpResponse):
+                    # Get PDF content from HttpResponse
+                    payslip_pdf_content = payslip_pdf.content
+                else:
+                    return HttpResponse("Error generating payslip PDF", status=500)                
+                
+                # Convert PDF content to bytes
+                payslip_pdf_bytes = BytesIO(payslip_pdf_content)
+                print("payslip_pdf_bytes",payslip_pdf_bytes)
+                print("payslip_pdf_bytes.getvalue()",payslip_pdf_bytes.getvalue())
+
+                # Replace spaces in the employee's name with underscores
+                employee_name_with_underscores = employee.get_full_name.replace(' ', '_')
+                # Format the filename with the employee's name and selected date
+                payslip_filename = f"payslip_{employee_name_with_underscores}_{selected_date.strftime('%B_%Y')}.pdf"
+                # Get the month name
+                month_name = calendar.month_name[month]
+                subject = 'PaySlip for the month - %s ' %str(month_name)
+                context = {
+                    'pk':salary.id,
+                    'instance': salary,
+                    'title': 'PaySlip',
+                    'currency': currency,
+                    'currency_symbol':currency_symbol,
+                    'additions_fields': additions_fields,
+                    'deductions_fields': deductions_fields,
+                    'total_additions': total_additions,
+                    'total_deductions': total_deductions,
+                    'net_salary_in_words': net_salary_in_words
+                }
+                html_message = render_to_string('payroll/payslip-employee-pdf.html', context=context)
+                plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
+                from_email = settings.DEFAULT_FROM_EMAIL
+                to_email = employee.email
+                # Attach the payslip PDF to the email
+                email = EmailMultiAlternatives(subject, plain_message, from_email, [to_email])
+                email.attach(payslip_filename, payslip_pdf_bytes.getvalue(), 'application/pdf')
+                email.attach_alternative(html_message, "text/html")
+                # email.send()
+                try:
+                # Attempt to send the email
+                    email.send()
+                except Exception as e:
+                    # Print the exception if sending fails
+                    print("Error sending email:", str(e))
                 response_data = {
                     "status": "true",
                     "title": "Successfully Created",
@@ -717,12 +795,19 @@ def print_employee_payslip(request,pk):
     return render(request, "payroll/print_employee_payslip.html", context)
 
 
-def generate_payslip_pdf(request):
+def generate_payslip_pdf(request, pk=None):
     pk=request.GET.get('pk')
     current_company = get_current_company(request)    
     currency=current_company.country.currency
     currency_symbol = current_company.country.currency_symbol
-    instance = Salary.objects.get(pk=pk,company=current_company,is_deleted=False)
+    if pk is not None:
+        instance = get_object_or_404(Salary, pk=pk, company=current_company, is_deleted=False)
+    elif 'pk' in request.GET:
+        pk = request.GET.get('pk')
+        instance = get_object_or_404(Salary, pk=pk, company=current_company, is_deleted=False)
+    else:
+        # Handle the case when pk is not provided or found in request.GET
+        return HttpResponse("No primary key provided.")
     employee = instance.employee
     # Get the month from the date field of the Salary model
     salary_month = instance.date.strftime('%B %Y')
@@ -761,7 +846,51 @@ def generate_payslip_pdf(request):
     return response
 
 
-def generate_employee_payslip_pdf(request):
+def generate_email_payslip_pdf(request, pk):
+    instance = Salary.objects.get(pk=pk,is_deleted=False)
+    employee = instance.employee    
+    current_company = instance.company 
+    currency=current_company.country.currency
+    currency_symbol = current_company.country.currency_symbol
+    # Get the month from the date field of the Salary model
+    salary_month = instance.date.strftime('%B %Y')
+    dynamic_fields =  SalaryDynamicField.objects.filter(company=current_company,employee=employee,is_deleted=False)
+    # Filter SalaryDynamicField objects for the current Salary instance, separated by category
+    additions_fields = SalaryDynamicField.objects.filter(company=current_company,employee=employee, salary=instance, category='Additions')
+    deductions_fields = SalaryDynamicField.objects.filter(company=current_company,employee=employee, salary=instance, category='Deductions')
+     # Calculate total of additions
+    total_additions = additions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')    
+    # Calculate total of deductions
+    total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+    # Convert net_salary to words without specifying currency
+    net_salary_in_words = num2words(instance.net_salary, lang='en')   
+    template_path = 'payroll/payslip-employee-pdf.html'
+    context = {
+        'instance': instance,
+        'title': 'PaySlip',
+        'currency': currency,
+        'currency_symbol':currency_symbol,
+        'dynamic_fields': dynamic_fields,
+        'additions_fields': additions_fields,
+        'deductions_fields': deductions_fields,
+        'total_additions': total_additions,
+        'total_deductions': total_deductions,
+        'net_salary_in_words': net_salary_in_words
+    }    
+    response = HttpResponse(content_type = 'application/pdf')
+    # Generate a slugified version of the employee name and concatenate it with the month
+    filename = f"payslip_{slugify(employee)}_{salary_month}.pdf"
+    response['Content-Disposition'] = f'filename="{filename}"'  
+    template = get_template(template_path)
+    html = template.render(context)
+    pisa_status = pisa.CreatePDF(html,dest=response)
+    if pisa_status.err:
+        return HttpResponse("we had some errors <pre>" + html + "</pre>")
+    return response
+
+
+
+def generate_employee_payslip_pdf(request, pk=None):
     pk=request.GET.get('pk')
     instance = Salary.objects.get(pk=pk,is_deleted=False)
     employee = instance.employee    

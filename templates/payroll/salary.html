@@ -332,12 +332,13 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
- <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+<!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+	   
 
 <script>
     function loadCreateSalaryForm() {
 		netSalary = 0;
-        console.log("salary form load called");
         fetch("{% url 'payroll:create_salary' %}")
             .then(response => response.text())
             .then(data => {            
@@ -355,7 +356,6 @@
 
                 // Show the modal
                 $('#add_salary').modal('show');
-                console.log("modal showed");
                 // Attach event listeners after the form is loaded
                 attachEventListeners();
             })
@@ -367,6 +367,7 @@
     function attachEventListeners() {
 		// Add an event listener to the employee selection field
 		$('#id_employee').on('change', function() {
+			console.log("employee changed");
 			var employeeId = $(this).val(); // Get the selected employee ID
 			var url = "{% url 'payroll:get_last_payslip' %}";
 			// Make an AJAX request to fetch the last payslip details
@@ -462,6 +463,10 @@
 
 		// Calculate the total working days by subtracting weekend days and holidays from the total days
 		var totalWorkingDays = totalDaysInMonth - weekendCount - holidayCount;
+		console.log("totalDaysInMonth",totalDaysInMonth);
+		console.log("weekendCount",weekendCount);
+		console.log("holidayCount",holidayCount);
+		console.log("totalWorkingDays",totalWorkingDays);
 
 		return totalWorkingDays;
 	}
@@ -500,7 +505,7 @@
                 totalAdditions += value;
             }
         });
-
+		console.log("totalAdditions",totalAdditions);
         // Iterate through all input fields under the class "deduction"
         $('.deduction input[type="text"]').each(function(index, element) {
 			// Check if the input field is not named "Leave"
@@ -516,10 +521,12 @@
         });
 		// Add leave deduction amount to total deductions
 		totalDeductions += leaveDeduction;
+		console.log("totalDeductions",totalDeductions);
 
 
         // Calculate net salary by subtracting total deductions from total additions
         var netSalary = totalAdditions - totalDeductions;
+		console.log("netSalary",netSalary);
         // Set the calculated net salary value to the corresponding form field
         $('input[name="net_salary"]').val(netSalary.toFixed(2));	
 	}
@@ -625,6 +632,7 @@
 
 	// Function to handle delete action
 	function handleDelete(pk) {
+		console.log("handle delete function")
 		Swal.fire({
 			title: "Are you sure?",
 			text: "Once deleted, you will not be able to recover this PaySlip!",
