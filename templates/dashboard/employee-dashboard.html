@@ -19,165 +19,14 @@
 				<div class="welcome-det">
 					<h3>Welcome, {{ employee.get_full_name }}</h3>
 					<p>{{ employee.company }}</p>
-					{% comment %} <p>Monday, 20 May 2019</p> {% endcomment %}
 				</div>
 			</div>
 		</div>
 	</div>
 	
 	<div class="row">
-		{% comment %} <div class="col-lg-8 col-md-8">
-			<section class="dash-section">
-				<h1 class="dash-sec-title">Today</h1>
-				<div class="dash-sec-content">
-					<div class="dash-info-list">
-						<a href="#" class="dash-card text-danger">
-							<div class="dash-card-container">
-								<div class="dash-card-icon">
-									<i class="fa-regular fa-hourglass"></i>
-								</div>
-								<div class="dash-card-content">
-									<p>Richard Miles is off sick today</p>
-								</div>
-								<div class="dash-card-avatars">
-									<div class="e-avatar"><img src="{% static 'assets/img/profiles/avatar-09.jpg' %}" alt="User Image"></div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-					<div class="dash-info-list">
-						<a href="#" class="dash-card">
-							<div class="dash-card-container">
-								<div class="dash-card-icon">
-									<i class="fa-solid fa-suitcase"></i>
-								</div>
-								<div class="dash-card-content">
-									<p>You are away today</p>
-								</div>
-								<div class="dash-card-avatars">
-									<div class="e-avatar"><img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User Image"></div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-					<div class="dash-info-list">
-						<a href="#" class="dash-card">
-							<div class="dash-card-container">
-								<div class="dash-card-icon">
-									<i class="fa-regular fa-building"></i>
-								</div>
-								<div class="dash-card-content">
-									<p>You are working from home today</p>
-								</div>
-								<div class="dash-card-avatars">
-									<div class="e-avatar"><img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User Image"></div>
-								</div>
-							</div>
-						</a>
-					</div>
-
-				</div>
-			</section>
-
-			<section class="dash-section">
-				<h1 class="dash-sec-title">Tomorrow</h1>
-				<div class="dash-sec-content">
-					<div class="dash-info-list">
-						<div class="dash-card">
-							<div class="dash-card-container">
-								<div class="dash-card-icon">
-									<i class="fa-solid fa-suitcase"></i>
-								</div>
-								<div class="dash-card-content">
-									<p>2 people will be away tomorrow</p>
-								</div>
-								<div class="dash-card-avatars">
-									<a href="#" class="e-avatar"><img src="{% static 'assets/img/profiles/avatar-04.jpg' %}" alt="User Image"></a>
-									<a href="#" class="e-avatar"><img src="{% static 'assets/img/profiles/avatar-08.jpg' %}" alt="User Image"></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			<section class="dash-section">
-				<h1 class="dash-sec-title">Next seven days</h1>
-				<div class="dash-sec-content">
-					<div class="dash-info-list">
-						<div class="dash-card">
-							<div class="dash-card-container">
-								<div class="dash-card-icon">
-									<i class="fa-solid fa-suitcase"></i>
-								</div>
-								<div class="dash-card-content">
-									<p>2 people are going to be away</p>
-								</div>
-								<div class="dash-card-avatars">
-									<a href="#" class="e-avatar"><img src="{% static 'assets/img/profiles/avatar-05.jpg' %}" alt="User Image"></a>
-									<a href="#" class="e-avatar"><img src="{% static 'assets/img/profiles/avatar-07.jpg' %}" alt="User Image"></a>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="dash-info-list">
-						<div class="dash-card">
-							<div class="dash-card-container">
-								<div class="dash-card-icon">
-									<i class="fa-solid fa-user-plus"></i>
-								</div>
-								<div class="dash-card-content">
-									<p>Your first day is going to be  on Thursday</p>
-								</div>
-								<div class="dash-card-avatars">
-									<div class="e-avatar"><img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User Image"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="dash-info-list">
-						<a href="" class="dash-card">
-							<div class="dash-card-container">
-								<div class="dash-card-icon">
-									<i class="fa-regular fa-calendar-days"></i>
-								</div>
-								<div class="dash-card-content">
-									<p>It's Spring Bank Holiday  on Monday</p>
-								</div>
-							</div>
-						</a>
-					</div>
-				</div>
-			</section>
-		</div> {% endcomment %}
-
 		<div class="col-lg-4 col-md-4">
 			<div class="dash-sidebar">
-				{% comment %} <section>
-					<h5 class="dash-title">Projects</h5>
-					<div class="card">
-						<div class="card-body">
-							<div class="time-list">
-								<div class="dash-stats-list">
-									<h4>71</h4>
-									<p>Total Tasks</p>
-								</div>
-								<div class="dash-stats-list">
-									<h4>14</h4>
-									<p>Pending Tasks</p>
-								</div>
-							</div>
-							<div class="request-btn">
-								<div class="dash-stats-list">
-									<h4>2</h4>
-									<p>Total Projects</p>
-								</div>
-							</div>
-						</div>
-					</div>
-				</section> {% endcomment %}
 				<section>
 					<h5 class="dash-title">Your Leave</h5>
 					<div class="card">
@@ -197,38 +46,112 @@
 							</div>
 						</div>
 					</div>
-				</section>
-				{% comment %} <section>
-					<h5 class="dash-title">Your time off allowance</h5>
-					<div class="card">
-						<div class="card-body">
-							<div class="time-list">
-								<div class="dash-stats-list">
-									<h4>5.0 Hours</h4>
-									<p>Approved</p>
-								</div>
-								<div class="dash-stats-list">
-									<h4>15 Hours</h4>
-									<p>Remaining</p>
-								</div>
-							</div>
-							<div class="request-btn">
-								<a class="btn btn-primary" href="#">Apply Time Off</a>
-							</div>
-						</div>
-					</div>
-				</section> {% endcomment %}
-				{% comment %} <section>
-					<h5 class="dash-title">Upcoming Holiday</h5>
-					<div class="card">
-						<div class="card-body text-center">
-							<h4 class="holiday-title mb-0">Mon 20 May 2019 - Ramzan</h4>
-						</div>
-					</div>
-				</section> {% endcomment %}
+				</section>				
 			</div>
 		</div>
+		<div class="col-lg-4 col-md-4">
+			<section>
+				<h5 class="dash-title">Upcoming Holiday</h5>
+				<div class="card">
+					<div class="card-body text-center">
+						{% if next_holiday %}
+							<h4 class="holiday-title mb-0">{{ next_holiday.date|date:"D d M Y" }} - {{ next_holiday.name }}</h4>
+						{% else %}
+							<p>No upcoming holiday</p>
+						{% endif %}
+						{% comment %} {% if upcoming_holidays %}
+                            {% for holiday in upcoming_holidays %}
+                                <h4 class="holiday-title mb-0">{{ holiday.date|date:"D d M Y" }} - {{ holiday.name }}</h4>
+                            {% endfor %}
+                        {% else %}
+                            <p>No upcoming holiday</p>
+                        {% endif %} {% endcomment %}
+					</div>
+				</div>
+			</section>
+		</div>
 	</div>
+	<div class="col-lg-8 col-md-8">
+		<section>
+			<h5 class="dash-title">Payslip</h5>
+			<div class="card">
+				<div class="card-body">
+					{% if last_payslip %}
+						<h4 class="payslip-title">Payslip for the month of {{ last_payslip.date|date:"F Y" }}</h4>
+						<div class="row">
+							<div class="col-sm-6 m-b-20">
+								<ul class="list-unstyled mb-0">
+									<li>{{ last_payslip.company.name }}</li>
+									<li>{{ last_payslip.company.address }},</li>
+									<li>{{ last_payslip.company.state }}, {{ last_payslip.company.country }}, {{ last_payslip.company.postal_code }}</li>
+								</ul>
+							</div>
+							<div class="col-sm-6 m-b-20">
+								<div class="invoice-details">
+									<h3 class="text-uppercase">Payslip ###id</h3>
+									<ul class="list-unstyled">
+										<li>Salary Month: <span>{{ last_payslip.date|date:"F Y" }}</span></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-12 m-b-20">
+								<ul class="list-unstyled">
+									<li><h5 class="mb-0"><strong>{{ last_payslip.employee.get_full_name }}</strong></h5></li>
+									<li><span>{{ last_payslip.employee.designation }}</span></li>
+									<li>Employee ID: {{ last_payslip.employee.employeeid }}</li>
+									<li>Joining Date: {{ last_payslip.employee.joindate }}</li>
+								</ul>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-6">
+								<div>
+									<h4 class="m-b-10"><strong>Earnings</strong></h4>
+									<table class="table table-bordered">
+										<tbody>
+											{% for additions_field in additions_fields %}
+												<tr>
+													<td><strong>{{ additions_field.field_name }}</strong> <span class="float-end">{{ additions_field.field_value }}</span></td>
+												</tr>
+											{% endfor %}
+											<tr>
+												<td><strong>Total Earnings</strong> <span class="float-end"><strong>{{ last_payslip.net_salary }}</strong></span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div>
+									<h4 class="m-b-10"><strong>Deductions</strong></h4>
+									<table class="table table-bordered">
+										<tbody>
+											{% for deductions_field in deductions_fields %}
+												<tr>
+													<td><strong>{{ deductions_field.field_name }}</strong> <span class="float-end">{{ deductions_field.field_value }}</span></td>
+												</tr>
+											{% endfor %}
+											<tr>
+												<td><strong>Total Deductions</strong> <span class="float-end"><strong>{{ last_payslip.total_deductions }}</strong></span></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="col-sm-12">
+								<p><strong>Net Salary: {{ last_payslip.net_salary }}</strong></p>
+							</div>
+						</div>
+					{% else %}
+						<p>No payslip available</p>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+	</div>
+	
 
 </div>
 <!-- /Page Content -->

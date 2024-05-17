@@ -1,6 +1,6 @@
 from datetime import date
 from django import forms
-from django.forms.widgets import TextInput, URLInput, ClearableFileInput, FileInput
+from django.forms.widgets import TextInput, FileInput
 from django.utils.translation import gettext_lazy as _
 from client.models import Client
 
@@ -8,8 +8,7 @@ class DateInput(forms.DateInput):
     input_type = 'date'
     value = date.today() 
 
-class ClientForm(forms.ModelForm):
-    
+class ClientForm(forms.ModelForm):    
     class Meta:
         model = Client
         exclude = ['creator','updator','auto_id','a_id','company','is_deleted']

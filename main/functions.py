@@ -24,28 +24,9 @@ def get_a_id(model,request):
     return a_id
 
 
-# def generate_form_errors(args,formset=False):
-#     message = ''
-#     if not formset:
-#         for field in args:
-#             if field.errors:                
-#                 message += str(field.errors)  + "|"
-#         for err in args.non_field_errors():
-#             message += str(err) + "|"
-                
-#     elif formset:
-#         for form in args:
-#             for field in form:
-#                 if field.errors:
-#                     message += str(field.errors) + "|"
-#             for err in form.non_field_errors():
-#                 message += str(err) + "|"
-#     return message[:-1]
-
 def generate_form_errors(args, formset=False):
     message = ''
     errors = {}
-
     if not formset:
         for field in args:
             if field.errors:
@@ -55,7 +36,6 @@ def generate_form_errors(args, formset=False):
         for err in args.non_field_errors():
             errors['non_field_errors'] = str(err)
             message += f"non_field_errors: {str(err)}|"
-
     elif formset:
         for form in args:
             for field in form:
@@ -66,41 +46,34 @@ def generate_form_errors(args, formset=False):
             for err in form.non_field_errors():
                 errors['non_field_errors'] = str(err)
                 message += f"non_field_errors: {str(err)}|"
-
     return errors, message[:-1]
 
 
 def has_hrms_permission(user):
-    print("checking has_hrms_permission")
     if user.groups.filter(name='hrms_clients').exists():
-        print("user exists in hrms clients group")
+        pass
     else:
-        print("user not exist in hrms client group")
+        pass
     return user.groups.filter(name='hrms_clients').exists() 
 
+
 def has_employee_dashboard_permission(user):
-    print("checking employee permission")
     return user.groups.filter(name='employee_group').exists()
 
 
 def has_admin_dashboard_permission(user):
-    print("checking admin permission")
     return user.groups.filter(name='sevendyne_admin').exists()
 
 
 def get_current_company(request):
-    # print("current company get request")
     company = None
     if request.user.is_authenticated:
         if "current_company" in request.session:
-            # print("current company in request.session")
             pk =  request.session['current_company']
             if Company.objects.filter(pk=pk).exists():
                 company = Company.objects.get(pk=pk)
-                # print("company", company)
         elif CompanyAccess.objects.filter(user=request.user).exists():
-            company = CompanyAccess.objects.get(user=request.user).company        
-            # print("company in get current company",company)
+            company = CompanyAccess.objects.get(user=request.user).company  
     return company
 
 
@@ -110,15 +83,14 @@ def company_access(request):
         company_access = CompanyAccess.objects.filter(user=request.user,is_accepted=True)
         for access in company_access:
             if not access.company in companies:
-                companies.append(access.company)
-        
+                companies.append(access.company)        
     return companies
         
 def get_candidate_id(request):
     candidate_id = "SVD1001" # user defined number
     if Candidate.objects.filter(is_deleted=False).exists():
         candidate_id = Candidate.objects.filter(is_deleted=False).latest('id').candidateid
-    print(candidate_id)
+    
     if candidate_id:
         rev_admn_no =  candidate_id[::-1]  
         length = len(rev_admn_no) 
@@ -143,6 +115,5 @@ def get_candidate_id(request):
         if len0 :
             candidate_id = str(last_admn_code) + str(b)+ str(next_no)
         else:
-            candidate_id = str(last_admn_code) + str(next_no)
-    
+            candidate_id = str(last_admn_code) + str(next_no)    
     return candidate_id 

@@ -332,12 +332,13 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
- <!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+<!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+	   
 
 <script>
     function loadCreateSalaryForm() {
 		netSalary = 0;
-        console.log("salary form load called");
         fetch("{% url 'payroll:create_salary' %}")
             .then(response => response.text())
             .then(data => {            
@@ -355,7 +356,6 @@
 
                 // Show the modal
                 $('#add_salary').modal('show');
-                console.log("modal showed");
                 // Attach event listeners after the form is loaded
                 attachEventListeners();
             })
@@ -365,6 +365,46 @@
     }
 
     function attachEventListeners() {
+		// Add an event listener to the employee selection field
+		$('#id_employee').on('change', function() {
+			console.log("employee changed");
+			var employeeId = $(this).val(); // Get the selected employee ID
+			var url = "{% url 'payroll:get_last_payslip' %}";
+			// Make an AJAX request to fetch the last payslip details
+			$.ajax({
+				url: url,
+				method: 'GET',
+				data: {'employee_id': employeeId},
+				success: function(response) {
+					// Populate the form fields with the received payslip data
+					$('input[name="Basic Salary"]').val(response.basic_salary);
+					$('#id_net_salary').val(response.net_salary);
+					$('#id_date').val(response.date);
+					
+					// Populate additions fields
+					response.additions_fields.forEach(function(field) {
+						// Assuming the field name matches the ID of the input element
+						$('#' + field.field_name).val(field.field_value);
+					});
+					
+					// Populate deductions fields
+					response.deductions_fields.forEach(function(field) {
+						// Assuming the field name matches the ID of the input element
+						$('#' + field.field_name).val(field.field_value);
+					});
+					
+					// Populate total deductions
+					$('#total_deductions').val(response.total_deductions);
+					
+					// You can populate other fields here based on the received data
+				},
+				error: function(xhr, status, error) {
+					console.error('Error:', error);
+					// You can handle error cases here, such as displaying an error message to the user
+				}
+			});
+		});
+
         $('input[name="Basic Salary"]').on('input', function() {
             var url = "{% url 'payroll:ajax_load_salary_components' %}";
             var basicSalary = parseFloat($(this).val());
@@ -423,6 +463,10 @@
 
 		// Calculate the total working days by subtracting weekend days and holidays from the total days
 		var totalWorkingDays = totalDaysInMonth - weekendCount - holidayCount;
+		console.log("totalDaysInMonth",totalDaysInMonth);
+		console.log("weekendCount",weekendCount);
+		console.log("holidayCount",holidayCount);
+		console.log("totalWorkingDays",totalWorkingDays);
 
 		return totalWorkingDays;
 	}
@@ -461,7 +505,7 @@
                 totalAdditions += value;
             }
         });
-
+		console.log("totalAdditions",totalAdditions);
         // Iterate through all input fields under the class "deduction"
         $('.deduction input[type="text"]').each(function(index, element) {
 			// Check if the input field is not named "Leave"
@@ -477,10 +521,12 @@
         });
 		// Add leave deduction amount to total deductions
 		totalDeductions += leaveDeduction;
+		console.log("totalDeductions",totalDeductions);
 
 
         // Calculate net salary by subtracting total deductions from total additions
         var netSalary = totalAdditions - totalDeductions;
+		console.log("netSalary",netSalary);
         // Set the calculated net salary value to the corresponding form field
         $('input[name="net_salary"]').val(netSalary.toFixed(2));	
 	}
@@ -586,6 +632,7 @@
 
 	// Function to handle delete action
 	function handleDelete(pk) {
+		console.log("handle delete function")
 		Swal.fire({
 			title: "Are you sure?",
 			text: "Once deleted, you will not be able to recover this PaySlip!",

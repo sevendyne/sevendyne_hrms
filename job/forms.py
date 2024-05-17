@@ -1,13 +1,15 @@
 from django import forms
 from django.forms.widgets import TextInput, Select,URLInput, ClearableFileInput
+from candidate.models import Candidate
+from employee.models import Department
 from job.models import CandidateInterview, CandidateJob, Job, JobApplicant
 from datetime import date
 from django.utils.translation import gettext_lazy as _
 
+
 class DateInput(forms.DateInput):
     input_type = 'date'
     value = date.today() 
-
 
 
 class JobForm(forms.ModelForm):
@@ -41,6 +43,13 @@ class JobForm(forms.ModelForm):
                 'required': _("Status field is required."),
             }
         }
+    def __init__(self, *args, **kwargs):
+        current_company = kwargs.pop('current_company', None)
+        super(JobForm, self).__init__(*args, **kwargs)        
+        if current_company:
+            # Filter department by current company
+            self.fields['department'].queryset = Department.objects.filter(company=current_company, is_deleted=False)            
+      
 
 
 class CandidateJobForm(forms.ModelForm):
@@ -60,6 +69,7 @@ class CandidateJobForm(forms.ModelForm):
             }
         }
 
+
 class CandidateJobStatusForm(forms.ModelForm):
     class Meta:
         model = CandidateJob
@@ -72,6 +82,7 @@ class CandidateJobStatusForm(forms.ModelForm):
                 'required': _("Job Status field is required."),
             }
         }
+
 
 class CandidateInterviewForm(forms.ModelForm):
     class Meta:
@@ -86,6 +97,7 @@ class CandidateInterviewForm(forms.ModelForm):
                 'required': _("Date Time field is required."),
             }
         }
+
 
 class CandidateInterviewStatusForm(forms.ModelForm):
     class Meta:
@@ -113,7 +125,15 @@ class JobApplicantForm(forms.ModelForm):
                 'required': _("Candidate field is required."),
             }
         }
-
+    def __init__(self, *args, **kwargs):
+        current_company = kwargs.pop('current_company', None)
+        super(JobApplicantForm, self).__init__(*args, **kwargs)        
+        if current_company:
+            # Filter candidate by current company
+            self.fields['candidate'].queryset = Candidate.objects.filter(company=current_company, is_deleted=False)            
+            # Filter job by current company
+            self.fields['job'].queryset = Job.objects.filter(company=current_company, is_deleted=False)
+           
 
 class JobApplicantStatusForm(forms.ModelForm):
     class Meta:
@@ -127,3 +147,10 @@ class JobApplicantStatusForm(forms.ModelForm):
                 'required': _("Hiring Status field is required."),
             }
         }
+    def __init__(self, *args, **kwargs):
+        current_company = kwargs.pop('current_company', None)
+        super(JobApplicantStatusForm, self).__init__(*args, **kwargs)        
+        if current_company:
+            # Filter candidate by current company
+            self.fields['candidate'].queryset = Candidate.objects.filter(company=current_company, is_deleted=False)            
+            

@@ -2,50 +2,12 @@
 {% load static %}
 
 {% block content %}
-{% comment %} <!DOCTYPE html>
-
-{% load static %}
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Smarthr - Bootstrap Admin Template">
-		<meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
-        <meta name="author" content="Dreamguys - Bootstrap Admin Template">
-        <title>Register - HRMS admin template</title> {% endcomment %}
-		
-		<!-- Favicon -->
-        {% comment %} <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets/img/logo_svd.png' %}"> {% endcomment %}
-		
-		<!-- Bootstrap CSS -->
-        {% comment %} <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}"> {% endcomment %}
-
-		<!-- Bootstrap CSS -->
-        {% comment %} <link rel="stylesheet" href="assets/css/bootstrap.min.css"> {% endcomment %}
-		
-		<!-- Main CSS -->
-        {% comment %} <link rel="stylesheet" href="{% static 'assets/css/style.css' %}"> {% endcomment %}
-
-		 
-    {% comment %} </head>
-    <body class="account-page"> {% endcomment %}
 	
 		<!-- Main Wrapper -->
         <div class="main-wrapper" style="display:flex;justify-content:center">
-			{% comment %} <div class="account-content"> {% endcomment %}
-				{% comment %} <div class="container"> {% endcomment %}
-				
-					<!-- Account Logo -->
-					{% comment %} <div class="account-logo">
-						<a href="admin-dashboard.html"><img src="assets/img/logo2.png" alt="Dreamguy's Technologies"></a>
-					</div> {% endcomment %}
-					<!-- /Account Logo -->
-					
 					<div class="account-box" style="width:70%;margin-top:3%">
 						<div class="account-wrapper">
 							<h1 class="account-title" style="text-align:center;color:#2b5697;">Job Application Form</h1>
-							{% comment %} <p class="account-subtitle">Access to our dashboard</p> {% endcomment %}
-							
 							<!-- Account Form -->
 							<form action="" method="POST" enctype="multipart/form-data">
 								{% csrf_token %}
@@ -179,21 +141,6 @@
 							<!-- /Account Form -->
 						</div>
 					</div>
-				{% comment %} </div> {% endcomment %}
-			{% comment %} </div> {% endcomment %}
         </div>
-		<!-- /Main Wrapper -->
-
-		<!-- jQuery -->
-		{% comment %} <script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script> {% endcomment %}
-		
-		<!-- Bootstrap Core JS -->
-        {% comment %} <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script> {% endcomment %}
-		
-		<!-- Custom JS -->
-		{% comment %} <script src="{% static 'assets/js/app.js' %}"></script> {% endcomment %}
-{% comment %} 		
-    </body>
-</html> {% endcomment %}
 
 {% endblock %}

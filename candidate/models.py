@@ -50,9 +50,15 @@ class Candidate(models.Model):
     class Meta:
         ordering = ['-date_applied']
 
+    @property
+    def get_full_name(self):
+        if self.last_name:
+            full_name = f"{self.first_name} {self.last_name}"
+        else:
+            full_name = self.first_name
+        return full_name
 
 
-# Create your models here.
 class Intern(models.Model):
     name = models.CharField(max_length=255)
     email = models.EmailField(_("Email"),unique=True)

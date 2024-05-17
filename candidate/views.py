@@ -1,34 +1,22 @@
-import datetime
 import json
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse
-# from main.decorators import company_required
+import datetime
+
 from django.db.models import Q
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required,user_passes_test
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.urls import reverse
+
 from candidate.models import Candidate, Intern
 from job.models import INTERVIEW_CHOICES, CandidateInterview
-from main.decorators import company_required
-
-from candidate.forms import CandidateForm, InternForm
-from main.functions import generate_form_errors, get_a_id, get_auto_id, get_candidate_id
-from main.models import Company, State
-
-from django.http import JsonResponse
-
-from django.db.models import Count
-from django.db.models.functions import TruncMonth
-
-from django.contrib.auth.decorators import login_required, user_passes_test
-from main.decorators import company_required
 from main.functions import generate_form_errors, has_admin_dashboard_permission, has_hrms_permission
-
-from hrms.models import HrmsClient
+from main.functions import generate_form_errors, get_candidate_id
+from candidate.forms import CandidateForm, InternForm
 
 
 # candidate crud starts here
-
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def create_candidate(request):
@@ -81,7 +69,6 @@ def create_candidate(request):
                     "redirect": "true",
                     "redirect_url": reverse('candidate:candidates')
                 }
-                print("Redirect URL:", response_data["redirect_url"])
             else:               
                 response_data = {
                     "status": "false",
@@ -135,7 +122,6 @@ def edit_candidate(request, pk):
 
     if request.method == "POST":
         form = CandidateForm(request.POST, instance=instance)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
@@ -152,7 +138,6 @@ def edit_candidate(request, pk):
 
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
@@ -167,12 +152,9 @@ def edit_candidate(request, pk):
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Candidate :" + instance.email,
-            
+            "title": "Edit Candidate :" + instance.email,            
             "redirect": "true",
-            "url": reverse('candidate:candidate', kwargs={'pk': instance.pk}),
-
-
+            "url": reverse('candidate:candidate', kwargs={'pk': instance.pk})
         }
         return render(request, 'sevendyne_admin/candidate/create_candidate.html', context)
 
@@ -181,11 +163,9 @@ def edit_candidate(request, pk):
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def candidate(request, pk):
     instance = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))
-
     context = {
         'instance': instance,
-        'title': 'Company',
-
+        'title': 'Candidate',
     }
     return render(request, "sevendyne_admin/candidate/candidate.html", context)
 
@@ -193,10 +173,8 @@ def candidate(request, pk):
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def delete_candidate(request,pk):
-    instance = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))
-    
+    instance = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))    
     Candidate.objects.filter(pk=pk).update(is_deleted=True,email=instance.email + "_deleted_" )
-
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",
@@ -213,7 +191,6 @@ def delete_selected_candidates(request):
     pks = request.GET.get('pk')
     if pks:
         pks = pks[:-1]
-
         pks = pks.split(',')
         for pk in pks:
             instance = get_object_or_404(Candidate.objects.filter(pk=pk, is_deleted=False))
@@ -224,8 +201,7 @@ def delete_selected_candidates(request):
         response_data = {
             "status": "true",            
             "title": "Successfully Deleted",
-            "message": "Selected Candidate Successfully Deleted.",  
-
+            "message": "Selected Candidate Successfully Deleted.", 
             "redirect" : "true",          
             "redirect_url": reverse('candidate:candidates')
         }
@@ -245,8 +221,7 @@ def hrms_candidates(request):
     
     skills_query = request.GET.get("skills")
     if skills_query:
-        instances = instances.filter(Q(skills__icontains=skills_query))
-    
+        instances = instances.filter(Q(skills__icontains=skills_query))    
     experience_query = request.GET.get("experience")
     if experience_query:
         instances = instances.filter(experience__gte=experience_query)
@@ -260,7 +235,6 @@ def hrms_candidates(request):
         interview.candidate.id: interview.interview_status 
         for interview in CandidateInterview.objects.all()
     }
-    print("interview status",interview_statuses)
     context = {
         'instances': instances,
         'interview_statuses': interview_statuses, 
@@ -310,7 +284,6 @@ def candidate_application(request):
                     resume = resume,
                     candidateid = candidateid
                 ).save()
-                print("candidate details is saved in db")
                 response_data = {
                     "status": "true",
                     "title": "Successfully Created",
@@ -318,7 +291,6 @@ def candidate_application(request):
                     "redirect": "true",
                     "redirect_url": reverse('candidate:candidates')
                 }
-                print("Redirect URL:", response_data["redirect_url"])
             else:               
                 response_data = {
                     "status": "false",
@@ -326,10 +298,7 @@ def candidate_application(request):
                     "title": "Already exists",
                     "message": "Candidate already exists",                        
                 }
-                print("status inside", response_data["status"])
-            print("status outside", response_data["status"])
         else:
-            print('not valid')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
@@ -337,7 +306,6 @@ def candidate_application(request):
                 "title": "Form validation error",
                 "message": str(message),               
             }
-            print("status", response_data["status"])
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = CandidateForm()

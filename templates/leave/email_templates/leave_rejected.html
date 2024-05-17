@@ -132,7 +132,7 @@
 				</div> {% endcomment %}
 				<div id="spotlight">
 					<h2>
-						<b>Sevendyne IT Consultancy</b>
+						<b>Sevendyne HRMS</b>
 						<span></span>
 					</h2>
 				</div>
@@ -145,14 +145,14 @@
                     
                     <h3>Leave Details:</h3>
                     <ul>
-                        <li><strong>Start Date:</strong> {{ leave.start_date }}</li>
-                        <li><strong>End Date:</strong> {{ leave.end_date }}</li>
+                        <li><strong>Start Date:</strong> {{ leave.startdate }}</li>
+                        <li><strong>End Date:</strong> {{ leave.enddate }}</li>
                         <li><strong>Reason:</strong> {{ leave.reason }}</li>
                     </ul>
 
                     <p>Please feel free to contact us for further clarification.</p>
                     <p>Sincerely,</p>
-                    <p>{{leave.company}}</p>
+                    <p>{{ leave.company.name }}</p>
                 </div>
             </div>
             <div id="footer">

@@ -1,84 +1,70 @@
-import datetime
+from decimal import Decimal
 import json
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.paginator import Paginator
-from django.contrib.auth.models import Group
-from django.shortcuts import render, get_object_or_404
+import datetime
+
 from django.urls import reverse
-# from main.decorators import company_required
-from django.db.models import Q
-from candidate.models import Candidate
-from client.models import Client
-from employee.models import AttendanceRegister, Employee, Leave, LeaveType
-from job.models import Job
 from main.decorators import company_required
-from django.db.models.functions import ExtractMonth, ExtractYear
-
-
-from main.forms import CompanyForm, EmailSettingForm, PortfolioForm
-from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission
-from main.models import Company, CompanyAccess, EmailSetting, Portfolio, State
-
-from django.http import JsonResponse
-
-from django.db.models import Count
-from django.db.models.functions import TruncMonth
-
+from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db.models.functions import ExtractMonth, ExtractYear
+from django.contrib.auth.models import Group
+from django.core.paginator import Paginator
+from django.http import HttpResponse
+from django.db.models import Count
+from django.db.models import Sum
+from django.db.models import Q
+
 from main.decorators import company_required
 from main.functions import generate_form_errors, has_admin_dashboard_permission, has_hrms_permission
-
+from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission
+from employee.models import AttendanceRegister, Employee, Holiday, Leave, LeaveType
+from main.models import Company, CompanyAccess, EmailSetting, Portfolio
+from main.forms import CompanyForm, EmailSettingForm, PortfolioForm
+from payroll.models import PayrollItem, Salary, SalaryDynamicField, SalarySetting
+from candidate.models import Candidate
 from hrms.models import HrmsClient
-from payroll.models import PayrollItem, SalarySetting
-# def get_states(request):
-#     country_id = request.GET.get('country_id')
-#     if country_id:
-#         states = State.objects.filter(country_id=country_id)
-#         state_list = [{'id': state.id, 'name': state.name} for state in states]
-#         return JsonResponse({'states': state_list})
-#     else:
-#         return JsonResponse({'states': []})
+from client.models import Client
+from job.models import Job
 
-# @login_required
-# @company_required
-# def app(request):
-#     return HttpResponseRedirect(reverse('main:create_company'))
-    # return HttpResponseRedirect(reverse('dashboard'))
+
+
+
+def home_hrms(request):
+    return render(request, "home/index.html")
+
+
+def about(request):
+    return render(request, 'job_portal/about.html')
+
+
+def terms_and_conditions(request):
+    return render(request, 'job_portal/terms_and_conditions.html')
+
+
+def privacy_policy(request):
+    return render(request, 'job_portal/privacy_policy.html')
+
 
 def job_portal(request):
     keyword = request.GET.get('keyword')
     category = request.GET.get('category')
     location = request.GET.get('location')
-
-    # Fetch distinct job categories and job locations from existing job objects
     job_categories = Job.objects.filter(is_deleted=False).values_list('job_category', flat=True).distinct()
     job_locations = Job.objects.filter(is_deleted=False).values_list('job_location', flat=True).distinct()
-
-    # Start with a base filter that ensures is_deleted is False
     filter_conditions = Q(is_deleted=False)
-
-    # Add keyword filter if keyword is present
     if keyword:
         filter_conditions &= Q(job_title__icontains=keyword) | Q(description__icontains=keyword)
-
-    # Add category filter if category is present
     if category:
         filter_conditions &= Q(job_category__icontains=category)
-
-    # Add location filter if location is present
     if location:
         filter_conditions &= Q(job_location__icontains=location)
-
-    # Filter jobs based on combined filter conditions
     filtered_jobs = Job.objects.filter(filter_conditions)
     jobs = Job.objects.filter(is_deleted=False)
     full_time_jobs = Job.objects.filter(job_type='Full Time',is_deleted=False)
     part_time_jobs = Job.objects.filter(job_type='Part Time',is_deleted=False)
     internship_jobs = Job.objects.filter(job_type='Internship',is_deleted=False)
     contract_jobs = Job.objects.filter(job_type='Contract',is_deleted=False)
-    # job_categories = Job.objects.filter(is_deleted=False).values('job_category')
-
     context = {
         'jobs': jobs,
         'filtered_jobs': filtered_jobs,
@@ -91,33 +77,24 @@ def job_portal(request):
     }
     return render(request,"job_portal/index.html",context=context)
 
+
 def job_list(request):
     keyword = request.GET.get('keyword')
     category = request.GET.get('category')
     location = request.GET.get('location')
-    # Start with a base filter that ensures is_deleted is False
     filter_conditions = Q(is_deleted=False)
-
-    # Add keyword filter if keyword is present
     if keyword:
         filter_conditions &= Q(job_title__icontains=keyword) | Q(description__icontains=keyword)
-
-    # Add category filter if category is present
     if category:
         filter_conditions &= Q(job_category__icontains=category)
-
-    # Add location filter if location is present
     if location:
         filter_conditions &= Q(job_location__icontains=location)
-
-    # Filter jobs based on combined filter conditions
     filtered_jobs = Job.objects.filter(filter_conditions)
     jobs = Job.objects.filter(is_deleted=False)
     full_time_jobs = Job.objects.filter(job_type='Full Time',is_deleted=False)
     part_time_jobs = Job.objects.filter(job_type='Part Time',is_deleted=False)
     internship_jobs = Job.objects.filter(job_type='Internship',is_deleted=False)
     contract_jobs = Job.objects.filter(job_type='Contract',is_deleted=False)
-
     context = {
         'jobs': jobs,
         'filtered_jobs': filtered_jobs,
@@ -127,16 +104,6 @@ def job_list(request):
         'contract_jobs':contract_jobs
     }
     return render(request,"job_portal/job-list.html",context=context)
-
-
-def about(request):
-    return render(request, 'job_portal/about.html')
-
-def terms_and_conditions(request):
-    return render(request, 'job_portal/terms_and_conditions.html')
-
-def privacy_policy(request):
-    return render(request, 'job_portal/privacy_policy.html')
 
 
 def portfolios_home(request):
@@ -151,10 +118,6 @@ def portfolios_home(request):
     return render(request, 'job_portal/portfolio.html', context)
 
 
-def home_hrms(request):
-    return render(request, "home/index.html")
-
-
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def create_portfolio(request):
@@ -164,7 +127,6 @@ def create_portfolio(request):
             title = form.cleaned_data['title']
             description = form.cleaned_data['description']
             image = form.cleaned_data['image']
-
             if not Portfolio.objects.filter(title=title,is_deleted=False).exists():
                 Portfolio(                    
                     title = title,
@@ -178,7 +140,6 @@ def create_portfolio(request):
                     "redirect": "true",
                     "redirect_url": reverse('main:portfolios')
                 }
-                print("Redirect URL:", response_data["redirect_url"])
             else:               
                 response_data = {
                     "status": "false",
@@ -187,7 +148,6 @@ def create_portfolio(request):
                     "message": "Portfolio already exists",                        
                 }
         else:
-            print('not valid')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
@@ -206,7 +166,6 @@ def create_portfolio(request):
             "create":True
         }
         return render(request, 'sevendyne_admin/portfolio/create_portfolio.html', context)
-
 
 
 @login_required
@@ -229,13 +188,11 @@ def edit_portfolio(request, pk):
     instance = get_object_or_404(Portfolio.objects.filter(pk=pk, is_deleted=False))    
     if request.method == "POST":
         form = PortfolioForm(request.POST, request.FILES,instance=instance)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -243,28 +200,23 @@ def edit_portfolio(request, pk):
                 "message": "Portfolio updated successfully.",                
                 "redirect_url": reverse('main:portfolios')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = PortfolioForm(instance=instance)
-
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Portfolio :" + instance.title,
-            
+            "title": "Edit Portfolio :" + instance.title,            
             "redirect": "true",
-            "url": reverse('main:portfolios'),
+            "url": reverse('main:portfolios')
         }
         return render(request, 'sevendyne_admin/portfolio/create_portfolio.html', context)
 
@@ -273,11 +225,9 @@ def edit_portfolio(request, pk):
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def portfolio(request, pk):
     instance = get_object_or_404(Portfolio.objects.filter(pk=pk,is_deleted=False))
-
     context = {
         'instance': instance,
-        'title': 'Portfolio',
-
+        'title': 'Portfolio'
     }
     return render(request, "sevendyne_admin/portfolio/portfolio.html", context)
 
@@ -285,10 +235,8 @@ def portfolio(request, pk):
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def delete_portfolio(request,pk):
-    instance = get_object_or_404(Portfolio.objects.filter(pk=pk,is_deleted=False))
-    
+    instance = get_object_or_404(Portfolio.objects.filter(pk=pk,is_deleted=False))    
     Portfolio.objects.filter(pk=pk).update(is_deleted=True,title=instance.title + "_deleted")
-
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",
@@ -296,10 +244,7 @@ def delete_portfolio(request,pk):
         "redirect" : "true",       
         "redirect_url" : reverse('main:portfolios')
     }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
-   
-
-
+    return HttpResponse(json.dumps(response_data), content_type='application/json') 
 
 
 @login_required
@@ -307,35 +252,20 @@ def delete_portfolio(request,pk):
 @company_required
 def hrms_dashboard(request):
     company=get_current_company(request)
-    # print("company logo",company.logo)
     company_name = company.name
+    employees = Employee.objects.filter(company=company,is_deleted=False)
     employees_count = Employee.objects.filter(company=company,is_deleted=False).count()
     clients = Client.objects.filter(company=company,is_deleted=False)[:5]
     clients_count =clients.count()
-    # Step 1: Get the current date
     current_date = datetime.date.today()
     jobs = Job.objects.filter(company=company,is_deleted=False)
     jobs_count =jobs.count()
     candidates = Candidate.objects.filter(is_deleted=False,is_blocked=False)
     candidates_count =candidates.count()
-    # Step 2: Query the AttendanceRegister model for absent entries today
     absent_employees = AttendanceRegister.objects.filter(company=company,date=current_date, status='absent')[:4]
-
-    # Step 3: Retrieve the employees associated with the absent entries
     absent_employees_count = absent_employees.count()
-
-    # print("hrms home request got")
-    # Debugging: Print the user to verify it's the correct user
-    # print("User:", request.user)
-    # hrms_clients = HrmsClient.objects.filter(is_deleted=False)
-    # print("all hrms clients",hrms_clients)
-
     try:
-        # Retrieve the HrmsClient object associated with the logged-in user
         hrms_client = get_object_or_404(HrmsClient, user=request.user, is_deleted=False)
-        # print("hrms client")
-        # print(hrms_client)
-
         context = {
             'hrms_client': hrms_client,
             'company': company,
@@ -345,49 +275,59 @@ def hrms_dashboard(request):
             'candidates_count':candidates_count,
             'jobs_count':jobs_count,
             'clients':clients,
+            'candidates':candidates,
+            'employees':employees,
             'absent_employees': absent_employees,
             'absent_employees_count': absent_employees_count
-
-        }
-    
+        }    
         return render(request, "dashboard/admin-dashboard.html", context=context)
     except HrmsClient.DoesNotExist:
-        # Debugging: Print a message if the HrmsClient object is not found
-        # print("HrmsClient not found for the user.")
         return HttpResponse("HrmsClient not found for the user.")
     except Exception as e:
-        # Debugging: Print any other exceptions that might occur
-        # print("Exception:", e)
         return HttpResponse(f"An error occurred: {str(e)}")
     
 @login_required
 @user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
 def employee_dashboard(request):
     try:
-        # Retrieve the HrmsClient object associated with the logged-in user
         employee = get_object_or_404(Employee, user=request.user, is_deleted=False)
-        print("employee")
         company=employee.company
-        print(employee)
         approved_leave = Leave.objects.filter(employee=employee,company=company,is_approved=True,is_deleted=False).count()
-        total_leave = Leave.objects.filter(employee=employee,company=company,is_deleted=False).count()
+        # total_leave = Leave.objects.filter(company=company,is_deleted=False).count()
+         # Get the total leave days across all leave types
+        total_leave = LeaveType.objects.filter(company=company, is_deleted=False).aggregate(total_leave=Sum('days'))['total_leave']
+        # If total_leave is None (no leave records found), set it to 0
+        total_leave = total_leave or 0
         remaining_leave = total_leave - approved_leave
+        # Get upcoming holidays
+        today = datetime.date.today()
+        upcoming_holidays = Holiday.objects.filter(company=company, date__gte=today).order_by('date')        
+        next_holiday = Holiday.objects.filter(company=company, date__gte=today).order_by('date').first()
+        # Fetch the last created payslip for the employee
+        last_payslip = Salary.objects.filter(employee=employee, company=company, is_deleted=False).order_by('-date').first()
+        # Fetch all salary dynamic fields related to the last payslip
+        additions_fields = SalaryDynamicField.objects.filter(salary=last_payslip, category='Additions')
+        deductions_fields = SalaryDynamicField.objects.filter(salary=last_payslip, category='Deductions')
+        total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
+
         context = {
             'company':company,
             'employee': employee,
             'approved_leave':approved_leave,
-            'remaining_leave':remaining_leave
-        }
-    
+            'remaining_leave':remaining_leave,
+            'upcoming_holidays': upcoming_holidays,
+            'next_holiday':next_holiday,
+            'last_payslip': last_payslip,
+            'additions_fields': additions_fields,
+            'deductions_fields': deductions_fields,
+            'total_deductions': total_deductions
+        }    
         return render(request, "dashboard/employee-dashboard.html", context=context)
     except Employee.DoesNotExist:
-        # Debugging: Print a message if the Employee object is not found
-        print("Employee not found for the user.")
         return HttpResponse("Employee not found for the user.")
     except Exception as e:
-        # Debugging: Print any other exceptions that might occur
-        print("Exception:", e)
         return HttpResponse(f"An error occurred: {str(e)}")
+    
 
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
@@ -403,10 +343,8 @@ def admin_dashboard(request):
     )
     monthly_hrms_clients = json.dumps(list(monthly_hrms_clients))
     total_hrms_clients = hrms_clients.count()
-
     candidates = Candidate.objects.filter(is_deleted=False,is_blocked=False)
     candidates_count =candidates.count()
-
     jobs = Job.objects.filter(is_deleted=False)
     jobs_count =jobs.count()
 
@@ -415,18 +353,16 @@ def admin_dashboard(request):
     company_jobs_data = [{'company': job['company__name'], 'job_count': job['job_count']} for job in company_jobs]
     company_jobs_json = json.dumps(company_jobs_data)
 
-    # Initialize a dictionary to store skill counts
     skill_counts = {}
-
     # Count the number of candidates associated with each skill
     for candidate in candidates:
         skills = candidate.skills.split(',')
         for skill in skills:
             skill = skill.strip()  # Remove leading and trailing whitespaces
             skill_counts[skill] = skill_counts.get(skill, 0) + 1
-
     # Prepare data to pass to the template
     skill_counts_json = json.dumps(skill_counts)
+
     context = {
         'total_hrms_clients': total_hrms_clients,
         'monthly_hrms_clients' : monthly_hrms_clients,
@@ -434,28 +370,15 @@ def admin_dashboard(request):
         'jobs_count':jobs_count,
         'company_jobs': company_jobs_json,
         'skill_counts_json':skill_counts_json
-
     }
     return render(request, "sevendyne_admin/sevendyne_admin.html", context=context)
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
-# company crud starts here
 def create_company(request):
-    # Check if the user is an HrmsClient and has already created a company
-    # if HrmsClient.objects.filter(user=request.user).exists() and Company.objects.filter(creator=request.user).exists():
-    #     response_data = {
-    #         "status": "false",
-    #         "stable": "true",
-    #         "title": "Cannot create another company",
-    #         "message": "An HRMS client can create only one company.",
-    #     }
-    #     return HttpResponse(json.dumps(response_data), content_type='application/json')
-
     if request.method == 'POST':
         form = CompanyForm(request.POST, request.FILES)
         if form.is_valid():
-            print("company valid")
             name = form.cleaned_data['name']
             contact_person = form.cleaned_data['contact_person']
             address = form.cleaned_data['address']
@@ -493,17 +416,10 @@ def create_company(request):
                 )
                 data.save()
                 current_company = data
-                #create company access
-                # group = Group.objects.get(name="hrms_clients")
-                
                 is_default= True
                 if CompanyAccess.objects.filter(user=request.user).exists():
                     is_default = False
-                # Check if CompanyAccess already exists for the user and current_company
-                # if not CompanyAccess.objects.filter(user=request.user, company=current_company).exists():
-                #     is_default = True
                 group = Group.objects.get(name="hrms_clients")
-
                 CompanyAccess.objects.create(
                     user=request.user,
                     company=current_company,
@@ -511,11 +427,6 @@ def create_company(request):
                     is_accepted=True,
                     is_default=is_default
                 )
-                # company_access_instance = CompanyAccess(user=request.user, company=current_company, group=group, is_accepted=True, is_default=is_default)
-                # company_access_instance.save()
-
-                # Add print statements to check if user=request.user is saved in CompanyAccess
-                # print(f"CompanyAccess saved - User: {company_access_instance.user}, Company: {company_access_instance.company}, Group: {company_access_instance.group}")
                 PayrollItem.objects.create(company=current_company,name="Basic Salary",category="Additions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
                 PayrollItem.objects.create(company=current_company,name="DA",category="Additions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
                 PayrollItem.objects.create(company=current_company,name="HRA",category="Additions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
@@ -526,7 +437,6 @@ def create_company(request):
                 PayrollItem.objects.create(company=current_company,name="TDS",category="Deductions", auto_id=get_auto_id(PayrollItem),a_id = get_a_id(PayrollItem,request),creator = request.user,updator = request.user)
                 SalarySetting.objects.create(company=current_company,da=5,hra=5,pf_emp=5,pf_org=5,esi_emp=5,esi_org=5,tds=0, auto_id=get_auto_id(SalarySetting),a_id = get_a_id(SalarySetting,request),creator = request.user,updator = request.user)
                 LeaveType.objects.create(company=current_company,name="Casual Leave",days=12, auto_id=get_auto_id(LeaveType),a_id = get_a_id(LeaveType,request),creator = request.user,updator = request.user)
-                
                 request.session["current_company"] = str(current_company.pk)
                 request.session.save()
                 response_data = {
@@ -536,7 +446,6 @@ def create_company(request):
                     "redirect": "true",
                     "redirect_url": reverse('main:hrms_dashboard')
                 }
-                print("Redirect URL:", response_data["redirect_url"])
             else:               
                 response_data = {
                     "status": "false",
@@ -544,10 +453,7 @@ def create_company(request):
                     "title": "Already exists",
                     "message": "Company already exists",                        
                 }
-                print("status inside", response_data["status"])
-            print("status outside", response_data["status"])
         else:
-            print('not valid')
             message = generate_form_errors(form, formset=False)
             response_data = {
                 "stable": "true",
@@ -555,11 +461,9 @@ def create_company(request):
                 "title": "Form validation error",
                 "message": str(message),               
             }
-            print("status", response_data["status"])
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = CompanyForm()
-        print("company get request")
         context = {
             "title": "Create Company",
             "form": form,
@@ -567,6 +471,7 @@ def create_company(request):
             "create":True
         }
         return render(request, 'settings/settings.html', context)
+
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
@@ -592,17 +497,13 @@ def edit_company(request, pk):
     query = request.GET.get("q")
     if query:
         instances = instances.filter(Q(name__icontains=query))
-
-
     if request.method == "POST":
         form = CompanyForm(request.POST, request.FILES, instance=instance)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -610,55 +511,45 @@ def edit_company(request, pk):
                 "message": "Company updated successfully.",                
                 "redirect_url": reverse('main:companies')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = CompanyForm(instance=instance)
-
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Company :" + instance.name,
-            
+            "title": "Edit Company :" + instance.name,            
             "redirect": "true",
-            "url": reverse('main:edit_company', kwargs={'pk': instance.pk}),
-
-
+            "url": reverse('main:edit_company', kwargs={'pk': instance.pk})
         }
         return render(request, 'settings/settings.html', context)
+    
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def company(request, pk):
     instance = get_object_or_404(Company.objects.filter(pk=pk,is_deleted=False))
-
     context = {
         'instance': instance,
-        'title': 'Company',
-
+        'title': 'Company'
     }
     return render(request, "settings/company.html", context)
 
-# email settings crud starts here
+
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_email_setting(request):
     current_company = get_current_company(request)
-    print("current comapny",current_company)
     if request.method == 'POST':
-        print("leave type post request")
         form = EmailSettingForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
@@ -668,7 +559,6 @@ def create_email_setting(request):
             company = current_company
             creator = request.user
             updator = request.user
-
             if not EmailSetting.objects.filter(company=current_company,is_deleted=False).exists():
                 EmailSetting(                    
                     email = email,
@@ -704,7 +594,6 @@ def create_email_setting(request):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = EmailSettingForm()
-
         context = {
             "title": "Create Email Setting",
             "form": form,
@@ -739,7 +628,6 @@ def edit_email_setting(request, pk):
     instance = get_object_or_404(EmailSetting.objects.filter(pk=pk,company=current_company, is_deleted=False))    
     if request.method == "POST":
         form = EmailSettingForm(request.POST, instance=instance)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
@@ -752,28 +640,23 @@ def edit_email_setting(request, pk):
                 "message": "Email Setting updated successfully.",                
                 "redirect_url": reverse('main:email_settings')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = EmailSettingForm(instance=instance)
-
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit EmailSetting :" + instance.email,
-            
+            "title": "Edit EmailSetting :" + instance.email,            
             "redirect": "true",
-            "url": reverse('main:edit_email_setting', kwargs={'pk': instance.pk}),
+            "url": reverse('main:edit_email_setting', kwargs={'pk': instance.pk})
         }
         return render(request, 'settings/email-settings.html', context)
 
@@ -784,23 +667,20 @@ def edit_email_setting(request, pk):
 def email_setting(request, pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(EmailSetting.objects.filter(pk=pk,company=current_company,is_deleted=False))
-
     context = {
         'instance': instance,
-        'title': 'Email Setting',
-
+        'title': 'Email Setting'
     }
     return render(request, "settings/email-setting.html", context)
+
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_email_setting(request,pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(EmailSetting.objects.filter(pk=pk,company=current_company,is_deleted=False))
-    
+    instance = get_object_or_404(EmailSetting.objects.filter(pk=pk,company=current_company,is_deleted=False))    
     EmailSetting.objects.filter(pk=pk).update(is_deleted=True,email=instance.email + "_deleted_" + str(instance.auto_id))
-
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",
