@@ -60,7 +60,7 @@ class Employee(BaseModel):
     designation =  models.ForeignKey("employee.Designation",verbose_name =_('Role'),on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})
     joindate = models.DateField(_('Joining Date'),help_text='joining date',blank=True,null=True)    
     employeeid = models.CharField(_('Employee ID'),max_length=125)
-    photo = models.ImageField(_("Photo"), upload_to='employee_photos/')
+    photo = models.ImageField(_("Photo"), upload_to='employee_photos/',null=True,blank=True)
 
     is_blocked = models.BooleanField(_('Is This Employee Blocked ?'),help_text='button to toggle employee block and unblock',default=False)
     is_deleted = models.BooleanField(_('Is This Employee Deleted ?'),help_text='button to toggle employee deleted and undelete',default=False)
