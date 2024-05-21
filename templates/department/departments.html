@@ -149,10 +149,6 @@
 	})
 	.then(response => response.json())
 	.then(data => {
-		console.log(data);
-		console.log("status", data.status);
-		console.log('data.redirect_url:', data.redirect_url);
-	
 		// Corrected variable name here
 		if (data.status === 'true') {
 		console.log("status is true");
@@ -203,8 +199,8 @@
 		Swal.fire({
 		icon: 'error',
 		title: 'Form Validation Error!',
-		html: message,  // Display form errors as HTML
-		showConfirmButton: true,
+		html: message.replace(/\|/g, '<br>'),  // Display form errors as HTML, replace '|' with line breaks
+        showConfirmButton: true,
 		allowOutsideClick: false,
 		});
 	} else if (status === 'false') {

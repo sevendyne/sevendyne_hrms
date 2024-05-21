@@ -1,5 +1,6 @@
 from candidate.models import Candidate
 from main.models import Company, CompanyAccess
+from django.utils.html import strip_tags
 
 
 def get_auto_id(model):
@@ -31,21 +32,21 @@ def generate_form_errors(args, formset=False):
         for field in args:
             if field.errors:
                 field_name = field.label if field.label else str(field)
-                errors[field_name] = str(field.errors)
-                message += f"{field_name}: {str(field.errors)}|"  # Include field label in the message
+                errors[field_name] = strip_tags(str(field.errors))
+                message += f"{field_name}: {strip_tags(str(field.errors))}|"  # Strip HTML tags
         for err in args.non_field_errors():
-            errors['non_field_errors'] = str(err)
-            message += f"non_field_errors: {str(err)}|"
+            errors['non_field_errors'] = strip_tags(str(err))
+            message += f"non_field_errors: {strip_tags(str(err))}|"
     elif formset:
         for form in args:
             for field in form:
                 if field.errors:
                     field_name = field.label if field.label else str(field)
-                    errors[field_name] = str(field.errors)
-                    message += f"{field_name}: {str(field.errors)}|"
+                    errors[field_name] = strip_tags(str(field.errors))
+                    message += f"{field_name}: {strip_tags(str(field.errors))}|"
             for err in form.non_field_errors():
-                errors['non_field_errors'] = str(err)
-                message += f"non_field_errors: {str(err)}|"
+                errors['non_field_errors'] = strip_tags(str(err))
+                message += f"non_field_errors: {strip_tags(str(err))}|"
     return errors, message[:-1]
 
 
