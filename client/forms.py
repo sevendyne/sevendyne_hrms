@@ -25,15 +25,6 @@ class ClientForm(forms.ModelForm):
         error_messages = {
             'firstname' : {
                 'required' : _("firstname field is required."),
-            },
-            'phone' : {
-                'required' : _("Phone field is required."),
-            },
-            'email' : {
-                'required' : _("email field is required."),
-            },
-            'company_name' : {
-                'required' : _("Company Name field is required."),
             }
         }
 

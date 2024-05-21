@@ -15,19 +15,19 @@
 
 <div class="row">
 	
-	<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+	{% comment %} <div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
 		<a href="{% url 'client:clients' %}">
 			<div class="card dash-widget">
 				<div class="card-body">
 					<span class="dash-widget-icon"><i class="fa fa-users" aria-hidden="true"></i></span>
 					<div class="dash-widget-info">
 						<h3>{{clients_count}}</h3>
-						<span>Projects</span>
+						<span>Clients</span>
 					</div>
 				</div>
 			</div>
 		</a>
-	</div>	
+	</div>	 {% endcomment %}
 	<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
 		<a href="{% url 'employee:employees' %}">
 			<div class="card dash-widget">
@@ -200,10 +200,10 @@
 
 
 	
-	<div class="col-md-12 col-lg-6 col-xl-6 d-flex">
+	{% comment %} <div class="col-md-12 col-lg-6 col-xl-6 d-flex">
 		<div class="card card-table flex-fill">
 			<div class="card-header">
-				<h3 class="card-title mb-0">Projects</h3>
+				<h3 class="card-title mb-0">Clients</h3>
 			</div>
 			<div class="card-body">
 				<div class="table-responsive">
@@ -233,10 +233,10 @@
 				</div>
 			</div>
 			<div class="card-footer">
-				<a href="{% url 'client:clients' %}">View all projects</a>
+				<a href="{% url 'client:clients' %}">View all Clients</a>
 			</div>
 		</div>
-	</div>
+	</div> {% endcomment %}
 
 	
 <!-- /Statistics Widget -->

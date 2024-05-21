@@ -16,7 +16,7 @@ urlpatterns = [
     path('app/hrms/',include(('hrms.urls','hrms'),namespace='hrms')),
     path('app/candidate/',include(('candidate.urls','candidate'),namespace='candidate')),
     path('app/employee/',include(('employee.urls','employee'),namespace='employee')),
-    path('app/project/',include(('client.urls','client'),namespace='client')),
+    path('app/client/',include(('client.urls','client'),namespace='client')),
     path('app/job/',include(('job.urls','job'),namespace='job')),
     path('app/payroll/',include(('payroll.urls','payroll'),namespace='payroll'))
 
