@@ -11,14 +11,14 @@
 	<div class="page-header">
 		<div class="row align-items-center">
 			<div class="col">
-				<h3 class="page-title">Clients</h3>
+				<h3 class="page-title">Projects</h3>
 				<ul class="breadcrumb">
 					<li class="breadcrumb-item"><a href="{% url 'main:hrms_dashboard' %}">Dashboard</a></li>
-					<li class="breadcrumb-item active">Clients</li>
+					<li class="breadcrumb-item active">Projects</li>
 				</ul>
 			</div>
 			<div class="col-auto float-end ms-auto">
-				<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_client"><i class="fa-solid fa-plus"></i> Add Client</a>
+				<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_client"><i class="fa-solid fa-plus"></i> Add Project</a>
 				<div class="view-icons">
 				<div class="view-icons">
 					<a href="{% url 'client:clients' %}" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
@@ -35,13 +35,13 @@
 			<div class="col-sm-6 col-md-3">  
 				<div class="input-block mb-3 form-focus">
 					<input type="text" class="form-control floating" name="clid">
-					<label class="focus-label">Client ID</label>
+					<label class="focus-label">Project ID</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3">  
 				<div class="input-block mb-3 form-focus">
 					<input type="text" class="form-control floating" name="cl_name">
-					<label class="focus-label">Client Name</label>
+					<label class="focus-label">Project Name</label>
 				</div>
 			</div>
 			<div class="col-sm-6 col-md-3"> 
@@ -91,7 +91,7 @@
 			<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">Edit Client</h5>
+						<h5 class="modal-title">Edit Project</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
@@ -138,7 +138,7 @@
 								</div>
 								<div class="col-md-6">  
 									<div class="input-block mb-3">
-										<label class="col-form-label">Client ID <span class="text-danger">*</span></label>
+										<label class="col-form-label">Project ID <span class="text-danger">*</span></label>
 										<input class="form-control floating" name="clientid" value="{{ client.clientid }}" type="text">
 									</div>
 								</div>								
@@ -160,7 +160,7 @@
 				<div class="modal-content">
 					<div class="modal-body">
 						<div class="form-header">
-							<h3>Delete Client</h3>
+							<h3>Delete Project</h3>
 							<p>Are you sure want to delete?</p>
 						</div>
 						<div class="modal-btn delete-action">
@@ -189,7 +189,7 @@
 	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h5 class="modal-title">Add Client</h5>
+				<h5 class="modal-title">Add Project</h5>
 				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
@@ -224,7 +224,7 @@
 						</div>
 						<div class="col-md-6">  
 							<div class="input-block mb-3">
-								<label class="col-form-label">Client ID <span class="text-danger">*</span></label>
+								<label class="col-form-label">Project ID <span class="text-danger">*</span></label>
 								<input class="form-control floating" name="clientid" type="text">
 							</div>
 						</div>
@@ -446,7 +446,7 @@
 	function handleDelete(pk) {
 		Swal.fire({
 			title: "Are you sure?",
-			text: "Once deleted, you will not be able to recover this Client!",
+			text: "Once deleted, you will not be able to recover this Project!",
 			icon: "warning",
 			showCancelButton: true,
 			confirmButtonColor: "#3085d6",
