@@ -26,6 +26,7 @@ JOBCATEGORY_CHOICES = (
 )
 
 JOB_STATUS_CHOICES = (
+    ('No Offer', "No Offer"),
     ('Offer a job', "Offer a job"),
     ('Job Offered',"Job Offered"),
     ('Assign Task',"Assign Task"),

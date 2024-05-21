@@ -12,6 +12,13 @@ JOBTYPE_CHOICES = (
     ('Contract',"Contract")
 )
 
+JOBSTATUS_CHOICES = (
+    ('No Offer', "No Offer"),
+    ('Job Offered',"Job Offered"),
+    ('Contract',"Contract")
+)
+
+
 DOMAIN_CHOICES = (
     ('Full Stack Development', "Full Stack Development"),
     ('Marketing',"Marketing"),
