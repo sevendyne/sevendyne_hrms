@@ -284,7 +284,7 @@ def create_candidate_job(request,pk):
 
                 # Send email notification to sevendyne hrms admin
                 subject = subject = f'Job offered by {str(company)} to {str(candidate)}'
-                action_url = request.build_absolute_uri(reverse('hrms:edit_candidate_job', kwargs={'pk': candidate.id}))
+                action_url = request.build_absolute_uri(reverse('job:edit_candidate_job', kwargs={'pk': candidate.id}))
                 html_message = render_to_string('job/email_templates/job_offered.html', {'job': instance, 'action_url': action_url})
                 plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
                 from_email = settings.DEFAULT_FROM_EMAIL
