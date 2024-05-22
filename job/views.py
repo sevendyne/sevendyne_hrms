@@ -262,7 +262,7 @@ def create_candidate_job(request,pk):
             creator = request.user
             updator = request.user
 
-            if not CandidateJob.objects.filter(job_title=job_title,company=company,is_deleted=False).exists():
+            if not CandidateJob.objects.filter(candidate=candidate,job_title=job_title,company=company,is_deleted=False).exists():
                 instance=CandidateJob(  
                     candidate = candidate,                  
                     job_title = job_title,
