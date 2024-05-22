@@ -1,17 +1,21 @@
 import datetime
 import json
-from django.http import HttpResponse
-from django.shortcuts import get_object_or_404, render
+
 from django.urls import reverse
-from candidate.models import Candidate
-from employee.models import Department
+from django.core.mail import send_mail
+from django.utils.html import strip_tags
+from main.decorators import company_required
+from django.template.loader import render_to_string
+from django.shortcuts import get_object_or_404, render
+from django.contrib.auth.decorators import login_required,user_passes_test
+from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_admin_dashboard_permission, has_hrms_permission
 from job.forms import CandidateInterviewForm, CandidateInterviewStatusForm, CandidateJobForm, CandidateJobStatusForm, JobApplicantForm, JobApplicantStatusForm, JobForm
 from job.models import INTERVIEW_CHOICES, JOBTYPE_CHOICES, STATUS_CHOICES, CandidateInterview, CandidateJob, Job, JobApplicant
 from django.core.paginator import Paginator
-from main.decorators import company_required
-from django.contrib.auth.decorators import login_required,user_passes_test
-
-from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_admin_dashboard_permission, has_hrms_permission
+from candidate.models import Candidate
+from employee.models import Department
+from django.http import HttpResponse
+from sevendyne_hrms import settings
 
 
 #  views here.
@@ -259,7 +263,7 @@ def create_candidate_job(request,pk):
             updator = request.user
 
             if not CandidateJob.objects.filter(job_title=job_title,company=company,is_deleted=False).exists():
-                CandidateJob(  
+                instance=CandidateJob(  
                     candidate = candidate,                  
                     job_title = job_title,
                     job_location = job_location,
@@ -277,7 +281,17 @@ def create_candidate_job(request,pk):
                 # Updating Candidate status to "Job Offered"
                 candidate.status = status
                 candidate.save()
-                
+
+                # Send email notification to sevendyne hrms admin
+                subject = subject = f'Job offered by {str(company)} to {str(candidate)}'
+                action_url = request.build_absolute_uri(reverse('hrms:edit_candidate', kwargs={'pk': candidate.id}))
+                html_message = render_to_string('job/email_templates/job_offered.html', {'job': instance, 'action_url': action_url})
+                plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
+                from_email = settings.DEFAULT_FROM_EMAIL
+                to_email = 'hr@sevendyne.com' 
+                send_mail(subject, plain_message, from_email, [to_email], html_message=html_message)
+                   
+                               
                 response_data = {
                     "status": "true",
                     "title": "Successfully Created",
