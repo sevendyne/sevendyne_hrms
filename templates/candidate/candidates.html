@@ -99,7 +99,7 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form id="create_form_{{instance.id}}" method="POST" action="{% url 'job:create_candidate_job' pk=instance.id %}" enctype="multipart/form-data">
+										<form id="create_form_{{candidate.instance.id}}" method="POST" action="{% url 'job:create_candidate_job' pk=candidate.instance.id %}" enctype="multipart/form-data">
 											{% csrf_token %}
 											<div class="row">
 												<div class="col-md-12">
@@ -140,7 +140,7 @@
 												</div>
 											</div>
 											<div class="submit-section">
-												<button class="btn btn-primary submit-btn" onclick="submitCreateForm(event,'{{instance.id}}')">Submit</button>
+												<button class="btn btn-primary submit-btn" onclick="submitCreateForm(event,'{{candidate.instance.id}}')">Submit</button>
 											</div>
 										</form>
 									</div>
@@ -160,7 +160,7 @@
 										</button>
 									</div>
 									<div class="modal-body">
-										<form id="create_interview_form_{{instance.id}}" method="POST" action="{% url 'job:create_candidate_interview' pk=instance.id %}" enctype="multipart/form-data">
+										<form id="create_interview_form_{{candidate.instance.id}}" method="POST" action="{% url 'job:create_candidate_interview' pk=candidate.instance.id %}" enctype="multipart/form-data">
 											{% csrf_token %}
 											<div class="row">
 												<div class="col-md-12">
@@ -180,7 +180,7 @@
 												</div>
 											</div>
 											<div class="submit-section">
-												<button class="btn btn-primary submit-btn" onclick="submitCreateInterviewForm(event,'{{instance.id}}')">Submit</button>
+												<button class="btn btn-primary submit-btn" onclick="submitCreateInterviewForm(event,'{{candidate.instance.id}}')">Submit</button>
 											</div>
 										</form>
 									</div>

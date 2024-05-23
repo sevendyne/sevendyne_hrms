@@ -243,8 +243,10 @@ def job_view(request,pk):
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def create_candidate_job(request,pk):
+    if not pk:
+        raise ValueError("Candidate ID (pk) is required")    
     candidate = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))
-    current_company = get_current_company(request)    
+    company = get_current_company(request)    
     if request.method == 'POST':
         form = CandidateJobForm(request.POST)
         if form.is_valid():
@@ -254,16 +256,9 @@ def create_candidate_job(request,pk):
             salary_to = form.cleaned_data['salary_to']
             description = form.cleaned_data['description']
 
-            status = "Job Offered"
-            
-            auto_id = get_auto_id(CandidateJob)
-            a_id = get_a_id(CandidateJob,request)
-            company =current_company
-            creator = request.user
-            updator = request.user
-
+            status = "Job Offered"    
             if not CandidateJob.objects.filter(candidate=candidate,job_title=job_title,company=company,is_deleted=False).exists():
-                instance=CandidateJob(  
+                instance = CandidateJob(  
                     candidate = candidate,                  
                     job_title = job_title,
                     job_location = job_location,
@@ -271,21 +266,17 @@ def create_candidate_job(request,pk):
                     salary_to = salary_to,
                     description = description,
                     status = status,
-                    auto_id = auto_id, 
-                    a_id = a_id,
-                    company =company,
-                    creator = creator,
-                    updator = updator
-                ).save()
+                    company =company
+                )
+                instance.save()
 
                  # Updating Candidate status to "Job Offered" only if the current company made the offer
-                if candidate.company == current_company:
-                    candidate.status = status
-                    candidate.save()                
+                candidate.status = status
+                candidate.save()                
 
                 # Send email notification to sevendyne hrms admin
                 subject = f'Job offered by {str(company)} to {str(candidate)}'
-                action_url = request.build_absolute_uri(reverse('job:edit_candidate_job', kwargs={'pk': instance.id}))
+                action_url = request.build_absolute_uri(reverse('job:edit_candidate_job', kwargs={'pk': instance.pk}))
                 html_message = render_to_string('job/email_templates/job_offered.html', {'instance': instance, 'action_url': action_url})
                 plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
                 from_email = settings.DEFAULT_FROM_EMAIL
@@ -324,8 +315,7 @@ def create_candidate_job(request,pk):
             "form": form,
             "redirect": "true",
             "create":True
-        }
-        
+        }        
         return render(request, 'candidate/candidates.html', context)
     
 

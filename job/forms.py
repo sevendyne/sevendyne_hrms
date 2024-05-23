@@ -55,7 +55,7 @@ class JobForm(forms.ModelForm):
 class CandidateJobForm(forms.ModelForm):
     class Meta:
         model = CandidateJob
-        exclude = ['creator', 'updator', 'auto_id','a_id','company','candidate','status','is_deleted'] 
+        exclude = ['company','candidate','status','is_deleted'] 
         widgets = {
             'job_title': forms.TextInput(attrs={'class': 'required form-control ', 'placeholder': 'Job Title'}),
             'job_location': forms.TextInput(attrs={'class': 'required form-control ', 'placeholder': 'Job Location'}),
@@ -73,7 +73,7 @@ class CandidateJobForm(forms.ModelForm):
 class CandidateJobStatusForm(forms.ModelForm):
     class Meta:
         model = CandidateJob
-        exclude = ['creator', 'updator', 'auto_id','a_id','company','candidate','is_deleted','job_title','job_location','salary_from','salary_to','description'] 
+        exclude = ['company','candidate','is_deleted','job_title','job_location','salary_from','salary_to','description'] 
         widgets = {
             'status': forms.Select(attrs={'class': 'required form-control ', 'placeholder': 'Status'})
         }

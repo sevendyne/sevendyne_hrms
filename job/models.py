@@ -81,7 +81,7 @@ class Job(BaseModel):
         return self.job_title
     
 
-class CandidateJob(BaseModel):
+class CandidateJob(models.Model):
     company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False}) 
     candidate = models.ForeignKey("candidate.Candidate",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})     
     job_title = models.CharField(_('Job Title'),max_length=255)
