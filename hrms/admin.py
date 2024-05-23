@@ -1,3 +1,7 @@
 from django.contrib import admin
+from hrms.models import HrmsClient
 
-# Register your models here.
+
+class HrmsClientAdmin(admin.ModelAdmin):
+    exclude = ('date_added','is_deleted')  
+admin.site.register(HrmsClient, HrmsClientAdmin) 
