@@ -256,8 +256,8 @@ def create_candidate_job(request,pk):
 
             status = "Job Offered"
             
-            auto_id = get_auto_id(Job)
-            a_id = get_a_id(Job,request)
+            auto_id = get_auto_id(CandidateJob)
+            a_id = get_a_id(CandidateJob,request)
             company =current_company
             creator = request.user
             updator = request.user
