@@ -18,6 +18,7 @@ from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator
 from django.core.mail import EmailMessage
 from django.http import HttpResponse
+from payroll.models import Salary, SalaryDynamicField
 from sevendyne_hrms import settings
 from client.models import Client
 from django.db.models import Q
@@ -158,16 +159,33 @@ def department(request, pk):
 def delete_department(request,pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Department.objects.filter(pk=pk,company=current_company,is_deleted=False))    
-    Department.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
-    response_data = {
-        "status" : "true",        
-        "title" : "Successfully Deleted",
-        "message" : "Department Successfully Deleted.", 
-        "redirect" : "true",       
-        "redirect_url" : reverse('employee:departments')
-    }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
- 
+    
+    if (Designation.objects.filter(department=instance)).exists():
+        is_ok = False
+    elif (Employee.objects.filter(department=instance)).exists():
+        is_ok = False
+    else:
+        is_ok = True
+
+    if is_ok == True:
+        Department.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
+        response_data = {
+            "status" : "true",        
+            "title" : "Successfully Deleted",
+            "message" : "Department Successfully Deleted.", 
+            "redirect" : "true",       
+            "redirect_url" : reverse('employee:departments')
+        }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        response_data = {
+            "status": "false",
+            "stable": "true",
+            "title": "Permission for delete denied",
+            "message": "Same department exists in Designation or Employee"                        
+        }
+    return HttpResponse(json.dumps(response_data), content_type='application/javascript')
+
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
@@ -311,16 +329,30 @@ def designation(request,pk):
 def delete_designation(request,pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Designation.objects.filter(pk=pk,company=current_company,is_deleted=False))    
-    Designation.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
-    response_data = {
-        "status" : "true",        
-        "title" : "Successfully Deleted",
-        "message" : "Designation Successfully Deleted.", 
-        "redirect" : "true",       
-        "redirect_url" : reverse('employee:designations')
-    }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
-   
+    if (Employee.objects.filter(designation=instance)).exists():
+        is_ok = False
+    else:
+        is_ok = True
+
+    if is_ok == True:
+        Designation.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
+        response_data = {
+            "status" : "true",        
+            "title" : "Successfully Deleted",
+            "message" : "Designation Successfully Deleted.", 
+            "redirect" : "true",       
+            "redirect_url" : reverse('employee:designations')
+        }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        response_data = {
+            "status": "false",
+            "stable": "true",
+            "title": "Permission for delete denied",
+            "message": "Same designation exists in Employee"                        
+        }
+    return HttpResponse(json.dumps(response_data), content_type='application/javascript')
+
 
 # Employee Profile crud starts here
 @login_required
@@ -573,15 +605,36 @@ def employee(request, pk):
 def delete_employee(request,pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Employee.objects.filter(pk=pk,is_deleted=False))    
-    Employee.objects.filter(pk=pk).update(is_deleted=True,company=current_company,firstname=instance.firstname + "_deleted_" + str(instance.auto_id))
-    response_data = {
-        "status" : "true",        
-        "title" : "Successfully Deleted",
-        "message" : "Employee Successfully Deleted.", 
-        "redirect" : "true",       
-        "redirect_url" : reverse('employee:employees')
-    }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
+    
+    if (Leave.objects.filter(employee=instance)).exists():
+        is_ok = False
+    elif (AttendanceRegister.objects.filter(employee=instance)).exists():
+        is_ok = False
+    elif (Salary.objects.filter(employee=instance)).exists():
+        is_ok = False
+    elif (SalaryDynamicField.objects.filter(employee=instance)).exists():
+        is_ok = False
+    else:
+        is_ok = True
+
+    if is_ok == True:
+        Employee.objects.filter(pk=pk).update(is_deleted=True,company=current_company,firstname=instance.firstname + "_deleted_" + str(instance.auto_id))
+        response_data = {
+            "status" : "true",        
+            "title" : "Successfully Deleted",
+            "message" : "Employee Successfully Deleted.", 
+            "redirect" : "true",       
+            "redirect_url" : reverse('employee:employees')
+        }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        response_data = {
+            "status": "false",
+            "stable": "true",
+            "title": "Permission for delete denied",
+            "message": "Same employee exists in Leave,Salary or PaySlip"                        
+        }
+    return HttpResponse(json.dumps(response_data), content_type='application/javascript')
 
    
 # Leave Type crud starts here
@@ -721,16 +774,32 @@ def leave_type(request, pk):
 def delete_leave_type(request,pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(LeaveType.objects.filter(pk=pk,company=current_company,is_deleted=False))    
-    LeaveType.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
-    response_data = {
-        "status" : "true",        
-        "title" : "Successfully Deleted",
-        "message" : "Leave Type Successfully Deleted.", 
-        "redirect" : "true",       
-        "redirect_url" : reverse('employee:leave_types')
-    }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
-   
+    
+    if (Leave.objects.filter(leavetype=instance)).exists():
+        is_ok = False
+    else:
+        is_ok = True
+
+    if is_ok == True:
+        LeaveType.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
+        response_data = {
+            "status" : "true",        
+            "title" : "Successfully Deleted",
+            "message" : "Leave Type Successfully Deleted.", 
+            "redirect" : "true",       
+            "redirect_url" : reverse('employee:leave_types')
+        }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        response_data = {
+            "status": "false",
+            "stable": "true",
+            "title": "Permission for delete denied",
+            "message": "Same leave type exists in leave"                        
+        }
+    return HttpResponse(json.dumps(response_data), content_type='application/javascript')
+
+
 
 # Leave crud starts here
 @login_required

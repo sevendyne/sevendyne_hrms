@@ -192,17 +192,30 @@ def job(request,pk):
 def delete_job(request,pk):
     current_company = get_current_company(request)
     instance = get_object_or_404(Job.objects.filter(pk=pk,company=current_company,is_deleted=False))
-    
-    Job.objects.filter(pk=pk).update(is_deleted=True,job_title=instance.job_title + "_deleted_" + str(instance.auto_id))
+    if (JobApplicant.objects.filter(job=instance)).exists():
+        is_ok = False
+    else:
+        is_ok = True
 
-    response_data = {
-        "status" : "true",        
-        "title" : "Successfully Deleted",
-        "message" : "Job Successfully Deleted.", 
-        "redirect" : "true",       
-        "redirect_url" : reverse('job:jobs')
-    }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
+    if is_ok == True:
+        Job.objects.filter(pk=pk).update(is_deleted=True,job_title=instance.job_title + "_deleted_" + str(instance.auto_id))
+
+        response_data = {
+            "status" : "true",        
+            "title" : "Successfully Deleted",
+            "message" : "Job Successfully Deleted.", 
+            "redirect" : "true",       
+            "redirect_url" : reverse('job:jobs')
+        }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        response_data = {
+            "status": "false",
+            "stable": "true",
+            "title": "Permission for delete denied",
+            "message": "Same job exists in JobApplicant"                        
+        }
+    return HttpResponse(json.dumps(response_data), content_type='application/javascript')
 
 
 # All Jobs is for sevendyne admin dashboard

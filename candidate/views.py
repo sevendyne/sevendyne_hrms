@@ -10,7 +10,7 @@ from django.core.paginator import Paginator
 from django.urls import reverse
 
 from candidate.models import Candidate, Intern
-from job.models import INTERVIEW_CHOICES, CandidateInterview, CandidateJob
+from job.models import INTERVIEW_CHOICES, CandidateInterview, CandidateJob, JobApplicant
 from main.decorators import company_required
 from main.functions import generate_form_errors, get_current_company, has_admin_dashboard_permission, has_hrms_permission
 from main.functions import generate_form_errors, get_candidate_id
@@ -175,19 +175,36 @@ def candidate(request, pk):
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def delete_candidate(request,pk):
     instance = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))    
-    Candidate.objects.filter(pk=pk).update(is_deleted=True,email=instance.email + "_deleted_" )
-     # Mark related CandidateJob instances as deleted
-    CandidateJob.objects.filter(candidate=instance, is_deleted=False).update(is_deleted=True)
     
-    response_data = {
-        "status" : "true",        
-        "title" : "Successfully Deleted",
-        "message" : "Candidate Successfully Deleted.", 
-        "redirect" : "true",       
-        "redirect_url" : reverse('candidate:candidates')
-    }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
-   
+    if (CandidateJob.objects.filter(candidate=instance)).exists():
+        is_ok = False
+    elif (CandidateInterview.objects.filter(candidate=instance)).exists():
+        is_ok = False
+    elif (JobApplicant.objects.filter(candidate=instance)).exists():
+        is_ok = False
+    else:
+        is_ok = True
+
+    if is_ok == True:
+        Candidate.objects.filter(pk=pk).update(is_deleted=True,email=instance.email + "_deleted_" )
+    
+        response_data = {
+            "status" : "true",        
+            "title" : "Successfully Deleted",
+            "message" : "Candidate Successfully Deleted.", 
+            "redirect" : "true",       
+            "redirect_url" : reverse('candidate:candidates')
+        }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        response_data = {
+            "status": "false",
+            "stable": "true",
+            "title": "Permission for delete denied",
+            "message": "Same candidate exists in CandidateJob,CandidateInterview or JobApplicant"                        
+        }
+    return HttpResponse(json.dumps(response_data), content_type='application/javascript')
+
 
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
