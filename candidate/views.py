@@ -176,6 +176,9 @@ def candidate(request, pk):
 def delete_candidate(request,pk):
     instance = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))    
     Candidate.objects.filter(pk=pk).update(is_deleted=True,email=instance.email + "_deleted_" )
+     # Mark related CandidateJob instances as deleted
+    CandidateJob.objects.filter(candidate=instance, is_deleted=False).update(is_deleted=True)
+    
     response_data = {
         "status" : "true",        
         "title" : "Successfully Deleted",

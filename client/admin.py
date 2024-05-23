@@ -1,3 +1,7 @@
 from django.contrib import admin
+from client.models import Client
 
-# Register your models here.
+
+class ClientAdmin(admin.ModelAdmin):
+    exclude = ('date_added','is_deleted')  
+admin.site.register(Client, ClientAdmin) 
