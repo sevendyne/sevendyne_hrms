@@ -53,28 +53,28 @@
 							<td>{{ job.expired_date }}</td>
 							<td class="text-center">
 								<div class="dropdown action-label">
-									<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-										<i class="fa-regular fa-circle-dot text-danger"></i> {{ job.job_type }}
+									<a class="btn btn-white btn-sm btn-rounded " href="#" data-bs-toggle="dropdown" aria-expanded="false">
+										{% if job.job_type == "Full Time" %}
+											<i class="fa-regular fa-circle-dot text-success"></i> {{ job.job_type }}
+										{% elif job.job_type == "Part Time" %}
+											<i class="fa-regular fa-circle-dot text-info"></i> {{ job.job_type }}
+										{% elif job.job_type == "Internship" %}
+											<i class="fa-regular fa-circle-dot text-danger"></i> {{ job.job_type }}
+										{% else %}
+											<i class="fa-regular fa-circle-dot text-warning"></i> {{ job.job_type }}
+										{% endif %}
 									</a>
-									{% comment %} <div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-info"></i> Full Time</a>
-										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-success"></i> Part Time</a>
-										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-danger"></i> Internship</a>
-										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-warning"></i> Temporary</a>
-										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-warning"></i> Other</a>
-									</div> {% endcomment %}
 								</div>
 							</td>
 							<td class="text-center">
 								<div class="dropdown action-label">
-									<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-										<i class="fa-regular fa-circle-dot text-danger"></i> {{ job.status }}
+									<a class="btn btn-white btn-sm btn-rounded " href="#" data-bs-toggle="dropdown" aria-expanded="false">
+										{% if job.status == "Open" %}
+											<i class="fa-regular fa-circle-dot text-success"></i> {{ job.status }}
+										{% else %}
+											<i class="fa-regular fa-circle-dot text-danger"></i> {{ job.status }}
+										{% endif %}
 									</a>
-									{% comment %} <div class="dropdown-menu dropdown-menu-right">
-										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-info"></i> Open</a>
-										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-success"></i> Closed</a>
-										<a class="dropdown-item" href="#"><i class="fa-regular fa-circle-dot text-danger"></i> Cancelled</a>
-									</div> {% endcomment %}
 								</div>
 							</td>
 							{% comment %} <td><a href="job-applicants.html" class="btn btn-sm btn-primary">- Candidates</a></td> {% endcomment %}
