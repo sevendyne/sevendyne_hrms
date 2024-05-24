@@ -259,7 +259,7 @@ def delete_portfolio(request,pk):
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def hrms_dashboard(request):
-    company=get_current_company(request)
+    company = get_current_company(request)
     company_name = company.name
     employees = Employee.objects.filter(company=company,is_deleted=False)
     employees_count = Employee.objects.filter(company=company,is_deleted=False).count()
