@@ -140,8 +140,8 @@
 									<div class="input-block mb-3">
 										<label class="col-form-label">Gender</label>
 										<select class="form-control" name="gender">
-											{% for choice in GENDER_CHOICES %}
-												<option >{{ choice }}</option>
+											{% for choice in gender_choices %}
+												<option {% if employee.gender == choice.0 %} selected {% endif %}>{{ choice.1 }}</option>
 											{% endfor %}
 										</select>
 									</div>
