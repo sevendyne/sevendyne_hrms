@@ -60,7 +60,7 @@ class EmployeeForm(forms.ModelForm):
         widgets = {
             'firstname': forms.TextInput(attrs={'class': 'required form-control ', 'placeholder': 'First Name'}),
             'lastname': forms.TextInput(attrs={'class': 'required form-control ', 'placeholder': 'Last Name'}),
-            'gender': forms.TextInput(attrs={'class': 'form-control ', 'placeholder': 'Gender'}),
+            'gender': Select(attrs={'class': 'required form-control'}),
             'email': forms.EmailInput(attrs={'class': 'required form-control ', 'placeholder': 'example@example.com'}),
             'username': forms.TextInput(attrs={'class': 'required form-control ', 'placeholder': 'User Name'}),
             'password': forms.TextInput(attrs={'class': 'required form-control ', 'placeholder': 'Password'}),  # Display password field as a password input
