@@ -93,7 +93,7 @@
 									<td>
 										<h2 class="table-avatar">
 											{% comment %} <a href="#" class="avatar"><img src="{% static 'assets/img/profiles/avatar-19.jpg' %}" alt="User Image"></a> {% endcomment %}
-											<a href="#">{{ job.job_title }} </a>
+											<a href="{% url 'job:jobs' %}">{{ job.job_title }} </a>
 										</h2>
 									</td>
 									<td>{{ job.no_of_vacancies }}</td>
