@@ -14,7 +14,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission, has_hrms_permission
 from employee.forms import AttendanceDateForm, AttendanceRegisterForm, DepartmentForm, DesignationForm, EmployeeForm, HolidayForm, LeaveForm, LeaveTypeForm
-from employee.models import AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
+from employee.models import GENDER_CHOICES, AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator
 from django.core.mail import EmailMessage
@@ -494,6 +494,7 @@ def employees(request):
         'designations' : designations,
         "clients" : clients,
         'employees': employees,
+        'gender_choices':GENDER_CHOICES,
         "title": 'Employees',
         "is_employees" : True 
     }
@@ -528,6 +529,7 @@ def employees_list(request):
         'designations' : designations,
         "clients" : clients,
         'employees': employees,
+        'gender_choices':GENDER_CHOICES,
         "title": 'Employees',
         "is_employees" : True
     }

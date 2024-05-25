@@ -150,8 +150,12 @@
 												</div>
 												<div class="col-sm-6">
 													<div class="input-block mb-3">
-														<label class="col-form-label">Gender <span class="text-danger">*</span></label>
-														<input class="form-control" type="gender" name="gender" value="{{employee.email}}">
+														<label class="col-form-label">Gender</label>
+														<select class="form-control" name="gender">
+															{% for gender in GENDER_CHOICES %}
+																<option value="{{ gender.id }}" {% if gender.id == employee.gender.id %} selected {% endif %}>{{ gender }}</option>
+															{% endfor %}
+														</select>
 													</div>
 												</div>
 												<div class="col-sm-6">
@@ -302,7 +306,7 @@
 						</div>
 						<div class="col-sm-6">
 							<div class="input-block mb-3">
-								<label class="col-form-label">Gender <span class="text-danger">*</span></label>
+								<label class="col-form-label">Gender </label>
 								{{ form.gender }}
 								{% if form.gender.errors %}
 								<span class="error">{{ form.gender.errors.0 }}</span>
