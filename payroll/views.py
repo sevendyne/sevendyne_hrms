@@ -566,7 +566,14 @@ def salaries(request):
     additions_values = {item.field_name: item.field_value for item in dynamic_fields if item.category == 'Additions'}
     deductions_values = {item.field_name: item.field_value for item in dynamic_fields if item.category == 'Deductions'}
     
-    additions_data = [{'name': field.name, 'value': additions_values.get(field.name, '')} for field in additions_fields]
+    # Remove duplicates from additions_data
+    seen = set()
+    unique_additions_data = []
+    for field in additions_fields:
+        if field.name not in seen:
+            unique_additions_data.append({'name': field.name, 'value': additions_values.get(field.name, '')})
+            seen.add(field.name)
+    
     deductions_data = [{'name': field.name, 'value': deductions_values.get(field.name, '')} for field in deductions_fields]
 
     context = {
@@ -575,7 +582,7 @@ def salaries(request):
         "employees":employees,
         "additions_fields": additions_fields,
         "deductions_fields": deductions_fields,
-        "additions_data": additions_data,
+        "additions_data": unique_additions_data,
         "deductions_data": deductions_data
 
     }
