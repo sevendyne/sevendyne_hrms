@@ -172,11 +172,11 @@
 								<a href="{% url 'employee:employees' %}"><i class="la la-group"></i> <span> Employees</span></a>								
 							</li>	
 							<li class="submenu">
-								<a href="{% url 'employee:leave_approvals' %}"><i class="la la-home"></i>Leave Management</a>											
+								<a href="{% url 'employee:leave_approvals' %}"><i class="la la-home"></i><span>Leave Management</span></a>											
 							</li>
 							{% if hrms_client.is_attendance_enabled %}
 							<li>
-								<a href="{% url 'employee:attendance_register' %}"><i class="la la-home"></i>Attendance</a>
+								<a href="{% url 'employee:attendance_register' %}"><i class="la la-home"></i><span>Attendance</span></a>
 							</li>
 							{% endif %}						
 							<li class="submenu"> 
