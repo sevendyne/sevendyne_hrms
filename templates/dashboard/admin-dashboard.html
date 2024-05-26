@@ -98,7 +98,7 @@
 								<tr>
 									<th>Job Title</th>
 									<th>No. of vacancies</th>
-									<th>status</th>
+									<th>Status</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -222,6 +222,15 @@
 		</div>
 	</div>
 
+	
+	<div class="col-md-6 text-center">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Salary Distribution</h3>
+				<div id="salary-distribution-chart"></div>
+			</div>
+		</div>
+	</div>
 
 	
 	{% comment %} <div class="col-md-12 col-lg-6 col-xl-6 d-flex">
@@ -265,4 +274,34 @@
 	
 <!-- /Statistics Widget -->
 </div>
+
+<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    
+<script src="{%static 'assets/js/chart.js'%}"></script><!-- Embed the salary data as JSON -->
+<script>
+	$(document).ready(function() {
+		// Salary data obtained from Django view
+		var salaryData = {{ salary_data|safe }};
+	
+		// Prepare data for Morris.js
+		var chartData = salaryData.map((salary, index) => ({
+			employee: `Employee ${index + 1}`,
+			salary: parseFloat(salary)
+		}));
+	
+		// Initialize Morris.js Bar Chart
+		Morris.Bar({
+			element: 'salary-distribution-chart',
+			data: chartData,
+			xkey: 'employee',
+			ykeys: ['salary'],
+			labels: ['Salary'],
+			barColors: ['#2c9792'],
+			resize: true
+		});
+	});
+	
+</script>
 {% endblock %}			

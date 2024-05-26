@@ -275,6 +275,13 @@ def hrms_dashboard(request):
     # Get upcoming holiday
     today = datetime.date.today()     
     next_holiday = Holiday.objects.filter(company=company, date__gte=today).order_by('date').first()
+    
+    # Fetch salary data and convert to a list of floats
+    salaries = Salary.objects.filter(company=company, is_deleted=False).values_list('net_salary', flat=True)
+    salary_data = [float(salary) for salary in salaries]
+    
+    print("salary data",salary_data)
+    
     try:
         hrms_client = get_object_or_404(HrmsClient, user=request.user, is_deleted=False)
         context = {
@@ -291,7 +298,8 @@ def hrms_dashboard(request):
             'employees':employees,
             'absent_employees': absent_employees,
             'absent_employees_count': absent_employees_count,
-            'next_holiday':next_holiday
+            'next_holiday':next_holiday,
+            'salary_data': salary_data
         }    
         return render(request, "dashboard/admin-dashboard.html", context=context)
     except HrmsClient.DoesNotExist:
