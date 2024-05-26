@@ -295,6 +295,7 @@ def hrms_dashboard(request):
     except Exception as e:
         return HttpResponse(f"An error occurred: {str(e)}")
     
+    
 @login_required
 @user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
 def employee_dashboard(request):
@@ -371,7 +372,6 @@ def admin_dashboard(request):
             skill_counts[skill] = skill_counts.get(skill, 0) + 1
     # Prepare data to pass to the template
     skill_counts_json = json.dumps(skill_counts)
-
     context = {
         'total_hrms_clients': total_hrms_clients,
         'monthly_hrms_clients' : monthly_hrms_clients,
@@ -381,6 +381,7 @@ def admin_dashboard(request):
         'skill_counts_json':skill_counts_json
     }
     return render(request, "sevendyne_admin/sevendyne_admin.html", context=context)
+
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)

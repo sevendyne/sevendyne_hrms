@@ -154,20 +154,19 @@ def department(request, pk):
     }
     return render(request, "department/department.html", context)
 
+
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_department(request,pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Department.objects.filter(pk=pk,company=current_company,is_deleted=False))    
-    
+    instance = get_object_or_404(Department.objects.filter(pk=pk,company=current_company,is_deleted=False))   
     if (Designation.objects.filter(department=instance)).exists():
         is_ok = False
     elif (Employee.objects.filter(department=instance)).exists():
         is_ok = False
     else:
         is_ok = True
-
     if is_ok == True:
         Department.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
         response_data = {
@@ -334,7 +333,6 @@ def delete_designation(request,pk):
         is_ok = False
     else:
         is_ok = True
-
     if is_ok == True:
         Designation.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
         response_data = {
@@ -355,7 +353,7 @@ def delete_designation(request,pk):
     return HttpResponse(json.dumps(response_data), content_type='application/javascript')
 
 
-# Employee Profile crud starts here
+# Employee crud starts here
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
@@ -500,6 +498,7 @@ def employees(request):
     }
     return render(request, "employee/employees.html", context)
 
+
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
@@ -544,7 +543,6 @@ def edit_employee(request, pk):
     instance = get_object_or_404(Employee.objects.filter(pk=pk,company=current_company, is_deleted=False))    
     if request.method == "POST":
         form = EmployeeForm(request.POST, request.FILES, instance=instance, current_company=current_company)
-
         if form.is_valid():
             data = form.save(commit=False)
             user = instance.user
@@ -604,13 +602,13 @@ def employee(request, pk):
     }
     return render(request, 'employee/employee-profile.html', context)
 
+
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_employee(request,pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Employee.objects.filter(pk=pk,is_deleted=False))    
-    
+    instance = get_object_or_404(Employee.objects.filter(pk=pk,is_deleted=False))        
     if (Leave.objects.filter(employee=instance)).exists():
         is_ok = False
     elif (AttendanceRegister.objects.filter(employee=instance)).exists():
@@ -621,7 +619,6 @@ def delete_employee(request,pk):
         is_ok = False
     else:
         is_ok = True
-
     if is_ok == True:
         Employee.objects.filter(pk=pk).update(is_deleted=True,company=current_company,firstname=instance.firstname + "_deleted_" + str(instance.auto_id))
         response_data = {
@@ -805,7 +802,6 @@ def delete_leave_type(request,pk):
     return HttpResponse(json.dumps(response_data), content_type='application/javascript')
 
 
-
 # Leave crud starts here
 @login_required
 @user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
@@ -894,6 +890,7 @@ def create_leave(request):
         }
         return render(request, 'leave/leaves.html', context)
     
+    
 def ajax_load_remaining_days(request):
     employee = get_object_or_404(Employee, user=request.user)
     company = employee.company
@@ -929,6 +926,7 @@ def leaves(request):
         "is_leaves" : True
     }
     return render(request, "leave/leaves.html", context)
+
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
@@ -1112,12 +1110,10 @@ def leave_reject(request,pk):
     if request.method == 'POST':
         if not instance.is_approved:
             Leave.objects.filter(pk=pk).update(is_rejected=True,status='Rejected',employee=instance.employee)
+            
             # Send email notification to employee
             employee = instance.employee
             subject = 'Leave Request Rejected'
-            # message = render_to_string('leave/email_templates/leave_rejected.html', {'leave': instance})
-            # email = EmailMessage(subject, message, to=[employee.email])
-            # email.send()   
             html_message = render_to_string('leave/email_templates/leave_rejected.html', {'leave': instance})
             plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
             from_email = settings.DEFAULT_FROM_EMAIL

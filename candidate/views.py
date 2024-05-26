@@ -119,8 +119,6 @@ def edit_candidate(request, pk):
     query = request.GET.get("q")
     if query:
         instances = instances.filter(Q(name__icontains=query))
-
-
     if request.method == "POST":
         form = CandidateForm(request.POST, instance=instance)
         if form.is_valid():
@@ -128,7 +126,6 @@ def edit_candidate(request, pk):
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -136,7 +133,6 @@ def edit_candidate(request, pk):
                 "message": "Candidate updated successfully.",                
                 "redirect_url": reverse('candidate:candidates')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
             response_data = {
@@ -145,11 +141,9 @@ def edit_candidate(request, pk):
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = CandidateForm(instance=instance)
-
         context = {
             "form": form,
             "instance": instance,
@@ -174,8 +168,7 @@ def candidate(request, pk):
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def delete_candidate(request,pk):
-    instance = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))    
-    
+    instance = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))   
     if (CandidateJob.objects.filter(candidate=instance)).exists():
         is_ok = False
     elif (CandidateInterview.objects.filter(candidate=instance)).exists():
@@ -184,10 +177,8 @@ def delete_candidate(request,pk):
         is_ok = False
     else:
         is_ok = True
-
     if is_ok == True:
-        Candidate.objects.filter(pk=pk).update(is_deleted=True,email=instance.email + "_deleted_" )
-    
+        Candidate.objects.filter(pk=pk).update(is_deleted=True,email=instance.email + "_deleted_" )    
         response_data = {
             "status" : "true",        
             "title" : "Successfully Deleted",
@@ -214,11 +205,9 @@ def delete_selected_candidates(request):
         pks = pks[:-1]
         pks = pks.split(',')
         for pk in pks:
-            instance = get_object_or_404(Candidate.objects.filter(pk=pk, is_deleted=False))
-            
+            instance = get_object_or_404(Candidate.objects.filter(pk=pk, is_deleted=False))            
         Candidate.objects.filter(pk=pk).update(
             is_deleted=True, email=instance.email + "_deleted_" + str(instance.auto_id))
-
         response_data = {
             "status": "true",            
             "title": "Successfully Deleted",
@@ -240,15 +229,13 @@ def delete_selected_candidates(request):
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 def hrms_candidates(request):
     company = get_current_company(request)
-    instances = Candidate.objects.filter(is_deleted=False,is_blocked=False)
-    
+    instances = Candidate.objects.filter(is_deleted=False,is_blocked=False)    
     skills_query = request.GET.get("skills")
     if skills_query:
         instances = instances.filter(Q(skills__icontains=skills_query))    
     experience_query = request.GET.get("experience")
     if experience_query:
-        instances = instances.filter(experience__gte=experience_query)
-        
+        instances = instances.filter(experience__gte=experience_query)        
     paginator = Paginator(instances,1000000000000)
     page_number = request.GET.get('page')
     instances = paginator.get_page(page_number)
@@ -281,6 +268,7 @@ def hrms_candidates(request):
     }
     return render(request, "candidate/candidates.html", context)
 
+
 def candidate_application(request):
     if request.method == 'POST':
         form = CandidateForm(request.POST,request.FILES)
@@ -300,9 +288,7 @@ def candidate_application(request):
             linkedin_profile = form.cleaned_data['linkedin_profile']
             github_profile = form.cleaned_data['github_profile']
             resume = form.cleaned_data['resume']
-
             candidateid = get_candidate_id(request)
-
             if not Candidate.objects.filter(email=email).exists():
                 Candidate(                    
                     first_name = first_name, 
@@ -369,9 +355,7 @@ def create_intern(request):
             resume = form.cleaned_data['resume']
             skills = form.cleaned_data['skills']
             domain = form.cleaned_data['domain']
-
-            if not Intern.objects.filter(email=email,is_deleted=False).exists():
-                
+            if not Intern.objects.filter(email=email,is_deleted=False).exists():                
                 Intern( 
                     name = name,
                     email = email,
@@ -381,8 +365,7 @@ def create_intern(request):
                     resume = resume,
                     skills = skills,
                     domain = domain
-                ).save()
-                
+                ).save()                
                 response_data = {
                     "status": "true",
                     "title": "Successfully Enrolled",

@@ -33,12 +33,12 @@
       <div class="row">
 
         {% for p in portfolios %}
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3" data-aos="zoom-in" >
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
           <div class="team-block bottom">
             <img src="{{ p.image.url }}" class="img-responsive" alt="img">
             <div class="team-content" style="">
               <span class="mb-1">{{ p.title }}</span>
-              <p style="text-transform: lowercase;">{{ p.description }}</p>
+              <p style="text-transform: uppercase;">{{ p.description }}</p>
             </div>
           </div>
         </div>

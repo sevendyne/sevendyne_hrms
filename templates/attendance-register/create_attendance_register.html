@@ -4,18 +4,15 @@
 {% load main_template_tags %}
 {% block content %}
 <section id="content">
-    <div class="container">
-        
+    <div class="container">        
         <form id="create_form" method="POST" action="{% url 'employee:create_attendance_register' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div id="c-grid" class="clearfix  justify-content-center ">
-                <div class="card card-box-shadow m-t-20"id="l-login">
-                    
+                <div class="card card-box-shadow m-t-20"id="l-login">                    
                     <div class="card-header">                            
                         <h2 style="color: #046459;text-transform: uppercase;font-weight: bold;">{{title}}<small></small></h2>
                     </div>
                     <div class="card-body card-padding">
-
                         <div class="form-group ">
                             <label for="{{ date_form.date.id_for_label }}">
                                 {{ date_form.date.label }}
@@ -27,13 +24,10 @@
                                     <span data-original-title="Field Info" title="" data-content="{{ date_form.date.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline"></span>
                                 {% endif %}
                             </label> <br>
-                            <div>{{ date_form.date }}</div>
-                            
-                            
+                            <div>{{ date_form.date }}</div>       
                             {% if date_form.date.errors %}
                                 <label class="error">{{ date_form.date.errors.as_text }}</label>
-                            {% endif %}
-                            
+                            {% endif %}                            
                         </div>
                         <div class="form-group  an_fn">
                             <label for="{{ date_form.an_fn.id_for_label }}">
@@ -46,15 +40,12 @@
                                     <span data-original-title="Field Info" title="" data-content="{{ date_form.an_fn.help_text }}" data-placement="left" data-toggle="popover" data-trigger="hover" class="help-text-icon zmdi zmdi-info-outline"></span>
                                 {% endif %}
                             </label> <br>
-                            <div>{{ date_form.an_fn }}</div>
-                            
-                            
+                            <div>{{ date_form.an_fn }}</div>  
                             {% if date_form.an_fn.errors %}
                                 <label class="error">{{ date_form.an_fn.errors.as_text }}</label>
                             {% endif %}
                         </div>
-                    </div>
-                
+                    </div>                
                     <div class="card card-box-shadow attendanceregister-card">
                         <div class="table-responsive card-body add_item_container attendanceregister_formset">
                             <table id="data-table-basic" class="table table-vmiddle">
@@ -72,18 +63,15 @@
                                             <span class="employee" >
                                                 {{ att.employee_name }}
                                             </span>
-                                                
                                         </td>
                                         <td hidden>
                                             {{att.employee_pk}}
                                         </td>
-                                        
                                         <td class="day-wise" style="width:10%;">
                                             <span class="day-wise  p-relative">
                                                 {{att.is_attended}}
                                             </span>
                                         </td>
-                                        
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -93,12 +81,10 @@
                                 <button type="submit" class="palette-theme  bg btn btn-info waves-effect" onclick="submitCreateForm(event)">Submit</button>
                             </div>
                         </div>
-                        
                     </div>
                 </div>
             </div>
-        </form>     
-        
+        </form> 
     </div>
 </section>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

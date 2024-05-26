@@ -34,7 +34,6 @@ def create_client(request):
             company =current_company
             creator = request.user
             updator = request.user
-
             if not Client.objects.filter(company_name=company_name,company=company,is_deleted=False).exists():
                 Client( 
                     firstname = firstname,
@@ -76,7 +75,6 @@ def create_client(request):
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
         form = ClientForm()
-
         context = {
             "title": "Create Client",
             "form": form,
@@ -111,6 +109,7 @@ def clients(request):
         "title": 'Clients' 
     }
     return render(request, "client/clients.html", context)
+
 
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)

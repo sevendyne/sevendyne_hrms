@@ -37,11 +37,9 @@
     </head>
     <body>
 		<!-- Main Wrapper -->
-        <div class="main-wrapper">
-		
+        <div class="main-wrapper">		
 			<!-- Header -->
-			<div class="header" style="background-color: white">
-				
+			<div class="header" style="background-color: white">				
 				<!-- Logo -->
 				<div class="header-left">
 					<a href="{% url 'main:employee_dashboard' %}" class="logo">
@@ -51,7 +49,6 @@
 							<img src="{%static 'assets/img/profiles/avatar-21.jpg'%}" width="40" height="40" alt="User Image">
 						{% endif %}
 							<span class="status online"></span></span>
-						{% comment %} <img src="{%static 'assets/img/logo_svd.png'%}" width="40" height="40" alt="Logo"> {% endcomment %}
 					</a>
 					<a href="{% url 'main:employee_dashboard' %}" class="logo2">
 						{% if company.logo %}							
@@ -60,37 +57,28 @@
 							<img src="{%static 'assets/img/profiles/avatar-21.jpg'%}" width="40" height="40" alt="User Image">
 						{% endif %}
 							<span class="status online"></span></span>
-						{% comment %} <img src="{%static 'assets/img/logo_svd.png'%}" width="60" height="60" alt="Logo"> {% endcomment %}
 					</a>
 				</div>
-				<!-- /Logo -->
-				
+				<!-- /Logo -->				
 				<a id="toggle_btn" href="javascript:void(0);">
 					<span class="bar-icon">
 						<span></span>
 						<span></span>
 						<span></span>
 					</span>
-				</a>
-				
+				</a>				
 				<!-- Header Title -->
 				<div class="page-title-box">
 					<h3>{{ company.name }} HRMS</h3>
 				</div>
-				<!-- /Header Title -->
-				
-				<a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa-solid fa-bars"></i></a>
-				
+				<!-- /Header Title -->				
+				<a id="mobile_btn" class="mobile_btn" href="#sidebar"><i class="fa-solid fa-bars"></i></a>				
 				<!-- Header Menu -->
 				<ul class="nav user-menu">
-				
-					
-					
 					<li class="nav-item dropdown has-arrow main-drop">
 						<a href="#" class="dropdown-toggle nav-link" data-bs-toggle="dropdown">
 							<span class="user-img">
-								{% if employee.photo %}
-									
+								{% if employee.photo %}									
 									<img src="{{ employee.photo.url }}" alt="{{ employee.name }}'s profile photo">
 								{% else %}
 									<img src="{%static 'assets/img/profiles/avatar-21.jpg'%}" alt="User Image">
@@ -104,8 +92,7 @@
 						</div>
 					</li>
 				</ul>
-				<!-- /Header Menu -->
-				
+				<!-- /Header Menu -->				
 				<!-- Mobile Menu -->
 				<div class="dropdown mobile-user-menu">
 					<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
@@ -114,11 +101,9 @@
 						<a class="dropdown-item" href="{% url 'user:user_logout' %}">Logout</a>
 					</div>
 				</div>
-				<!-- /Mobile Menu -->
-				
+				<!-- /Mobile Menu -->				
 			</div>
-			<!-- /Header -->
-			
+			<!-- /Header -->			
 			<!-- Sidebar -->
 			<div class="sidebar" id="sidebar" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%)">
 				<div class="sidebar-inner slimscroll">
@@ -137,29 +122,14 @@
 									</li>
 									<li class="submenu">
 										<a href="{% url 'employee:leaves' %}"><i class="la la-rocket"></i> <span> Leave Request & Status</span> </a>								
-									</li>
-									
+									</li>									
 									<li class="submenu">
 										<a href="{% url 'payroll:payslips_employee' %}"><i class="la la-money"></i> <span> Payslips </span> </a>
 									</li>
-									{% comment %} <li class="submenu">
-										<a href="#"><i class="la la-dashboard" href="{% url 'main:employee_dashboard' %}"></i> <span> Dashboard</span>
-										</a>
-									</li> {% endcomment %}
 								</ul>
-								{% comment %} <li> 
-									<a href="{% url 'employee:employee_holidays' %}"><i class=""></i> <span>Holidays</span></a>
-								</li>
-								<button class="viewmoremenu">More Menu</button>
-								<ul class="hidden-links hidden">									
-									<li class="submenu">
-										<a href="{% url 'payroll:payslips_employee' %}"><i class="la la-money"></i> <span> Payroll </span></a>										
-									</li>
-								</ul>  {% endcomment %}
 							</nav>
 						</div>
-						<ul class="sidebar-vertical">
-							
+						<ul class="sidebar-vertical">							
 							<li>
 								<a href="{% url 'main:employee_dashboard' %}"><i class="la la-dashboard"></i> <span> Dashboard</span></a>								
 							</li> 
@@ -168,8 +138,7 @@
 							</li>
 							<li>
 								<a href="{% url 'employee:leaves' %}"><i class="la la-home"></i> <span> Leave Request & Status</span> </a>								
-							</li>
-							
+							</li>							
 							<li>
 								<a href="{% url 'payroll:payslips_employee' %}"><i class="la la-money"></i> <span> Payslips </span> </a>
 							</li>
@@ -177,8 +146,7 @@
 					</div>
 				</div>
 			</div>
-			<!-- /Sidebar -->
-			
+			<!-- /Sidebar -->			
 			<!-- Two Col Sidebar -->
 			<div class="two-col-bar" id="two-col-bar">
 				<div class="sidebar sidebar-twocol">
@@ -375,8 +343,7 @@
 								</span>
 							</a>
 						</div>
-					</div>
-					
+					</div>					
 					<div class="sidebar-right">
 						<div class="tab-content" id="v-pills-tabContent">
 							<div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab">
@@ -490,24 +457,20 @@
 								<ul>
 									<li><a href="#"> Employee Profile </a></li>
 								</ul>
-							</div>
-							
+							</div>							
 						</div>
 					</div>
 				</div>
 			</div>
 			<!-- /Two Col Sidebar -->
-
 			
 			<!-- Page Wrapper -->
-            <div class="page-wrapper" style="padding-left:2%;padding-top:5%;padding-right:2%;padding-bottom:2%">
-					
+            <div class="page-wrapper" style="padding-left:2%;padding-top:5%;padding-right:2%;padding-bottom:2%">					
 				{% block content %}
 					<!-- Page Content -->
 
 					<!-- /Page Content -->
 				{% endblock %}
-
             </div>
 			<!-- /Page Wrapper -->
 
@@ -625,7 +588,6 @@
 								</div> 
 							</div> 
 						</div> 
-
 						<div id="layout-width"> 
 							<div class="layout-head pt-3">
 								<h5>Layout Width</h5>
@@ -652,7 +614,6 @@
 								</div> 
 							</div> 
 						</div> 
-
 						<div id="layout-position"> 
 							<div class="layout-head pt-3">
 								<h5>Layout Position</h5>
@@ -661,7 +622,6 @@
 							<div class="btn-group bor-rad-50 overflow-hidden radio" role="group"> 
 								<input type="radio" class="btn-check" name="data-layout-position" id="layout-position-fixed" value="fixed"> 
 								<label class="btn btn-light w-sm" for="layout-position-fixed">Fixed</label> 
-
 								<input type="radio" class="btn-check" name="data-layout-position" id="layout-position-scrollable" value="scrollable"> 
 								<label class="btn btn-light w-sm ms-0" for="layout-position-scrollable">Scrollable</label> 
 							</div> 
@@ -690,7 +650,6 @@
 								<h5 class="fs-13 text-center mt-2">Dark</h5> 
 							</div> 
 						</div> 
-
 						<div id="sidebar-size"> 
 							<div class="layout-head pt-3">
 								<h5>Sidebar Size</h5>
@@ -706,7 +665,6 @@
 									</div> 
 									<h5 class="fs-13 text-center mt-2">Default</h5> 
 								</div> 
-
 								<div class="col-4"> 
 									<div class="form-check sidebar-setting card-radio p-0"> 
 										<input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-compact" value="md"> 
@@ -716,7 +674,6 @@
 									</div> 
 									<h5 class="fs-13 text-center mt-2">Compact</h5> 
 								</div> 
-
 								<div class="col-4"> 
 									<div class="form-check sidebar-setting card-radio p-0 "> 
 										<input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-small-hover" value="sm-hover" > 
@@ -728,7 +685,6 @@
 								</div> 
 							</div> 
 						</div> 
-
 						<div id="sidebar-view"> 
 							<div class="layout-head pt-3">
 								<h5>Sidebar View</h5>
@@ -841,7 +797,6 @@
 						</div> 
 					</div> 
 				</div> 
-
 			</div> 
 			<div class="offcanvas-footer border-top p-3 text-center"> 
 				<div class="row"> 
@@ -856,26 +811,18 @@
        <script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
 	   <script src="{%static 'assets/js/jquery.dataTables.min.js'%}"></script>
 	   <script src="{%static 'assets/js/dataTables.bootstrap4.min.js'%}"></script>
-
-		
 		<!-- Bootstrap Core JS -->
         <script src="{%static 'assets/js/bootstrap.bundle.min.js'%}"></script>
 		<!-- Datetimepicker JS -->
-		{% comment %} <script src="{%static 'assets/js/moment.min.js' %}"></script>
-		<script src="{%static 'assets/js/bootstrap-datetimepicker.min.js'%}"></script> {% endcomment %}
 		<!-- Slimscroll JS -->
-		<script src="{%static 'assets/js/jquery.slimscroll.min.js'%}"></script>
-		
+		<script src="{%static 'assets/js/jquery.slimscroll.min.js'%}"></script>		
 		<!-- Select2 JS -->
-		<script src="{%static 'assets/js/select2.min.js' %}"></script>
-		
+		<script src="{%static 'assets/js/select2.min.js' %}"></script>		
 		<!-- Theme Settings JS -->
 		<script src="{%static 'assets/js/layout.js'%}"></script>
 		<script src="{%static 'assets/js/theme-settings.js'%}"></script>
-		<script src="{%static 'assets/js/greedynav.js'%}"></script>
-		
+		<script src="{%static 'assets/js/greedynav.js'%}"></script>		
 		<!-- Custom JS -->
-		<script src="{%static 'assets/js/app.js'%}"></script>
-		
+		<script src="{%static 'assets/js/app.js'%}"></script>		
     </body>
 </html>

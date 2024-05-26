@@ -92,7 +92,6 @@
 							<span>{{ company.contact_person }}</span>
 						</a>
 						<div class="dropdown-menu">
-							{% comment %} <a class="dropdown-item" href="profile.html">My Profile</a> {% endcomment %}
 							<a class="dropdown-item" href="{% url 'employee:leave_types' %}">Settings</a>
 							<a class="dropdown-item" href="{% url 'user:user_logout' %}">Logout</a>
 						</div>
@@ -125,8 +124,7 @@
 										<span>Main</span>
 									</li>
 									<li class="submenu">
-										<a href="{% url 'main:hrms_dashboard' %}"><i class="la la-dashboard"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
-										
+										<a href="{% url 'main:hrms_dashboard' %}"><i class="la la-dashboard"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>										
 									</li>
 									<li class="menu-title"> 
 										<span>Employees</span>
@@ -147,8 +145,7 @@
 									<li class="menu-title"> 
 										<span>HR</span>
 									</li>
-								<ul class="hidden-links hidden">
-									
+								<ul class="hidden-links hidden">									
 									<li class="submenu">
 										<a href="#"><i class="la la-money"></i> <span> Payroll </span> <span class="menu-arrow"></span></a>
 										<ul>
@@ -156,6 +153,7 @@
 											<li><a href="payroll-items.html"> Payroll Items </a></li>
 										</ul>
 									</li> 
+								</ul>
 							</nav>
 						</div>
 						<ul class="sidebar-vertical">							
@@ -396,8 +394,7 @@
 								</span>
 							</a>
 						</div>
-					</div>
-					
+					</div>					
 					<div class="sidebar-right">
 						<div class="tab-content" id="v-pills-tabContent">
 							<div class="tab-pane fade show active" id="v-pills-dashboard" role="tabpanel" aria-labelledby="v-pills-dashboard-tab">
@@ -661,7 +658,6 @@
 									</div> 
 									<h5 class="fs-13 text-center mt-2">Default</h5> 
 								</div> 
-
 								<div class="col-4"> 
 									<div class="form-check sidebar-setting card-radio p-0"> 
 										<input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-compact" value="md"> 
@@ -671,7 +667,6 @@
 									</div> 
 									<h5 class="fs-13 text-center mt-2">Compact</h5> 
 								</div> 
-
 								<div class="col-4"> 
 									<div class="form-check sidebar-setting card-radio p-0 "> 
 										<input class="form-check-input" type="radio" name="data-sidebar-size" id="sidebar-size-small-hover" value="sm-hover" > 
@@ -683,7 +678,6 @@
 								</div> 
 							</div> 
 						</div> 
-
 						<div id="sidebar-view"> 
 							<div class="layout-head pt-3">
 								<h5>Sidebar View</h5>
@@ -821,32 +815,23 @@
        <script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
 	   <script src="{%static 'assets/js/jquery.dataTables.min.js'%}"></script>
 	   <script src="{%static 'assets/js/dataTables.bootstrap4.min.js'%}"></script>
-
-	   
-		
 		<!-- Bootstrap Core JS -->
         <script src="{%static 'assets/js/bootstrap.bundle.min.js'%}"></script>
 		<script src="{%static 'assets/js/moment.min.js'%}"></script>
-		<script src="{%static 'assets/js/bootstrap-datetimepicker.min.js'%}"></script>
-		
+		<script src="{%static 'assets/js/bootstrap-datetimepicker.min.js'%}"></script>		
 		<!-- Slimscroll JS -->
-		<script src="{%static 'assets/js/jquery.slimscroll.min.js'%}"></script>
-		
+		<script src="{%static 'assets/js/jquery.slimscroll.min.js'%}"></script>		
 		<!-- Select2 JS -->
-		<script src="{%static 'assets/js/select2.min.js' %}"></script>
-		
+		<script src="{%static 'assets/js/select2.min.js' %}"></script>		
 		 <!-- Theme Settings JS -->
 		<script src="{%static 'assets/js/layout.js'%}"></script>
 		<script src="{%static 'assets/js/theme-settings.js'%}"></script>
-		<script src="{%static 'assets/js/greedynav.js'%}"></script>
-		
+		<script src="{%static 'assets/js/greedynav.js'%}"></script>		
 		<!-- Custom JS -->
 		<script src="{%static 'assets/js/app.js'%}"></script>
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>		
 		
-		
-		<script>
-			
+		<script>			
 			document.addEventListener('DOMContentLoaded', function() {
 				const links = document.querySelectorAll('.sidebar-vertical a');
 				const submenuLinks = document.querySelectorAll('.sidebar-vertical .submenu > a');
@@ -890,11 +875,7 @@
 						event.preventDefault(); // Prevent default anchor behavior
 					});
 				});
-			});
-			
+			});			
 		</script>
-		
-		
-
     </body>
 </html>

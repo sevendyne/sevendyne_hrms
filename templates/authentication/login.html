@@ -31,15 +31,11 @@
 
     </head>
     <body class="account-page">
-		
-
-	
 		<!-- Main Wrapper -->
         <div class="main-wrapper">
 			<div class="account-content">
-				{% comment %} <a href="job-list.html" class="btn btn-primary apply-btn">Apply Job</a> {% endcomment %}
 				<div class="container">
-					<!-- Add this hidden div for the popup message -->
+					<!-- hidden div for the popup message -->
 					<div id="loginErrorMessage" class="alert alert-danger alert-dismissible fade show" style="display: none;" role="alert">
 						{% if error_message %}
 							{{ error_message }}
@@ -47,25 +43,16 @@
 						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
-					</div>
-				
-					<!-- Account Logo -->
-					{% comment %} <div class="account-logo">
-						<a href="#"><img src="{% static 'assets/img/01.png' %}" alt="Dreamguy's Technologies" style="width:21%"></a>
-					</div> {% endcomment %}
-					<!-- /Account Logo -->
-					
+					</div>					
 					<div class="account-box">
 						<div class="account-wrapper">
 							<!-- Account Logo -->
-							{% comment %} <div class="account-logo">
-								<a href="#"><img src="{% static 'assets/img/01.png' %}" alt="Dreamguy's Technologies" style="width:71%"></a>
-							</div> {% endcomment %}
-							<!-- /Account Logo -->
-							
+							<div class="account-logo">
+								<a href="#"><img src="{% static 'assets/img/01.png' %}" alt="Sevendyne" style="width:71%"></a>
+							</div>
+							<!-- /Account Logo -->							
 							<h3 class="account-title">Login</h3>
-							<p class="account-subtitle">Access to our dashboard</p>
-							
+							<p class="account-subtitle">Access to our dashboard</p>							
 							<!-- Account Form -->
 							<form method="POST" enctype="multipart/form-data">
 								{% csrf_token %}
@@ -81,18 +68,12 @@
 										<div class="col">
 											<label class="col-form-label">Password</label><br>
 										</div>
-										{% comment %} <div class="col-auto">
-											<a class="text-muted" href="forgot-password.html">
-												Forgot password?
-											</a>
-										</div> {% endcomment %}
 									</div>
 									<div class="position-relative">
 										{{ form.password }}
 										{% if form.password.errors %}
 										<span class="error">{{ form.password.errors.0 }}</span>
 										{% endif %}
-										{% comment %} <span class="fa-solid fa-eye-slash" id="toggle-password"></span> {% endcomment %}
 									</div>
 								</div>
 								<div class="input-block mb-4 text-center">
@@ -104,10 +85,8 @@
 							</div>
 							<!-- /Account Form -->
 							<h3>Demo Accounts</h3>
-							{% comment %} <p> Admin Login - Username: admin, Password: admin</p> {% endcomment %}
 							<p> HRMS Dashboard Login - Username: hrmsclient1, Password: password@123</p>
-							<p> Employee Login - Username: employee1, Password: password@123</p>
-							
+							<p> Employee Login - Username: employee1, Password: password@123</p>							
 						</div>
 					</div>
 				</div>

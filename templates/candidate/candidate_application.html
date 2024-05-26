@@ -3,144 +3,143 @@
 
 {% block content %}
 	
-		<!-- Main Wrapper -->
-        <div class="main-wrapper" style="display:flex;justify-content:center">
-					<div class="account-box" style="width:70%;margin-top:3%">
-						<div class="account-wrapper">
-							<h1 class="account-title" style="text-align:center;color:#2b5697;">Job Application Form</h1>
-							<!-- Account Form -->
-							<form action="" method="POST" enctype="multipart/form-data">
-								{% csrf_token %}
-								<div class="row">
-									<div class="card col-md-5" style="margin-right:3%">                  
-										<div class="card-body py-5 px-md-5">
-											<div class="input-block mb-4">
-												{{ form.first_name }}
-												{% if form.first_name.errors %}
-												<span class="error">{{ form.first_name.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">First name<span class="text-danger">*</span></label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.last_name }}
-												{% if form.last_name.errors %}
-												<span class="error">{{ form.last_name.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Last name<span class="text-danger">*</span></label>
-											</div>								
-											<div class="input-block mb-4">
-												{{ form.email }}
-												{% if form.email.errors %}
-												<span class="error">{{ form.email.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Email address<span class="text-danger">*</span></label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.phone_number }}
-												{% if form.phone_number.errors %}
-												<span class="error">{{ form.phone_number.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Phone Number<span class="text-danger">*</span></label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.address }}
-												{% if form.address.errors %}
-												<span class="error">{{ form.address.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Address</label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.education }}
-												{% if form.education.errors %}
-												<span class="error">{{ form.education.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Education</label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.experience }}
-												{% if form.experience.errors %}
-												<span class="error">{{ form.experience.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Experience</label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.skills }}
-												{% if form.skills.errors %}
-												<span class="error">{{ form.skills.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Skills<span class="text-danger">*</span></label>
-											</div>
-										</div>
-									</div>
-									<div class="card col-md-5">                  
-										<div class="card-body py-5 px-md-5">
-											<div class="input-block mb-4">
-												{{ form.certifications }}
-												{% if form.certifications.errors %}
-												<span class="error">{{ form.certifications.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Certifications</label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.resume }}
-												{% if form.resume.errors %}
-												<span class="error">{{ form.resume.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Resume</label>
-											</div>								
-											<div class="input-block mb-4">
-												{{ form.photo }}
-												{% if form.photo.errors %}
-												<span class="error">{{ form.photo.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Photo</label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.projects }}
-												{% if form.projects.errors %}
-												<span class="error">{{ form.projects.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Projects</label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.additional_information }}
-												{% if form.additional_information.errors %}
-												<span class="error">{{ form.additional_information.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Additional Information</label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.linkedin_profile }}
-												{% if form.linkedin_profile.errors %}
-												<span class="error">{{ form.linkedin_profile.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Linkedin Profile</label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.github_profile }}
-												{% if form.github_profile.errors %}
-												<span class="error">{{ form.github_profile.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Github Profile</label>
-											</div>
-											<div class="input-block mb-4">
-												{{ form.job_type }}
-												{% if form.job_type.errors %}
-												<span class="error">{{ form.job_type.errors.0 }}</span>
-												{% endif %}
-												<label class="form-label">Select Job Type</label>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="input-block mb-4 text-center">
-									<button class="btn btn-primary account-btn" type="submit" value="Register" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%);width:40%">Register</button>
-								</div>
-								
-							</form>
-							<!-- /Account Form -->
+<!-- Main Wrapper -->
+<div class="main-wrapper" style="display:flex;justify-content:center">
+	<div class="account-box" style="width:70%;margin-top:3%">
+		<div class="account-wrapper">
+			<h1 class="account-title" style="text-align:center;color:#2b5697;">Job Application Form</h1>
+			<!-- Account Form -->
+			<form action="" method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<div class="row">
+					<div class="card col-md-5" style="margin-right:3%">                  
+						<div class="card-body py-5 px-md-5">
+							<div class="input-block mb-4">
+								{{ form.first_name }}
+								{% if form.first_name.errors %}
+								<span class="error">{{ form.first_name.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">First name<span class="text-danger">*</span></label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.last_name }}
+								{% if form.last_name.errors %}
+								<span class="error">{{ form.last_name.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Last name<span class="text-danger">*</span></label>
+							</div>								
+							<div class="input-block mb-4">
+								{{ form.email }}
+								{% if form.email.errors %}
+								<span class="error">{{ form.email.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Email address<span class="text-danger">*</span></label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.phone_number }}
+								{% if form.phone_number.errors %}
+								<span class="error">{{ form.phone_number.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Phone Number<span class="text-danger">*</span></label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.address }}
+								{% if form.address.errors %}
+								<span class="error">{{ form.address.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Address</label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.education }}
+								{% if form.education.errors %}
+								<span class="error">{{ form.education.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Education</label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.experience }}
+								{% if form.experience.errors %}
+								<span class="error">{{ form.experience.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Experience</label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.skills }}
+								{% if form.skills.errors %}
+								<span class="error">{{ form.skills.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Skills<span class="text-danger">*</span></label>
+							</div>
 						</div>
 					</div>
-        </div>
+					<div class="card col-md-5">                  
+						<div class="card-body py-5 px-md-5">
+							<div class="input-block mb-4">
+								{{ form.certifications }}
+								{% if form.certifications.errors %}
+								<span class="error">{{ form.certifications.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Certifications</label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.resume }}
+								{% if form.resume.errors %}
+								<span class="error">{{ form.resume.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Resume</label>
+							</div>								
+							<div class="input-block mb-4">
+								{{ form.photo }}
+								{% if form.photo.errors %}
+								<span class="error">{{ form.photo.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Photo</label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.projects }}
+								{% if form.projects.errors %}
+								<span class="error">{{ form.projects.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Projects</label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.additional_information }}
+								{% if form.additional_information.errors %}
+								<span class="error">{{ form.additional_information.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Additional Information</label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.linkedin_profile }}
+								{% if form.linkedin_profile.errors %}
+								<span class="error">{{ form.linkedin_profile.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Linkedin Profile</label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.github_profile }}
+								{% if form.github_profile.errors %}
+								<span class="error">{{ form.github_profile.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Github Profile</label>
+							</div>
+							<div class="input-block mb-4">
+								{{ form.job_type }}
+								{% if form.job_type.errors %}
+								<span class="error">{{ form.job_type.errors.0 }}</span>
+								{% endif %}
+								<label class="form-label">Select Job Type</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="input-block mb-4 text-center">
+					<button class="btn btn-primary account-btn" type="submit" value="Register" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%);width:40%">Register</button>
+				</div>				
+			</form>
+			<!-- /Account Form -->
+		</div>
+	</div>
+</div>
 
 {% endblock %}

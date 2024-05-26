@@ -19,7 +19,6 @@ from django.http import HttpResponse
 from sevendyne_hrms import settings
 
 
-#  views here.
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
@@ -135,13 +134,11 @@ def edit_job(request, pk):
     instance = get_object_or_404(Job.objects.filter(pk=pk,company=current_company, is_deleted=False))    
     if request.method == "POST":
         form = JobForm(request.POST, instance=instance, current_company=current_company)
-
         if form.is_valid():
             data = form.save(commit=False)
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
-
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -149,29 +146,23 @@ def edit_job(request, pk):
                 "message": "Job updated successfully.",                
                 "redirect_url": reverse('job:jobs')
             }
-
         else:
             message = generate_form_errors(form, formset=False)
-
             response_data = {
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
                 "title": "Form validation error"  
             }
-
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
-        form = JobForm(instance=instance, current_company=current_company)
-       
+        form = JobForm(instance=instance, current_company=current_company)       
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Job :" + instance.job_title,
-            
+            "title": "Edit Job :" + instance.job_title,            
             "redirect": "true",
-            "url": reverse('job:edit_job', kwargs={'pk': instance.pk}),
-
+            "url": reverse('job:edit_job', kwargs={'pk': instance.pk})
         }
         return render(request, 'job/jobs.html', context)
 
@@ -199,10 +190,8 @@ def delete_job(request,pk):
         is_ok = False
     else:
         is_ok = True
-
     if is_ok == True:
         Job.objects.filter(pk=pk).update(is_deleted=True,job_title=instance.job_title + "_deleted_" + str(instance.auto_id))
-
         response_data = {
             "status" : "true",        
             "title" : "Successfully Deleted",
@@ -229,15 +218,13 @@ def all_jobs(request):
     paginator = Paginator(jobs,1000000000000)
     page_number = request.GET.get('page')
     jobs = paginator.get_page(page_number)
-    departments = Department.objects.filter(is_deleted=False)
-    
+    departments = Department.objects.filter(is_deleted=False)    
     context = {
         'jobs': jobs,
         "title": 'Jobs',
         'departments':departments,
-
         'status_choices': STATUS_CHOICES,
-        'job_type_choices': JOBTYPE_CHOICES,
+        'job_type_choices': JOBTYPE_CHOICES
     }
     return render(request, "sevendyne_admin/jobs/all-jobs.html", context)
 
@@ -246,7 +233,6 @@ def all_jobs(request):
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def job_view(request,pk):
     instance = get_object_or_404(Job.objects.filter(pk=pk,is_deleted=False))
-
     context = {
         'instance': instance,
         'title': 'Job'
@@ -271,7 +257,6 @@ def create_candidate_job(request,pk):
             salary_from = form.cleaned_data['salary_from']
             salary_to = form.cleaned_data['salary_to']
             description = form.cleaned_data['description']
-
             status = "Job Offered"    
             if not CandidateJob.objects.filter(candidate=candidate,job_title=job_title,company=company,is_deleted=False).exists():
                 instance = CandidateJob(  
@@ -337,7 +322,6 @@ def create_candidate_job(request,pk):
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def candidate_jobs(request):
-    current_company = get_current_company(request)
     jobs = CandidateJob.objects.filter(is_deleted=False)
     paginator = Paginator(jobs,1000000000000)
     page_number = request.GET.get('page')
@@ -352,7 +336,6 @@ def candidate_jobs(request):
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def edit_candidate_job(request, pk):
-    current_company = get_current_company(request)
     instance = get_object_or_404(CandidateJob.objects.filter(pk=pk, is_deleted=False))    
     candidate = instance.candidate    
     if request.method == "POST":
@@ -428,8 +411,7 @@ def delete_candidate_job(request,pk):
 def create_candidate_interview(request,pk):
     candidate = get_object_or_404(Candidate.objects.filter(pk=pk,is_deleted=False))
     current_company = get_current_company(request)   
-    candidate_job = get_object_or_404(CandidateJob.objects.filter(candidate=candidate,company=current_company,is_deleted=False))
-     
+    candidate_job = get_object_or_404(CandidateJob.objects.filter(candidate=candidate,company=current_company,is_deleted=False))     
     if request.method == 'POST':
         form = CandidateInterviewForm(request.POST)
         if form.is_valid():
@@ -440,7 +422,6 @@ def create_candidate_interview(request,pk):
             company =current_company
             creator = request.user
             updator = request.user
-
             if not CandidateInterview.objects.filter(candidate=candidate,date_time=date_time,company=company,is_deleted=False).exists():
                 CandidateInterview(  
                     candidate = candidate,                  
@@ -452,7 +433,6 @@ def create_candidate_interview(request,pk):
                     creator = creator,
                     updator = updator
                 ).save()
-
                 status = "Interview Scheduled"
                 candidate.status = status                
                 candidate.save()
@@ -551,7 +531,7 @@ def edit_candidate_interview(request, pk):
 @company_required
 def update_candidate_interview_status(request, pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(CandidateInterview.objects.filter(candidate__id=pk, is_deleted=False))        
+    instance = get_object_or_404(CandidateInterview.objects.filter(company=current_company,candidate__id=pk, is_deleted=False))        
     if request.method == "POST":
         form = CandidateInterviewStatusForm(request.POST,instance=instance)
         data = form.save(commit=False)
@@ -583,7 +563,8 @@ def update_candidate_interview_status(request, pk):
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def candidate_interview(request,pk):
-    instance = get_object_or_404(CandidateInterview.objects.filter(pk=pk,is_deleted=False))
+    current_company = get_current_company(request)
+    instance = get_object_or_404(CandidateInterview.objects.filter(pk=pk,company=current_company,is_deleted=False))
     context = {
         'instance': instance,
         'title': 'Job'
@@ -595,7 +576,8 @@ def candidate_interview(request,pk):
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_candidate_interview(request,pk):
-    instance = get_object_or_404(CandidateInterview.objects.filter(pk=pk,is_deleted=False))    
+    current_company = get_current_company(request)
+    instance = get_object_or_404(CandidateInterview.objects.filter(pk=pk,company=current_company,is_deleted=False))    
     CandidateInterview.objects.filter(pk=pk).update(is_deleted=True,job_title=instance.job_title + "_deleted_" + str(instance.auto_id))
     response_data = {
         "status" : "true",        
@@ -686,7 +668,7 @@ def job_applicants(request):
 @company_required
 def edit_job_applicant_status(request, pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Job.objects.filter(pk=pk, is_deleted=False))    
+    instance = get_object_or_404(Job.objects.filter(pk=pk, company=current_company,is_deleted=False))    
     if request.method == "POST":
         form = JobApplicantStatusForm(request.POST, instance=instance, current_company=current_company)
         if form.is_valid():
@@ -740,7 +722,8 @@ def job_applicant(request,pk):
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 @company_required
 def delete_job_applicant(request,pk):
-    instance = get_object_or_404(JobApplicant.objects.filter(pk=pk,is_deleted=False))
+    current_company = get_current_company(request)
+    instance = get_object_or_404(JobApplicant.objects.filter(pk=pk,company=current_company,is_deleted=False))
     JobApplicant.objects.filter(pk=pk).update(is_deleted=True,job_title=instance.job_title + "_deleted_" + str(instance.auto_id))
     response_data = {
         "status" : "true",        

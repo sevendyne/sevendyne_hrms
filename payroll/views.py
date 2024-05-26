@@ -766,15 +766,8 @@ def generate_payslip_pdf(request, pk=None):
     current_company = get_current_company(request)    
     currency=current_company.country.currency
     currency_symbol = current_company.country.currency_symbol
-    if pk is not None:
-        instance = get_object_or_404(Salary, pk=pk, company=current_company, is_deleted=False)
-    elif 'pk' in request.GET:
-        pk = request.GET.get('pk')
-        instance = get_object_or_404(Salary, pk=pk, company=current_company, is_deleted=False)
-    else:
-        # Handle the case when pk is not provided or found in request.GET
-        return HttpResponse("No primary key provided.")
-    employee = instance.employee
+    instance = get_object_or_404(Salary, pk=pk, company=current_company, is_deleted=False)
+    employee = instance.employee    
     # Get the month from the date field of the Salary model
     salary_month = instance.date.strftime('%B %Y')
     dynamic_fields =  SalaryDynamicField.objects.filter(company=current_company,employee=employee,is_deleted=False)
@@ -801,9 +794,11 @@ def generate_payslip_pdf(request, pk=None):
         'net_salary_in_words': net_salary_in_words
     }    
     response = HttpResponse(content_type = 'application/pdf')
-    # Generate a slugified version of the employee name and concatenate it with the month
-    filename = f"payslip_{slugify(employee)}_{salary_month}.pdf"
-    response['Content-Disposition'] = f'filename="{filename}"'  
+    employee_name_with_underscores = employee.get_full_name.replace(' ', '_')
+    filename = f"payslip_{employee_name_with_underscores}_{salary_month}.pdf"
+    filename = f"payslip_{employee.firstname}_{employee.lastname}_{salary_month}.pdf"
+    response['Content-Disposition'] = 'attachment; filename="%s"' % filename
+    
     template = get_template(template_path)
     html = template.render(context)
     pisa_status = pisa.CreatePDF(html,dest=response)
@@ -1007,7 +1002,7 @@ def email_payslip(request, pk=None):
 
         employee_name_with_underscores = employee.get_full_name.replace(' ', '_')
         payslip_filename = f"payslip_{employee_name_with_underscores}_{month}.pdf"
-
+        
         subject = f'PaySlip for the month - {month}'
         context = {
             'pk': salary.id,
