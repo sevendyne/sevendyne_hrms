@@ -272,6 +272,9 @@ def hrms_dashboard(request):
     candidates_count =candidates.count()
     absent_employees = AttendanceRegister.objects.filter(company=company,date=current_date, status='absent')[:4]
     absent_employees_count = absent_employees.count()
+    # Get upcoming holiday
+    today = datetime.date.today()     
+    next_holiday = Holiday.objects.filter(company=company, date__gte=today).order_by('date').first()
     try:
         hrms_client = get_object_or_404(HrmsClient, user=request.user, is_deleted=False)
         context = {
@@ -287,7 +290,8 @@ def hrms_dashboard(request):
             'candidates':candidates,
             'employees':employees,
             'absent_employees': absent_employees,
-            'absent_employees_count': absent_employees_count
+            'absent_employees_count': absent_employees_count,
+            'next_holiday':next_holiday
         }    
         return render(request, "dashboard/admin-dashboard.html", context=context)
     except HrmsClient.DoesNotExist:

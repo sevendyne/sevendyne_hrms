@@ -67,6 +67,20 @@
 			</div>
 		</a>		
 	</div>
+	<div class="col-md-6 col-sm-6 col-lg-6 col-xl-3">
+		<section>
+			<h5 class="dash-title">Upcoming Holiday</h5>
+			<div class="card">
+				<div class="card-body text-center">
+					{% if next_holiday %}
+						<h4 class="holiday-title mb-0">{{ next_holiday.date|date:"D d M Y" }} - {{ next_holiday.name }}</h4>
+					{% else %}
+						<p>No upcoming holiday</p>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+	</div>
 </div>
 
 <!-- Statistics Widget - Candidate & Jobs-->
