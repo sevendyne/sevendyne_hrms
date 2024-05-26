@@ -318,39 +318,6 @@
 			// Get today's date
 		});
 	});
-	
-	
-
-	{% comment %} $(document).ready(function() {
-		// Event listener for start date change
-		$('.startdate').on('change', function() {
-			console.log("Start date changed");
-			// Get today's date
-			var today = new Date();
-	
-			// Get the selected start date
-			var startDate = new Date(this.value);
-			
-			// Check if the selected start date is earlier than today's date
-			if (startDate < today) {
-				// Reset the value of the start date input to today's date
-				this.value = today.toISOString().slice(0,10);
-				console.log("Start date cannot be earlier than today. Resetting to today's date.");
-			}
-			updateLeaveDays();
-			//updateRemainingDays(); 
-		});
-	
-		// Event listener for end date change
-		$('#enddate').on('change', function() {
-			console.log("End date changed");
-			updateLeaveDays();
-			//updateRemainingDays(); 
-		});
-	});
-	 {% endcomment %}
-			
-		
 	// Event listener for end date change
 	function calculateLeaveDays(startDateString, endDateString, leaveTypeDays) {
 		console.log("calculate leave days called")
@@ -384,69 +351,6 @@
 		var leaveDays = calculateLeaveDays(startDate, endDate, leaveTypeDays);
 		$('#id_leave_days').val(leaveDays);
 	}
-
-	
-	
-{% comment %} 
-	// Event listener for #startdate
-	$(document).ready(function() {
-		// Event listener for start date change
-		$('#startdate').on('change', function() {
-			console.log("start date changed");
-			// Get today's date
-			var today = new Date();
-		
-			// Get the selected start date
-			var startDate = new Date(this.value);
-			
-			// Check if the selected start date is earlier than today's date
-			if (startDate < today) {
-				// Reset the value of the start date input to today's date
-				this.value = today.toISOString().slice(0,10);
-				console.log("Start date cannot be earlier than today. Resetting to today's date.");
-			}
-			updateLeaveDays();
-			//updateRemainingDays(); 
-		});
-	
-		// Event listener for end date change
-		$('#enddate').on('change', function() {
-			console.log("end date changed");
-			updateLeaveDays();
-			//updateRemainingDays(); 
-		});
-	});
-	
-
-	// Event listener for end date change
-	function calculateLeaveDays(startDateString, endDateString, leaveTypeDays) {
-		console.log("calculate leave days called")
-		var startDate = new Date(startDateString);
-		var endDate = new Date(endDateString);
-		var diffTime = Math.abs(endDate - startDate);
-		var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-		if (diffDays === 0) {
-			return 1;
-			} else if (diffDays < 1) {
-			return "to should be greater than from " ;
-			} else {
-			return diffDays + 1;
-			}
-	}
-
-
-	// Function to calculate and update leave days
-	function updateLeaveDays() {
-		console.log("update leave days called")
-		var startDate = $('#startdate').val();
-		console.log("start date",startDate)
-		var endDate = $('#enddate').val();
-		console.log("start date",endDate)
-		var leaveTypeDays = parseInt($('#leave_days').val()); // Assuming you have a hidden input field with leave type days
-		var leaveDays = calculateLeaveDays(startDate, endDate, leaveTypeDays);
-		$('#leave_days').val(leaveDays);
-	} {% endcomment %}
 
 	// Function to handle leave approval
 	function handleApproval(leaveId) {
@@ -560,31 +464,6 @@
 			});
 		});
 	});
-	{% comment %} $(document).ready(function() {
-		$('.approve-btn').on('click', function(e) {
-			e.preventDefault();
-			var leaveId = $(this).data('leave-id'); // Ensure your "Approve" button has a data-leave-id attribute
-	
-			$.ajax({
-				type: 'POST',
-				url: '{% url "employee:leave_approval" pk=0 %}'.replace('0', leaveId),
-				data: {
-					csrfmiddlewaretoken: '{{ csrf_token }}',
-					// Any other data you want to send
-				},
-				success: function(response) {
-					// Handle success
-					if(response.redirect === "true") {
-						window.location.href = response.redirect_url;
-					}
-				},
-				error: function(response) {
-					// Handle error
-					alert('There was an error approving the leave request.');
-				}
-			});
-		});
-	}); {% endcomment %}
 	
 	function attachEventListeners() {
 		// Event listener for #startdate
@@ -741,10 +620,6 @@
 		});
 	}
 	}	
-
-	// Function to handle approve action
-	
-
 
 </script>
 

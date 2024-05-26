@@ -119,8 +119,6 @@
 												<div class="col-sm-6"> 
 													<div class="input-block mb-3">
 														<label class="col-form-label">Select Staff</label>
-														{% comment %} <input name="employee" id="employee" class="form-control" type="text" value="{{salary.employee}}"> {% endcomment %}
-												
 														<select name="employee" id="employee_name_{{ salary.id }}" class="form-control">
 															{% for employee in employees %}
 																<option value="{{ employee.id }}" {% if employee.id == salary.employee.id %} selected {% endif %}>{{ salary.employee }}</option>

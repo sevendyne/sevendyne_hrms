@@ -109,9 +109,6 @@
 					  {% if form.leave_days.errors %}
 					  <span class="error">{{ form.leave_days.errors.0 }}</span>
 					  {% endif %}
-					  {% comment %} <input id="leave_days" class="form-control" readonly type="text"> {% endcomment %}
-					  
-					  {% comment %} <input name="days" class="form-control" readonly type="text" value="{{ form.days }}"> {% endcomment %}
 					</div>
 		  
 					<div class="input-block mb-3">
@@ -120,9 +117,6 @@
 					  {% if form.remaining_days.errors %}
 					  <span class="error">{{ form.remaining_days.errors.0 }}</span>
 					  {% endif %}
-					  {% comment %} <input id="remaining_days" class="form-control" readonly type="text"> {% endcomment %}
-					  
-					  {% comment %} <input name="remaining_days" class="form-control" readonly type="text" value="{{ form.remaining_days }}"> {% endcomment %}
 					</div>
 		  
 					<div class="input-block mb-3">
@@ -131,7 +125,6 @@
 						{% if form.reason.errors %}
 						<span class="error">{{ form.reason.errors.0 }}</span>
 						{% endif %}
-					  {% comment %} <textarea name="reason" rows="4" class="form-control">{{ form.reason }}</textarea> {% endcomment %}
 					</div>
 		  
 					<div class="submit-section">

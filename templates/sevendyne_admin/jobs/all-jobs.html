@@ -3,121 +3,116 @@
 
 {% block content %}
 
-    <!-- Begin Page Content -->
-    <div class="container-fluid">
-        <!-- DataTales Example -->
-        <div class="card shadow mb-4">
-            <div class="card-header py-3 d-flex">
-                <h6 class="m-0 font-weight-bold text-primary">JOBS</h6>
-                 <!-- Topbar Search -->
-                 <form class="d-none d-sm-inline-block form-inline mr-auto md-3 my-2 my-md-0 mw-100 navbar-search" style="margin-left: 70%;">
-                    <div class="input-group">
-                        <input type="text" name="q" class="form-control bg-light border-0 small" placeholder="Search for..."
-                            aria-label="Search" aria-describedby="basic-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fas fa-search fa-sm"></i>
-                            </button>
-                        </div>
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex">
+            <h6 class="m-0 font-weight-bold text-primary">JOBS</h6>
+                <!-- Topbar Search -->
+                <form class="d-none d-sm-inline-block form-inline mr-auto md-3 my-2 my-md-0 mw-100 navbar-search" style="margin-left: 70%;">
+                <div class="input-group">
+                    <input type="text" name="q" class="form-control bg-light border-0 small" placeholder="Search for..."
+                        aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search fa-sm"></i>
+                        </button>
                     </div>
-                </form>
-            </div>
-            
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th style="width:5%">Sl. No.</th>
-                                <th style="width:15%">Company</th>
-                                <th style="width:15%">Job Title</th>
-                                <th style="width:15%">Experience(In Years)</th>
-                                <th style="width:15%">Vacancies</th>
-                                <th style="width:15%">Actions</th>
-                            </tr>
-                        </thead>                        
-                        <tbody>
-                            {% for job in jobs %}
-                            <tr>
-                                <td>{{forloop.counter}}</td>
-                                <td>{{job.company}}</td>
-                                <td>{{job.job_title}}</td>
-                                <td>{{job.experience}}</td>
-                                <td>{{job.no_of_vacancies}}</td>
-                                <td>                                    
-                                    <a href="{% url 'job:job_view' pk=job.pk %}" class="btn btn-default btn-icon waves-effect waves-circle waves-float"title="View job"><i class="zmdi zmdi-eye" ></i></a>   
-                                </td>                                
-                            </tr>
-                            {% endfor %}                            
-                        </tbody>
-                    </table>
                 </div>
+            </form>
+        </div>        
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th style="width:5%">Sl. No.</th>
+                            <th style="width:15%">Company</th>
+                            <th style="width:15%">Job Title</th>
+                            <th style="width:15%">Experience(In Years)</th>
+                            <th style="width:15%">Vacancies</th>
+                            <th style="width:15%">Actions</th>
+                        </tr>
+                    </thead>                        
+                    <tbody>
+                        {% for job in jobs %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>{{job.company}}</td>
+                            <td>{{job.job_title}}</td>
+                            <td>{{job.experience}}</td>
+                            <td>{{job.no_of_vacancies}}</td>
+                            <td>                                    
+                                <a href="{% url 'job:job_view' pk=job.pk %}" class="btn btn-default btn-icon waves-effect waves-circle waves-float"title="View job"><i class="zmdi zmdi-eye" ></i></a>   
+                            </td>                                
+                        </tr>
+                        {% endfor %}                            
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        // Function to handle delete action
-        function handleDelete(pk) {
-            Swal.fire({
-                title: "Are you sure?",
-                text: "Once deleted, you will not be able to recover this Job!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            })
-            .then((result) => {
-                if (result.isConfirmed) {
-                    // If user confirms, send Fetch API request to delete
-                    fetch('{% url "job:delete_job" pk=0 %}'.replace('0', pk), {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRFToken': '{{ csrf_token }}'
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        // Handle success response
-                        if (data.status === "true") {
-                            Swal.fire({
-                                title: data.title,
-                                text: data.message,
-                                icon: "success",
-                            })
-                            .then((value) => {
-                                // Redirect to the specified URL after success
-                                window.location.href = data.redirect_url;
-                            });
-                        } else {
-                            Swal.fire("Error", "An error occurred while deleting.", "error");
-                        }
-                    })
-                    .catch(() => {
-                        // Handle error
-                        Swal.fire("Error", "An error occurred while processing the request.", "error");
-                    });
-                } else {
-                    Swal.fire("job is safe!");
-                }
-            });
-        }
-    
-        // Attach click event to delete button
-        document.querySelectorAll('.remove').forEach(function(el) {
-            el.addEventListener('click', function(e) {
-                e.preventDefault();
-                var pk = this.getAttribute('data-id');
-                handleDelete(pk);
-            });
+<script>
+    // Function to handle delete action
+    function handleDelete(pk) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this Job!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                // If user confirms, send Fetch API request to delete
+                fetch('{% url "job:delete_job" pk=0 %}'.replace('0', pk), {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Handle success response
+                    if (data.status === "true") {
+                        Swal.fire({
+                            title: data.title,
+                            text: data.message,
+                            icon: "success",
+                        })
+                        .then((value) => {
+                            // Redirect to the specified URL after success
+                            window.location.href = data.redirect_url;
+                        });
+                    } else {
+                        Swal.fire("Error", "An error occurred while deleting.", "error");
+                    }
+                })
+                .catch(() => {
+                    // Handle error
+                    Swal.fire("Error", "An error occurred while processing the request.", "error");
+                });
+            } else {
+                Swal.fire("job is safe!");
+            }
         });
-    </script>
-    
- 
-   
-    <!-- /.container-fluid -->
+    }
+
+    // Attach click event to delete button
+    document.querySelectorAll('.remove').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+            e.preventDefault();
+            var pk = this.getAttribute('data-id');
+            handleDelete(pk);
+        });
+    });
+</script>
 {% endblock %}

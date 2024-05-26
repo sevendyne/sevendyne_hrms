@@ -17,17 +17,11 @@
 			</div>
 			<div class="col-auto float-end ms-auto">
 				<div class="btn-group btn-group-sm">
-					{% comment %} <button class="btn btn-white">CSV</button> {% endcomment %}
-					{% comment %} <button href="templates/payroll/payslip-pdf.html"  class="btn btn-white">Email</button> {% endcomment %}
 					<button id="pdf-button" class="btn btn-white">PDF</button>
 					<button id="email-button" class="btn btn-white">Email</button>
 					<a href="{% url 'payroll:print_payslip' pk=pk %}" class="btn btn-white">
 						<i class="fa-solid fa-print fa-lg"></i> Print
 					</a>
-					{% comment %} <a href="{% url 'payroll:email_payslip' pk=pk %}" id="email-button" class="btn btn-white">
-						<i class="fa-solid fa-envelope fa-lg"></i> Email
-					</a>   {% endcomment %}
-					{% comment %} <button href="{% url 'payroll:print_payslip' pk=pk %}" class="btn btn-white"><i class="fa-solid fa-print fa-lg"></i> Print</button> {% endcomment %}
 				</div>
 			</div>
 		</div>
@@ -174,7 +168,4 @@
     });
     });
 </script>
-
-
-
 {% endblock %}

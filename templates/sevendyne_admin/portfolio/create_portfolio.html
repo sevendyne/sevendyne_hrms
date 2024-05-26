@@ -32,15 +32,6 @@
                             <label class="form-label">Title</label>
                           </div>
                         </div>
-                        {% comment %} <div class="col-md-6 mb-4">
-                          <div class="form-outline">
-                            {{ form.last_name }}
-                            {% if form.last_name.errors %}
-                              <span class="error">{{ form.last_name.errors.0 }}</span>
-                            {% endif %}
-                            <label class="form-label">Last name</label>
-                          </div>
-                        </div> {% endcomment %}
                       </div>
       
                       <!-- Email input -->
@@ -60,8 +51,6 @@
                         {% endif %}
                         <label class="form-label">Image</label>
                       </div>
-      
-                      
                   </div>
                 </div>
               </div>
@@ -82,8 +71,6 @@
                   <div class="card-body py-5 px-md-5">
                     <form id="hrmsclientform" method="post" enctype="multipart/form-data" class="ajax">
                       {% csrf_token %}
-
-                      <!-- 2 column grid layout with text inputs for the first and last names -->
                       <!-- 2 column grid layout with text inputs for the first and last names -->
                       <div class="row" style="margin-top: -5%;">
                         <div class="col-md-6 mb-4">
@@ -94,8 +81,7 @@
                             {% endif %}
                             <label class="form-label">Title</label>
                           </div>
-                        </div>
-                        
+                        </div>                        
                       </div>
       
                       <!-- Email input -->
@@ -115,8 +101,6 @@
                         {% endif %}
                         <label class="form-label">Image</label>
                       </div>
-      
-                      
                   </div>
                 </div>
               </div>

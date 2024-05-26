@@ -21,8 +21,6 @@
 </div>
 <!-- Header End -->
 
-
-
 <!-- Jobs Start -->
 <div id="jobs" class="container-xxl py-5">
     <div class="container">
@@ -57,8 +55,7 @@
                         <div class="job-item p-4 mb-4">
                             <div class="row g-4">
                                 <div class="col-sm-12 col-md-8 d-flex align-items-center">
-                                    {% comment %} <img class="flex-shrink-0 img-fluid border rounded" src="{% static 'job_portal/img/com-logo-2.jpg' %}" alt="" style="width: 80px; height: 80px;"> {% endcomment %}
-                                    <div class="text-start ps-4">
+                                     <div class="text-start ps-4">
                                         <h5 class="mb-3">{{ job.job_title }}</h5>
                                         <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>{{ job.job_location }}</span>
                                         <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>{{ job.status }}</span>
@@ -108,8 +105,7 @@
                         <a class="btn btn-primary py-3 px-5" href="{% url 'job:jobs' %}">Browse More Internships</a>
                     {% else %}
                             <h5 style="font-weight:bolder">Enroll in Our Internship Training Programme and Propel Your Career Forward!</h5>
-                            {% comment %} <h6>Elevate your skills, gain hands-on experience, and broaden your career horizons through mentorship and real-world projects.</h6>     {% endcomment %}
-                            <p>Our Technical training division is committed to delivering high-quality training programs to professionals seeking to enhance their skills and stay ahead in the rapidly evolving tech landscape.
+                             <p>Our Technical training division is committed to delivering high-quality training programs to professionals seeking to enhance their skills and stay ahead in the rapidly evolving tech landscape.
                                 With a focus on excellence, we have worked with top brands like Collabera to provide comprehensive training in Java, C++, .Net, and other core technologies
                             </p>
                             

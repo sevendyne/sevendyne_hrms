@@ -42,17 +42,6 @@
 							<td>{{ forloop.counter }}</td>
 							<td>{{ email_setting.email }}</td>
 							<td>{{ email_setting.password }}</td>
-							{% comment %} <td>
-								<div class="dropdown action-label">
-									<a class="btn btn-white btn-sm btn-rounded dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-										{% if email_setting.is_active %}
-										<i class="fa-regular fa-circle-dot text-success"></i> Active
-										{% else %}
-											<i class="fa-regular fa-circle-dot text-danger"></i> Inactive
-										{% endif %}							
-									</a>
-								</div>
-							</td> {% endcomment %}
 							<td class="text-end">
 								<div class="dropdown dropdown-action">
 									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>

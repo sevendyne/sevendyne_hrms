@@ -316,12 +316,6 @@
 			.then(data => {
 				if (data.includes("edit_payroll_item_modal")) {
 					console.log("Data contains edit_payroll_item_modal", data);
-					// Create a temporary element to hold the form HTML
-					//var tempElement = document.createElement('div');
-					//tempElement.innerHTML = data;
-
-					// Find the form element in the temporary element
-					//var formElement = tempElement.querySelector('#update_form');
 
 					// Find the form element in the fetched data
 					var formElement = document.querySelector('#update_form_' + payroll_itemId);
@@ -362,22 +356,6 @@
 					// Update the content of the modal body with the form element
 					modalBody.html(formElement);
 					console.log("modal body", modalBody);
-			
-	
-					// Use .find() to get the .modal-body element
-					//var modalBody = modal.find('.modal-body');
-					//modalBody.html(data);
-					//modal.html(formElement);
-					//console.log("modal",modal)
-					//modal.modal('show'); // Show the modal after content is loaded
-					//modal.find('#edit_payroll_item_modal .modal-body').html(data);
-					//modal.modal('show'); // Show the modal
-					// Get the modal body
-					//var modalBody = document.querySelector('#edit_payroll_item_modal .modal-body');
-	
-					// Set the inner HTML of the modal body to include the form element
-					//modalBody.innerHTML = ''; // Clear existing content
-					//modalBody.appendChild(formElement);
 	
 					// Show the modal for updating payroll_items
 					$('#edit_payroll_item_modal').modal('show');
@@ -453,24 +431,6 @@
 		console.error('Error:', error);
 	});
 	}
-
-	{% comment %} function CreateDynamicFieldsPayslip() {
-		// Make an AJAX request to the URL
-		$.ajax({
-			url: "{% url 'create_dynamic_payslip_fields' %}", // Replace with your actual URL or use a variable to store the URL
-			type: "GET", // or "POST" if needed
-			success: function(response) {
-				// Handle the response here, if needed
-				console.log("Dynamic fields for payslip created successfully.");
-				// Redirect to the desired URL
-				window.location.href = "{% url 'create_dynamic_payslip_fields' %}";
-			},
-			error: function(xhr, status, error) {
-				// Handle errors here
-				console.error("Error creating dynamic fields for payslip:", error);
-			}
-		});
-	} {% endcomment %}
 	
 	function showSweetAlert(message, status, redirectUrl) {
 	console.log('showSweetAlert called');

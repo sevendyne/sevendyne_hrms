@@ -133,10 +133,6 @@
 	<body>
 		<div class="container">
 			<div class="logo-container">
-				{% comment %} {% if instance.company.logo %}
-					<img src="{{ instance.company.logo.url }}" class="inv-logo" alt="Company Logo" style="width: 11%">
-				{% endif %} {% endcomment %}
-			{% comment %} <img src="{{ instance.company.logo }}" width="100" height="80"> {% endcomment %}
 			</div>
 			<h2 style="text-align: center;"><u>PAYSLIP FOR THE MONTH OF  {{ instance.date|date:"F Y" }}</u></h2>
 			<table>
@@ -200,9 +196,6 @@
 						<td ><strong>Total Deductions</strong></td>
 						<td style="text-align: right;"><strong>{{ total_deductions }}</strong></td>
 					</tr>
-					{% comment %} <tr class="highlight">
-						<td colspan="4" style="text-align: center;"><strong>Net Salary: {{currency_symbol}} {{ instance.net_salary }} ({{currency}} {{ net_salary_in_words }}.)</strong></td>
-					</tr> {% endcomment %}
 				</tbody>
 			</table>		
 			
