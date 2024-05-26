@@ -245,7 +245,6 @@
 		})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
 			// Corrected variable name here
 			if (data.status === 'true') {
 			showSweetAlert(data.message, data.status, data.redirect_url);
@@ -316,7 +315,6 @@
 		})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
 			// Corrected variable name here
 			if (data.status === 'true') {
 			showSweetAlert(data.message, data.status, data.redirect_url);
@@ -333,49 +331,6 @@
 		});
 		}
 	
-		function showSweetAlert(message, status, redirectUrl) {	
-		if (status === 'true') {
-			Swal.fire({
-			icon: 'success',
-			title: 'Success!',
-			text: message,
-			showConfirmButton: true,
-			allowOutsideClick: false, // Prevent closing on outside click
-	
-			didClose: () => {
-				if (redirectUrl) {
-				// Combine the redirect URL with the current protocol and host to get the full URL
-				var fullRedirectUrl = window.location.origin + redirectUrl;
-				window.location.href = fullRedirectUrl;
-				}
-			}
-			});
-		} else if (status === 'form_error') {
-			Swal.fire({
-			icon: 'error',
-			title: 'Form Validation Error!',
-			html: message,  // Display form errors as HTML
-			showConfirmButton: true,
-			allowOutsideClick: false,
-			});
-		} else if (status === 'false') {
-			Swal.fire({
-			icon: 'error',
-			title: 'Form Error!',
-			text: 'Error: ' + message,
-			showConfirmButton: true,
-			allowOutsideClick: false, // Prevent closing on outside click
-			});
-		} else {
-			Swal.fire({
-			icon: 'error',
-			title: 'Error!',
-			text: 'Error: ' + message,
-			showConfirmButton: true,
-			allowOutsideClick: false, // Prevent closing on outside click
-			});
-		}
-	}
 	function submitCreateInterviewStatusForm(event,interviewStatusId) {
 		event.preventDefault();  // Prevent the default form submission behavior
 		var form = document.getElementById('create_interview_status_form_' + interviewStatusId);
@@ -387,7 +342,6 @@
 		})
 		.then(response => response.json())
 		.then(data => {
-			console.log(data);
 			// Corrected variable name here
 			if (data.status === 'true') {
 			showSweetAlert(data.message, data.status, data.redirect_url);
@@ -403,49 +357,5 @@
 			console.error('Error:', error);
 		});
 		}
-	
-		function showSweetAlert(message, status, redirectUrl) {	
-		if (status === 'true') {
-			Swal.fire({
-			icon: 'success',
-			title: 'Success!',
-			text: message,
-			showConfirmButton: true,
-			allowOutsideClick: false, // Prevent closing on outside click
-	
-			didClose: () => {
-				if (redirectUrl) {
-				// Combine the redirect URL with the current protocol and host to get the full URL
-				var fullRedirectUrl = window.location.origin + redirectUrl;
-				window.location.href = fullRedirectUrl;
-				}
-			}
-			});
-		} else if (status === 'form_error') {
-			Swal.fire({
-			icon: 'error',
-			title: 'Form Validation Error!',
-			html: message,  // Display form errors as HTML
-			showConfirmButton: true,
-			allowOutsideClick: false,
-			});
-		} else if (status === 'false') {
-			Swal.fire({
-			icon: 'error',
-			title: 'Form Error!',
-			text: 'Error: ' + message,
-			showConfirmButton: true,
-			allowOutsideClick: false, // Prevent closing on outside click
-			});
-		} else {
-			Swal.fire({
-			icon: 'error',
-			title: 'Error!',
-			text: 'Error: ' + message,
-			showConfirmButton: true,
-			allowOutsideClick: false, // Prevent closing on outside click
-			});
-		}
-	}
 </script>	
 {% endblock %}

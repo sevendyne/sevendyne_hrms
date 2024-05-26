@@ -423,63 +423,7 @@
 	.catch(error => {
 		console.error('Error:', error);
 	});
-	}
-
-	function showSweetAlert(message, status, redirectUrl) {
-	console.log('showSweetAlert called');
-	console.log('message:', message);
-	console.log('status:', status);
-	console.log('redirectUrl:', redirectUrl);
-
-	if (status === 'true') {
-		Swal.fire({
-		icon: 'success',
-		title: 'Success!',
-		text: message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-
-		didClose: () => {
-			console.log('Redirecting to:', redirectUrl);
-			if (redirectUrl) {
-			// Combine the redirect URL with the current protocol and host to get the full URL
-			var fullRedirectUrl = window.location.origin + redirectUrl;
-			console.log('Full Redirect URL:', fullRedirectUrl);
-			window.location.href = fullRedirectUrl;
-			}
-		}
-		});
-	} else if (status === 'form_error') {
-		console.log('Showing form error alert');
-		Swal.fire({
-		icon: 'error',
-		title: 'Form Validation Error!',
-		html: message,  // Display form errors as HTML
-		showConfirmButton: true,
-		allowOutsideClick: false,
-		});
-	} else if (status === 'false') {
-		console.log('Showing form error alert');
-		Swal.fire({
-		icon: 'error',
-		title: 'Form Error!',
-		text: 'Error: ' + message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-		});
-	} else {
-		console.log('Showing error alert');
-		Swal.fire({
-		icon: 'error',
-		title: 'Error!',
-		text: 'Error: ' + message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-		});
-	}
-	}
-
-	
+	}	
 </script>
 
 {% endblock %}
