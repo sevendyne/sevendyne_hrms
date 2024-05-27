@@ -263,9 +263,9 @@
 							<h4 class="text-primary">Earnings</h4>
 							<!-- Loop through and display payroll items of category 'Additions' -->
 							<!-- Render Basic Salary field first -->
-                            <div class="addition input-block mb-3">
+                            <div class="add addition input-block mb-3">
                                 <label class="col-form-label">Basic Salary</label>
-                                <input class="form-control" type="text" name="Basic Salary">
+                                <input class="form-control" type="text" name="Basic Salary" data-basic-salary="0">
                                 {% if form.payroll_item.errors %}
                                     <span class="error">{{ form.payroll_item.errors.0 }}</span>
                                 {% endif %}
@@ -273,7 +273,7 @@
 							<!-- Render dynamic fields of category 'Additions' -->
 							{% for field_name in additions_fields %}
 							{% if field_name != 'Basic Salary' %}
-								<div class="addition input-block mb-3">
+								<div class="add_addition input-block mb-3">
 									<label for="{{ field_name }}" class="col-form-label">{{ field_name }}</label>
 									<input id="{{ field_name }}" class="form-control" type="text" name="{{ field_name }}">
 									{% if field_name.errors %}
@@ -287,7 +287,7 @@
 							<h4 class="text-primary">Deductions</h4>
 							 <!-- Render dynamic fields of category 'Deductions' -->
 							 {% for field_name in deductions_fields %}
-								<div class="deduction input-block mb-3">
+								<div class="add_deduction input-block mb-3">
 									<label for="{{ field_name }}" class="col-form-label">{{ field_name }}</label>
 									<input id="{{ field_name }}" class="form-control" type="text" name="{{ field_name }}">
 									{% if field_name.errors %}
@@ -314,6 +314,7 @@
 	   
 
 <script>
+
     function loadCreateSalaryForm() {
 		netSalary = 0;
         fetch("{% url 'payroll:create_salary' %}")
@@ -340,181 +341,143 @@
                 console.error('Error:', error);
             });
     }
+	
+	// Global variable to store basic salary
+	var basicSalary = 0;
 
-    function attachEventListeners() {
-		// Add an event listener to the employee selection field
+	function attachEventListeners() {
+		// Event listener for Basic Salary change
+		$('input[name="Basic Salary"]').on('input', function() {
+			basicSalary = parseFloat($(this).val()) || 0; // Update the global variable
+			console.log("Basic Salary changed to:", basicSalary);
+			loadSalaryComponents(basicSalary);
+			calculateNetSalary();
+		});
+
+		// Event listener for other addition and deduction fields change
+		$('.addition input[type="text"], .deduction input[type="text"]').on('input', function() {
+			calculateNetSalary();
+		});
+
 		$('#id_employee').on('change', function() {
-			var employeeId = $(this).val(); // Get the selected employee ID
+			var employeeId = $(this).val();
 			var url = "{% url 'payroll:get_last_payslip' %}";
-			// Make an AJAX request to fetch the last payslip details
 			$.ajax({
 				url: url,
 				method: 'GET',
 				data: {'employee_id': employeeId},
 				success: function(response) {
-					// Populate the form fields with the received payslip data
 					$('input[name="Basic Salary"]').val(response.basic_salary);
+					basicSalary = parseFloat(response.basic_salary) || 0; // Update the global variable
 					$('#id_net_salary').val(response.net_salary);
 					$('#id_date').val(response.date);
-					
-					// Populate additions fields
+
 					response.additions_fields.forEach(function(field) {
-
-						// Assuming the field name matches the ID of the input element
 						$('input#' + field.field_name).val(field.field_value);
 					});
-					
-					// Populate deductions fields
+
 					response.deductions_fields.forEach(function(field) {
-
-						// Assuming the field name matches the ID of the input element
 						$('input#' + field.field_name).val(field.field_value);
 					});
-					
-					// Populate total deductions
+
 					$('#total_deductions').val(response.total_deductions);
-					// You can populate other fields here based on the received data
+
+					calculateNetSalary();
 				},
 				error: function(xhr, status, error) {
 					console.error('Error:', error);
-					// You can handle error cases here, such as displaying an error message to the user
 				}
 			});
 		});
+	}
 
-        $('input[name="Basic Salary"]').on('input', function() {
-            var url = "{% url 'payroll:ajax_load_salary_components' %}";
-            var basicSalary = parseFloat($(this).val());
-			console.log("basic salary input");
-			console.log("basicSalary",basicSalary);
-			console.log("netSalary ",netSalary)
-			netSalary = netSalary+basicSalary;
-			console.log("netSalary ",netSalary)
-            $.ajax({
-                url: url,
-                data: {'basic_salary': basicSalary},
-                success: function(data) {    
-                    $('input[name="DA"]').val($(data).filter('input[name="DA"]').val());
-                    $('input[name="HRA"]').val($(data).filter('input[name="HRA"]').val());
-                    $('input[name="ESI"]').val($(data).filter('input[name="ESI"]').val());
-                    $('input[name="PF"]').val($(data).filter('input[name="PF"]').val());
-                    $('input[name="TDS"]').val($(data).filter('input[name="TDS"]').val());                    
-                    // Update net salary after receiving data from the server
-					console.log("calc net salary after basic salary input , salary comp loaded");
-					console.log("basicSalary ",basicSalary)
-					calculateNetSalary();
-					//savePayslipData();
-                },
-                error: function(xhr, status, error) {
-                    console.error('Error:', error);
-                }
-            });
-        });		
-		$('.addition input[type="text"], .deduction input[type="text"]').on('input', function() {
-			console.log("calc salary when additions or deductions input");
-			calculateNetSalary();
-		});	
-			
-    }	
-	
-	// Calculate total working days in the month
+	function loadSalaryComponents(basicSalary) {
+		var url = "{% url 'payroll:ajax_load_salary_components' %}";
+		$.ajax({
+			url: url,
+			data: {'basic_salary': basicSalary},
+			success: function(data) {
+				$('input[name="DA"]').val($(data).filter('input[name="DA"]').val());
+				$('input[name="HRA"]').val($(data).filter('input[name="HRA"]').val());
+				$('input[name="ESI"]').val($(data).filter('input[name="ESI"]').val());
+				$('input[name="PF"]').val($(data).filter('input[name="PF"]').val());
+				$('input[name="TDS"]').val($(data).filter('input[name="TDS"]').val());
+				console.log("Salary components loaded for basic salary", basicSalary);
+				calculateNetSalary();
+			},
+			error: function(xhr, status, error) {
+				console.error('Error:', error);
+			}
+		});
+	}
+
 	function calculateTotalWorkingDays() {
-		// Retrieve the selected month and year from the form fields
 		var selectedMonth = $('input[name="month"]').val();
 		var selectedYear = $('input[name="year"]').val();
-
-		// Get the total number of days in the selected month and year
 		var totalDaysInMonth = new Date(selectedYear, selectedMonth, 0).getDate();
-
-		// Initialize variables to count weekend days and holidays
 		var weekendCount = 0;
 		var holidayCount = 0;
 
-		// Loop through each day in the month to determine if it's a weekend or holiday
 		for (var day = 1; day <= totalDaysInMonth; day++) {
-			var currentDate = new Date(selectedYear, selectedMonth - 1, day); // Note: Month in JavaScript is 0-based
-
-			// Check if the current day is a weekend (Saturday or Sunday)
+			var currentDate = new Date(selectedYear, selectedMonth - 1, day);
 			if (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
 				weekendCount++;
 			}
-
-			// You can add logic here to check if the current day is a holiday and increment holidayCount accordingly
-			// For simplicity, I'm assuming holidays are not considered in this example
 		}
 
-		// Calculate the total working days by subtracting weekend days and holidays from the total days
 		var totalWorkingDays = totalDaysInMonth - weekendCount - holidayCount;
-		console.log("total working days ",totalWorkingDays)
+		console.log("total working days", totalWorkingDays);
 
 		return totalWorkingDays;
 	}
 
-	function calculateNetSalary() {//var netSalary = basicSalary;
-		// Calculate total working days
+	function calculateNetSalary() {
 		var totalWorkingDays = calculateTotalWorkingDays();
+		console.log("basicSalary in net salary calc", basicSalary);
 
-		// Retrieve basic salary
-		var basicSalary = parseFloat($('input[name="Basic Salary"]').val());
-		console.log("basicSalary in net salary calc ",basicSalary);
-		 // Retrieve non-paid leave days
 		var nonPaidLeaveDays = $('input[name="Leave"]').val();
-		// Check if the value is empty or not
-		if (nonPaidLeaveDays === '') {
-			nonPaidLeaveDays = 0; // Set nonPaidLeaveDays to zero if empty
-		} else {
-			nonPaidLeaveDays = parseInt(nonPaidLeaveDays); // Parse the value to integer
-		}
+		nonPaidLeaveDays = nonPaidLeaveDays === '' ? 0 : parseInt(nonPaidLeaveDays);
 
-		// Calculate deduction amount for leave based on basic salary and non-paid leave days
 		var leaveDeduction = (basicSalary / totalWorkingDays) * nonPaidLeaveDays;
-		console.log("leaveDeduction ",leaveDeduction);
+		console.log("leaveDeduction", leaveDeduction);
 
-        // Initialize variables to store the total additions and deductions
-        var totalAdditions = 0;
-        var totalDeductions = 0;
-
-        // Iterate through all input fields under the class "addition"
-        $('.addition input[type="text"]').each(function(index, element) {
-            // Get the value of the input field and convert it to a number
-            var value = parseFloat($(element).val());
-
-            // Add the value to the total additions if it's a valid number
-            if (!isNaN(value)) {
-                totalAdditions += value;
-            }
-        });
-		console.log("totalAdditions in net salary calc ",totalAdditions);
-        // Iterate through all input fields under the class "deduction"
-        $('.deduction input[type="text"]').each(function(index, element) {
-			// Check if the input field is not named "Leave"
-			if ($(element).attr('name') !== 'Leave') {
-				// Get the value of the input field and convert it to a number
+		var totalAdditions = 0;
+		$('.add_addition input[type="text"]').each(function(index, element) {
+			if ($(element).attr('name') !== 'Basic Salary') {
 				var value = parseFloat($(element).val());
+				console.log("element ",element);
+				console.log("value ",value);
+				if (!isNaN(value)) {
+					totalAdditions += value;
+				}
+			}
+		});
+		console.log("totalAdditions in net salary calc", totalAdditions);
 
-				// Add the value to the total deductions if it's a valid number
+		var totalDeductions = 0;
+		$('.add_deduction input[type="text"]').each(function(index, element) {
+			if ($(element).attr('name') !== 'Leave') {
+				var value = parseFloat($(element).val());
+				console.log("element ",element);
+				console.log("value ",value);
 				if (!isNaN(value)) {
 					totalDeductions += value;
 				}
 			}
-        });
-		// Add leave deduction amount to total deductions
+		});
+
 		totalDeductions += leaveDeduction;
-		
-		console.log("totalDeductions in net salary calc ",totalDeductions);
-        // Calculate net salary by subtracting total deductions from total additions
-        var netSalary = totalAdditions - totalDeductions;
-		console.log("net salary in net salary calc ",netSalary);
-        // Set the calculated net salary value to the corresponding form field
-        $('input[name="Net Salary"]').val(netSalary.toFixed(2));	
+		console.log("totalDeductions in net salary calc", totalDeductions);
+
+		var netSalary = basicSalary + totalAdditions - totalDeductions;
+		console.log("net salary in net salary calc", netSalary);
+
+		$('input[name="net_salary"]').val(netSalary.toFixed(2));
 	}
 
-	// Attach event listener for non-paid leave days input field
 	$('input[name="Leave"]').on('input', function() {
-		// Trigger net salary calculation whenever non-paid leave days change
 		calculateNetSalary();
 	});
-	
 	function submitCreateForm(event) {
 		event.preventDefault();  // Prevent the default form submission behavior
 		
