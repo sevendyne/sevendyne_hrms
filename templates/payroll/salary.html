@@ -349,7 +349,6 @@
 		// Event listener for Basic Salary change
 		$('input[name="Basic Salary"]').on('input', function() {
 			basicSalary = parseFloat($(this).val()) || 0; // Update the global variable
-			console.log("Basic Salary changed to:", basicSalary);
 			loadSalaryComponents(basicSalary);
 			calculateNetSalary();
 		});
@@ -402,7 +401,6 @@
 				$('input[name="ESI"]').val($(data).filter('input[name="ESI"]').val());
 				$('input[name="PF"]').val($(data).filter('input[name="PF"]').val());
 				$('input[name="TDS"]').val($(data).filter('input[name="TDS"]').val());
-				console.log("Salary components loaded for basic salary", basicSalary);
 				calculateNetSalary();
 			},
 			error: function(xhr, status, error) {
@@ -426,40 +424,32 @@
 		}
 
 		var totalWorkingDays = totalDaysInMonth - weekendCount - holidayCount;
-		console.log("total working days", totalWorkingDays);
 
 		return totalWorkingDays;
 	}
 
 	function calculateNetSalary() {
 		var totalWorkingDays = calculateTotalWorkingDays();
-		console.log("basicSalary in net salary calc", basicSalary);
 
 		var nonPaidLeaveDays = $('input[name="Leave"]').val();
 		nonPaidLeaveDays = nonPaidLeaveDays === '' ? 0 : parseInt(nonPaidLeaveDays);
 
 		var leaveDeduction = (basicSalary / totalWorkingDays) * nonPaidLeaveDays;
-		console.log("leaveDeduction", leaveDeduction);
 
 		var totalAdditions = 0;
 		$('.add_addition input[type="text"]').each(function(index, element) {
 			if ($(element).attr('name') !== 'Basic Salary') {
 				var value = parseFloat($(element).val());
-				console.log("element ",element);
-				console.log("value ",value);
 				if (!isNaN(value)) {
 					totalAdditions += value;
 				}
 			}
 		});
-		console.log("totalAdditions in net salary calc", totalAdditions);
 
 		var totalDeductions = 0;
 		$('.add_deduction input[type="text"]').each(function(index, element) {
 			if ($(element).attr('name') !== 'Leave') {
 				var value = parseFloat($(element).val());
-				console.log("element ",element);
-				console.log("value ",value);
 				if (!isNaN(value)) {
 					totalDeductions += value;
 				}
@@ -467,10 +457,8 @@
 		});
 
 		totalDeductions += leaveDeduction;
-		console.log("totalDeductions in net salary calc", totalDeductions);
 
 		var netSalary = basicSalary + totalAdditions - totalDeductions;
-		console.log("net salary in net salary calc", netSalary);
 
 		$('input[name="net_salary"]').val(netSalary.toFixed(2));
 	}
@@ -605,7 +593,6 @@
 
 	// Function to handle delete action
 	function handleDelete(pk) {
-		console.log("handle delete function")
 		Swal.fire({
 			title: "Are you sure?",
 			text: "Once deleted, you will not be able to recover this PaySlip!",
