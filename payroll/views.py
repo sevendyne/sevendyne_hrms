@@ -51,10 +51,13 @@ def get_last_payslip(request):
             total_deductions = deductions_fields.aggregate(Sum('field_value'))['field_value__sum'] or Decimal('0.00')
             # Get today's date
             today_date = datetime.date.today()
-            
+            # Get the basic salary from additions fields
+            basic_salary_field = additions_fields.filter(field_name='Basic Salary').first()
+            basic_salary = basic_salary_field.field_value if basic_salary_field else Decimal('0.00')
+        
             # Prepare the data to send back to the client-side
             payslip_data = {
-                'basic_salary': last_payslip.net_salary,  # Assuming 'net_salary' is considered as basic salary
+                'basic_salary': basic_salary, 
                 'net_salary': last_payslip.net_salary,
                 'date': today_date,
                 'additions_fields': list(additions_fields.values()),  # Convert QuerySet to list of dictionaries
@@ -71,7 +74,8 @@ def get_last_payslip(request):
 
 def ajax_load_salary_components(request):
     basic_salary = float(request.GET.get('basic_salary', 0))
-    company=get_current_company(request)
+    # print("basic_salary ",basic_salary)
+    company = get_current_company(request)
     salary_settings = SalarySetting.objects.filter(company=company)
     salary_setting = salary_settings.first()
     # Calculate other salary components based on the basic salary

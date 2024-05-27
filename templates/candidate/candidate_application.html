@@ -9,7 +9,7 @@
 		<div class="account-wrapper">
 			<h1 class="account-title" style="text-align:center;color:#2b5697;">Job Application Form</h1>
 			<!-- Account Form -->
-			<form action="" method="POST" enctype="multipart/form-data">
+			<form id="create_form" action="{% url 'candidate:candidate_application' %}" method="POST" enctype="multipart/form-data">
 				{% csrf_token %}
 				<div class="row">
 					<div class="card col-md-5" style="margin-right:3%">                  
@@ -134,12 +134,85 @@
 					</div>
 				</div>
 				<div class="input-block mb-4 text-center">
-					<button class="btn btn-primary account-btn" type="submit" value="Register" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%);width:40%">Register</button>
+					<button class="btn btn-primary account-btn" onclick="submitCreateForm(event)" type="submit" value="Register" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%);width:40%">Register</button>
 				</div>				
 			</form>
 			<!-- /Account Form -->
 		</div>
 	</div>
 </div>
+
+<script>
+	function submitCreateForm(event) {
+		event.preventDefault();  // Prevent the default form submission behavior
+		var form = document.getElementById('create_form');
+		var formData = new FormData(form);
+		
+		fetch(form.action, {
+			method: 'POST',
+			body: formData,
+		})
+		.then(response => response.json())
+		.then(data => {
+			// Corrected variable name here
+			if (data.status === 'true') {
+			showSweetAlert(data.message, data.status, data.redirect_url);
+			} else if (data.status === 'form_error') {
+			showSweetAlert(data.message, 'form_error');
+			} else if (data.status === 'false') {
+			showSweetAlert(data.message, data.status);
+			} else {
+			showSweetAlert(data.message, 'error');
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+		}
+		
+		function showSweetAlert(message, status, redirectUrl) {	
+		if (status === 'true') {
+			Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+		
+			didClose: () => {
+				if (redirectUrl) {
+				// Combine the redirect URL with the current protocol and host to get the full URL
+				var fullRedirectUrl = window.location.origin + redirectUrl;
+				window.location.href = fullRedirectUrl;
+				}
+			}
+			});
+		} else if (status === 'form_error') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Validation Error!',
+			html: message.replace(/\|/g, '<br>'),  // Display form errors as HTML, replace '|' with line breaks
+			showConfirmButton: true,
+			allowOutsideClick: false,
+			});
+		} else if (status === 'false') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		} else {
+			Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		}
+	}	
+</script>
 
 {% endblock %}

@@ -359,19 +359,20 @@
 					
 					// Populate additions fields
 					response.additions_fields.forEach(function(field) {
+
 						// Assuming the field name matches the ID of the input element
-						$('#' + field.field_name).val(field.field_value);
+						$('input#' + field.field_name).val(field.field_value);
 					});
 					
 					// Populate deductions fields
 					response.deductions_fields.forEach(function(field) {
+
 						// Assuming the field name matches the ID of the input element
-						$('#' + field.field_name).val(field.field_value);
+						$('input#' + field.field_name).val(field.field_value);
 					});
 					
 					// Populate total deductions
 					$('#total_deductions').val(response.total_deductions);
-					
 					// You can populate other fields here based on the received data
 				},
 				error: function(xhr, status, error) {
@@ -384,7 +385,11 @@
         $('input[name="Basic Salary"]').on('input', function() {
             var url = "{% url 'payroll:ajax_load_salary_components' %}";
             var basicSalary = parseFloat($(this).val());
+			console.log("basic salary input");
+			console.log("basicSalary",basicSalary);
+			console.log("netSalary ",netSalary)
 			netSalary = netSalary+basicSalary;
+			console.log("netSalary ",netSalary)
             $.ajax({
                 url: url,
                 data: {'basic_salary': basicSalary},
@@ -395,6 +400,8 @@
                     $('input[name="PF"]').val($(data).filter('input[name="PF"]').val());
                     $('input[name="TDS"]').val($(data).filter('input[name="TDS"]').val());                    
                     // Update net salary after receiving data from the server
+					console.log("calc net salary after basic salary input , salary comp loaded");
+					console.log("basicSalary ",basicSalary)
 					calculateNetSalary();
 					//savePayslipData();
                 },
@@ -404,6 +411,7 @@
             });
         });		
 		$('.addition input[type="text"], .deduction input[type="text"]').on('input', function() {
+			console.log("calc salary when additions or deductions input");
 			calculateNetSalary();
 		});	
 			
@@ -437,6 +445,7 @@
 
 		// Calculate the total working days by subtracting weekend days and holidays from the total days
 		var totalWorkingDays = totalDaysInMonth - weekendCount - holidayCount;
+		console.log("total working days ",totalWorkingDays)
 
 		return totalWorkingDays;
 	}
@@ -447,7 +456,7 @@
 
 		// Retrieve basic salary
 		var basicSalary = parseFloat($('input[name="Basic Salary"]').val());
-
+		console.log("basicSalary in net salary calc ",basicSalary);
 		 // Retrieve non-paid leave days
 		var nonPaidLeaveDays = $('input[name="Leave"]').val();
 		// Check if the value is empty or not
@@ -459,7 +468,7 @@
 
 		// Calculate deduction amount for leave based on basic salary and non-paid leave days
 		var leaveDeduction = (basicSalary / totalWorkingDays) * nonPaidLeaveDays;
-	 
+		console.log("leaveDeduction ",leaveDeduction);
 
         // Initialize variables to store the total additions and deductions
         var totalAdditions = 0;
@@ -475,6 +484,7 @@
                 totalAdditions += value;
             }
         });
+		console.log("totalAdditions in net salary calc ",totalAdditions);
         // Iterate through all input fields under the class "deduction"
         $('.deduction input[type="text"]').each(function(index, element) {
 			// Check if the input field is not named "Leave"
@@ -490,10 +500,13 @@
         });
 		// Add leave deduction amount to total deductions
 		totalDeductions += leaveDeduction;
+		
+		console.log("totalDeductions in net salary calc ",totalDeductions);
         // Calculate net salary by subtracting total deductions from total additions
         var netSalary = totalAdditions - totalDeductions;
+		console.log("net salary in net salary calc ",netSalary);
         // Set the calculated net salary value to the corresponding form field
-        $('input[name="net_salary"]').val(netSalary.toFixed(2));	
+        $('input[name="Net Salary"]').val(netSalary.toFixed(2));	
 	}
 
 	// Attach event listener for non-paid leave days input field
