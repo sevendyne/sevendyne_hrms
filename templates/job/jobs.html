@@ -188,7 +188,9 @@
 												<div class="col-md-6">
 													<div class="input-block mb-3">
 														<label class="col-form-label">Start Date</label>
-														<input type="text" class="form-control datetimepicker" name="start_date" value="{{ job.start_date}}">
+														<input type="text" class="form-control datetimepicker" name="start_date" id="start_date_edit_{{ job.id }}" value="{{ job.start_date}}">
+
+														{% comment %} <input type="text" class="form-control datetimepicker" name="start_date" value="{{ job.start_date}}"> {% endcomment %}
 													</div>
 												</div>
 												<div class="col-md-6">
@@ -375,6 +377,8 @@
 						<div class="col-md-6">
 							<div class="input-block mb-3">
 								<label class="col-form-label">Start Date</label>
+								{% comment %} <input type="text" class="form-control datetimepicker" name="start_date" id="start_date_add" value="{{ job.start_date}}"> {% endcomment %}
+
 								{{ form.start_date }}
 								{% if form.start_date.errors %}
 								<span class="error">{{ form.start_date.errors.0 }}</span>
@@ -422,14 +426,41 @@
 <script>
 	
 	$(document).ready(function(){
-        $('.datetimepicker').datetimepicker({
-            format: 'YYYY-MM-DD', // Date-only format
-            // Additional configurations to ensure time is not included
-            ignoreReadonly: true,
-            allowInputToggle: true
-        });
-    });
-		
+		$('.datetimepicker').datetimepicker({
+			format: 'YYYY-MM-DD', // Date-only format
+			ignoreReadonly: true,
+			allowInputToggle: true
+		});
+	
+		// Add event listener for changes in the Expired Date input field in the Add Job modal
+		$('#add_job').on('change.datetimepicker', '#id_expired_date', function (e) {
+			validateDates('#id_start_date', '#id_expired_date');
+		});
+	
+		// Add event listener for changes in the Expired Date input field in the Edit Job modals
+		$('[id^="edit_job_"]').on('change.datetimepicker', function (e) {
+			var jobId = $(this).attr('id').split('_').pop();
+			var startDateId = '#start_date_edit_' + jobId;
+			var expiredDateId = '#expired_date_edit_' + jobId;
+			validateDates(startDateId, expiredDateId);
+		});
+	
+		function validateDates(startDateSelector, expiredDateSelector) {
+			var startDate = $(startDateSelector).val();
+			var expiredDate = $(expiredDateSelector).val();
+			if (startDate && expiredDate && startDate > expiredDate) {
+				$(expiredDateSelector).val(''); // Clear the expired date
+				Swal.fire({
+					icon: 'error',
+					title: 'Invalid Date',
+					text: 'Expired Date must be after Start Date.',
+					showConfirmButton: true,
+					allowOutsideClick: false
+				});
+			}
+		}
+	});
+	
 	function loadCreateJobForm() {
 		fetch("{% url 'job:create_job' %}")
         .then(response => response.text())
