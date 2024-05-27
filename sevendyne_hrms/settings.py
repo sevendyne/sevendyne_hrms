@@ -178,7 +178,7 @@ CELERY_TIMEZONE = 'UTC'
 if os.environ.get('AWS_ENV'):
     # AWS-specific settings
     REDIS_HOST = '13.201.223.74'
-    REDIS_PORT = '8000'
+    REDIS_PORT = '8080'
 else:
     # Local development settings
     REDIS_HOST = 'localhost'
