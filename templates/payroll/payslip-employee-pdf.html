@@ -143,7 +143,7 @@
 						{{ instance.company.state }}, {{ instance.company.country }}, {{ instance.company.postal_code }}
 					</td>
 					<td colspan="2">
-						<strong>Employee {{ instance.employee.employeeid }}id</strong><br>
+						<strong>PAYSLIP ID #{{ instance.employee.employeeid }}_+_{{ instance.date }}</strong><br>
 						Salary Month: {{ instance.date|date:"F Y" }}
 					</td>
 				</tr>
