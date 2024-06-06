@@ -51,6 +51,15 @@ INSTALLED_APPS = [
     'job'
 ]
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://hrms.sevendyne.com',
+]
+
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
