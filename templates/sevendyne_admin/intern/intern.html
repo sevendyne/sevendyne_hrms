@@ -31,18 +31,23 @@
                 <!-- intern_linkedin input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">LinkedIn</label>
+                  {% if instance.intern_linkedin %}
                   <a href="{{ instance.intern_linkedin }}" target="_blank">LinkedIn Profile</a>
-
+                  {% endif %}
                 </div>  
                 <!-- intern_git input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Git Link</label>
+                  {% if instance.intern_git %}
                   <a href="{{ instance.intern_git }}" target="_blank">Git Profile</a>
+                  {% endif %}
                 </div> 
                 <!-- resume input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Resume</label>
+                  {% if instance.resume %}
                   <a href="{{ instance.resume.url }}" target="_blank">View Resume</a>
+                  {% endif %}
                 </div> 
                 <!-- skills input -->
                 <div class="form-outline mb-4">
