@@ -31,17 +31,18 @@
                 <!-- intern_linkedin input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example3" style="color: black; font-weight: bolder;">LinkedIn</label>
-                  {{ instance.intern_linkedin }}     
+                  <a href="{{ instance.intern_linkedin }}">LinkedIn Profile</a>
+
                 </div>  
                 <!-- intern_git input -->
                 <div class="form-outline mb-4">
                   <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Git Link</label>
-                  {{ instance.intern_git }}
+                  <a href="{{ instance.intern_git }}">LinkedIn Profile</a>
                 </div> 
                 <!-- resume input -->
                 <div class="form-outline mb-4">
-                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">resume</label>
-                  {{ instance.resume }}
+                  <label class="form-label" for="form3Example4" style="color: black; font-weight: bolder;">Resume</label>
+                  <a href="{{ instance.resume.url }}" target="_blank">View Resume</a>
                 </div> 
                 <!-- skills input -->
                 <div class="form-outline mb-4">
