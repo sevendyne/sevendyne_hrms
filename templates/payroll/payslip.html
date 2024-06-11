@@ -48,7 +48,7 @@
 						</div>
 						<div class="col-sm-6 m-b-20">
 							<div class="invoice-details">
-								<h3 class="text-uppercase">PAYSLIP ID #{{ instance.employee.employeeid }}_+_{{ instance.date }}</h3>
+								<h3 class="text-uppercase">PAYSLIP ID #{{ instance.employee.employeeid }}{{ instance.date }}</h3>
 								<ul class="list-unstyled">
 									<li>Salary Month: <span>{{ instance.date|date:"F Y" }}</span></li>
 								</ul>

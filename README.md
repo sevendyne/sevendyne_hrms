@@ -20,6 +20,18 @@
 export DJANGO_SETTINGS_MODULE=sevendyne_hrms.settings  # Add this line
 ...
 
+**Postgres Database Configuration**
+
+- sudo su postgres
+- createdb sevendyne_hrms
+- createuser -P sevendyne
+- role - sevendyne
+- password for role - sevendyne@123
+- psql
+- grant all privileges on database sevendyne_hrms to sevendyne;
+- \q
+- exit
+
 
 **Create user groups and permissions:**
 
