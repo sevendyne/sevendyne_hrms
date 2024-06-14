@@ -18,7 +18,9 @@ urlpatterns = [
     path('app/employee/',include(('employee.urls','employee'),namespace='employee')),
     path('app/client/',include(('client.urls','client'),namespace='client')),
     path('app/job/',include(('job.urls','job'),namespace='job')),
-    path('app/payroll/',include(('payroll.urls','payroll'),namespace='payroll'))
+    path('app/payroll/',include(('payroll.urls','payroll'),namespace='payroll')),
+    path('app/task-board/',include(('taskboard.urls','taskboard'),namespace='taskboard')),
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

@@ -382,7 +382,7 @@ def create_employee(request):
             creator = request.user
             updator = request.user
             if not Employee.objects.filter(username=username).exists():            
-                if not Employee.objects.filter(username=username,company=current_company,email=email,employeeid=employeeid,is_deleted=False).exists():
+                if not Employee.objects.filter(company=current_company,employeeid=employeeid,is_deleted=False).exists():
                     existing_user = User.objects.filter(username=username)
                     hashed_password = make_password(password)
                     if existing_user:
@@ -435,7 +435,7 @@ def create_employee(request):
                         "status": "false",
                         "stable": "true",
                         "title": "Already exists",
-                        "message": "Employee already exists",                        
+                        "message": "Employee with same employee id already exists",                        
                     }
             else:               
                 response_data = {
