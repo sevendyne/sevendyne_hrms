@@ -2,7 +2,7 @@ from datetime import date
 from django import forms
 from django.forms.widgets import TextInput, Select, FileInput, SelectMultiple
 from employee.models import Employee
-from taskboard.models import Project, Task
+from taskboard.models import Project
 from django.utils.translation import gettext_lazy as _
 
 
