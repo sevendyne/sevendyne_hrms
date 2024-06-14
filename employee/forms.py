@@ -100,19 +100,7 @@ class EmployeeForm(forms.ModelForm):
             # Filter departments by current company
             self.fields['department'].queryset = Department.objects.filter(company=current_company, is_deleted=False)            
             # Filter designations by current company
-            self.fields['designation'].queryset = Designation.objects.filter(company=current_company, is_deleted=False)
-
-    def clean_username(self):
-        username = self.cleaned_data['username']
-        if User.objects.filter(username=username).exclude(pk=self.instance.pk).exists():
-            raise ValidationError("Username already exists.")
-        return username
-    
-    def clean_employeeid(self):
-        employeeid = self.cleaned_data['employeeid']
-        if Employee.objects.filter(employeeid=employeeid, company=self.current_company).exclude(pk=self.instance.pk).exists():
-            raise ValidationError("Employee ID already exists.")
-        return employeeid            
+            self.fields['designation'].queryset = Designation.objects.filter(company=current_company, is_deleted=False)     
 
 
 class LeaveTypeForm(forms.ModelForm):    
