@@ -4,8 +4,8 @@ from os import name
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from main.decorators import company_required
-from taskboard.forms import ProjectForm, TaskcommentForm, TasklistForm, TaxForm, TaskForm
-from taskboard.models import Project, Task, Taskcomment, Tasklist
+from taskboard.forms import ProjectForm
+from taskboard.models import Project
 from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_hrms_permission
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse

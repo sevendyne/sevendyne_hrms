@@ -17,7 +17,7 @@ class Project(BaseModel):
     end_date = models.DateField(_('End Date'),help_text='end date')
     priority = models.CharField(max_length=128, choices=PRIORITY_CHOICES, default='Normal', null=True, blank=True)
     project_leader = models.CharField(_("Project Leader"),max_length=125, null=True, blank=True)
-    team = models.ManyToManyField("employee.Employee", verbose_name=_("Team"), null=True, blank=True)
+    team = models.ManyToManyField("employee.Employee", verbose_name=_("Team"))
     file = models.FileField(upload_to='files/', null=True, blank=True)
     description = models.TextField(_("Description "),null=True, blank=True)
     is_deleted = models.BooleanField(default=False)
