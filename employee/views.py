@@ -18,6 +18,7 @@ from employee.models import GENDER_CHOICES, AttendanceRegister, Department, Desi
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator
 from django.core.mail import EmailMessage
+from django.utils import timezone
 from django.http import HttpResponse
 from payroll.models import Salary, SalaryDynamicField
 from sevendyne_hrms import settings
@@ -540,18 +541,41 @@ def employees_list(request):
 @company_required
 def edit_employee(request, pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Employee.objects.filter(pk=pk,company=current_company, is_deleted=False))    
+    instance = get_object_or_404(Employee.objects.filter(pk=pk, company=current_company, is_deleted=False))
+
     if request.method == "POST":
         form = EmployeeForm(request.POST, request.FILES, instance=instance, current_company=current_company)
         if form.is_valid():
             data = form.save(commit=False)
+            username = data.username
+            employeeid = data.employeeid
+
+            # Check for username uniqueness excluding the current instance
+            if Employee.objects.filter(username=username).exclude(pk=instance.pk).exists():
+                response_data = {
+                    "status": "false",
+                    "stable": "true",
+                    "title": "Username already taken",
+                    "message": "Username already exists",
+                }
+                return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+            # Check for employeeid uniqueness within the current company excluding the current instance
+            if Employee.objects.filter(company=current_company, employeeid=employeeid, is_deleted=False).exclude(pk=instance.pk).exists():
+                response_data = {
+                    "status": "false",
+                    "stable": "true",
+                    "title": "Employee ID already taken",
+                    "message": "Employee with same employee ID already exists",
+                }
+                return HttpResponse(json.dumps(response_data), content_type='application/json')
+
             user = instance.user
             user.username = data.username
             user.email = data.email
             user.password = make_password(data.password)  # Hash the new password
             user.first_name = data.firstname
             user.last_name = data.lastname
-            user.email = data.email
             hrms_clients_group = Group.objects.get(name='hrms_clients')
             user.groups.remove(hrms_clients_group)
             employee_group, created = Group.objects.get_or_create(name='employee_group')
@@ -559,14 +583,14 @@ def edit_employee(request, pk):
             user.save()
 
             data.updator = request.user
-            data.date_updated = datetime.datetime.now()
+            data.date_updated =  timezone.now() 
             data.save()
 
             response_data = {
                 "status": "true",
-                "redirect" : "true",
+                "redirect": "true",
                 "title": "Successfully Updated",
-                "message": "Employee updated successfully.",                
+                "message": "Employee updated successfully.",
                 "redirect_url": reverse('employee:employees')
             }
         else:
@@ -575,7 +599,7 @@ def edit_employee(request, pk):
                 "stable": "true",
                 "status": "false",
                 "message": str(message),
-                "title": "Form validation error"  
+                "title": "Form validation error"
             }
         return HttpResponse(json.dumps(response_data), content_type='application/json')
     else:
@@ -583,11 +607,12 @@ def edit_employee(request, pk):
         context = {
             "form": form,
             "instance": instance,
-            "title": "Edit Employee :" + instance.firstname,          
+            "title": "Edit Employee :" + instance.firstname,
             "redirect": "true",
             "url": reverse('employee:edit_employee', kwargs={'pk': instance.pk})
         }
         return render(request, 'employee/employees.html', context)
+
 
 
 @login_required
