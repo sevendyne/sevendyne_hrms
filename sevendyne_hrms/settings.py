@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'client',
     'employee',
     'payroll',
-    'job'
+    'job',
+    'taskboard'
 ]
 
 #csrf configuration for deployment 
