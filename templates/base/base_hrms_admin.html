@@ -170,7 +170,7 @@
 								<a href="{% url 'employee:employees' %}"><i class="la la-group"></i> <span> Employees</span></a>								
 							</li>	
 							<li class="submenu">
-								<a href="{% url 'employee:leave_approvals' %}"><i class="la la-home"></i><span>Leave Management</span></a>											
+								<a href="{% url 'employee:leave_approvals' %}"><i class="la la-home"></i><span>Leaves</span></a>											
 							</li>
 							{% if hrms_client.is_attendance_enabled %}
 							<li>
@@ -181,13 +181,13 @@
 								<a href="{% url 'employee:holidays' %}"><i class="la la-automobile"></i> <span>Holidays</span></a>
 							</li>
 							<li class="submenu">
-								<a href="{% url 'payroll:salaries' %}"><i class="la la-money"></i> <span> Payroll </span></a>								
+								<a href="{% url 'payroll:salaries' %}"><i class="la la-money"></i> <span> Payrolls</span></a>								
 							</li> 
 							<li class="submenu">
 								<a href="{% url 'job:jobs' %}"><i class="la la-briefcase"></i> <span> Jobs </span></a>								
 							</li>
 							<li class="submenu">
-								<a href="{% url 'candidate:hrms_candidates' %}"><i class="la la-user"></i> <span>Hire Candidates </span></a>								
+								<a href="{% url 'candidate:hrms_candidates' %}"><i class="la la-user"></i> <span>Candidates </span></a>								
 							</li>
 							<li class="submenu"> 
 								<a href="{% url 'employee:leave_types' %}"><i class="la la-cog"></i> <span>Settings</span></a>
