@@ -8,12 +8,16 @@
 			<title>Payslip for the month of  {{ instance.date|date:"F Y" }}</title>
 			<style>
 				body {
-					font-family: Arial, sans-serif;
+					font-family: 'Roboto', Arial, sans-serif; /* Base font family */
 					margin: 0;
 					padding: 0;
 					background-color: #f2f2f2;
+					font-size: 16px; /* Increased base font size */
 				}
-
+				h2 {
+					font-family: 'Merriweather', Georgia, serif; /* Heading font family */
+				}
+				
 				.container {
 					max-width: 800px;
 					margin: 0 auto;
@@ -21,12 +25,6 @@
 					background-color: #fff;
 					box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 				}
-
-				.logo-container {
-					float: right;
-					margin-top: -30px;
-				}
-
 				table {
 					width: 100%;
 					border-collapse: collapse;
@@ -34,7 +32,8 @@
 
 				table td, table th {
 					border: 1px solid #ddd;
-					padding: 8px;
+					padding: 10px;
+					font-size: 16px;
 				}
 
 				table th {
@@ -43,10 +42,14 @@
 				}
 
 				.highlight {
-					background-color: rgb(190, 214, 239);
-					text-align: center;
-					font-weight: bold;
+					{% comment %} border: 2px blue; /* Adds a blue dashed border */ {% endcomment %}
+					text-align: center; /* Centers the text */
+					font-weight: bold; /* Makes the text bold */
+					font-size: 18px; /* Sets the font size */
+					padding: 10px; /* Adds padding inside the border for better spacing */
+					background-color: transparent; /* Ensures there is no background color */
 				}
+				
 				/* Adjust the layout for the earnings and deductions sections */
 				.container {
 					max-width: 800px;
@@ -57,38 +60,6 @@
 					overflow: hidden; /* Ensure contents do not overflow */
 				}
 
-				/* Adjust the layout for the earnings and deductions tables */
-				{% comment %} .container table {
-					width: 100%;
-					border-collapse: collapse;
-					margin-top: 20px; /* Add some margin between the table sections */
-				} {% endcomment %}
-
-				/* Adjust the layout for the earnings and deductions table cells */
-				{% comment %} .container table td, .container table th {
-					border: 1px solid #ddd;
-					padding: 8px;
-				} {% endcomment %}
-
-				/* Adjust the layout for the earnings and deductions table headers */
-				{% comment %} .container table th {
-					background-color: #f2f2f2;
-					text-align: left;
-				} {% endcomment %}
-
-				/* Adjust the layout for the earnings and deductions table highlight row */
-				{% comment %} .container .highlight {
-					background-color: rgb(190, 214, 239);
-					text-align: center;
-					font-weight: bold;
-				} {% endcomment %}
-
-				/* Adjust the layout for the earnings and deductions sections */
-				{% comment %} .container .earnings-section,
-				.container .deductions-section {
-					width: 50%;
-					float: left; /* Float both sections to the left */
-				} {% endcomment %}
 				/* Adjust the layout for the earnings and deductions sections */
 				.container .earnings-section,
 				.container .deductions-section {
@@ -113,48 +84,55 @@
 				/* Adjust the layout for the earnings and deductions table cells */
 				.container table td {
 					border: 1px solid #ddd;
-					padding: 8px;
+					padding: 10px;
 					text-align: left; /* Left-align table cells */
+					font-size: 16px;
 				}
 
 				/* Adjust the layout for the earnings and deductions table highlight row */
-				.container .highlight {
+				{% comment %} .container .highlight {
 					background-color: rgb(190, 214, 239);
 					text-align: center;
 					font-weight: bold;
-				}
+				} {% endcomment %}
 				.container .highlight1 {
-					background-color: lightgrey;
+					background-color: #d1e5f4;
 					text-align: center;
 					font-weight: bold;
+					font-size: 18px;
 				}
 			</style>
 	</head>
 	<body>
 		<div class="container">
-			<div class="logo-container">
-			</div>
-			<h2 style="text-align: center;"><u>PAYSLIP FOR THE MONTH OF  {{ instance.date|date:"F Y" }}</u></h2>
-			<table>
-				<tr>
-					<td colspan="2">
+			<table class="header"style="border: none;border-collapse: collapse;  ">
+				<tr>	
+					<td colspan="2" style="border: none;border-collapse: collapse;  ">
 						<strong>{{ instance.company.name }}</strong><br>
 						{{ instance.company.address }},<br>
 						{{ instance.company.state }}, {{ instance.company.country }}, {{ instance.company.postal_code }}
-					</td>
-					<td colspan="2">
-						<strong>PAYSLIP ID #{{ instance.employee.employeeid }}{{ instance.date }}</strong><br>
-						Salary Month: {{ instance.date|date:"F Y" }}
+					</td>				
+					<td colspan="2" style="text-align:right;border: none;border-collapse: collapse;">
+						<img src="{{ absolute_logo_url }}" width="100" height="80"><br>
 					</td>
 				</tr>
+			</table>
+			
+			<table>
+				<h5 style="text-align: center;"><u>PAYSLIP FOR THE MONTH OF  {{ instance.date|date:"F Y" }}</u></h5>
 				<tr>
-					<td colspan="4">
+					<td colspan="2">
 						<strong>{{ instance.employee.get_full_name }}</strong><br>
 						{{ instance.employee.designation }}<br>
 						Employee ID: {{ instance.employee.employeeid }}<br>
 						Joining Date: {{ instance.employee.joindate }}
 					</td>
+					<td colspan="2">
+						<strong>PAYSLIP ID #{{ instance.employee.employeeid }}-{{ instance.date|date:"d-m-Y"  }}</strong><br>
+						Salary Month: {{ instance.date|date:"F Y" }}
+					</td>
 				</tr>
+				
 			</table>
 
 			<table>
@@ -201,7 +179,7 @@
 			
 			<table>
 				<tr class="highlight">
-					<td colspan="4" style="text-align: center;"><strong>Net Salary: {{currency_symbol}} {{ instance.net_salary }} ({{currency}} {{ net_salary_in_words }}.)</strong></td>
+					<td colspan="4" style="text-align: center;border: dashed #77c3ec;"><strong>Net Salary: {{currency_symbol}} {{ instance.net_salary }} ({{currency}} {{ net_salary_in_words }}.)</strong></td>
 				</tr>
 			</table>
 		</div>
