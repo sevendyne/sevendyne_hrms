@@ -19,6 +19,7 @@
 - ...
 export DJANGO_SETTINGS_MODULE=sevendyne_hrms.settings  # Add this line
 ...
+In local, celery -A sevendyne_hrms worker --loglevel=info , to trigger celery command for sending email notification
 
 **Postgres Database Configuration**
 

@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
 from django.forms import formset_factory
-from employee.tasks import send_leave_email_notification
+from employee.tasks import send_employee_credentials_email_notification, send_leave_email_notification
 from main.decorators import company_required
 from django.template.loader import render_to_string
 from django.contrib.auth.hashers import make_password
@@ -402,7 +402,7 @@ def create_employee(request):
                         employee_group, created = Group.objects.get_or_create(name='employee_group')
                         user.groups.add(employee_group)
                         user.save()
-                        Employee( 
+                        employee = Employee( 
                             user = user,
                             firstname = firstname,
                             lastname = lastname,
@@ -423,7 +423,23 @@ def create_employee(request):
                             company =company,
                             creator = creator,
                             updator = updator
-                        ).save()
+                        )
+                        employee.save()
+                        print("username ",employee.username)
+                        print("password ",employee.password)
+                        print("full name ",employee.get_full_name)
+                        print("company ",employee.company.name)
+
+                        # Send employee credentials to employee
+                        subject = '%s - Welcome to Sevendyne HRMS Employee Dashboard ' %str(company)
+                        html_message = render_to_string('employee/email_templates/employee_credential.html', {'employee': employee})
+                        plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
+                        from_email = settings.DEFAULT_FROM_EMAIL
+                        to_email = employee.email
+                        cc_email = company.email 
+                        # Enqueue the email sending task
+                        send_employee_credentials_email_notification.delay(subject, plain_message, from_email, to_email, html_message, cc_email)           
+                        
                         response_data = {
                             "status": "true",
                             "title": "Successfully Created",
