@@ -424,6 +424,7 @@ def create_employee(request):
                             creator = creator,
                             updator = updator
                         ).save()
+                        
                         response_data = {
                             "status": "true",
                             "title": "Successfully Created",
