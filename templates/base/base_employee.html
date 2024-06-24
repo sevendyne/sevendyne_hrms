@@ -80,8 +80,10 @@
 							<span class="user-img">
 								{% if employee.photo %}									
 									<img src="{{ employee.photo.url }}" alt="{{ employee.name }}'s profile photo">
+								{% elif employee.gender == "Female" %}
+									<img src="{% static 'assets/img/profiles/it_woman.png' %}" alt="Default User Image">
 								{% else %}
-									<img src="{%static 'assets/img/profiles/avatar-21.jpg'%}" alt="User Image">
+									<img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="Default User Image">
 								{% endif %}
 									<span class="status online"></span></span>
 							<span class="status online"></span></span>
