@@ -16,7 +16,7 @@ def send_leave_email_notification(subject, plain_message, from_email, to_email, 
         logger.error(f"Error sending email: {e}")
         return False
 
-@shared_task(name='send_leave_email_notification')
+@shared_task(name='send_employee_credentials_email_notification')
 def send_employee_credentials_email_notification(subject, plain_message, from_email, to_email, html_message, cc_email):
     try:
         email = EmailMultiAlternatives(subject, plain_message, from_email, [to_email], cc=[cc_email])
