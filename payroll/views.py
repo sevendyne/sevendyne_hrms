@@ -866,6 +866,7 @@ def generate_employee_payslip_pdf(request, pk=None):
     current_company = instance.company 
     currency=current_company.country.currency
     currency_symbol = current_company.country.currency_symbol
+    absolute_logo_url = request.build_absolute_uri(instance.company.logo.url) 
     # Get the month from the date field of the Salary model
     salary_month = instance.date.strftime('%B %Y')
     dynamic_fields =  SalaryDynamicField.objects.filter(company=current_company,employee=employee,is_deleted=False)
@@ -880,6 +881,7 @@ def generate_employee_payslip_pdf(request, pk=None):
     net_salary_in_words = num2words(instance.net_salary, lang='en')   
     template_path = 'payroll/payslip-employee-pdf.html'
     context = {
+        'absolute_logo_url': absolute_logo_url,
         'instance': instance,
         'title': 'PaySlip',
         'currency': currency,
