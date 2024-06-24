@@ -425,6 +425,10 @@ def create_employee(request):
                             updator = updator
                         )
                         employee.save()
+                        print("username ",employee.username)
+                        print("password ",employee.password)
+                        print("full name ",employee.get_full_name)
+                        print("company ",employee.company.name)
 
                         # Send employee credentials to employee
                         subject = '%s - Welcome to Sevendyne HRMS Employee Dashboard ' %str(company)
@@ -432,7 +436,7 @@ def create_employee(request):
                         plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
                         from_email = settings.DEFAULT_FROM_EMAIL
                         to_email = employee.email
-                        cc_email = company.mail 
+                        cc_email = company.email 
                         # Enqueue the email sending task
                         send_employee_credentials_email_notification.delay(subject, plain_message, from_email, to_email, html_message, cc_email)           
                         
