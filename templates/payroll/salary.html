@@ -313,6 +313,10 @@
 <script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
 
 <script>
+	
+	$(document).ready(function() {
+        attachEventListeners();
+    });
 
     function loadCreateSalaryForm() {
 		netSalary = 0;
@@ -353,9 +357,9 @@
 		});
 
 		// Event listener for other addition and deduction fields change
-		$('.addition input[type="text"], .deduction input[type="text"]').on('input', function() {
+		$(document).on('input', '.add_addition input[type="text"], .add_deduction input[type="text"]', function() {
 			calculateNetSalary();
-		});
+		});		
 
 		$('#id_employee').on('change', function() {
 			var employeeId = $(this).val();
@@ -381,6 +385,7 @@
 					$('#total_deductions').val(response.total_deductions);
 
 					calculateNetSalary();
+					attachEventListeners();
 				},
 				error: function(xhr, status, error) {
 					console.error('Error:', error);
@@ -465,6 +470,7 @@
 	$('input[name="Leave"]').on('input', function() {
 		calculateNetSalary();
 	});
+
 	function submitCreateForm(event) {
 		event.preventDefault();  // Prevent the default form submission behavior
 		
