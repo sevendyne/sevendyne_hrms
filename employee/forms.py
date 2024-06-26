@@ -127,7 +127,7 @@ class LeaveForm(forms.ModelForm):
         model = Leave
         exclude = ['creator', 'updator', 'auto_id','a_id','company','is_deleted','employee','is_approved','status'] 
         widgets = {
-            'reason': TextInput(attrs={'class': 'form-control', 'placeholder': 'Reason for leave'}),
+            'reason': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Reason for leave'}),
             'leave_days': TextInput(attrs={'readonly': 'readonly','class': 'form-control'}),
             'leavetype': Select(attrs={'class': 'required form-control'}),
             'startdate' : DateInput(attrs={'class' : 'datetimepicker form-control'}),
