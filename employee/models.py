@@ -11,13 +11,13 @@ LEAVE_STATUS = (
 )
 
 ATTENDANCE_CHOICES = {
-    ('present', 'Present' ),
+    ('present', 'Present'),
     ('absent', 'Absent'),
     ('half-day','Half')
 }
 
 GENDER_CHOICES = {
-    ('Male', 'Male' ),
+    ('Male', 'Male'),
     ('Female', 'Female'),
     ('Other','Other')
 }

@@ -425,11 +425,7 @@ def create_employee(request):
                             updator = updator
                         )
                         employee.save()
-                        print("username ",employee.username)
-                        print("password ",employee.password)
-                        print("full name ",employee.get_full_name)
-                        print("company ",employee.company.name)
-
+                        
                         # Send employee credentials to employee
                         subject = '%s - Welcome to Sevendyne HRMS Employee Dashboard ' %str(company)
                         html_message = render_to_string('employee/email_templates/employee_credential.html', {'employee': employee})
