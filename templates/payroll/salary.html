@@ -285,10 +285,19 @@
 						</div>
 						<div class="col-sm-6" style="border: 1px solid #a09d9d;">  
 							<h4 class="text-primary">Deductions</h4>
-							 <!-- Render dynamic fields of category 'Deductions' -->
-							 {% for field_name in deductions_fields %}
+							<!-- Render dynamic fields of category 'Deductions' -->
+							{% for field_name in deductions_fields %}
 								<div class="add_deduction input-block mb-3">
-									<label for="{{ field_name }}" class="col-form-label">{{ field_name }}</label>
+									{% if field_name == "TDS" %}
+										<label for="{{ field_name }}" class="col-form-label">
+											TDS 
+											<a href="https://www.moneycontrol.com/personal-finance/tools/income-tax-calculator" target="_blank" title="Income Tax Calculator">
+												Help<i class="fa-solid fa-question-circle"></i>
+											</a>
+										</label>
+									{% else %}
+										<label for="{{ field_name }}" class="col-form-label">{{ field_name }}</label>
+									{% endif %}
 									<input id="{{ field_name }}" class="form-control" type="text" name="{{ field_name }}">
 									{% if field_name.errors %}
 										<span class="error">{{ field_name.errors.0 }}</span>

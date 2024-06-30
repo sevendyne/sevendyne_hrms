@@ -121,7 +121,7 @@ class Employee(BaseModel):
 
 class LeaveType(BaseModel):
     company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})   
-    name = models.CharField(_("Leave Type"),max_length=255)
+    name = models.CharField(max_length=255)
     days = models.PositiveIntegerField(_("Number of Days"),null=True,blank=True)
     is_active = models.BooleanField(default=True)
     is_deleted = models.BooleanField(default=False)

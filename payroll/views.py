@@ -74,7 +74,6 @@ def get_last_payslip(request):
 
 def ajax_load_salary_components(request):
     basic_salary = float(request.GET.get('basic_salary', 0))
-    # print("basic_salary ",basic_salary)
     company = get_current_company(request)
     salary_settings = SalarySetting.objects.filter(company=company)
     salary_setting = salary_settings.first()
@@ -82,7 +81,9 @@ def ajax_load_salary_components(request):
     da = float(basic_salary) * (float(salary_setting.da) / 100)
     hra = float(basic_salary) * (float(salary_setting.hra) / 100)
     esi = float(basic_salary) * (float(salary_setting.esi_emp+salary_setting.esi_org) / 100)
-    pf = float(basic_salary) * (float(salary_setting.pf_emp+salary_setting.pf_org) / 100)
+    pf_percentage = float(basic_salary) * (float(salary_setting.pf_emp+salary_setting.pf_org) / 100)
+    pf_fixed = float(salary_setting.pf_fixed)
+    pf = pf_percentage + pf_fixed
     tds = float(basic_salary) * (float(salary_setting.tds) / 100)   
     data = {
         'da': da,
@@ -119,6 +120,7 @@ def create_salary_setting(request):
             pf_org = form.cleaned_data['pf_org']
             esi_emp = form.cleaned_data['esi_emp']
             esi_org = form.cleaned_data['esi_org']
+            pf_fixed = form.cleaned_data['pf_fixed']
             tds = form.cleaned_data['tds']            
             auto_id = get_auto_id(SalarySetting)
             a_id = get_a_id(SalarySetting,request)
@@ -133,6 +135,7 @@ def create_salary_setting(request):
                     pf_org = pf_org,
                     esi_emp = esi_emp,
                     esi_org = esi_org,
+                    pf_fixed = pf_fixed,
                     tds = tds,                    
                     auto_id = auto_id,
                     a_id = a_id,
@@ -145,7 +148,7 @@ def create_salary_setting(request):
                     "title": "Successfully Created",
                     "message": "Salary Setting created successfully.",
                     "redirect": "true",
-                    "redirect_url": reverse('payroll:salaries_settings')
+                    "redirect_url": reverse('payroll:salary_settings')
                 }
             else:               
                 response_data = {

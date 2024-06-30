@@ -29,7 +29,8 @@
 							<th>DA (%)</th>
 							<th>HRA (%)</th>							
 							<th>PF EMP (%)</th>							
-							<th>PF ORG (%)</th>							
+							<th>PF ORG (%)</th>
+							<th>Total Fixed PF (if pf not in %)</th>							
 							<th>ESI EMP (%)</th>							
 							<th>ESI ORG (%)</th>							
 							<th>TDS (%)</th>
@@ -44,7 +45,9 @@
 							<td>{{ salary_setting.hra }}</td>
 							<td>{{ salary_setting.pf_emp }}</td>
 							<td>{{ salary_setting.pf_org }}</td>
+							<td>{{ salary_setting.pf_fixed }}</td>
 							<td>{{ salary_setting.esi_emp }}</td>
+							<td>{{ salary_setting.esi_org }}</td>
 							<td>{{ salary_setting.tds }}</td>
 							<td class="text-end">
 								<div class="dropdown dropdown-action">
@@ -70,31 +73,39 @@
 										<form id="update_form_{{ salary_setting.id }}" method="POST" action="{% url 'payroll:edit_salary_setting' pk=salary_setting.id %}" enctype="multipart/form-data">
 											{% csrf_token %}
 											<div class="input-block mb-3">
-												<label class="col-form-label">DA (%) <span class="text-danger">*</span></label>
+												<label class="col-form-label">DA (%) </label>
 												<input class="form-control" type="text" name="da"  value="{{salary_setting.da}}">
 											</div>
 											<div class="input-block mb-3">
-												<label class="col-form-label">HRA (%) <span class="text-danger">*</span></label>
+												<label class="col-form-label">HRA (%) </label>
 												<input class="form-control" type="text" name="hra"  value="{{salary_setting.hra}}">
 											</div>
 											<div class="input-block mb-3">
-												<label class="col-form-label">Providen Fund Employee Share (%)<span class="text-danger">*</span></label>
+												<label class="col-form-label">Providen Fund Employee Share (%)</label>
 												<input class="form-control" type="text" name="pf_emp"  value="{{salary_setting.pf_emp}}">
 											</div>
 											<div class="input-block mb-3">
-												<label class="col-form-label">Provident Fund Organization Share (%)<span class="text-danger">*</span></label>
+												<label class="col-form-label">Provident Fund Organization Share (%)</label>
 												<input class="form-control" type="text" name="pf_org"  value="{{salary_setting.pf_org}}">
 											</div>
 											<div class="input-block mb-3">
-												<label class="col-form-label">ESI Employee Share (%) <span class="text-danger">*</span></label>
+												<label class="col-form-label">Total Fixed PF (if pf not in %)</label>
+												<input class="form-control" type="text" name="pf_fixed"  value="{{salary_setting.pf_fixed}}">
+											</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">ESI Employee Share (%) </label>
 												<input class="form-control" type="text" name="esi_emp"  value="{{salary_setting.esi_emp}}">
 											</div>
 											<div class="input-block mb-3">
-												<label class="col-form-label">ESI Organization Share (%) <span class="text-danger">*</span></label>
+												<label class="col-form-label">ESI Organization Share (%) </label>
 												<input class="form-control" type="text" name="esi_org"  value="{{salary_setting.esi_org}}">
 											</div>
 											<div class="input-block mb-3">
-												<label class="col-form-label">TDS <span class="text-danger">*</span></label>
+												<label class="col-form-label">TDS 
+													<a href="https://www.moneycontrol.com/personal-finance/tools/income-tax-calculator" target="_blank" title="Income Tax Calculator">
+														Help<i class="fa-solid fa-question-circle"></i>
+													</a>
+												</label>
 												<input class="form-control" type="text" name="tds"  value="{{salary_setting.tds}}">
 											</div>
 											<div class="submit-section">
@@ -154,31 +165,39 @@
 				<form id="create_form" method="POST" action="{% url 'employee:create_leave_type' %}" enctype="multipart/form-data">
 					{% csrf_token %}
 					<div class="input-block mb-3">
-						<label class="col-form-label">DA (%) <span class="text-danger">*</span></label>
+						<label class="col-form-label">DA (%) </label>
 						<input class="form-control" type="text" name="da">
 					</div>
 					<div class="input-block mb-3">
-						<label class="col-form-label">HRA (%) <span class="text-danger">*</span></label>
+						<label class="col-form-label">HRA (%) </label>
 						<input class="form-control" type="text" name="hra">
 					</div>
 					<div class="input-block mb-3">
-						<label class="col-form-label">Providen Fund Employee Share (%)<span class="text-danger">*</span></label>
+						<label class="col-form-label">Provident Fund Employee Share (%)</label>
 						<input class="form-control" type="text" name="pf_emp">
 					</div>
 					<div class="input-block mb-3">
-						<label class="col-form-label">Provident Fund Organization Share (%)<span class="text-danger">*</span></label>
+						<label class="col-form-label">Provident Fund Organization Share (%)</label>
 						<input class="form-control" type="text" name="pf_org">
 					</div>
 					<div class="input-block mb-3">
-						<label class="col-form-label">ESI Employee Share (%) <span class="text-danger">*</span></label>
+						<label class="col-form-label">Total Fixed PF (if pf not in %) </label>
+						<input class="form-control" type="text" name="pf_fixed">
+					</div>
+					<div class="input-block mb-3">
+						<label class="col-form-label">ESI Employee Share (%) </label>
 						<input class="form-control" type="text" name="esi_emp">
 					</div>
 					<div class="input-block mb-3">
-						<label class="col-form-label">ESI Organization Share (%) <span class="text-danger">*</span></label>
+						<label class="col-form-label">ESI Organization Share (%) </label>
 						<input class="form-control" type="text" name="esi_org">
 					</div>
 					<div class="input-block mb-3">
-						<label class="col-form-label">TDS <span class="text-danger">*</span></label>
+						<label class="col-form-label">TDS 
+							<a href="https://www.moneycontrol.com/personal-finance/tools/income-tax-calculator" target="_blank" title="Income Tax Calculator">
+								<i class="fa-solid fa-question-circle"></i>
+							</a>
+						</label>
 						<input class="form-control" type="text" name="tds">
 					</div>
 

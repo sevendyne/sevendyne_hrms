@@ -19,6 +19,7 @@ class SalarySetting(BaseModel):
     pf_org = models.DecimalField(_('Organization Share(%)'),default=0,decimal_places=2, max_digits=15,validators=[MinValueValidator(Decimal('0.00'))],null=True,blank=True)
     esi_emp = models.DecimalField(_('ESI Employee(%)'),default=0,decimal_places=2, max_digits=15,validators=[MinValueValidator(Decimal('0.00'))],null=True,blank=True)
     esi_org = models.DecimalField(_('ESI Organization(%)'),default=0,decimal_places=2, max_digits=15,validators=[MinValueValidator(Decimal('0.00'))],null=True,blank=True)
+    pf_fixed = models.DecimalField(_('If pf not in %, Total PF (in numbers)'),default=0,decimal_places=2, max_digits=15,validators=[MinValueValidator(Decimal('0.00'))],null=True,blank=True)
     tds = models.DecimalField(_('TDS '),default=0,decimal_places=2, max_digits=15,validators=[MinValueValidator(Decimal('0.00'))],null=True,blank=True)
     is_deleted = models.BooleanField(_('Is This Salary Settings Deleted ?'),help_text='button to toggle employee deleted and undelete',default=False,null=True,blank=True)
 

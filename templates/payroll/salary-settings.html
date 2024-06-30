@@ -70,6 +70,15 @@
 					</div>
 				</div>
 			</div>
+			<div class="col-sm-12">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Total fixed PF (if pf not in %)</label>
+					{{ form.pf_fixed }}
+					{% if form.pf_fixed.errors %}
+					<span class="error">{{ form.pf_fixed.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>
 		</div>
 		<!-- /Provident Fund Settings -->
 		

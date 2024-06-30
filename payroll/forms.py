@@ -22,6 +22,7 @@ class SalarySettingForm(forms.ModelForm):
             'pf_org': forms.TextInput(attrs={'class': 'form-control ', 'placeholder': 'Percentage Allowance For PF Organisation'}),
             'esi_emp': forms.TextInput(attrs={'class': 'form-control ', 'placeholder': 'Percentage Allowance For ESI Employee'}),  # Display password field as a password input
             'esi_org': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Percentage Allowance For ESI Organisation'}),
+            'pf_fixed': forms.TextInput(attrs={'class': 'form-control ', 'placeholder': 'Total Fixed PF in numbers (if pf not in %)'}),
             'tds': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Percentage Allowance For TDS'})            
         }
         error_messages = {
