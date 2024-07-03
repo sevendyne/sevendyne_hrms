@@ -31,7 +31,11 @@ from job.models import Job
 
 
 def home_hrms(request):
-    return render(request, "home/index.html")
+    portfolios = Portfolio.objects.filter(is_deleted=False)
+    context ={
+        "portfolios":portfolios
+    }
+    return render(request, "home/index.html", context=context)
 
 
 def about(request):
