@@ -282,10 +282,8 @@ def hrms_dashboard(request):
     
     # Fetch salary data and convert to a list of floats
     salaries = Salary.objects.filter(company=company, is_deleted=False).values_list('net_salary', flat=True)
-    salary_data = [float(salary) for salary in salaries]
-    
-    print("salary data",salary_data)
-    
+    salary_data = [float(salary) for salary in salaries]    
+        
     try:
         hrms_client = get_object_or_404(HrmsClient, user=request.user, is_deleted=False)
         context = {
@@ -320,7 +318,7 @@ def employee_dashboard(request):
         company=employee.company
         approved_leave = Leave.objects.filter(employee=employee,company=company,is_approved=True,is_deleted=False).count()
         # total_leave = Leave.objects.filter(company=company,is_deleted=False).count()
-         # Get the total leave days across all leave types
+        # Get the total leave days across all leave types
         total_leave = LeaveType.objects.filter(company=company, is_deleted=False).aggregate(total_leave=Sum('days'))['total_leave']
         # If total_leave is None (no leave records found), set it to 0
         total_leave = total_leave or 0
@@ -714,6 +712,6 @@ def delete_email_setting(request,pk):
         "redirect_url" : reverse('main:email_settings')
     }
     return HttpResponse(json.dumps(response_data), content_type='application/json')
-   
+
 
 
