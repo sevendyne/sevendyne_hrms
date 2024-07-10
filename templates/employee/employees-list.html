@@ -17,7 +17,7 @@
 				</ul>
 			</div>
 			<div class="col-auto float-end ms-auto">
-				<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#add_employee"><i class="fa-solid fa-plus"></i> Add Employee</a>
+				<a href="#" class="btn add-btn" onclick="loadCreateEmployeeForm()" data-bs-toggle="modal" data-bs-target="#add_employee"><i class="fa-solid fa-plus"></i> Add Employee</a>
 				<div class="view-icons">
 					<a href="{% url 'employee:employees' %}" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
 					<a href="{% url 'employee:employees_list' %}" class="list-view btn btn-link active"><i class="fa-solid fa-bars"></i></a>

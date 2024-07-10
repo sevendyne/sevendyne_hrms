@@ -1,0 +1,96 @@
+{% extends "base/base_hrms_admin.html" %}
+{% load static %}
+
+{% block content %}
+<!-- Page Content -->
+<div class="content container-fluid">
+
+	<!-- Page Header -->
+	<div class="page-header">
+		<div class="row">
+			<div class="col-sm-12">
+				<h3 class="page-title">Asset Details</h3>
+				<ul class="breadcrumb">
+					<li class="breadcrumb-item"><a href="{% url 'main:hrms_dashboard' %}">Dashboard</a></li>
+					<li class="breadcrumb-item active">Asset Details</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Header -->
+	
+	<div class="card mb-0">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="profile-view">
+						<div class="profile-img-wrap">
+							<div class="profile-img">
+								<a href="{% url 'asset:asset' pk=asset.pk %}" class="avatar">
+									{% if asset.photo %}
+										<img src="{{ asset.photo.url }}" alt="{{ asset.name }}'s profile photo">
+									{% else %}
+										<img src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="Default User Image">
+									{% endif %}
+								</a>						
+							</div>
+						</div>
+						<div class="profile-basic">
+							<div class="row">
+								<div class="col-md-5">
+									<div class="profile-info-left">
+										<h3 class="user-name m-t-0 mb-0">{{ asset.name }}</h3>
+										<small class="text-muted">{{ asset.description }}</small>
+										<div class="small doj text-muted">Purchase Date : {{ asset.purchase_date }}</div>										
+									</div>
+								</div>
+								<div class="col-md-7">
+									<ul class="personal-info">										
+										<li>
+											<div class="title">Purchase Date :</div>
+											<div class="text"><a href="">{{ asset.purchase_date }}</a></div>
+										</li>
+										<li>
+											<div class="title">Purchase Price :</div>
+											<div class="text"><a href="">{{ asset.purchase_price }}</a></div>
+										</li>
+										<li>
+											<div class="title">Useful Life In Years :</div>
+											<div class="text">{{ asset.useful_life_years }}</div>
+										</li>
+										<li>
+											<div class="title">Scrap Value :</div>
+											<div class="text">{{ asset.salvage_value }}</div>
+										</li>
+										<li>
+											<div class="title">Bill :</div>
+											<div class="text">
+												{% if asset.bill %}
+													<a href="{{ asset.bill.url }}" target="_blank">{{ asset.bill.url }}</a>
+												{% else %}
+													No bill uploaded.
+												{% endif %}
+											</div>
+										</li>
+										<li>
+											<div class="title">Image :</div>
+											<div class="text">
+												{% if asset.photo %}
+													<a href="{{ asset.photo.url }}" target="_blank">{{ asset.photo.url }}</a>
+												{% else %}
+													No image uploaded.
+												{% endif %}
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						{% comment %} <div class="pro-edit"><a data-bs-target="#profile_info" data-bs-toggle="modal" class="edit-icon" href="{% url 'asset:edit_asset' pk=asset.pk %}"><i class="fa-solid fa-pencil"></i></a></div> {% endcomment %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
