@@ -20,7 +20,6 @@ urlpatterns = [
     path('app/job/',include(('job.urls','job'),namespace='job')),
     path('app/payroll/',include(('payroll.urls','payroll'),namespace='payroll')),
     path('app/task-board/',include(('taskboard.urls','taskboard'),namespace='taskboard')),
-
-
+    path('app/asset/',include(('asset.urls','asset'),namespace='asset'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
