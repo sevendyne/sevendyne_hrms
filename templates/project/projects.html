@@ -17,7 +17,7 @@
 				</ul>
 			</div>
 			<div class="col-auto float-end ms-auto">
-				<a href="#" class="btn add-btn" data-bs-toggle="modal" data-bs-target="#create_project"><i class="fa-solid fa-plus"></i> Create Project</a>
+				<a href="#" class="btn add-btn" onclick="loadCreateProjectForm()" data-bs-toggle="modal" data-bs-target="#create_project"><i class="fa-solid fa-plus"></i> Create Project</a>
 				<div class="view-icons">
 					<a href="#" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
 					<a href="#" class="list-view btn btn-link"><i class="fa-solid fa-bars"></i></a>
@@ -31,31 +31,27 @@
 	<div class="row filter-row">
 		<div class="col-sm-6 col-md-3">  
 			<div class="input-block mb-3 form-focus">
-				<input type="text" class="form-control floating">
+				<input type="text" class="form-control floating" name="project_name">
 				<label class="focus-label">Project Name</label>
 			</div>
 		</div>
-		<div class="col-sm-6 col-md-3">  
-			<div class="input-block mb-3 form-focus">
-				<input type="text" class="form-control floating">
-				<label class="focus-label">Employee Name</label>
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-3"> 
-			<div class="input-block mb-3 form-focus select-focus">
-				<select class="select floating"> 
-					<option>Select Designation</option>
-					<option>Web Developer</option>
-					<option>Web Designer</option>
-					<option>Android Developer</option>
-					<option>Ios Developer</option>
-				</select>
-				<label class="focus-label">Designation</label>
-			</div>
-		</div>
-		<div class="col-sm-6 col-md-3">  
-			<a href="#" class="btn btn-success w-100"> Search </a>  
-		</div>     
+        <div class="col-sm-6 col-md-3">  
+            <div class="input-block mb-3 form-focus">
+                <input type="text" class="form-control floating" name="emp_name">
+                <label class="focus-label">Employee Name</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3"> 
+            <div class="input-block mb-3 form-focus ">
+                <input type="text" class="form-control floating" name="emp_des">					
+                <label class="focus-label">Designation</label>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3">
+            <div class="d-grid">
+                <button class="btn btn-primary w-100" type="submit">Search</button>
+            </div>  
+        </div>   
 	</div>
 	<!-- Search Filter -->
 	
@@ -143,7 +139,7 @@
 							</div>
 							<!-- Save Button -->
 							<div class="submit-section">
-								<button type="submit" class="btn btn-primary submit-btn">Save</button>
+								<button type="submit" class="btn btn-primary submit-btn" onclick="submitUpdateForm(event, '{{project.id}}')">Save</button>
 							</div>
 						</form>
 					</div>
@@ -222,7 +218,7 @@
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <label class="col-form-label">Priority</label>
-                                <select name="priority" class="select form-control">
+                                <select class="select form-control">
                                     <option value="Low">Low</option>
                                     <option value="Normal">Normal</option>
                                     <option value="High">High</option>
@@ -231,23 +227,51 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label">Project Leader</label>
-                                <input name="project_leader" class="form-control" type="text" placeholder="Enter project leader">
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="input-block mb-3">
-                                <label class="col-form-label">Team</label>
-                                <select name="team" class="select form-control" multiple>
-                                    {% for employee in team_members %}
-                                    <option value="{{ employee.id }}">{{ employee.name }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Add Project Leader</label>
+								<input class="form-control" type="text">
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Team Leader</label>
+								<div class="project-members">
+									<a href="#" data-bs-toggle="tooltip" title="Jeffery Lalor" class="avatar">
+										<img src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Add Team</label>
+								<input class="form-control" type="text">
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Team Members</label>
+								<div class="project-members">
+									<a href="#" data-bs-toggle="tooltip" title="John Doe" class="avatar">
+										<img src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
+									</a>
+									<a href="#" data-bs-toggle="tooltip" title="Richard Miles" class="avatar">
+										<img src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
+									</a>
+									<a href="#" data-bs-toggle="tooltip" title="John Smith" class="avatar">
+										<img src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
+									</a>
+									<a href="#" data-bs-toggle="tooltip" title="Mike Litorus" class="avatar">
+										<img src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
+									</a>
+									<span class="all-team">+2</span>
+								</div>
+							</div>
+						</div>
+					</div>
                     <div class="input-block mb-3">
                         <label class="col-form-label">Description</label>
                         <textarea name="description" class="form-control" placeholder="Enter project description"></textarea>
@@ -257,7 +281,7 @@
                         <input name="file" class="form-control" type="file">
                     </div>
                     <div class="submit-section">
-                        <button type="submit" class="btn btn-primary submit-btn">Submit</button>
+                        <button type="submit" class="btn btn-primary submit-btn" onclick="submitCreateForm(event)">Submit</button>
                     </div>
                 </form>
             </div>
@@ -265,59 +289,223 @@
     </div>
 </div>
 <!-- /Create Project Modal -->
-				
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+<!-- jQuery -->
+<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+		
 <script>
-    $(document).ready(function () {
-        $('#createProjectForm').submit(function (event) {
-            event.preventDefault();
-            var formData = new FormData(this);
-            $.ajax({
-                type: 'POST',
-                url: '{% url "create_project" %}',
-                data: formData,
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    if (response.status == 'true' && response.redirect == 'true') {
-                        // Redirect or show success message as needed
-                        window.location.href = response.redirect_url;
-                    } else {
-                        // Handle error or display validation messages
-                        console.log(response.message);
-                        alert(response.message);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error(xhr.responseText);
-                    alert('Error occurred while creating project. Please try again.');
-                }
-            });
+	
+	$(document).ready(function(){
+        $('.datetimepicker').datetimepicker({
+            format: 'YYYY-MM-DD', // Date-only format
+            // Additional configurations to ensure time is not included
+            ignoreReadonly: true,
+            allowInputToggle: true
         });
     });
-	function deleteProject(project_id) {
-        if (confirm('Are you sure you want to delete this project?')) {
-            $.ajax({
-                type: 'POST',
-                url: '{% url "taskboard:delete_project" %}',
-                data: {
-                    'csrfmiddlewaretoken': '{{ csrf_token }}',
-                    'project_id': project_id
-                },
-                dataType: 'json',
-                success: function(response) {
-                    if (response.status === 'true') {
-                        alert('Project deleted successfully.');
-                        window.location.reload();
-                    } else {
-                        alert('Failed to delete project.');
-                    }
-                },
-                error: function() {
-                    alert('Error occurred while deleting project.');
-                }
-            });
-        }
+		
+	function loadCreateProjectForm() {
+		fetch("{% url 'taskboard:create_project' %}")
+        .then(response => response.text())
+        .then(data => {            
+            // Create a temporary element to hold the form HTML
+            var tempElement = document.createElement('div');
+            tempElement.innerHTML = data;
+
+            // Find the form element in the temporary element
+            var formElement = tempElement.querySelector('#create_form');
+
+            // Append the form to the modal body
+            var modalBody = document.querySelector('#add_project .modal-body');
+            modalBody.innerHTML = '';
+            modalBody.appendChild(formElement);
+
+            // Show the modal
+            $('#add_project').modal('show');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     }
+	
+	function submitCreateForm(event) {
+	event.preventDefault();  // Prevent the default form submission behavior
+	var form = document.getElementById('create_form');
+	var formData = new FormData(form);
+
+	fetch(form.action, {
+		method: 'POST',
+		body: formData,
+	})
+	.then(response => response.json())
+	.then(data => {
+		// Corrected variable name here
+		if (data.status === 'true') {
+		showSweetAlert(data.message, data.status, data.redirect_url);
+		} else if (data.status === 'form_error') {
+		showSweetAlert(data.message, 'form_error');
+		} else if (data.status === 'false') {
+		showSweetAlert(data.message, data.status);
+		} else {
+		showSweetAlert(data.message, 'error');
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+	});
+	}
+
+	function showSweetAlert(message, status, redirectUrl) {
+	if (status === 'true') {
+		Swal.fire({
+		icon: 'success',
+		title: 'Success!',
+		text: message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+
+		didClose: () => {
+			if (redirectUrl) {
+			// Combine the redirect URL with the current protocol and host to get the full URL
+			var fullRedirectUrl = window.location.origin + redirectUrl;
+			window.location.href = fullRedirectUrl;
+			}
+		}
+		});
+	} else if (status === 'form_error') {
+		Swal.fire({
+		icon: 'error',
+		title: 'Form Validation Error!',
+		html: message,  // Display form errors as HTML
+		showConfirmButton: true,
+		allowOutsideClick: false,
+		});
+	} else if (status === 'false') {
+		Swal.fire({
+		icon: 'error',
+		title: 'Form Error!',
+		text: 'Error: ' + message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+		});
+	} else {
+		Swal.fire({
+		icon: 'error',
+		title: 'Error!',
+		text: 'Error: ' + message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+		});
+	}
+	}
+
+	function submitUpdateForm(event,projectId) {
+	event.preventDefault();  // Prevent the default form submission behavior
+	var form = document.getElementById('update_form_' + projectId);
+	var formData = new FormData(form);
+
+	fetch(form.action, {
+		method: 'POST',
+		body: formData,
+	})
+	.then(response => response.json())
+	.then(data => {
+		// Corrected variable name here
+		if (data.status === 'true') {
+		showSweetAlert(data.message, data.status, data.redirect_url);
+		} else if (data.status === 'form_error') {
+		showSweetAlert(data.message, 'form_error');
+		} else if (data.status === 'false') {
+		showSweetAlert(data.message, data.status);
+		} else {
+		showSweetAlert(data.message, 'error');
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+	});
+	}
+
+	// Function to handle delete action
+	function handleDelete(pk) {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this project!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!"
+		})
+		.then((result) => {
+			if (result.isConfirmed) {
+				// If user confirms, send Fetch API request to delete
+				fetch('/app/project/delete-project/' + pk + '/', {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': '{{ csrf_token }}'
+					},
+				})
+				.then(response => response.json())
+				.then(data => {
+					// Handle success response
+					if (data.status === "true") {
+						showDeleteSweetAlert(data.message, data.status, data.redirect_url);
+					} else {
+						Swal.fire("Error", "An error occurred while deleting.", "error");
+					}
+				})
+				.catch(() => {
+					// Handle error
+					Swal.fire("Error", "An error occurred while processing the request.", "error");
+				});
+			} else {
+				Swal.fire("Project is safe!");
+			}
+		});
+	}
+	function showDeleteSweetAlert(message, status, redirectUrl) {
+		
+		if (status === 'true') {
+			Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+		
+			didClose: () => {
+				if (redirectUrl) {
+				// Combine the redirect URL with the current protocol and host to get the full URL
+				var fullRedirectUrl = window.location.origin + redirectUrl;
+				window.location.href = fullRedirectUrl;
+				}
+			}
+			});
+		} else {
+			Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		}
+		}		
+	
+		// Attach click event to delete button
+		document.querySelectorAll('.remove').forEach(function(el) {
+			el.addEventListener('click', function(e) {
+				e.preventDefault();
+				var pk = this.getAttribute('data-id');
+				handleDelete(pk);
+			});
+		});
+
 </script>
+
 
 {% endblock %}           
