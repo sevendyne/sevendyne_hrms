@@ -1,5 +1,7 @@
 import json
 import datetime
+from django.db.models import Sum
+
 
 from django.db.models import Q
 from django.http import HttpResponse
@@ -83,11 +85,16 @@ def create_asset(request):
 def assets(request):
     current_company = get_current_company(request)
     instances = Asset.objects.filter(company=current_company,is_deleted=False)
+    
+    # Calculate the current total asset value in Python
+    total_asset_value = sum(asset.current_value for asset in instances)
+    
     paginator = Paginator(instances,1000000000000)
     page_number = request.GET.get('page')
     instances = paginator.get_page(page_number)
     context = {
         'assets': instances,
+        'total_asset_value': total_asset_value,
         "title": 'Assets' 
     }
     return render(request, "asset/assets.html", context)

@@ -170,160 +170,160 @@ def delete_project(request,pk):
 
 
 # Task crud starts here
-@login_required
-@user_passes_test(has_hrms_permission, redirect_field_name=None)
-@company_required
-def create_task(request): 
-    current_company = get_current_company(request)  
-    if request.method == 'POST':
-        form = TaskForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            priority = form.cleaned_data['priority']
-            due_date = form.cleaned_data['due_date']
-            description = form.cleaned_data['description']
-            employee = form.cleaned_data['employee']
-            project = form.cleaned_data['project']
-            attachment = form.cleaned_data['attachment']
-            auto_id = get_auto_id(Task)
-            a_id = get_a_id(Task,request)
-            creator = request.user
-            updator = request.user
+# @login_required
+# @user_passes_test(has_hrms_permission, redirect_field_name=None)
+# @company_required
+# def create_task(request): 
+#     current_company = get_current_company(request)  
+#     if request.method == 'POST':
+#         form = TaskForm(request.POST)
+#         if form.is_valid():
+#             name = form.cleaned_data['name']
+#             priority = form.cleaned_data['priority']
+#             due_date = form.cleaned_data['due_date']
+#             description = form.cleaned_data['description']
+#             employee = form.cleaned_data['employee']
+#             project = form.cleaned_data['project']
+#             attachment = form.cleaned_data['attachment']
+#             auto_id = get_auto_id(Task)
+#             a_id = get_a_id(Task,request)
+#             creator = request.user
+#             updator = request.user
 
-            if not Task.objects.filter(name = name,is_deleted=False).exists():
-                Task(
-                    company = current_company,
-                    name = name,
-                    priority = priority,
-                    due_date = due_date,
-                    description = description,
-                    employee = employee,
-                    project = project,
-                    attachment = attachment,
-                    auto_id = auto_id,
-                    a_id = a_id,
-                    creator = creator,
-                    updator = updator
-                ).save()
-                response_data = {
-                    "status": "true",
-                    "title": "Successfully Created",
-                    "message": "Task created successfully.",
-                    "redirect": "true",
-                    "redirect_url": reverse('task:tasks')
-                }
-            else:               
-                response_data = {
-                    "status": "false",
-                    "stable": "true",
-                    "title": "Already exists",
-                    "message": "Task already exists",                        
-                }
-        else:
-            message = generate_form_errors(form, formset=False)
-            response_data = {
-                "stable": "true",
-                "status": "form_error",
-                "title": "Form validation error",
-                "message": str(message),               
-            }
-        return HttpResponse(json.dumps(response_data), content_type='application/json')
-    else:
-        form = TaskForm()
-        context = {
-            "title": "Create Task",
-            "form": form,
-            "redirect": "true",
-            "create":True
-        }        
-        return render(request, "task/tasks.html", context)
+#             if not Task.objects.filter(name = name,is_deleted=False).exists():
+#                 Task(
+#                     company = current_company,
+#                     name = name,
+#                     priority = priority,
+#                     due_date = due_date,
+#                     description = description,
+#                     employee = employee,
+#                     project = project,
+#                     attachment = attachment,
+#                     auto_id = auto_id,
+#                     a_id = a_id,
+#                     creator = creator,
+#                     updator = updator
+#                 ).save()
+#                 response_data = {
+#                     "status": "true",
+#                     "title": "Successfully Created",
+#                     "message": "Task created successfully.",
+#                     "redirect": "true",
+#                     "redirect_url": reverse('task:tasks')
+#                 }
+#             else:               
+#                 response_data = {
+#                     "status": "false",
+#                     "stable": "true",
+#                     "title": "Already exists",
+#                     "message": "Task already exists",                        
+#                 }
+#         else:
+#             message = generate_form_errors(form, formset=False)
+#             response_data = {
+#                 "stable": "true",
+#                 "status": "form_error",
+#                 "title": "Form validation error",
+#                 "message": str(message),               
+#             }
+#         return HttpResponse(json.dumps(response_data), content_type='application/json')
+#     else:
+#         form = TaskForm()
+#         context = {
+#             "title": "Create Task",
+#             "form": form,
+#             "redirect": "true",
+#             "create":True
+#         }        
+#         return render(request, "task/tasks.html", context)
     
 
-@login_required
-@user_passes_test(has_hrms_permission, redirect_field_name=None)
-@company_required
-def tasks(request):
-    current_company = get_current_company(request)
-    tasks = Task.objects.filter(company=current_company,is_deleted=False)
-    paginator = Paginator(tasks,1000000000000)
-    page_number = request.GET.get('page')
-    tasks = paginator.get_page(page_number)
-    context = {
-        'tasks': tasks,
-        "title": 'Tasks' 
-    }
-    return render(request, "task/tasks.html", context)
+# @login_required
+# @user_passes_test(has_hrms_permission, redirect_field_name=None)
+# @company_required
+# def tasks(request):
+#     current_company = get_current_company(request)
+#     tasks = Task.objects.filter(company=current_company,is_deleted=False)
+#     paginator = Paginator(tasks,1000000000000)
+#     page_number = request.GET.get('page')
+#     tasks = paginator.get_page(page_number)
+#     context = {
+#         'tasks': tasks,
+#         "title": 'Tasks' 
+#     }
+#     return render(request, "task/tasks.html", context)
 
 
-@login_required
-@user_passes_test(has_hrms_permission, redirect_field_name=None)
-@company_required
-def edit_task(request, pk):
-    current_company = get_current_company(request)
-    instance = get_object_or_404(Task.objects.filter(pk=pk,company=current_company, is_deleted=False))    
-    if request.method == "POST":
-        form = TaskForm(request.POST, instance=instance)
-        if form.is_valid():
-            data = form.save(commit=False)
-            data.updator = request.user
-            data.date_updated = datetime.datetime.now()
-            data.save()
-            response_data = {
-                "status": "true",
-                "redirect" : "true",
-                "title": "Successfully Updated",
-                "message": "Task updated successfully.",                
-                "redirect_url": reverse('task:tasks')
-            }
-        else:
-            message = generate_form_errors(form, formset=False)
-            response_data = {
-                "stable": "true",
-                "status": "false",
-                "message": str(message),
-                "title": "Form validation error"  
-            }
-        return HttpResponse(json.dumps(response_data), content_type='application/json')
-    else:
-        form = TaskForm(instance=instance)       
-        context = {
-            "form": form,
-            "instance": instance,
-            "title": "Edit Task :" + instance.name,            
-            "redirect": "true",
-            "url": reverse('task:edit_task', kwargs={'pk': instance.pk})
-        }
-        return render(request, "task/tasks.html", context)
+# @login_required
+# @user_passes_test(has_hrms_permission, redirect_field_name=None)
+# @company_required
+# def edit_task(request, pk):
+#     current_company = get_current_company(request)
+#     instance = get_object_or_404(Task.objects.filter(pk=pk,company=current_company, is_deleted=False))    
+#     if request.method == "POST":
+#         form = TaskForm(request.POST, instance=instance)
+#         if form.is_valid():
+#             data = form.save(commit=False)
+#             data.updator = request.user
+#             data.date_updated = datetime.datetime.now()
+#             data.save()
+#             response_data = {
+#                 "status": "true",
+#                 "redirect" : "true",
+#                 "title": "Successfully Updated",
+#                 "message": "Task updated successfully.",                
+#                 "redirect_url": reverse('task:tasks')
+#             }
+#         else:
+#             message = generate_form_errors(form, formset=False)
+#             response_data = {
+#                 "stable": "true",
+#                 "status": "false",
+#                 "message": str(message),
+#                 "title": "Form validation error"  
+#             }
+#         return HttpResponse(json.dumps(response_data), content_type='application/json')
+#     else:
+#         form = TaskForm(instance=instance)       
+#         context = {
+#             "form": form,
+#             "instance": instance,
+#             "title": "Edit Task :" + instance.name,            
+#             "redirect": "true",
+#             "url": reverse('task:edit_task', kwargs={'pk': instance.pk})
+#         }
+#         return render(request, "task/tasks.html", context)
     
 
-@login_required
-@user_passes_test(has_hrms_permission, redirect_field_name=None)
-@company_required
-def task(request,pk):
-    current_company = get_current_company(request)
-    instance = get_object_or_404(Task.objects.filter(pk=pk,company=current_company,is_deleted=False))
-    context = {
-        'instance': instance,
-        'title': 'Task'
-    }
-    return render(request, "task/tasks.html", context)
+# @login_required
+# @user_passes_test(has_hrms_permission, redirect_field_name=None)
+# @company_required
+# def task(request,pk):
+#     current_company = get_current_company(request)
+#     instance = get_object_or_404(Task.objects.filter(pk=pk,company=current_company,is_deleted=False))
+#     context = {
+#         'instance': instance,
+#         'title': 'Task'
+#     }
+#     return render(request, "task/tasks.html", context)
 
 
-@login_required
-@user_passes_test(has_hrms_permission, redirect_field_name=None)
-@company_required
-def delete_task(request,pk):
-    current_company = get_current_company(request)
-    instance = get_object_or_404(Task.objects.filter(pk=pk,company=current_company,is_deleted=False))    
-    Task.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
-    response_data = {
-        "status" : "true",        
-        "title" : "Successfully Deleted",
-        "message" : "Task Successfully Deleted.", 
-        "redirect" : "true",       
-        "redirect_url" : reverse('task:tasks')
-    }
-    return HttpResponse(json.dumps(response_data), content_type='application/json')
+# @login_required
+# @user_passes_test(has_hrms_permission, redirect_field_name=None)
+# @company_required
+# def delete_task(request,pk):
+#     current_company = get_current_company(request)
+#     instance = get_object_or_404(Task.objects.filter(pk=pk,company=current_company,is_deleted=False))    
+#     Task.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
+#     response_data = {
+#         "status" : "true",        
+#         "title" : "Successfully Deleted",
+#         "message" : "Task Successfully Deleted.", 
+#         "redirect" : "true",       
+#         "redirect_url" : reverse('task:tasks')
+#     }
+#     return HttpResponse(json.dumps(response_data), content_type='application/json')
    
 
 

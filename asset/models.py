@@ -1,4 +1,4 @@
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
@@ -29,19 +29,31 @@ class Asset(BaseModel):
 
     @property
     def depreciation_amount(self):
-        return (self.purchase_price - self.salvage_value) / self.useful_life_years
+        try:
+            if self.useful_life_years > 0:
+                return (self.purchase_price - self.salvage_value) / self.useful_life_years
+            else:
+                return Decimal(0)
+        except InvalidOperation:
+            return Decimal(0)
 
     @property
     def accumulated_depreciation(self):
-        years_elapsed = Decimal((timezone.now().date() - self.purchase_date).days) / Decimal(365.25)
-        accumulated_depreciation = min(self.purchase_price - self.salvage_value, years_elapsed * self.depreciation_amount)
-        return accumulated_depreciation.quantize(Decimal('0.01'))
-
+        if self.useful_life_years > 0:
+            years_elapsed = Decimal((timezone.now().date() - self.purchase_date).days) / Decimal(365.25)
+            accumulated_depreciation = min(self.purchase_price - self.salvage_value, years_elapsed * self.depreciation_amount)
+            return accumulated_depreciation.quantize(Decimal('0.01'))
+        else:
+            return self.purchase_price - self.salvage_value
 
     @property
     def current_value(self):
-        value = self.purchase_price - self.accumulated_depreciation
+        if self.useful_life_years > 0:
+            value = self.purchase_price - self.accumulated_depreciation
+        else:
+            value = self.salvage_value
         return value.quantize(Decimal('0.01'))
+
 
 # class AssetMaintenance(BaseModel):
 #     asset = models.ForeignKey(Asset, on_delete=models.CASCADE, related_name='maintenance_records')

@@ -8,11 +8,11 @@ urlpatterns = [
     re_path(r'^delete-project/(?P<pk>.*)/$', views.delete_project, name='delete_project'),    
     re_path(r'^project/(?P<pk>.*)/$', views.project, name='project'),
 
-    path('task/create/', views.create_task, name='create_task'),
-    path("tasks/", views.tasks, name="tasks"),
-    re_path(r'^task/edit/(?P<pk>.*)/$', views.edit_task, name='edit_task'),
-    re_path(r'^delete-task/(?P<pk>.*)/$', views.delete_task, name='delete_task'),    
-    re_path(r'^task/(?P<pk>.*)/$', views.task, name='task'),
+    # path('task/create/', views.create_task, name='create_task'),
+    # path("tasks/", views.tasks, name="tasks"),
+    # re_path(r'^task/edit/(?P<pk>.*)/$', views.edit_task, name='edit_task'),
+    # re_path(r'^delete-task/(?P<pk>.*)/$', views.delete_task, name='delete_task'),    
+    # re_path(r'^task/(?P<pk>.*)/$', views.task, name='task'),
     
     
     # path('tasklist/create/', views.create_tasklist, name='create_tasklist'),
