@@ -1639,25 +1639,6 @@ def admin_holidays(request):
 
 
 @login_required
-@user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
-def employee_admin_holidays(request):
-    employee = get_object_or_404(Employee, user=request.user)
-    company = employee.company
-    holidays = AdminHoliday.objects.filter(company=company,is_deleted=False,is_hide=False).order_by('date')
-    paginator = Paginator(holidays,1000000000000)
-    page_number = request.GET.get('page')
-    holidays = paginator.get_page(page_number)
-    context = {
-        'company':company,
-        'employee': employee,
-        'holidays': holidays,
-        "title": 'Holidays',
-        "is_holidays": True  
-    }
-    return render(request, "leave/employee_admin_holidays.html", context)
-
-
-@login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def edit_admin_holiday(request, pk):
     instance = get_object_or_404(AdminHoliday.objects.filter(pk=pk,is_deleted=False))    
@@ -1723,7 +1704,7 @@ def delete_admin_holiday(request,pk):
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 def hide_admin_holiday(request,pk):
     instance = get_object_or_404(AdminHoliday.objects.filter(pk=pk,is_deleted=False,is_hide=False))    
-    AdminHoliday.objects.filter(pk=pk).update(is_hide=True,name=instance.name + "_deleted_")
+    AdminHoliday.objects.filter(pk=pk).update(is_hide=True)
     response_data = {
         "status" : "true",   
         "title": "Successfully Hidden",

@@ -2,6 +2,7 @@ from decimal import Decimal
 import json
 import datetime
 
+from operator import attrgetter
 from django.urls import reverse
 from main.decorators import company_required
 from django.shortcuts import render, get_object_or_404
@@ -18,7 +19,7 @@ from django.db.models import Q
 from main.decorators import company_required
 from main.functions import generate_form_errors, has_admin_dashboard_permission, has_hrms_permission
 from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission
-from employee.models import AttendanceRegister, Employee, Holiday, Leave, LeaveType
+from employee.models import AdminHoliday, AttendanceRegister, Employee, Holiday, Leave, LeaveType
 from main.models import Company, CompanyAccess, EmailSetting, Portfolio, State
 from main.forms import CompanyForm, EmailSettingForm, PortfolioForm
 from payroll.models import PayrollItem, Salary, SalaryDynamicField, SalarySetting
@@ -277,8 +278,13 @@ def hrms_dashboard(request):
     absent_employees = AttendanceRegister.objects.filter(company=company,date=current_date, status='absent')[:4]
     absent_employees_count = absent_employees.count()
     # Get upcoming holiday
-    today = datetime.date.today()     
-    next_holiday = Holiday.objects.filter(company=company, date__gte=today).order_by('date').first()
+    today = datetime.date.today()  
+    next_holiday = (
+        list(Holiday.objects.filter(company=company, date__gte=today, is_deleted=False).order_by('date')) + 
+        list(AdminHoliday.objects.filter(is_hide=False, is_deleted=False, date__gte=today).order_by('date'))
+    )
+    next_holiday = sorted(next_holiday, key=lambda x: x.date)[0] if next_holiday else None
+    
     
     # Fetch salary data and convert to a list of floats
     salaries = Salary.objects.filter(company=company, is_deleted=False).values_list('net_salary', flat=True)
@@ -325,8 +331,12 @@ def employee_dashboard(request):
         remaining_leave = total_leave - approved_leave
         # Get upcoming holidays
         today = datetime.date.today()
-        upcoming_holidays = Holiday.objects.filter(company=company, date__gte=today).order_by('date')        
-        next_holiday = Holiday.objects.filter(company=company, date__gte=today).order_by('date').first()
+        upcoming_holidays = (
+            list(Holiday.objects.filter(company=company, date__gte=today, is_deleted=False).order_by('date')) + 
+            list(AdminHoliday.objects.filter(is_hide=False, is_deleted=False, date__gte=today).order_by('date'))
+        )
+        upcoming_holidays = sorted(upcoming_holidays, key=lambda x: x.date)
+        next_holiday = upcoming_holidays[0] if upcoming_holidays else None
         # Fetch the last created payslip for the employee
         last_payslip = Salary.objects.filter(employee=employee, company=company, is_deleted=False).order_by('-date').first()
         # Fetch all salary dynamic fields related to the last payslip

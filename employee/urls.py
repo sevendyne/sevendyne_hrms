@@ -52,7 +52,6 @@ urlpatterns = [
     re_path(r'^admin-holiday/edit/(?P<pk>.*)/$', views.edit_admin_holiday, name='edit_admin_holiday'),
     re_path(r'^delete-admin-holiday/(?P<pk>.*)/$', views.delete_admin_holiday, name='delete_admin_holiday'),    
     re_path(r'^admin-holiday/(?P<pk>.*)/$', views.admin_holiday, name='admin_holiday'),    
-    path("admin-holidays/employee/", views.employee_admin_holidays, name='employee_admin_holidays'),
     re_path(r'^hide-admin-holiday/(?P<pk>.*)/$', views.hide_admin_holiday, name='hide_admin_holiday'),    
 ]
 

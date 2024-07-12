@@ -41,6 +41,14 @@
 							<td>{{ holiday.date|date:"l" }}</td>							
 						</tr>
 						{% endfor %}
+						{% for admin_holiday in admin_holidays %}
+						<tr class="holiday-upcoming">
+							<td>{{forloop.counter}}</td>
+							<td>{{ admin_holiday.name }}</td>
+							<td>{{ admin_holiday.date|date:"j M Y" }}</td>
+							<td>{{ admin_holiday.date|date:"l" }}</td>							
+						</tr>
+						{% endfor %}
 					</tbody>
 				</table>
 			</div>
