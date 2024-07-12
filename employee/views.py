@@ -12,9 +12,9 @@ from django.template.loader import render_to_string
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required, user_passes_test
-from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_employee_dashboard_permission, has_hrms_permission
-from employee.forms import AttendanceDateForm, AttendanceRegisterForm, DepartmentForm, DesignationForm, EmployeeForm, HolidayForm, LeaveForm, LeaveTypeForm
-from employee.models import GENDER_CHOICES, AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
+from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_admin_dashboard_permission, has_employee_dashboard_permission, has_hrms_permission
+from employee.forms import AdminHolidayForm, AttendanceDateForm, AttendanceRegisterForm, DepartmentForm, DesignationForm, EmployeeForm, HolidayForm, LeaveForm, LeaveTypeForm
+from employee.models import GENDER_CHOICES, AdminHoliday, AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator
 from django.core.mail import EmailMessage
@@ -1471,11 +1471,13 @@ def create_holiday(request):
 def holidays(request):
     current_company = get_current_company(request)
     holidays = Holiday.objects.filter(company=current_company,is_deleted=False).order_by('date')
+    admin_holidays = AdminHoliday.objects.filter(is_deleted=False,is_hide=False).order_by('date')
     paginator = Paginator(holidays,1000000000000)
     page_number = request.GET.get('page')
     holidays = paginator.get_page(page_number)
     context = {
         'holidays': holidays,
+        'admin_holidays': admin_holidays,
         "title": 'Holidays',
         "is_holidays": True 
     }
@@ -1488,6 +1490,7 @@ def employee_holidays(request):
     employee = get_object_or_404(Employee, user=request.user)
     company = employee.company
     holidays = Holiday.objects.filter(company=company,is_deleted=False).order_by('date')
+    admin_holidays = AdminHoliday.objects.filter(is_deleted=False,is_hide=False).order_by('date')
     paginator = Paginator(holidays,1000000000000)
     page_number = request.GET.get('page')
     holidays = paginator.get_page(page_number)
@@ -1495,6 +1498,7 @@ def employee_holidays(request):
         'company':company,
         'employee': employee,
         'holidays': holidays,
+        'admin_holidays': admin_holidays,
         "title": 'Holidays',
         "is_holidays": True  
     }
@@ -1570,4 +1574,161 @@ def delete_holiday(request,pk):
         "redirect_url" : reverse('employee:holidays')
     }
     return HttpResponse(json.dumps(response_data), content_type='application/json')
-   
+
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def create_admin_holiday(request):
+    if request.method == 'POST':
+        form = AdminHolidayForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            date = form.cleaned_data['date']
+            if not AdminHoliday.objects.filter(name = name,date=date,is_deleted=False).exists():
+                AdminHoliday(
+                    name = name,
+                    date = date
+                ).save()
+                response_data = {
+                    "status": "true",
+                    "title": "Successfully Created",
+                    "message": "Holiday created successfully.",
+                    "redirect": "true",
+                    "redirect_url": reverse('employee:admin_holidays')
+                }
+            else:               
+                response_data = {
+                    "status": "false",
+                    "stable": "true",
+                    "title": "Already exists",
+                    "message": "Holiday already exists",                        
+                }
+        else:
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "form_error",
+                "title": "Form validation error",
+                "message": str(message),               
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = HolidayForm()
+        context = {
+            "title": "Create Holiday",
+            "form": form,
+            "redirect": "true",
+            "create":True
+        }        
+        return render(request, 'sevendyne_admin/holiday/create_holiday.html', context)
+    
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def admin_holidays(request):
+    holidays = AdminHoliday.objects.filter(is_deleted=False).order_by('date')
+    paginator = Paginator(holidays,1000000000000)
+    page_number = request.GET.get('page')
+    holidays = paginator.get_page(page_number)
+    context = {
+        'holidays': holidays,
+        "title": 'Holidays',
+        "is_holidays": True 
+    }
+    return render(request, "sevendyne_admin/holiday/holidays.html", context)
+
+
+@login_required
+@user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
+def employee_admin_holidays(request):
+    employee = get_object_or_404(Employee, user=request.user)
+    company = employee.company
+    holidays = AdminHoliday.objects.filter(company=company,is_deleted=False,is_hide=False).order_by('date')
+    paginator = Paginator(holidays,1000000000000)
+    page_number = request.GET.get('page')
+    holidays = paginator.get_page(page_number)
+    context = {
+        'company':company,
+        'employee': employee,
+        'holidays': holidays,
+        "title": 'Holidays',
+        "is_holidays": True  
+    }
+    return render(request, "leave/employee_admin_holidays.html", context)
+
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def edit_admin_holiday(request, pk):
+    instance = get_object_or_404(AdminHoliday.objects.filter(pk=pk,is_deleted=False))    
+    if request.method == "POST":
+        form = AdminHolidayForm(request.POST, instance=instance)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.save()
+            response_data = {
+                "status": "true",
+                "redirect" : "true",
+                "title": "Successfully Updated",
+                "message": "Holiday updated successfully.",                
+                "redirect_url": reverse('employee:admin_holidays')
+            }
+        else:
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "false",
+                "message": str(message),
+                "title": "Form validation error"  
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = HolidayForm(instance=instance)       
+        context = {
+            "form": form,
+            "instance": instance,
+            "title": "Edit Holiday :" + instance.name,            
+            "redirect": "true",
+            "url": reverse('employee:admin_holiday', kwargs={'pk': instance.pk})
+        }
+        return render(request, 'sevendyne_admin/holiday/create_holiday.html', context)
+
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def admin_holiday(request,pk):
+    instance = get_object_or_404(AdminHoliday.objects.filter(pk=pk,is_deleted=False))
+    context = {
+        'instance': instance,
+        'title': 'Holiday'
+    }
+    return render(request, "sevendyne_admin/holiday/holiday.html", context)
+
+
+@login_required
+@user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
+def delete_admin_holiday(request,pk):
+    instance = get_object_or_404(AdminHoliday.objects.filter(pk=pk,is_deleted=False))    
+    AdminHoliday.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_")
+    response_data = {
+        "status" : "true",        
+        "title" : "Successfully Deleted",
+        "message" : "Holiday Successfully Deleted.", 
+        "redirect" : "true",       
+        "redirect_url" : reverse('employee:admin_holidays')
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+def hide_admin_holiday(request,pk):
+    instance = get_object_or_404(AdminHoliday.objects.filter(pk=pk,is_deleted=False,is_hide=False))    
+    AdminHoliday.objects.filter(pk=pk).update(is_hide=True,name=instance.name + "_deleted_")
+    response_data = {
+        "status" : "true",   
+        "title": "Successfully Hidden",
+        "message": "Holiday Successfully Hidden.",
+        "redirect" : "true",       
+        "redirect_url" : reverse('employee:holidays')
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/json')

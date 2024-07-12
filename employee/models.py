@@ -73,7 +73,6 @@ class Employee(BaseModel):
     is_blocked = models.BooleanField(_('Is This Employee Blocked ?'),help_text='button to toggle employee block and unblock',default=False)
     is_deleted = models.BooleanField(_('Is This Employee Deleted ?'),help_text='button to toggle employee deleted and undelete',default=False)
 
-   
     class Meta:
         verbose_name = _('Employee')
         verbose_name_plural = _('Employees')
@@ -187,6 +186,21 @@ class Holiday(BaseModel):
         db_table = 'holiday'
         verbose_name = _('holiday')
         verbose_name_plural = _('holidays')
+    
+    def __str__(self):
+        return self.name
+    
+
+class AdminHoliday(models.Model):
+    name = models.CharField(_("Name"),max_length=125)
+    date = models.DateField(_('Date'),help_text='due_date',blank=False,null=True)    
+    is_hide = models.BooleanField(default=False)
+    is_deleted = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'admin_holiday'
+        verbose_name = _('admin holiday')
+        verbose_name_plural = _('admin holidays')
     
     def __str__(self):
         return self.name

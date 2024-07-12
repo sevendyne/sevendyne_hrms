@@ -4,7 +4,7 @@ from django import forms
 from django.forms.widgets import TextInput, Select,URLInput, FileInput
 from django.utils.translation import gettext_lazy as _
 from client.models import Client
-from employee.models import AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
+from employee.models import AdminHoliday, AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 
@@ -223,6 +223,24 @@ class HolidayForm(forms.ModelForm):
     class Meta:
         model = Holiday
         exclude = ['creator', 'updator', 'auto_id','a_id','company','is_deleted'] 
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'required form-control ', 'placeholder': 'Name'}),
+            'date' : DateInput(attrs={'class' : 'datetimepicker form-control'})         
+        }
+        error_messages = {
+            'name': {
+                'required': _("Name field is required."),
+            },
+            'date': {
+                'required': _("Date field is required."),
+            }
+        }
+
+
+class AdminHolidayForm(forms.ModelForm):
+    class Meta:
+        model = AdminHoliday
+        exclude = ['is_hide','is_deleted'] 
         widgets = {
             'name': forms.TextInput(attrs={'class': 'required form-control ', 'placeholder': 'Name'}),
             'date' : DateInput(attrs={'class' : 'datetimepicker form-control'})         

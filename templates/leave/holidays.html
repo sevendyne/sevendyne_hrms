@@ -52,7 +52,7 @@
 									</div>
 								</div>
 							</td>
-						</tr>
+						</tr>						
 						
 						<!-- Edit Holiday Modal -->
 						<div class="modal custom-modal fade" id="edit_holiday_{{ holiday.id }}" role="dialog">
@@ -108,7 +108,49 @@
 								</div>
 							</div>
 						</div>
-						<!-- /Delete Holiday Modal -->
+						
+						{% endfor %}
+                    
+						{% for admin_holiday in admin_holidays %}
+						<tr class="holiday-upcoming">
+							<td>{{forloop.counter}}</td>
+							<td>{{ admin_holiday.name }}</td>
+							<td>{{ admin_holiday.date|date:"j M Y" }}</td>
+							<td>{{ admin_holiday.date|date:"l" }}</td>
+							<td class="text-end">
+								<div class="dropdown dropdown-action">
+									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#hide_holiday_{{ admin_holiday.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Hide</a>
+									</div>
+								</div>
+							</td>
+						</tr>
+	
+						<!-- Hide Holiday Modal -->
+						<div class="modal custom-modal fade" id="hide_holiday_{{ admin_holiday.id }}" role="dialog">
+							<div class="modal-dialog modal-dialog-centered">
+								<div class="modal-content">
+									<div class="modal-body">
+										<div class="form-header">
+											<h3>Hide Holiday</h3>
+											<p>Are you sure want to hide this holiday?</p>
+										</div>
+										<div class="modal-btn delete-action">
+											<div class="row">
+												<div class="col-6">
+													<a href="{% url 'employee:hide_admin_holiday' pk=admin_holiday.id %}" data-id="{{ admin_holiday.id }}" class="hide btn btn-primary continue-btn">Hide</a>
+												</div>
+												<div class="col-6">
+													<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<!-- /Hide Holiday Modal -->
 						{% endfor %}
 					</tbody>
 				</table>
@@ -333,6 +375,43 @@
 			}
 		});
 	}
+
+    function handleHide(pk) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Once hidden, you will not be able to see this holiday!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, hide it!"
+        })
+        .then((result) => {
+            if (result.isConfirmed) {
+                fetch('/app/employee/hide-admin-holiday/' + pk + '/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "true") {
+                        showHideSweetAlert(data.message, data.status, data.redirect_url);
+                    } else {
+                        Swal.fire("Error", "An error occurred while hiding.", "error");
+                    }
+                })
+                .catch(() => {
+                    Swal.fire("Error", "An error occurred while processing the request.", "error");
+                });
+            } else {
+                Swal.fire("Holiday is not hidden!");
+            }
+        });
+    }
+
 	function showDeleteSweetAlert(message, status, redirectUrl) {
 		
 		if (status === 'true') {
@@ -371,6 +450,14 @@
 			handleDelete(pk);
 		});
 	});
+
+    document.querySelectorAll('.hide').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+            e.preventDefault();
+            var pk = this.getAttribute('data-id');
+            handleHide(pk);
+        });
+    });
 </script>
 
 
