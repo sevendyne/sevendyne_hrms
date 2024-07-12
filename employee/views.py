@@ -1626,7 +1626,7 @@ def create_admin_holiday(request):
 @login_required
 @user_passes_test(has_admin_dashboard_permission, redirect_field_name=None)
 def admin_holidays(request):
-    holidays = AdminHoliday.objects.filter(is_deleted=False).order_by('date')
+    holidays = AdminHoliday.objects.filter(is_deleted=False,is_hide=False).order_by('date')
     paginator = Paginator(holidays,1000000000000)
     page_number = request.GET.get('page')
     holidays = paginator.get_page(page_number)
