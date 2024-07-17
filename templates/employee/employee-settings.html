@@ -1,0 +1,126 @@
+{% extends "base/base_employee.html" %}
+{%load static%}
+
+{% block content %}
+
+<div class="col-md-8 offset-md-2">
+
+	<!-- Page Header -->
+	<div class="page-header">
+		<div class="row">
+			<div class="col-sm-12">
+				<h3 class="page-title">Profile Settings</h3>
+			</div>
+		</div>
+	</div>
+	<!-- /Page Header -->
+	
+	<form id="create_update_form" method="POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="input-block mb-3">
+					<label class="col-form-label">Password </label><br>
+					{{ form.password }}
+					{% if form.password.errors %}
+						<span class="error">{{ form.password.errors.0 }}</span>
+					{% endif %}
+				</div>
+			</div>			
+		</div>
+		<div class="col-sm-12">
+			<div class="input-block mb-6">
+				<label class="col-form-label">Photo</label>
+				{{ form.photo }}
+				{% if form.photo.errors %}
+					<span class="error">{{ form.photo.errors.0 }}</span>
+				{% endif %}
+			</div>
+		</div>
+		<div class="submit-section">
+			<button type="submit" class="btn btn-primary submit-btn" onclick="submitForm(event)">Save</button>
+		</div>
+	</form>
+	
+</div>
+
+<!-- jQuery -->
+<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Add JavaScript code to handle form submission and show SweetAlert messages -->
+<script>
+	
+	function submitForm(event) {
+	event.preventDefault();  // Prevent the default form submission behavior
+	var form = document.getElementById('create_update_form');
+	var formData = new FormData(form);
+	
+	fetch(form.action, {
+		method: 'POST',
+		body: formData,
+	})
+	.then(response => response.json())
+	.then(data => {	
+		// Corrected variable name here
+		if (data.status === 'true') {
+		showSweetAlert(data.message, data.status, data.redirect_url);
+		} else if (data.status === 'form_error') {
+		showSweetAlert(data.message, 'form_error');
+		} else if (data.status === 'false') {
+		showSweetAlert(data.message, data.status);
+		} else {
+		showSweetAlert(data.message, 'error');
+		}
+	})
+	.catch(error => {
+		console.error('Error:', error);
+	});
+	}
+	
+	function showSweetAlert(message, status, redirectUrl) {	
+	if (status === 'true') {
+		Swal.fire({
+		icon: 'success',
+		title: 'Success!',
+		text: message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+	
+		didClose: () => {
+			if (redirectUrl) {
+			// Combine the redirect URL with the current protocol and host to get the full URL
+			var fullRedirectUrl = window.location.origin + redirectUrl;
+			window.location.href = fullRedirectUrl;
+			}
+		}
+		});
+	} else if (status === 'form_error') {
+		Swal.fire({
+		icon: 'error',
+		title: 'Form Validation Error!',
+		html: message,  // Display form errors as HTML
+		showConfirmButton: true,
+		allowOutsideClick: false,
+		});
+	} else if (status === 'false') {
+		Swal.fire({
+		icon: 'error',
+		title: 'Form Error!',
+		text: 'Error: ' + message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+		});
+	} else {
+		Swal.fire({
+		icon: 'error',
+		title: 'Error!',
+		text: 'Error: ' + message,
+		showConfirmButton: true,
+		allowOutsideClick: false, // Prevent closing on outside click
+		});
+	}
+	}
+	
+</script>
+
+{% endblock %}

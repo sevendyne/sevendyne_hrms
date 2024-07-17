@@ -103,6 +103,20 @@ class EmployeeForm(forms.ModelForm):
             self.fields['designation'].queryset = Designation.objects.filter(company=current_company, is_deleted=False)     
 
 
+class EmployeeProfileForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = ['password', 'photo']
+        widgets = {            
+            'photo': forms.FileInput(attrs={'class': 'form-control'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control ', 'placeholder': 'Password'}), 
+        }    
+    def __init__(self, *args, **kwargs):
+        super(EmployeeProfileForm, self).__init__(*args, **kwargs)
+        self.fields['photo'].required = False
+        self.fields['password'].required = False
+
+
 class LeaveTypeForm(forms.ModelForm):    
     class Meta:
         model = LeaveType

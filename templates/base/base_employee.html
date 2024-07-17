@@ -131,6 +131,9 @@
 									<li class="submenu">
 										<a href="{% url 'payroll:payslips_employee' %}"><i class="la la-money"></i> <span> Payslips </span> </a>
 									</li>
+									{% comment %} <li class="submenu"> 
+										<a href="{% url 'employee:edit_employee_profile' %}"><i class="la la-cog"></i> <span>Settings</span></a>
+									</li>	 {% endcomment %}
 								</ul>
 							</nav>
 						</div>
@@ -147,6 +150,9 @@
 							<li>
 								<a href="{% url 'payroll:payslips_employee' %}"><i class="la la-money"></i> <span> Payslips </span> </a>
 							</li>
+							<li> 
+								<a href="{% url 'employee:edit_employee_profile' %}"><i class="la la-cog"></i> <span>Settings</span></a>
+							</li>	
 						</ul>
 					</div>
 				</div>

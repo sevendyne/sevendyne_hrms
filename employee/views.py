@@ -13,7 +13,7 @@ from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_admin_dashboard_permission, has_employee_dashboard_permission, has_hrms_permission
-from employee.forms import AdminHolidayForm, AttendanceDateForm, AttendanceRegisterForm, DepartmentForm, DesignationForm, EmployeeForm, HolidayForm, LeaveForm, LeaveTypeForm
+from employee.forms import AdminHolidayForm, AttendanceDateForm, AttendanceRegisterForm, DepartmentForm, DesignationForm, EmployeeForm, EmployeeProfileForm, HolidayForm, LeaveForm, LeaveTypeForm
 from employee.models import GENDER_CHOICES, AdminHoliday, AttendanceRegister, Department, Designation, Employee, Holiday, Leave, LeaveType
 from django.contrib.auth.models import User, Group
 from django.core.paginator import Paginator
@@ -625,6 +625,63 @@ def edit_employee(request, pk):
         }
         return render(request, 'employee/employees.html', context)
 
+# employee settings to change username, password or photo
+@login_required
+@user_passes_test(has_employee_dashboard_permission, redirect_field_name=None)
+def edit_employee_profile(request):
+    employee = get_object_or_404(Employee, user=request.user)
+    company = employee.company
+    if request.method == 'POST':
+        form = EmployeeProfileForm(request.POST, request.FILES, instance=employee)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.updator = request.user
+            data.date_updated = datetime.datetime.now()
+            data.save()
+
+            user = employee.user   
+
+            # Handle password update separately
+            if form.cleaned_data.get('password'):
+                request.user.set_password(form.cleaned_data['password'])
+                request.user.save()
+                    
+
+            if data.password:
+                user.password = make_password(data.password)  # Hash the new password
+
+            if 'photo' in request.FILES:
+                employee.photo = data.photo
+
+            user.save()
+            
+            response_data = {
+                "status": "true",
+                "redirect": "true",
+                "title": "Successfully Updated",
+                "message": "Your profile has been updated successfully.",
+                "redirect_url": reverse('main:employee_dashboard')
+            }
+        else:
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "false",
+                "message": str(message),
+                "title": "Form validation error"
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = EmployeeProfileForm(instance=employee)
+        context = {
+            'company':company,
+            "instance": employee,
+            "form": form,
+            "title": "Edit Profile",
+            "redirect": "true",
+            "url": reverse('employee:edit_employee_profile')
+        }
+        return render(request, 'employee/employee-settings.html', context)
 
 
 @login_required
@@ -633,8 +690,15 @@ def edit_employee(request, pk):
 def employee(request, pk):
     current_company = get_current_company(request)
     employee = get_object_or_404(Employee.objects.filter(pk=pk,company=current_company,is_deleted=False))
+    # Fetch the user associated with the employee
+    user = employee.user
+    
+    # Get last login information from the User model
+    last_login = user.last_login
+    
     context = {
         'employee': employee,
+        'last_login': last_login,
         'title': 'Employee'
     }
     return render(request, 'employee/employee-profile.html', context)
@@ -675,7 +739,7 @@ def delete_employee(request,pk):
         }
     return HttpResponse(json.dumps(response_data), content_type='application/javascript')
 
-   
+
 # Leave Type crud starts here
 @login_required
 @user_passes_test(has_hrms_permission, redirect_field_name=None)

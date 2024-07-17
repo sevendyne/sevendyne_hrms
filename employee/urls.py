@@ -17,6 +17,7 @@ urlpatterns = [
     path('employee/create/', views.create_employee, name='create_employee'),
     path("employees/", views.employees, name="employees"),
     path("employees-list/", views.employees_list, name="employees_list"),
+    path('employee/settings/', views.edit_employee_profile, name='edit_employee_profile'),   
     re_path(r'^employee/edit/(?P<pk>.*)/$', views.edit_employee, name='edit_employee'),
     re_path(r'^delete-employee/(?P<pk>.*)/$', views.delete_employee, name='delete_employee'),    
     re_path(r'^employee/(?P<pk>.*)/$', views.employee, name='employee'),
