@@ -18,6 +18,11 @@
 
 		<!-- Bootstrap CSS -->
         <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+    	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+
 		
 		<!-- Main CSS -->
         <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
@@ -63,7 +68,10 @@
 								{% endfor %}
 								<div class="input-block mb-4">
 									<label for="password" class="col-form-label">Password<span class="mandatory">*</span></label>
-									<input class="form-control" type="password" id="password" name="password" required>
+									<div class="input-group">
+										<input class="form-control" type="password" id="password" name="password" required>
+										<span id="password-icon" class="position-relative input-group-text fa-solid fa-eye-slash" onclick="togglePasswordVisibility()"></span>
+									</div>
 								</div>
 								<div class="input-block mb-4">
 									<label for="first_name" class="col-form-label">First Name<span class="mandatory">*</span></label>
@@ -98,6 +106,19 @@
 		<script src="{% static 'assets/js/app.js' %}"></script>
 		<!-- JavaScript to display popup message if registration success -->
 		<script>
+			function togglePasswordVisibility() {
+				var passwordField = document.getElementById("password");
+				var passwordIcon = document.getElementById("password-icon");
+				if (passwordField.type === "password") {
+					passwordField.type = "text";
+					passwordIcon.classList.remove("fa-eye-slash");
+					passwordIcon.classList.add("fa-eye");
+				} else {
+					passwordField.type = "password";
+					passwordIcon.classList.remove("fa-eye");
+					passwordIcon.classList.add("fa-eye-slash");
+				}
+			}
 			// Check if login failed, then display the error message
 			{% if message %}
 				document.getElementById('signupMessage').style.display = 'block';

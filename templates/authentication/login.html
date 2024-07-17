@@ -70,7 +70,10 @@
 										</div>
 									</div>
 									<div class="position-relative">
-										{{ form.password }}
+										<div class="input-group">
+											{{ form.password }}
+											<span id="password-icon" class="position-relative input-group-text fa-solid fa-eye-slash" onclick="togglePasswordVisibility()"></span>						
+										</div>
 										{% if form.password.errors %}
 										<span class="error">{{ form.password.errors.0 }}</span>
 										{% endif %}
@@ -104,6 +107,19 @@
 		<script src="{% static 'assets/js/app.js' %}"></script>
 		<!-- JavaScript to display popup message if login fails -->
 		<script>
+			function togglePasswordVisibility() {
+				var passwordField = document.getElementById("id_password");
+				var passwordIcon = document.getElementById("password-icon");
+				if (passwordField.type === "password") {
+					passwordField.type = "text";
+					passwordIcon.classList.remove("fa-eye-slash");
+					passwordIcon.classList.add("fa-eye");
+				} else {
+					passwordField.type = "password";
+					passwordIcon.classList.remove("fa-eye");
+					passwordIcon.classList.add("fa-eye-slash");
+				}
+			}
 			// Check if login failed, then display the error message
 			{% if error_message %}
 				document.getElementById('loginErrorMessage').style.display = 'block';
