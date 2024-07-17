@@ -27,7 +27,7 @@ urlpatterns = [
     re_path(r'^payslip/print/(?P<pk>.*)/$', views.print_payslip, name='print_payslip'), 
     path('payslip/pdf/', views.generate_payslip_pdf, name='generate_payslip_pdf'),
     path('employee/payslip/pdf/', views.generate_employee_payslip_pdf, name='generate_employee_payslip_pdf'),
-   
+
     re_path(r'^payslip/(?P<pk>.*)/$', views.payslip, name='payslip'),
     
     path('payslips/employee/employee-dashboard/', views.payslips_employee, name='payslips_employee'),

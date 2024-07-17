@@ -38,7 +38,7 @@
 					
 					<div class="row">
 						<div class="col-sm-6 m-b-20">
-							{% comment %} <img src="{%static 'assets/img/logo_svd.png'%}" class="inv-logo" alt="Logo" style="width:21%"> {% endcomment %}
+							<img src="{{ instance.company.logo.url }}" class="inv-logo" alt="Logo" style="width:21%">
 							<ul class="list-unstyled mb-0">
 								<li>{{ instance.company.name }}</li>
 								<li>{{ instance.company.address }},</li>
@@ -47,7 +47,7 @@
 						</div>
 						<div class="col-sm-6 m-b-20">
 							<div class="invoice-details">
-								<h3 class="text-uppercase">PAYSLIP ID #{{ instance.employee.employeeid }}{{ instance.date }}</h3>
+								<h3 class="text-uppercase">PAYSLIP ID #{{ instance.employee.employeeid }}-{{ instance.date|date:"d-m-Y" }}</h3>
 								<ul class="list-unstyled">
 									<li>Salary Month: <span>{{ instance.date|date:"F Y" }}</span></li>
 								</ul>

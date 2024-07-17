@@ -959,6 +959,8 @@ def employee_payslip(request,pk):
         # Convert the entire string to uppercase
         net_salary_in_words = net_salary_in_words.upper()
         context = {
+            'company':company,
+            'employee': employee,
             'pk':pk,
             'instance': instance,
             'title': 'PaySlip',
