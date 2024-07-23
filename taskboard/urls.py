@@ -4,9 +4,10 @@ from taskboard import views
 urlpatterns = [    
     path('project/create/', views.create_project, name='create_project'),
     path("projects/", views.projects, name="projects"),
+    path("projects-list/", views.projects_list, name="projects_list"),
     re_path(r'^project/edit/(?P<pk>.*)/$', views.edit_project, name='edit_project'),
     re_path(r'^delete-project/(?P<pk>.*)/$', views.delete_project, name='delete_project'),    
-    re_path(r'^project/(?P<pk>.*)/$', views.project, name='project'),
+    re_path(r'^project/(?P<pk>.*)/$', views.project, name='project')
 
     # path('task/create/', views.create_task, name='create_task'),
     # path("tasks/", views.tasks, name="tasks"),

@@ -100,9 +100,9 @@ class EmployeeForm(forms.ModelForm):
             # Filter departments by current company
             self.fields['department'].queryset = Department.objects.filter(company=current_company, is_deleted=False)            
             # Filter designations by current company
-            self.fields['designation'].queryset = Designation.objects.filter(company=current_company, is_deleted=False)     
+            self.fields['designation'].queryset = Designation.objects.filter(company=current_company, is_deleted=False)
 
-
+            
 class EmployeeProfileForm(forms.ModelForm):
     class Meta:
         model = Employee

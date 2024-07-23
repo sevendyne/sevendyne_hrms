@@ -21,35 +21,22 @@ def create_project(request):
     if request.method == 'POST':
         form = ProjectForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['name']
-            start_date = form.cleaned_data['start_date']
-            end_date = form.cleaned_data['end_date']
-            priority = form.cleaned_data['priority']
-            project_leader = form.cleaned_data['project_leader']
-            team = form.cleaned_data['team']
-            file = form.cleaned_data['file']
-            description = form.cleaned_data['description']
+            name = form.cleaned_data['name']            
             auto_id = get_auto_id(Project)
             a_id = get_a_id(Project,request)
             creator = request.user
             updator = request.user
 
             if not Project.objects.filter(name = name,company=current_company,is_deleted=False).exists():
-                Project(
-                    name = name,
-                    start_date = start_date,
-                    end_date = end_date,
-                    company = current_company,
-                    priority = priority,
-                    project_leader = project_leader,
-                    team = team,
-                    file = file,
-                    description = description,
-                    auto_id = auto_id,
-                    a_id = a_id,
-                    creator = creator,
-                    updator = updator                    
-                ).save()
+                project = form.save(commit=False)
+                project.company = current_company
+                project.auto_id = auto_id
+                project.a_id = a_id
+                project.creator = creator
+                project.updator = updator
+                project.save()
+                form.save_m2m()  # Save the many-to-many data for the form
+
                 response_data = {
                     "status": "true",
                     "title": "Successfully Created",
@@ -98,6 +85,22 @@ def projects(request):
         "title": 'Projects' 
     }
     return render(request, "project/projects.html", context)
+
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def projects_list(request):
+    current_company = get_current_company(request)
+    projects = Project.objects.filter(company=current_company,is_deleted=False)
+    paginator = Paginator(projects,1000000000000)
+    page_number = request.GET.get('page')
+    projects = paginator.get_page(page_number)
+    context = {
+        'projects': projects,
+        "title": 'Projects' 
+    }
+    return render(request, "project/project-list.html", context)
 
 
 @login_required

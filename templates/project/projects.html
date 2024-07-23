@@ -19,8 +19,8 @@
 			<div class="col-auto float-end ms-auto">
 				<a href="#" class="btn add-btn" onclick="loadCreateProjectForm()" data-bs-toggle="modal" data-bs-target="#create_project"><i class="fa-solid fa-plus"></i> Create Project</a>
 				<div class="view-icons">
-					<a href="#" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
-					<a href="#" class="list-view btn btn-link"><i class="fa-solid fa-bars"></i></a>
+					<a href="{% url 'taskboard:projects' %}" class="grid-view btn btn-link active"><i class="fa fa-th"></i></a>
+					<a href="{% url 'taskboard:projects_list' %}" class="list-view btn btn-link"><i class="fa-solid fa-bars"></i></a>
 				</div>
 			</div>
 		</div>
@@ -85,7 +85,7 @@
                         <div>Project Leader :</div>
                         <ul class="team-members">
                             <li>
-                                <a href="#" data-bs-toggle="tooltip" title="{{ project.project_leader }}"><img src="{% static 'hrms/assets/img/profiles/avatar-16.jpg' %}" alt="User Image"></a>
+                                <a href="#" data-bs-toggle="tooltip" title="{{ project.project_leader }}"><img src="{% if project.project_leader.photo %}{{ project.project_leader.photo.url }}{% else %}{% if project.project_leader.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif project.project_leader.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}" alt="User Image"></a>
                             </li>
                         </ul>
                     </div>
@@ -94,7 +94,7 @@
                         <ul class="team-members">
                             {% for member in project.team.all %}
                             <li>
-                                <a href="#" data-bs-toggle="tooltip" title="{{ member.get_full_name }}"><img src="{% if member.photo %}{{ member.photo.url }}{% else %}{% static 'hrms/assets/img/profiles/avatar-02.jpg' %}{% endif %}" alt="User Image"></a>
+                                <a href="#" data-bs-toggle="tooltip" title="{{ member.get_full_name }}"><img src="{% if member.photo %}{{ member.photo.url }}{% else %}{% if member.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif member.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}" alt="User Image"></a>
                             </li>
                             {% endfor %}
                         </ul>
@@ -188,97 +188,131 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="createProjectForm" method="post" enctype="multipart/form-data">
+                <form id="create_form" method="POST" action="{% url 'taskboard:create_project' %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <label class="col-form-label">Project Name</label>
-                                <input name="name" class="form-control" type="text" placeholder="Enter project name" required>
+                                {{ form.name }}
+								{% if form.name.errors %}
+								<span class="error">{{ form.name.errors.0 }}</span>
+								{% endif %}
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label">Start Date</label>
-                                <div class="cal-icon">
+								<label class="col-form-label">Start Date</label>
+								{{ form.start_date }}
+								{% if form.start_date.errors %}
+								<span class="error">{{ form.start_date.errors.0 }}</span>
+								{% endif %}                                
+                                {% comment %} <div class="cal-icon">
                                     <input name="start_date" class="form-control datetimepicker" type="date">
-                                </div>
+                                </div> {% endcomment %}
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label">End Date</label>
-                                <div class="cal-icon">
+								<label class="col-form-label">End Date</label>
+								{{ form.end_date }}
+								{% if form.end_date.errors %}
+								<span class="error">{{ form.end_date.errors.0 }}</span>
+								{% endif %}                                
+                                {% comment %} <div class="cal-icon">
                                     <input name="end_date" class="form-control datetimepicker" type="date">
-                                </div>
+                                </div> {% endcomment %}
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <div class="input-block mb-3">
-                                <label class="col-form-label">Priority</label>
-                                <select class="select form-control">
+								<label class="col-form-label">Priority</label>
+								{{ form.priority }}
+								{% if form.priority.errors %}
+								<span class="error">{{ form.priority.errors.0 }}</span>
+								{% endif %}                                
+                                {% comment %} <select class="select form-control">
                                     <option value="Low">Low</option>
                                     <option value="Normal">Normal</option>
                                     <option value="High">High</option>
-                                </select>
+                                </select> {% endcomment %}
                             </div>
                         </div>
                     </div>
+                    
                     <div class="row">
-						<div class="col-sm-6">
-							<div class="input-block mb-3">
-								<label class="col-form-label">Add Project Leader</label>
-								<input class="form-control" type="text">
-							</div>
-						</div>
-						<div class="col-sm-6">
-							<div class="input-block mb-3">
-								<label class="col-form-label">Team Leader</label>
-								<div class="project-members">
-									<a href="#" data-bs-toggle="tooltip" title="Jeffery Lalor" class="avatar">
-										<img src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label">Add Project Leader</label>
+                                <select name="project_leader" class="form-control">
+									<option value="" data-photo-url="">Select a Project Leader</option>
+									{% for employee in form.fields.project_leader.queryset %}
+									<option value="{{ employee.id }}"
+											data-photo-url="{% if employee.photo %}{{ employee.photo.url }}{% else %}{% if employee.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif employee.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}">
+										{{ employee.get_full_name }}
+									</option>
+									{% endfor %}
+								</select>
+                                {% if form.project_leader.errors %}
+                                    <span class="error">{{ form.project_leader.errors.0 }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="input-block mb-3">
+                                <label class="col-form-label">Team Leader</label>
+                                <div class="project-members">
+                                    <a href="#" data-bs-toggle="tooltip" title="Project Leader" class="avatar">
+                                        <img id="team-leader-photo" src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>   										
 					<div class="row">
 						<div class="col-sm-6">
 							<div class="input-block mb-3">
-								<label class="col-form-label">Add Team</label>
-								<input class="form-control" type="text">
+								<label class="col-form-label">Add Team<br >(Use shift keys for multiple selection)</label>
+								<select name="team" class="form-control" multiple="multiple">
+									<option value="" data-photo-url="">Select Team Members</option>
+									{% for employee in form.fields.team.queryset %}
+									<option value="{{ employee.id }}"
+											data-photo-url="{% if employee.photo %}{{ employee.photo.url }}{% else %}{% if employee.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif employee.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}">
+										{{ employee.get_full_name }}
+									</option>
+									{% endfor %}
+								</select>
+								{% if form.team.errors %}
+								<span class="error">{{ form.team.errors.0 }}</span>
+								{% endif %}
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-block mb-3">
 								<label class="col-form-label">Team Members</label>
-								<div class="project-members">
-									<a href="#" data-bs-toggle="tooltip" title="John Doe" class="avatar">
-										<img src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
-									</a>
-									<a href="#" data-bs-toggle="tooltip" title="Richard Miles" class="avatar">
-										<img src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
-									</a>
-									<a href="#" data-bs-toggle="tooltip" title="John Smith" class="avatar">
-										<img src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
-									</a>
-									<a href="#" data-bs-toggle="tooltip" title="Mike Litorus" class="avatar">
-										<img src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
-									</a>
-									<span class="all-team">+2</span>
+								<div id="team-members" class="project-members">
+									<!-- Team members' avatars will be updated here dynamically -->
 								</div>
 							</div>
 						</div>
 					</div>
                     <div class="input-block mb-3">
                         <label class="col-form-label">Description</label>
-                        <textarea name="description" class="form-control" placeholder="Enter project description"></textarea>
+						{{ form.description }}
+						{% if form.description.errors %}
+						<span class="error">{{ form.description.errors.0 }}</span>
+						{% endif %}
+                        {% comment %} <textarea name="description" class="form-control" placeholder="Enter project description"></textarea> {% endcomment %}
                     </div>
                     <div class="input-block mb-3">
                         <label class="col-form-label">Upload Files</label>
-                        <input name="file" class="form-control" type="file">
+						{{ form.file }}
+						{% if form.file.errors %}
+						<span class="error">{{ form.file.errors.0 }}</span>
+						{% endif %}
+                        {% comment %} <input name="file" class="form-control" type="file"> {% endcomment %}
                     </div>
                     <div class="submit-section">
                         <button type="submit" class="btn btn-primary submit-btn" onclick="submitCreateForm(event)">Submit</button>
@@ -295,8 +329,7 @@
 <!-- jQuery -->
 <script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
 		
-<script>
-	
+<script>	
 	$(document).ready(function(){
         $('.datetimepicker').datetimepicker({
             format: 'YYYY-MM-DD', // Date-only format
@@ -304,12 +337,62 @@
             ignoreReadonly: true,
             allowInputToggle: true
         });
+		// Initialize Select2 for the multi-select team field
+		$('select[name="team"]').select2({
+			placeholder: "Select team members",
+			width: '100%',
+			multiple: true
+		});
+		
     });
+	function initializeProjectLeaderSelect() {
+        const projectLeaderSelect = document.querySelector('select[name="project_leader"]');
+        const teamLeaderPhoto = document.getElementById('team-leader-photo');
+
+        projectLeaderSelect.addEventListener('change', function() {
+            const selectedOption = projectLeaderSelect.options[projectLeaderSelect.selectedIndex];
+            const photoUrl = selectedOption.getAttribute('data-photo-url');
+
+            if (photoUrl) {
+                teamLeaderPhoto.src = photoUrl;
+            } else {
+                teamLeaderPhoto.src = '{% static "assets/img/profiles/avatar-16.jpg" %}';
+            }
+        });
+    }
+	function initializeTeamSelect() {
+		const teamSelect = document.querySelector('select[name="team"]');
+		const teamMembersContainer = document.getElementById('team-members');
+	
+		teamSelect.addEventListener('change', function() {
+			// Clear current team members
+			teamMembersContainer.innerHTML = '';
+	
+			// Get selected options
+			const selectedOptions = Array.from(teamSelect.selectedOptions);
+			selectedOptions.forEach(option => {
+				const photoUrl = option.getAttribute('data-photo-url');
+				const avatar = document.createElement('a');
+				avatar.href = '#';
+				avatar.classList.add('avatar');
+				avatar.dataset.bsToggle = 'tooltip';
+				avatar.title = option.text; // Set tooltip to show employee name
+	
+				const img = document.createElement('img');
+				img.src = photoUrl || '{% static "assets/img/profiles/avatar-16.jpg" %}';
+				img.alt = option.text;
+	
+				avatar.appendChild(img);
+				teamMembersContainer.appendChild(avatar);
+			});
+		});
+	}
+	
 		
 	function loadCreateProjectForm() {
 		fetch("{% url 'taskboard:create_project' %}")
         .then(response => response.text())
-        .then(data => {            
+        .then(data => {    
             // Create a temporary element to hold the form HTML
             var tempElement = document.createElement('div');
             tempElement.innerHTML = data;
@@ -318,12 +401,14 @@
             var formElement = tempElement.querySelector('#create_form');
 
             // Append the form to the modal body
-            var modalBody = document.querySelector('#add_project .modal-body');
+            var modalBody = document.querySelector('#create_project .modal-body');
             modalBody.innerHTML = '';
             modalBody.appendChild(formElement);
 
             // Show the modal
-            $('#add_project').modal('show');
+            $('#create_project').modal('show');
+			initializeProjectLeaderSelect(); // Initialize the ProjectLeader event listener
+			initializeTeamSelect(); // Initialize the Team event listener
         })
         .catch(error => {
             console.error('Error:', error);
