@@ -1,6 +1,6 @@
 from datetime import date
 from django import forms
-from django.forms.widgets import TextInput, Select, FileInput, SelectMultiple
+from django.forms.widgets import TextInput, Select, FileInput, SelectMultiple, Textarea
 from employee.models import Employee
 from taskboard.models import Project
 from django.utils.translation import gettext_lazy as _
@@ -14,16 +14,16 @@ class DateInput(forms.DateInput):
 class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        exclude = ['creator', 'updator', 'auto_id','is_deleted','company'] 
+        exclude = ['creator', 'updator', 'auto_id', 'a_id','is_deleted','company'] 
         widgets = {
             'name': TextInput(attrs={'class': 'required form-control ', 'placeholder': 'Name'}),
             'start_date' : DateInput(attrs={'class' : 'datetimepicker form-control'}),  
             'end_date' : DateInput(attrs={'class' : 'datetimepicker form-control'}) , 
             'priority': Select(attrs={'class': 'required form-control selectpicker'}),
-            'project_leader': TextInput(attrs={'class': 'required form-control ', 'placeholder': 'Project_Leader'}),
-            'team': SelectMultiple(attrs={'class': 'required form-control selectpicker'}),
+            'project_leader': Select(attrs={'class': 'required form-control'}),
+            'team': SelectMultiple(attrs={'class': 'required form-control selectpicker', 'multiple': 'multiple'}),
             'file': FileInput(),   
-            'description': TextInput(attrs={'class': 'required form-control ', 'placeholder': 'Description'})
+            'description': Textarea(attrs={'class': 'required form-control ', 'placeholder': 'Description'})
         }
         error_messages = {
             'name': {
@@ -34,10 +34,29 @@ class ProjectForm(forms.ModelForm):
         current_company = kwargs.pop('current_company', None)
         super(ProjectForm, self).__init__(*args, **kwargs)
         if current_company:
-            self.fields['team'].queryset = Employee.objects.filter(company=current_company, is_deleted=False)
-    
+            employees = Employee.objects.filter(company=current_company, is_deleted=False)
 
+            # Customize project_leader field
+            self.fields['project_leader'].queryset = employees     
+            
+            # Adding data-photo-url attribute to project_leader field options
+            self.fields['project_leader'].widget.choices = [
+                (employee.id, employee.get_full_name) for employee in employees
+            ]
+            for employee in employees:
+                self.fields['project_leader'].widget.attrs.update({
+                    f'data-photo-url-{employee.id}': employee.photo.url if employee.photo else ''
+                })
 
+            # Customize team field
+            self.fields['team'].queryset = employees
+            self.fields['team'].widget.choices = [
+                (employee.id, employee.get_full_name()) for employee in employees
+            ]
+            for employee in employees:
+                self.fields['team'].widget.attrs.update({
+                    f'data-photo-url-{employee.id}': employee.photo.url if employee.photo else ''
+                })
 # class TaskForm(forms.ModelForm):
 #     class Meta:
 #         model = Task
