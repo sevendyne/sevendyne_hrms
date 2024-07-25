@@ -593,12 +593,8 @@
 				})
 				.then(response => response.json())
 				.then(data => {
-					// Handle success response
-					if (data.status === "true") {
-						showDeleteSweetAlert(data.message, data.status, data.redirect_url);
-					} else {
-						Swal.fire("Error", "An error occurred while deleting.", "error");
-					}
+					// Handle success and error response
+					showDeleteSweetAlert(data.message, data.status, data.redirect_url);					
 				})
 				.catch(() => {
 					// Handle error
@@ -627,7 +623,15 @@
 				}
 			}
 			});
-		} else {
+		}	else if (status === 'false') {
+			Swal.fire({
+				icon: 'error',
+				title: 'Error!',
+				text: message, // Show the error message from the server
+				showConfirmButton: true,
+				allowOutsideClick: false, // Prevent closing on outside click
+			});
+		}  else {
 			Swal.fire({
 			icon: 'error',
 			title: 'Error!',

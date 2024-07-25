@@ -736,7 +736,7 @@ def delete_employee(request,pk):
             "status": "false",
             "stable": "true",
             "title": "Permission for delete denied",
-            "message": "Same employee exists in Leave,Salary or PaySlip"                        
+            "message": "Same employee exists in Leave,Salary or PaySlip. Delete this employee data from there first"                        
         }
     return HttpResponse(json.dumps(response_data), content_type='application/javascript')
 
