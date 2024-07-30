@@ -21,7 +21,7 @@
 
 		<!-- Fontawesome CSS -->
         <link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/fontawesome.min.css'%}">
-    	<link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/all.min.css'%}">
+		<link rel="stylesheet" href="{%static 'assets/plugins/fontawesome/css/all.min.css'%}">
 
 		<!-- Lineawesome CSS -->
         <link rel="stylesheet" href="{%static 'assets/css/line-awesome.min.css'%}">
@@ -188,6 +188,9 @@
 							</li>
 							<li class="submenu">
 								<a href="{% url 'taskboard:projects' %}"><i class="la la-rocket"></i> <span> Projects</span></a>								
+							</li>
+							<li class="submenu">
+								<a href="{% url 'taskboard:task_boards' %}"><i class="la la-rocket"></i> <span> Task Board</span></a>								
 							</li>
 							<li class="submenu">
 								<a href="{% url 'asset:assets' %}"><i class="la la-hand-holding-usd"></i> <span> Assets</span></a>								
@@ -821,9 +824,9 @@
 			}
 		</style>
 		<!-- jQuery -->
-       <script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
-	   <script src="{%static 'assets/js/jquery.dataTables.min.js'%}"></script>
-	   <script src="{%static 'assets/js/dataTables.bootstrap4.min.js'%}"></script>
+		<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+		<script src="{%static 'assets/js/jquery.dataTables.min.js'%}"></script>
+		<script src="{%static 'assets/js/dataTables.bootstrap4.min.js'%}"></script>
 		<!-- Bootstrap Core JS -->
         <script src="{%static 'assets/js/bootstrap.bundle.min.js'%}"></script>
 		<script src="{%static 'assets/js/moment.min.js'%}"></script>
@@ -832,7 +835,7 @@
 		<script src="{%static 'assets/js/jquery.slimscroll.min.js'%}"></script>		
 		<!-- Select2 JS -->
 		<script src="{%static 'assets/js/select2.min.js' %}"></script>		
-		 <!-- Theme Settings JS -->
+		<!-- Theme Settings JS -->
 		<script src="{%static 'assets/js/layout.js'%}"></script>
 		<script src="{%static 'assets/js/theme-settings.js'%}"></script>
 		<script src="{%static 'assets/js/greedynav.js'%}"></script>	

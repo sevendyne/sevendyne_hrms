@@ -7,7 +7,14 @@ urlpatterns = [
     path("projects-list/", views.projects_list, name="projects_list"),
     re_path(r'^project/edit/(?P<pk>.*)/$', views.edit_project, name='edit_project'),
     re_path(r'^delete-project/(?P<pk>.*)/$', views.delete_project, name='delete_project'),    
-    re_path(r'^project/(?P<pk>.*)/$', views.project, name='project')
+    re_path(r'^project/(?P<pk>.*)/$', views.project, name='project'),
+
+    path('task-board/create/', views.create_task_board, name='create_task_board'),
+    path("task-boards/", views.task_boards, name="task_boards"),
+    re_path(r'^task-board/edit/(?P<pk>.*)/$', views.edit_task_board, name='edit_task_board'),
+    re_path(r'^delete-task-board/(?P<pk>.*)/$', views.delete_task_board, name='delete_task_board'),    
+    re_path(r'^task-board/(?P<pk>.*)/$', views.task_board, name='task_board')
+    
 
     # path('task/create/', views.create_task, name='create_task'),
     # path("tasks/", views.tasks, name="tasks"),

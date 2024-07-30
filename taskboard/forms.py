@@ -2,7 +2,7 @@ from datetime import date
 from django import forms
 from django.forms.widgets import TextInput, Select, FileInput, SelectMultiple, Textarea
 from employee.models import Employee
-from taskboard.models import Project
+from taskboard.models import COLOUR_CHOICES, Project, TaskBoard
 from django.utils.translation import gettext_lazy as _
 
 
@@ -57,6 +57,35 @@ class ProjectForm(forms.ModelForm):
                 self.fields['team'].widget.attrs.update({
                     f'data-photo-url-{employee.id}': employee.photo.url if employee.photo else ''
                 })
+
+
+class TaskBoardForm(forms.ModelForm):    
+    class Meta:
+        model = TaskBoard
+        exclude = ['creator','updator','auto_id','a_id','company','is_deleted']
+        widgets = {            
+            'name': TextInput(attrs={'class': 'required form-control', 'placeholder': 'Enter Task Board name'}),
+            'project': Select(attrs={'class': 'required form-control'}),
+            'color': forms.RadioSelect(choices=COLOUR_CHOICES)
+        }
+        error_messages = {
+            'name' : {
+                'required' : _("name field is required."),
+            },
+            'project' : {
+                'required' : _("project field is required."),
+            }
+        }
+        autocomplete = {
+            'project': 'on',  # or 'off' if you want to disable autocomplete
+        }
+    def __init__(self, *args, **kwargs):
+        current_company = kwargs.pop('current_company', None)
+        super(TaskBoardForm, self).__init__(*args, **kwargs)        
+        if current_company:
+            # Filter departments by current company
+            self.fields['project'].queryset = Project.objects.filter(company=current_company, is_deleted=False)
+        
 # class TaskForm(forms.ModelForm):
 #     class Meta:
 #         model = Task

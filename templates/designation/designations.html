@@ -180,175 +180,171 @@
             console.error('Error:', error);
         });
     }
-	
 	function submitCreateForm(event) {
-	event.preventDefault();  // Prevent the default form submission behavior
-	var form = document.getElementById('create_form');
-	var formData = new FormData(form);
+		event.preventDefault();  // Prevent the default form submission behavior
+		var form = document.getElementById('create_form');
+		var formData = new FormData(form);
 
-	fetch(form.action, {
-		method: 'POST',
-		body: formData,
-	})
-	.then(response => response.json())
-	.then(data => {
-		// Corrected variable name here
-		if (data.status === 'true') {
-		showSweetAlert(data.message, data.status, data.redirect_url);
-		} else if (data.status === 'form_error') {
-		showSweetAlert(data.message, 'form_error');
-		} else if (data.status === 'false') {
-		showSweetAlert(data.message, data.status);
-		} else {
-		showSweetAlert(data.message, 'error');
-		}
-	})
-	.catch(error => {
-		console.error('Error:', error);
-	});
+		fetch(form.action, {
+			method: 'POST',
+			body: formData,
+		})
+		.then(response => response.json())
+		.then(data => {
+			// Corrected variable name here
+			if (data.status === 'true') {
+			showSweetAlert(data.message, data.status, data.redirect_url);
+			} else if (data.status === 'form_error') {
+			showSweetAlert(data.message, 'form_error');
+			} else if (data.status === 'false') {
+			showSweetAlert(data.message, data.status);
+			} else {
+			showSweetAlert(data.message, 'error');
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
 	}
-
 	function showSweetAlert(message, status, redirectUrl) {
-
-	if (status === 'true') {
-		Swal.fire({
-		icon: 'success',
-		title: 'Success!',
-		text: message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-
-		didClose: () => {
-			if (redirectUrl) {
-			// Combine the redirect URL with the current protocol and host to get the full URL
-			var fullRedirectUrl = window.location.origin + redirectUrl;
-			window.location.href = fullRedirectUrl;
-			}
-		}
-		});
-	} else if (status === 'form_error') {
-		Swal.fire({
-		icon: 'error',
-		title: 'Form Validation Error!',
-		html: message,  // Display form errors as HTML
-		showConfirmButton: true,
-		allowOutsideClick: false,
-		});
-	} else if (status === 'false') {
-		Swal.fire({
-		icon: 'error',
-		title: 'Form Error!',
-		text: 'Error: ' + message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-		});
-	} else {
-		Swal.fire({
-		icon: 'error',
-		title: 'Error!',
-		text: 'Error: ' + message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-		});
-	}
-	}
-
-	function submitUpdateForm(event,designationId) {
-	event.preventDefault();  // Prevent the default form submission behavior
-	var form = document.getElementById('update_form_' + designationId);
-	var formData = new FormData(form);
-
-	fetch(form.action, {
-		method: 'POST',
-		body: formData,
-	})
-	.then(response => response.json())
-	.then(data => {
-		// Corrected variable name here
-		if (data.status === 'true') {
-		showSweetAlert(data.message, data.status, data.redirect_url);
-		} else if (data.status === 'form_error') {
-		showSweetAlert(data.message, 'form_error');
-		} else if (data.status === 'false') {
-		showSweetAlert(data.message, data.status);
-		} else {
-		showSweetAlert(data.message, 'error');
-		}
-	})
-	.catch(error => {
-		console.error('Error:', error);
-	});
-	}
-	// Function to handle delete action
-function handleDelete(pk) {
-    Swal.fire({
-        title: "Are you sure?",
-        text: "Once deleted, you will not be able to recover this Designation!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-    })
-    .then((result) => {
-        if (result.isConfirmed) {
-            // If user confirms, send Fetch API request to delete
-            fetch('/app/employee/delete-designation/' + pk + '/', { // Use pk variable directly
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Handle success and error response
-				showDeleteSweetAlert(data.message, data.status, data.redirect_url);
-            })
-            .catch(() => {
-                // Handle error
-                Swal.fire("Error", "An error occurred while processing the request.", "error");
-            });
-        } else {
-            Swal.fire("Designation is safe!");
-        }
-    });
-}
-function showDeleteSweetAlert(message, status, redirectUrl) {
-	
-	if (status === 'true') {
-		Swal.fire({
-		icon: 'success',
-		title: 'Success!',
-		text: message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-	
-		didClose: () => {
-			if (redirectUrl) {
-			// Combine the redirect URL with the current protocol and host to get the full URL
-			var fullRedirectUrl = window.location.origin + redirectUrl;
-			window.location.href = fullRedirectUrl;
-			}
-		}
-		});
-	} 	else if (status === 'false') {
-		Swal.fire({
-			icon: 'error',
-			title: 'Error!',
-			text: message, // Show the error message from the server
+		if (status === 'true') {
+			Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: message,
 			showConfirmButton: true,
 			allowOutsideClick: false, // Prevent closing on outside click
-		});
-	}	else {
-		Swal.fire({
-		icon: 'error',
-		title: 'Error!',
-		text: 'Error: ' + message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
+
+			didClose: () => {
+				if (redirectUrl) {
+				// Combine the redirect URL with the current protocol and host to get the full URL
+				var fullRedirectUrl = window.location.origin + redirectUrl;
+				window.location.href = fullRedirectUrl;
+				}
+			}
+			});
+		} else if (status === 'form_error') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Validation Error!',
+			html: message,  // Display form errors as HTML
+			showConfirmButton: true,
+			allowOutsideClick: false,
+			});
+		} else if (status === 'false') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		} else {
+			Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		}
+	}
+	function submitUpdateForm(event,designationId) {
+		event.preventDefault();  // Prevent the default form submission behavior
+		var form = document.getElementById('update_form_' + designationId);
+		var formData = new FormData(form);
+
+		fetch(form.action, {
+			method: 'POST',
+			body: formData,
+		})
+		.then(response => response.json())
+		.then(data => {
+			// Corrected variable name here
+			if (data.status === 'true') {
+			showSweetAlert(data.message, data.status, data.redirect_url);
+			} else if (data.status === 'form_error') {
+			showSweetAlert(data.message, 'form_error');
+			} else if (data.status === 'false') {
+			showSweetAlert(data.message, data.status);
+			} else {
+			showSweetAlert(data.message, 'error');
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
 		});
 	}
+	// Function to handle delete action
+	function handleDelete(pk) {
+		Swal.fire({
+			title: "Are you sure?",
+			text: "Once deleted, you will not be able to recover this Designation!",
+			icon: "warning",
+			showCancelButton: true,
+			confirmButtonColor: "#3085d6",
+			cancelButtonColor: "#d33",
+			confirmButtonText: "Yes, delete it!"
+		})
+		.then((result) => {
+			if (result.isConfirmed) {
+				// If user confirms, send Fetch API request to delete
+				fetch('/app/employee/delete-designation/' + pk + '/', { // Use pk variable directly
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+						'X-CSRFToken': '{{ csrf_token }}'
+					},
+				})
+				.then(response => response.json())
+				.then(data => {
+					// Handle success and error response
+					showDeleteSweetAlert(data.message, data.status, data.redirect_url);
+				})
+				.catch(() => {
+					// Handle error
+					Swal.fire("Error", "An error occurred while processing the request.", "error");
+				});
+			} else {
+				Swal.fire("Designation is safe!");
+			}
+		});
+	}
+	function showDeleteSweetAlert(message, status, redirectUrl) {
+		
+		if (status === 'true') {
+			Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+		
+			didClose: () => {
+				if (redirectUrl) {
+				// Combine the redirect URL with the current protocol and host to get the full URL
+				var fullRedirectUrl = window.location.origin + redirectUrl;
+				window.location.href = fullRedirectUrl;
+				}
+			}
+			});
+		} 	else if (status === 'false') {
+			Swal.fire({
+				icon: 'error',
+				title: 'Error!',
+				text: message, // Show the error message from the server
+				showConfirmButton: true,
+				allowOutsideClick: false, // Prevent closing on outside click
+			});
+		}	else {
+			Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
+		}
 	}
 	// Attach click event to delete button
 	document.querySelectorAll('.remove').forEach(function(el) {

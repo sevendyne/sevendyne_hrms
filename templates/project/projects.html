@@ -63,8 +63,8 @@
                     <div class="dropdown dropdown-action profile-action">
                         <a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_project"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
-                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_project"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_project_{{ project.id }}"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+                            <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_project_{{ project.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
                         </div>
                     </div>
                     <h4 class="project-title"><a href="#">{{ project.name }}</a></h4>
@@ -93,9 +93,11 @@
                         <div>Team :</div>
                         <ul class="team-members">
                             {% for member in project.team.all %}
-                            <li>
-                                <a href="#" data-bs-toggle="tooltip" title="{{ member.get_full_name }}"><img src="{% if member.photo %}{{ member.photo.url }}{% else %}{% if member.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif member.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}" alt="User Image"></a>
-                            </li>
+								{% if not member.is_deleted %}
+									<li>
+										<a href="#" data-bs-toggle="tooltip" title="{{ member.get_full_name }}"><img src="{% if member.photo %}{{ member.photo.url }}{% else %}{% if member.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif member.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}" alt="User Image"></a>
+									</li>
+								{% endif %}
                             {% endfor %}
                         </ul>
                     </div>
@@ -107,7 +109,7 @@
             </div>
         </div>
 		<!-- Edit Project Modal -->
-		<div id="edit_project_{{ project.id }}" class="modal custom-modal fade" role="dialog">
+		<div id="edit_project_{{ project.id }}" class="modal custom-modal fade" tabindex="-1" role="dialog">
 			<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -118,7 +120,7 @@
 					</div>
 					<div class="modal-body">
 						<!-- Edit Project Form -->
-						<form id="edit_form_{{ project.id }}" data-url="{% url 'taskboard:edit_project' pk=project.pk %}">
+						<form id="edit_form_{{ project.id }}" method="POST" action="{% url 'taskboard:edit_project' pk=project.id %}" enctype="multipart/form-data">
 							{% csrf_token %}
 							<div class="row">
 								<div class="col-sm-6">
@@ -129,17 +131,116 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="input-block mb-3">
+										<label class="col-form-label">Priority</label>
+										<select class="select" name="priority">
+											<option value="High" {% if project.priority == 'High' %}selected{% endif %}>High</option>
+											<option value="Medium" {% if project.priority == 'Medium' %}selected{% endif %}>Medium</option>
+											<option value="Low" {% if project.priority == 'Low' %}selected{% endif %}>Low</option>
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="input-block mb-3">
 										<label class="col-form-label">Start Date</label>
 										<div class="cal-icon">
-											<input class="form-control datetimepicker" type="text" name="start_date" value="{{ project.start_date }}">
+											<input class="form-control datetimepicker" type="text" name="start_date" value="{{ project.start_date|date:'Y-m-d' }}">
 										</div>
 									</div>
 								</div>
-								<!-- Add other fields here like end_date, priority, project_leader, team, description, etc. -->
+								<div class="col-sm-6">
+									<div class="input-block mb-3">
+										<label class="col-form-label">End Date</label>
+										<div class="cal-icon">
+											<input class="form-control datetimepicker" type="text" name="end_date" value="{{ project.end_date|date:'Y-m-d' }}">
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="input-block mb-3">
+										<label class="col-form-label">Add Project Leader</label>
+										<select name="project_leader" class="form-control">
+											<option value="" data-photo-url="">Select a Project Leader</option>
+											{% for employee in project_leader_queryset %}
+												<option value="{{ employee.id }}"
+														data-photo-url="{% if employee.photo %}{{ employee.photo.url }}{% else %}{% if employee.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif employee.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}"
+														{% if employee.id == project.project_leader_id %}selected{% endif %}>
+													{{ employee.get_full_name }}
+												</option>
+											{% endfor %}
+										</select>
+										
+										
+										{% if form.project_leader.errors %}
+											<span class="error">{{ form.project_leader.errors.0 }}</span>
+										{% endif %}
+									</div>									
+								</div>
+								<div class="col-sm-6">
+									<div class="input-block mb-3">
+										<label class="col-form-label">Team Leader</label>
+										<div class="project-members">
+											<a href="#" data-bs-toggle="tooltip" title="Project Leader" class="avatar">
+												<img id="team-leader-photo-{{ project.id }}" src="{% if project.project_leader.photo %}{{ project.project_leader.photo.url }}{% else %}{% static 'assets/img/profiles/avatar-16.jpg' %}{% endif %}" alt="User Image">
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>   
+							<div class="row">	
+								<div class="col-sm-6">
+									<div class="input-block mb-3">
+										<label class="col-form-label">Team Members<br>(Use shift keys for multiple selection)</label>
+										<select name="team" class="form-control" multiple="multiple">
+											{% for employee in project_leader_queryset %}
+											<option value="{{ employee.id }}"
+													data-photo-url="{% if employee.photo %}{{ employee.photo.url }}{% else %}{% if employee.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif employee.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}"
+													{% if employee in project.team.all %}selected{% endif %}>
+												{{ employee.get_full_name }}
+											</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="input-block mb-3">
+										<label class="col-form-label">Team Members</label><br>
+										<div id="team-members-{{ project.id }}" class="project-members">
+											{% for member in project.team.all %}
+												{% if not member.is_deleted %}
+													<a href="#" data-bs-toggle="tooltip" title="{{ member.get_full_name }}" class="avatar">
+														<img src="{% if member.photo %}
+																	{{ member.photo.url }}
+																{% else %}
+																	{% if member.gender == 'Male' %}
+																		{% static 'assets/img/profiles/it_man.png' %}
+																	{% elif member.gender == 'Female' %}
+																		{% static 'assets/img/profiles/it_woman.png' %}
+																	{% else %}
+																		{% static 'assets/img/profiles/avatar-02.jpg' %}
+																	{% endif %}
+																{% endif %}" alt="User Image">
+													</a>
+												{% endif %}
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="input-block mb-3">
+								<label class="col-form-label">Description</label>
+								<textarea rows="4" class="form-control" name="description">{{ project.description }}</textarea>
+							</div>
+							<div class="input-block mb-3">
+								<label class="col-form-label">Upload Files</label>
+								<input class="form-control" type="file" name="file">
 							</div>
 							<!-- Save Button -->
 							<div class="submit-section">
-								<button type="submit" class="btn btn-primary submit-btn" onclick="submitUpdateForm(event, '{{project.id}}')">Save</button>
+								<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event, '{{project.id}}')">Save</button>
 							</div>
 						</form>
 					</div>
@@ -160,10 +261,10 @@
 						<div class="modal-btn delete-action">
 							<div class="row">
 								<div class="col-6">
-									<a href="#" class="btn btn-primary continue-btn" onclick="deleteProject('{{ project.id }}')">Delete</a>
+									<a href="{% url 'taskboard:delete_project' pk=project.id %}" data-id="{{ project.id }}" class="remove btn btn-primary continue-btn">Delete</a>
 								</div>
 								<div class="col-6">
-									<a href="#" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
+									<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
 								</div>
 							</div>
 						</div>
@@ -260,12 +361,12 @@
                                 {% endif %}
                             </div>
                         </div>
-                        <div class="col-sm-6">
+						<div class="col-sm-6">
                             <div class="input-block mb-3">
                                 <label class="col-form-label">Team Leader</label>
                                 <div class="project-members">
                                     <a href="#" data-bs-toggle="tooltip" title="Project Leader" class="avatar">
-                                        <img id="team-leader-photo" src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
+                                        <img id="team-leader-photo" src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User Image">
                                     </a>
                                 </div>
                             </div>
@@ -296,7 +397,7 @@
 									<!-- Team members' avatars will be updated here dynamically -->
 								</div>
 							</div>
-						</div>
+						</div>						
 					</div>
                     <div class="input-block mb-3">
                         <label class="col-form-label">Description</label>
@@ -331,6 +432,85 @@
 		
 <script>	
 	$(document).ready(function(){
+		// Initialize the "Create Project" modal event listeners
+		$('#create_project').on('shown.bs.modal', function () {
+			// Update team leader photo when the project leader is changed
+			$('select[name="project_leader"]').on('change', function () {
+				const selectedOption = $(this).find('option:selected');
+				const photoUrl = selectedOption.data('photo-url');
+				const teamLeaderPhoto = $('#team-leader-photo');
+	
+				if (photoUrl && teamLeaderPhoto.length) {
+					teamLeaderPhoto.attr('src', photoUrl);
+				}
+			});
+	
+			// Update team member photos when team members are changed
+			$('select[name="team"]').on('change', function () {
+				const selectedOptions = $(this).find('option:selected');
+				const teamMembersContainer = $('#team-members');
+				teamMembersContainer.empty(); // Clear existing members
+	
+				selectedOptions.each(function () {
+					const photoUrl = $(this).data('photo-url');
+					const fullName = $(this).text();
+	
+					if (photoUrl) {
+						const memberAvatar = `
+							<a href="#" data-bs-toggle="tooltip" title="${fullName}" class="avatar">
+								<img src="${photoUrl}" alt="User Image">
+							</a>`;
+						teamMembersContainer.append(memberAvatar);
+					}
+				});
+			});
+		});
+        // Bind the shown.bs.modal event to each edit modal
+		$('[id^=edit_project_]').each(function () {
+			const modalId = $(this).attr('id');
+			const projectId = modalId.split('_')[2]; // Extract project ID from modal ID
+
+			$('#' + modalId).on('shown.bs.modal', function () {
+				console.log(`#${modalId} is shown`);
+
+				// Update team leader photo when the project leader is changed
+				$(this).find('select[name="project_leader"]').on('change', function () {
+					const selectedOption = $(this).find('option:selected');
+					const photoUrl = selectedOption.data('photo-url');
+					const teamLeaderPhoto = $('#team-leader-photo-' + projectId);
+
+					if (photoUrl && teamLeaderPhoto.length) {
+						teamLeaderPhoto.attr('src', photoUrl);
+					}
+				});
+
+				// Update team member photos when team members are changed
+				$(this).find('select[name="team"]').on('change', function () {
+					console.log("team select changed");
+					const selectedOptions = $(this).find('option:selected');
+					const teamMembersContainer = $('#team-members-' + projectId);
+					console.log("selectedOptions ", selectedOptions);
+					
+					// Clear current team members photos
+					teamMembersContainer.empty();
+		
+					// Append selected team member photos
+					selectedOptions.each(function () {
+						const photoUrl = $(this).data('photo-url');
+						const fullName = $(this).text();
+						console.log("photoUrl", photoUrl);
+						console.log("fullName", fullName);
+		
+						if (photoUrl) {
+							const imgElement = `<a href="#" data-bs-toggle="tooltip" title="${fullName}" class="avatar">
+													<img src="${photoUrl}" alt="User Image">
+												</a>`;
+							teamMembersContainer.append(imgElement);
+						}
+					});
+				});
+			});
+		});
         $('.datetimepicker').datetimepicker({
             format: 'YYYY-MM-DD', // Date-only format
             // Additional configurations to ensure time is not included
@@ -338,57 +518,13 @@
             allowInputToggle: true
         });
 		// Initialize Select2 for the multi-select team field
-		$('select[name="team"]').select2({
+		{% comment %} $('select[name="team"]').select2({
 			placeholder: "Select team members",
 			width: '100%',
 			multiple: true
-		});
+		}); {% endcomment %}
 		
     });
-	function initializeProjectLeaderSelect() {
-        const projectLeaderSelect = document.querySelector('select[name="project_leader"]');
-        const teamLeaderPhoto = document.getElementById('team-leader-photo');
-
-        projectLeaderSelect.addEventListener('change', function() {
-            const selectedOption = projectLeaderSelect.options[projectLeaderSelect.selectedIndex];
-            const photoUrl = selectedOption.getAttribute('data-photo-url');
-
-            if (photoUrl) {
-                teamLeaderPhoto.src = photoUrl;
-            } else {
-                teamLeaderPhoto.src = '{% static "assets/img/profiles/avatar-16.jpg" %}';
-            }
-        });
-    }
-	function initializeTeamSelect() {
-		const teamSelect = document.querySelector('select[name="team"]');
-		const teamMembersContainer = document.getElementById('team-members');
-	
-		teamSelect.addEventListener('change', function() {
-			// Clear current team members
-			teamMembersContainer.innerHTML = '';
-	
-			// Get selected options
-			const selectedOptions = Array.from(teamSelect.selectedOptions);
-			selectedOptions.forEach(option => {
-				const photoUrl = option.getAttribute('data-photo-url');
-				const avatar = document.createElement('a');
-				avatar.href = '#';
-				avatar.classList.add('avatar');
-				avatar.dataset.bsToggle = 'tooltip';
-				avatar.title = option.text; // Set tooltip to show employee name
-	
-				const img = document.createElement('img');
-				img.src = photoUrl || '{% static "assets/img/profiles/avatar-16.jpg" %}';
-				img.alt = option.text;
-	
-				avatar.appendChild(img);
-				teamMembersContainer.appendChild(avatar);
-			});
-		});
-	}
-	
-		
 	function loadCreateProjectForm() {
 		fetch("{% url 'taskboard:create_project' %}")
         .then(response => response.text())
@@ -407,112 +543,106 @@
 
             // Show the modal
             $('#create_project').modal('show');
-			initializeProjectLeaderSelect(); // Initialize the ProjectLeader event listener
-			initializeTeamSelect(); // Initialize the Team event listener
         })
         .catch(error => {
             console.error('Error:', error);
         });
-    }
-	
+    }	
 	function submitCreateForm(event) {
-	event.preventDefault();  // Prevent the default form submission behavior
-	var form = document.getElementById('create_form');
-	var formData = new FormData(form);
+		event.preventDefault();  // Prevent the default form submission behavior
+		var form = document.getElementById('create_form');
+		var formData = new FormData(form);
 
-	fetch(form.action, {
-		method: 'POST',
-		body: formData,
-	})
-	.then(response => response.json())
-	.then(data => {
-		// Corrected variable name here
-		if (data.status === 'true') {
-		showSweetAlert(data.message, data.status, data.redirect_url);
-		} else if (data.status === 'form_error') {
-		showSweetAlert(data.message, 'form_error');
-		} else if (data.status === 'false') {
-		showSweetAlert(data.message, data.status);
-		} else {
-		showSweetAlert(data.message, 'error');
-		}
-	})
-	.catch(error => {
-		console.error('Error:', error);
-	});
-	}
-
-	function showSweetAlert(message, status, redirectUrl) {
-	if (status === 'true') {
-		Swal.fire({
-		icon: 'success',
-		title: 'Success!',
-		text: message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-
-		didClose: () => {
-			if (redirectUrl) {
-			// Combine the redirect URL with the current protocol and host to get the full URL
-			var fullRedirectUrl = window.location.origin + redirectUrl;
-			window.location.href = fullRedirectUrl;
+		fetch(form.action, {
+			method: 'POST',
+			body: formData,
+		})
+		.then(response => response.json())
+		.then(data => {
+			// Corrected variable name here
+			if (data.status === 'true') {
+			showSweetAlert(data.message, data.status, data.redirect_url);
+			} else if (data.status === 'form_error') {
+			showSweetAlert(data.message, 'form_error');
+			} else if (data.status === 'false') {
+			showSweetAlert(data.message, data.status);
+			} else {
+			showSweetAlert(data.message, 'error');
 			}
-		}
-		});
-	} else if (status === 'form_error') {
-		Swal.fire({
-		icon: 'error',
-		title: 'Form Validation Error!',
-		html: message,  // Display form errors as HTML
-		showConfirmButton: true,
-		allowOutsideClick: false,
-		});
-	} else if (status === 'false') {
-		Swal.fire({
-		icon: 'error',
-		title: 'Form Error!',
-		text: 'Error: ' + message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
-		});
-	} else {
-		Swal.fire({
-		icon: 'error',
-		title: 'Error!',
-		text: 'Error: ' + message,
-		showConfirmButton: true,
-		allowOutsideClick: false, // Prevent closing on outside click
+		})
+		.catch(error => {
+			console.error('Error:', error);
 		});
 	}
-	}
+	function showSweetAlert(message, status, redirectUrl) {
+		if (status === 'true') {
+			Swal.fire({
+			icon: 'success',
+			title: 'Success!',
+			text: message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
 
-	function submitUpdateForm(event,projectId) {
-	event.preventDefault();  // Prevent the default form submission behavior
-	var form = document.getElementById('update_form_' + projectId);
-	var formData = new FormData(form);
-
-	fetch(form.action, {
-		method: 'POST',
-		body: formData,
-	})
-	.then(response => response.json())
-	.then(data => {
-		// Corrected variable name here
-		if (data.status === 'true') {
-		showSweetAlert(data.message, data.status, data.redirect_url);
-		} else if (data.status === 'form_error') {
-		showSweetAlert(data.message, 'form_error');
-		} else if (data.status === 'false') {
-		showSweetAlert(data.message, data.status);
+			didClose: () => {
+				if (redirectUrl) {
+				// Combine the redirect URL with the current protocol and host to get the full URL
+				var fullRedirectUrl = window.location.origin + redirectUrl;
+				window.location.href = fullRedirectUrl;
+				}
+			}
+			});
+		} else if (status === 'form_error') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Validation Error!',
+			html: message,  // Display form errors as HTML
+			showConfirmButton: true,
+			allowOutsideClick: false,
+			});
+		} else if (status === 'false') {
+			Swal.fire({
+			icon: 'error',
+			title: 'Form Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
 		} else {
-		showSweetAlert(data.message, 'error');
+			Swal.fire({
+			icon: 'error',
+			title: 'Error!',
+			text: 'Error: ' + message,
+			showConfirmButton: true,
+			allowOutsideClick: false, // Prevent closing on outside click
+			});
 		}
-	})
-	.catch(error => {
-		console.error('Error:', error);
-	});
 	}
+	function submitUpdateForm(event,projectId) {
+		event.preventDefault();  // Prevent the default form submission behavior
+		var form = document.getElementById('edit_form_' + projectId);
+		var formData = new FormData(form);
 
+		fetch(form.action, {
+			method: 'POST',
+			body: formData,
+		})
+		.then(response => response.json())
+		.then(data => {
+			// Corrected variable name here
+			if (data.status === 'true') {
+			showSweetAlert(data.message, data.status, data.redirect_url);
+			} else if (data.status === 'form_error') {
+			showSweetAlert(data.message, 'form_error');
+			} else if (data.status === 'false') {
+			showSweetAlert(data.message, data.status);
+			} else {
+			showSweetAlert(data.message, 'error');
+			}
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+	}
 	// Function to handle delete action
 	function handleDelete(pk) {
 		Swal.fire({
@@ -527,7 +657,7 @@
 		.then((result) => {
 			if (result.isConfirmed) {
 				// If user confirms, send Fetch API request to delete
-				fetch('/app/project/delete-project/' + pk + '/', {
+				fetch('/app/task-board/delete-project/' + pk + '/', {
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
@@ -536,12 +666,8 @@
 				})
 				.then(response => response.json())
 				.then(data => {
-					// Handle success response
-					if (data.status === "true") {
-						showDeleteSweetAlert(data.message, data.status, data.redirect_url);
-					} else {
-						Swal.fire("Error", "An error occurred while deleting.", "error");
-					}
+					// Handle success and error response
+					showDeleteSweetAlert(data.message, data.status, data.redirect_url);					
 				})
 				.catch(() => {
 					// Handle error
@@ -570,6 +696,14 @@
 				}
 			}
 			});
+		}	else if (status === 'false') {
+			Swal.fire({
+				icon: 'error',
+				title: 'Error!',
+				text: message, // Show the error message from the server
+				showConfirmButton: true,
+				allowOutsideClick: false, // Prevent closing on outside click
+			});
 		} else {
 			Swal.fire({
 			icon: 'error',
@@ -579,17 +713,15 @@
 			allowOutsideClick: false, // Prevent closing on outside click
 			});
 		}
-		}		
-	
-		// Attach click event to delete button
-		document.querySelectorAll('.remove').forEach(function(el) {
-			el.addEventListener('click', function(e) {
-				e.preventDefault();
-				var pk = this.getAttribute('data-id');
-				handleDelete(pk);
-			});
+	}
+	// Attach click event to delete button
+	document.querySelectorAll('.remove').forEach(function(el) {
+		el.addEventListener('click', function(e) {
+			e.preventDefault();
+			var pk = this.getAttribute('data-id');
+			handleDelete(pk);
 		});
-
+	});
 </script>
 
 

@@ -9,6 +9,14 @@ PRIORITY_CHOICES = (
     ('High',"High")
 )
 
+COLOUR_CHOICES = (
+    ('danger', "danger"),
+    ('info',"info"),
+    ('success',"success"),
+    ('warning',"warning"),
+    ('primary',"primary"),
+)
+
 
 class Project(BaseModel):
     company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False}) 
@@ -31,11 +39,26 @@ class Project(BaseModel):
         return self.name
 
 
+class TaskBoard(BaseModel):
+    company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False}) 
+    project = models.ForeignKey("taskboard.Project",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False}) 
+    name = models.CharField(_("Task Board Name"),max_length=125)  
+    color = models.CharField(max_length=128, choices=COLOUR_CHOICES, default='primary')
+    is_deleted = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _('Task Board')
+        verbose_name_plural = _('Task Boards')
+        ordering = ['name']
+    
+    def __str__(self):
+        return self.name
+
 # class Task(BaseModel):
 #     company = models.ForeignKey("main.Company",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})   
-#     employee = models.ForeignKey("employee.Employee",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False})  
+#     collaborators = models.ManyToManyField("employee.Employee", verbose_name=_("Team"), related_name='project_team') 
 #     project = models.ForeignKey("taskboard.Project",on_delete=models.CASCADE,limit_choices_to={'is_deleted': False}) 
-#     name = models.CharField(_("Task Name"),max_length=125)
+#     name = models.CharField(_("Task Name"),max_length=255)
 #     priority = models.CharField(max_length=128,choices=PRIORITY_CHOICES,default='Normal',null=True,blank=True)
 #     due_date = models.DateField(_('Due Date'),help_text='due_date',null=True,blank=True) 
 #     description = models.TextField(_("Description "),null=True,blank=True)

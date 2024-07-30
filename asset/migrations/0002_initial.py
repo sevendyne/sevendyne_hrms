@@ -11,12 +11,12 @@ class Migration(migrations.Migration):
     dependencies = [
         ("main", "0001_initial"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ("client", "0001_initial"),
+        ("asset", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name="client",
+            model_name="asset",
             name="company",
             field=models.ForeignKey(
                 limit_choices_to={"is_deleted": False},
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="client",
+            model_name="asset",
             name="creator",
             field=models.ForeignKey(
                 blank=True,
@@ -35,7 +35,7 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AddField(
-            model_name="client",
+            model_name="asset",
             name="updator",
             field=models.ForeignKey(
                 blank=True,
@@ -43,9 +43,5 @@ class Migration(migrations.Migration):
                 related_name="updator_%(class)s_objects",
                 to=settings.AUTH_USER_MODEL,
             ),
-        ),
-        migrations.AlterUniqueTogether(
-            name="client",
-            unique_together={("company", "clientid")},
         ),
     ]

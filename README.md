@@ -33,6 +33,26 @@ In local, celery -A sevendyne_hrms worker --loglevel=info , to trigger celery co
 - \q
 - exit
 
+**To drop & recreate database**
+
+Delete all the files under migrations folder in each app except __init__.py
+or 
+- find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+- find . -path "*/migrations/*.pyc" -delete
+- find . -name "__pycache__" -type d -exec rm -r {} +
+
+
+- sudo su postgres
+- psql
+- DROP DATABASE sevendyne_hrms;
+- \q
+
+- createdb sevendyne_hrms
+- psql
+- grant all privileges on database sevendyne_hrms to sevendyne;
+- \q
+- exit
+
 
 **Create user groups and permissions:**
 

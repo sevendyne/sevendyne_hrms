@@ -3,9 +3,10 @@ import json
 from os import name
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
+from employee.models import Employee
 from main.decorators import company_required
-from taskboard.forms import ProjectForm
-from taskboard.models import Project
+from taskboard.forms import ProjectForm, TaskBoardForm
+from taskboard.models import COLOUR_CHOICES, Project, TaskBoard
 from main.functions import generate_form_errors, get_a_id, get_auto_id, get_current_company, has_hrms_permission
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponse
@@ -80,9 +81,12 @@ def projects(request):
     paginator = Paginator(projects,1000000000000)
     page_number = request.GET.get('page')
     projects = paginator.get_page(page_number)
+    # Add a queryset for project leaders
+    project_leader_queryset = Employee.objects.filter(company=current_company, is_deleted=False)
     context = {
         'projects': projects,
-        "title": 'Projects' 
+        "title": 'Projects',
+        'project_leader_queryset':project_leader_queryset
     }
     return render(request, "project/projects.html", context)
 
@@ -107,7 +111,7 @@ def projects_list(request):
 @user_passes_test(has_hrms_permission, redirect_field_name=None)
 def edit_project(request, pk):
     current_company = get_current_company(request)
-    instance = get_object_or_404(Project.objects.filter(pk=pk,ompany=current_company,is_deleted=False))    
+    instance = get_object_or_404(Project.objects.filter(pk=pk,company=current_company,is_deleted=False))    
     if request.method == "POST":
         form = ProjectForm(request.POST, instance=instance)
         if form.is_valid():
@@ -115,6 +119,7 @@ def edit_project(request, pk):
             data.updator = request.user
             data.date_updated = datetime.datetime.now()
             data.save()
+            form.save_m2m()  # Save many-to-many relationships
             response_data = {
                 "status": "true",
                 "redirect" : "true",
@@ -170,6 +175,175 @@ def delete_project(request,pk):
         "redirect_url" : reverse('taskboard:projects')
     }
     return HttpResponse(json.dumps(response_data), content_type='application/json')
+
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def create_task_board(request):
+    current_company = get_current_company(request)
+    if request.method == 'POST':
+        form = TaskBoardForm(request.POST, current_company=current_company)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            project = form.cleaned_data['project']
+            auto_id = get_auto_id(TaskBoard)
+            a_id = get_a_id(TaskBoard,request)
+            company =current_company
+            creator = request.user
+            updator = request.user
+            if not TaskBoard.objects.filter(name=name,project=project,company=current_company,is_deleted=False).exists():
+                TaskBoard(                    
+                    name = name,
+                    project = project,
+                    auto_id = auto_id,
+                    a_id = a_id,
+                    company =company,
+                    creator = creator,
+                    updator = updator
+                ).save()
+                response_data = {
+                    "status": "true",
+                    "title": "Successfully Created",
+                    "message": "Task Board created successfully.",
+                    "redirect": "true",
+                    "redirect_url": reverse('taskboard:task_boards')
+                }
+            else:               
+                response_data = {
+                    "status": "false",
+                    "stable": "true",
+                    "title": "Already exists",
+                    "message": "Task Board already exists",                        
+                }
+        else:
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "form_error",
+                "title": "Form validation error",
+                "message": str(message),               
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = TaskBoardForm(current_company=current_company)
+        context = {
+            "title": "Create Task Board",
+            "form": form,
+            "redirect": "true",
+            "create":True
+        }        
+        return render(request, 'taskboard/task-board.html', context)
+
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def task_boards(request):
+    current_company = get_current_company(request)
+    projects = Project.objects.filter(company=current_company,is_deleted=False)
+    taskboards = TaskBoard.objects.filter(company=current_company,is_deleted=False)
+    paginator = Paginator(taskboards,1000000000000)
+    page_number = request.GET.get('page')
+    taskboards = paginator.get_page(page_number)
+    context = {
+        'taskboards': taskboards,
+        'projects' : projects,
+        "title": 'Task Boards',
+        'colour_choices': COLOUR_CHOICES,
+        "is_task_boards" : True
+
+    }
+    return render(request, "taskboard/task-board.html", context)
+
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def edit_task_board(request, pk):
+    current_company = get_current_company(request)
+    instance = get_object_or_404(TaskBoard.objects.filter(pk=pk,company=current_company, is_deleted=False)) 
+    if request.method == "POST":
+        form = TaskBoardForm(request.POST, instance=instance, current_company=current_company)
+        if form.is_valid():
+            data = form.save(commit=False)
+            data.updator = request.user
+            data.date_updated = datetime.datetime.now()
+            data.save()
+            response_data = {
+                "status": "true",
+                "redirect" : "true",
+                "title": "Successfully Updated",
+                "message": "Task Board updated successfully.",                
+                "redirect_url": reverse('taskboard:task_boards')
+            }
+        else:
+            message = generate_form_errors(form, formset=False)
+            response_data = {
+                "stable": "true",
+                "status": "false",
+                "message": str(message),
+                "title": "Form validation error"  
+            }
+        return HttpResponse(json.dumps(response_data), content_type='application/json')
+    else:
+        form = TaskBoardForm(instance=instance, current_company=current_company)
+        projects = Project.objects.filter(company=current_company,is_deleted=False)
+        context = {
+            "form": form,
+            "instance": instance,
+            "projects":projects,
+            'pk': pk,
+            "title": "Edit Task Board :" + instance.name,            
+            "redirect": "true",
+            "url": reverse('taskboard:edit_task_board', kwargs={'pk': instance.pk})
+        }
+        return render(request, 'taskboard/task-board.html', context)
+
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def task_board(request,pk):
+    current_company = get_current_company(request)
+    instance = get_object_or_404(TaskBoard.objects.filter(pk=pk,company=current_company,is_deleted=False))
+    context = {
+        'instance': instance,
+        'title': 'Task Board'
+    }
+    return render(request, 'taskboard/task-board.html', context)
+
+
+@login_required
+@user_passes_test(has_hrms_permission, redirect_field_name=None)
+@company_required
+def delete_task_board(request,pk):
+    current_company = get_current_company(request)
+    instance = get_object_or_404(TaskBoard.objects.filter(pk=pk,company=current_company,is_deleted=False))    
+    # if (Employee.objects.filter(TaskBoard=instance)).exists():
+    #     is_ok = False
+    # else:
+    #     is_ok = True
+    # if is_ok == True:
+    TaskBoard.objects.filter(pk=pk).update(is_deleted=True,name=instance.name + "_deleted_" + str(instance.auto_id))
+    response_data = {
+        "status" : "true",        
+        "title" : "Successfully Deleted",
+        "message" : "Task Board Successfully Deleted.", 
+        "redirect" : "true",       
+        "redirect_url" : reverse('taskboard:task_boards')
+    }
+    return HttpResponse(json.dumps(response_data), content_type='application/json')
+    # else:
+    #     response_data = {
+    #         "status": "false",
+    #         "stable": "true",
+    #         "title": "Permission for delete denied",
+    #         "message": "Same taskboard exists in Employee"                        
+    #     }
+    # return HttpResponse(json.dumps(response_data), content_type='application/javascript')
+
+
 
 
 # Task crud starts here
