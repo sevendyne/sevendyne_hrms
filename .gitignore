@@ -5,3 +5,7 @@ notes.txt
 db.sqlite3
 venv/
 media/
+__pycache__/
+*/migrations/*.py
+*/migrations/*.pyc
+!*/migrations/__init__.py
