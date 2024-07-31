@@ -60,7 +60,11 @@
 					<thead>
 						<tr>
 							<th>Project</th>
+<<<<<<< HEAD
 							{% comment %} <th>Project Id</th> {% endcomment %}
+=======
+							<th>Project Id</th>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 							<th>Leader</th>
 							<th>Team</th>
 							<th>Deadline</th>
@@ -75,7 +79,11 @@
 							<td>
 								<a href="project-view.html">{{ project.name }}</a>
 							</td>
+<<<<<<< HEAD
 							{% comment %} <td>PROJECT-ID</td> {% endcomment %}
+=======
+							<td>PROJECT-ID</td>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 							<td>
 								<ul class="team-members">
 									<li>
@@ -90,7 +98,11 @@
 										<a href="#" data-bs-toggle="tooltip" title="{{ member.get_full_name }}"><img src="{% if member.photo %}{{ member.photo.url }}{% else %}{% if member.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif member.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}" alt="User Image"></a>
 									</li>
 									{% endfor %}
+<<<<<<< HEAD
 									{% comment %} <li class="dropdown avatar-dropdown">
+=======
+									<li class="dropdown avatar-dropdown">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 										<a href="#" class="all-users dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">+15</a>
 										<div class="dropdown-menu dropdown-menu-right">
 											<div class="avatar-group">
@@ -124,7 +136,11 @@
 												</ul>
 											</div>
 										</div>
+<<<<<<< HEAD
 									</li> {% endcomment %}
+=======
+									</li>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 								</ul>
 							</td>
 							<td>{{ project.end_date }}</td>
@@ -151,14 +167,23 @@
 								<div class="dropdown dropdown-action">
 									<a href="#" class="action-icon dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">more_vert</i></a>
 									<div class="dropdown-menu dropdown-menu-right">
+<<<<<<< HEAD
 										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_project_{{ project.id }}"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
 										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_project_{{ project.id }}"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
+=======
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#edit_project"><i class="fa-solid fa-pencil m-r-5"></i> Edit</a>
+										<a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#delete_project"><i class="fa-regular fa-trash-can m-r-5"></i> Delete</a>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 									</div>
 								</div>
 							</td>
 						</tr>
 						<!-- Edit Project Modal -->
+<<<<<<< HEAD
 						<div id="edit_project_{{ project.id }}" class="modal custom-modal fade" tabindex="-1" role="dialog">
+=======
+						<div id="edit_project" class="modal custom-modal fade" role="dialog">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 							<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -168,23 +193,38 @@
 										</button>
 									</div>
 									<div class="modal-body">
+<<<<<<< HEAD
 										<!-- Edit Project Form -->
 										<form id="edit_form_{{ project.id }}" method="POST" action="{% url 'taskboard:edit_project' pk=project.id %}" enctype="multipart/form-data">
 											{% csrf_token %}
+=======
+										<form>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 											<div class="row">
 												<div class="col-sm-6">
 													<div class="input-block mb-3">
 														<label class="col-form-label">Project Name</label>
+<<<<<<< HEAD
 														<input class="form-control" value="{{ project.name }}" type="text" name="name">
+=======
+														<input class="form-control" value="Project Management" type="text">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 													</div>
 												</div>
 												<div class="col-sm-6">
 													<div class="input-block mb-3">
+<<<<<<< HEAD
 														<label class="col-form-label">Priority</label>
 														<select class="select" name="priority">
 															<option value="High" {% if project.priority == 'High' %}selected{% endif %}>High</option>
 															<option value="Medium" {% if project.priority == 'Medium' %}selected{% endif %}>Medium</option>
 															<option value="Low" {% if project.priority == 'Low' %}selected{% endif %}>Low</option>
+=======
+														<label class="col-form-label">Client</label>
+														<select class="select">
+															<option>Global Technologies</option>
+															<option>Delta Infotech</option>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 														</select>
 													</div>
 												</div>
@@ -194,7 +234,11 @@
 													<div class="input-block mb-3">
 														<label class="col-form-label">Start Date</label>
 														<div class="cal-icon">
+<<<<<<< HEAD
 															<input class="form-control datetimepicker" type="text" name="start_date" value="{{ project.start_date|date:'Y-m-d' }}">
+=======
+															<input class="form-control datetimepicker" type="text">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 														</div>
 													</div>
 												</div>
@@ -202,12 +246,17 @@
 													<div class="input-block mb-3">
 														<label class="col-form-label">End Date</label>
 														<div class="cal-icon">
+<<<<<<< HEAD
 															<input class="form-control datetimepicker" type="text" name="end_date" value="{{ project.end_date|date:'Y-m-d' }}">
+=======
+															<input class="form-control datetimepicker" type="text">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 														</div>
 													</div>
 												</div>
 											</div>
 											<div class="row">
+<<<<<<< HEAD
 												<div class="col-sm-6">
 													<div class="input-block mb-3">
 														<label class="col-form-label">Add Project Leader</label>
@@ -227,17 +276,57 @@
 															<span class="error">{{ form.project_leader.errors.0 }}</span>
 														{% endif %}
 													</div>									
+=======
+												<div class="col-sm-3">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Rate</label>
+														<input placeholder="$50" class="form-control" value="$5000" type="text">
+													</div>
+												</div>
+												<div class="col-sm-3">
+													<div class="input-block mb-3">
+														<label class="col-form-label">&nbsp;</label>
+														<select class="select">
+															<option>Hourly</option>
+															<option selected>Fixed</option>
+														</select>
+													</div>
+												</div>
+												<div class="col-sm-6">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Priority</label>
+														<select class="select">
+															<option selected>High</option>
+															<option>Medium</option>
+															<option>Low</option>
+														</select>
+													</div>
+												</div>
+											</div>
+											<div class="row">
+												<div class="col-sm-6">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Add Project Leader</label>
+														<input class="form-control" type="text">
+													</div>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 												</div>
 												<div class="col-sm-6">
 													<div class="input-block mb-3">
 														<label class="col-form-label">Team Leader</label>
 														<div class="project-members">
+<<<<<<< HEAD
 															<a href="#" data-bs-toggle="tooltip" title="Project Leader" class="avatar">
 																<img id="team-leader-photo-{{ project.id }}" src="{% if project.project_leader.photo %}{{ project.project_leader.photo.url }}{% else %}{% static 'assets/img/profiles/avatar-16.jpg' %}{% endif %}" alt="User Image">
+=======
+															<a href="#" data-bs-toggle="tooltip" title="Jeffery Lalor" class="avatar">
+																<img src="{%static 'hrms/assets/img/profiles/avatar-16.jpg'%}" alt="User Image">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 															</a>
 														</div>
 													</div>
 												</div>
+<<<<<<< HEAD
 											</div>   
 											<div class="row">	
 												<div class="col-sm-6">
@@ -252,10 +341,19 @@
 															</option>
 															{% endfor %}
 														</select>
+=======
+											</div>
+											<div class="row">
+												<div class="col-sm-6">
+													<div class="input-block mb-3">
+														<label class="col-form-label">Add Team</label>
+														<input class="form-control" type="text">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 													</div>
 												</div>
 												<div class="col-sm-6">
 													<div class="input-block mb-3">
+<<<<<<< HEAD
 														<label class="col-form-label">Team Members</label><br>
 														<div id="team-members-{{ project.id }}" class="project-members">
 															{% for member in project.team.all %}
@@ -275,12 +373,30 @@
 																	</a>
 																{% endif %}
 															{% endfor %}
+=======
+														<label class="col-form-label">Team Members</label>
+														<div class="project-members">
+															<a href="#" data-bs-toggle="tooltip" title="John Doe" class="avatar">
+																<img src="{%static 'hrms/assets/img/profiles/avatar-16.jpg'%}" alt="User Image">
+															</a>
+															<a href="#" data-bs-toggle="tooltip" title="Richard Miles" class="avatar">
+																<img src="{%static 'hrms/assets/img/profiles/avatar-09.jpg'%}" alt="User Image">
+															</a>
+															<a href="#" data-bs-toggle="tooltip" title="John Smith" class="avatar">
+																<img src="{%static 'hrms/assets/img/profiles/avatar-10.jpg'%}" alt="User Image">
+															</a>
+															<a href="#" data-bs-toggle="tooltip" title="Mike Litorus" class="avatar">
+																<img src="{%static 'hrms/assets/img/profiles/avatar-05.jpg'%}" alt="User Image">
+															</a>
+															<span class="all-team">+2</span>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 														</div>
 													</div>
 												</div>
 											</div>
 											<div class="input-block mb-3">
 												<label class="col-form-label">Description</label>
+<<<<<<< HEAD
 												<textarea rows="4" class="form-control" name="description">{{ project.description }}</textarea>
 											</div>
 											<div class="input-block mb-3">
@@ -290,6 +406,16 @@
 											<!-- Save Button -->
 											<div class="submit-section">
 												<button class="btn btn-primary submit-btn" onclick="submitUpdateForm(event, '{{project.id}}')">Save</button>
+=======
+												<textarea rows="4" class="form-control" placeholder="Enter your message here"></textarea>
+											</div>
+											<div class="input-block mb-3">
+												<label class="col-form-label">Upload Files</label>
+												<input class="form-control" type="file">
+											</div>
+											<div class="submit-section">
+												<button class="btn btn-primary submit-btn">Save</button>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 											</div>
 										</form>
 									</div>
@@ -299,18 +425,30 @@
 						<!-- /Edit Project Modal -->
 
 						<!-- Delete Project Modal -->
+<<<<<<< HEAD
 						<div class="modal custom-modal fade" id="delete_project_{{ project.id }}" role="dialog">
+=======
+						<div class="modal custom-modal fade" id="delete_project" role="dialog">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 							<div class="modal-dialog modal-dialog-centered">
 								<div class="modal-content">
 									<div class="modal-body">
 										<div class="form-header">
 											<h3>Delete Project</h3>
+<<<<<<< HEAD
 											<p>Are you sure you want to delete "{{ project.name }}"?</p>
+=======
+											<p>Are you sure want to delete?</p>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 										</div>
 										<div class="modal-btn delete-action">
 											<div class="row">
 												<div class="col-6">
+<<<<<<< HEAD
 													<a href="{% url 'taskboard:delete_project' pk=project.id %}" data-id="{{ project.id }}" class="remove btn btn-primary continue-btn">Delete</a>
+=======
+													<a href="javascript:void(0);" class="btn btn-primary continue-btn">Delete</a>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 												</div>
 												<div class="col-6">
 													<a href="javascript:void(0);" data-bs-dismiss="modal" class="btn btn-primary cancel-btn">Cancel</a>
@@ -333,6 +471,7 @@
 
 <!-- Create Project Modal -->
 <div id="create_project" class="modal custom-modal fade" role="dialog">
+<<<<<<< HEAD
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -441,11 +580,109 @@
 								{% if form.team.errors %}
 								<span class="error">{{ form.team.errors.0 }}</span>
 								{% endif %}
+=======
+	<div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Create Project</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Project Name</label>
+								<input class="form-control" type="text">
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Client</label>
+								<select class="select">
+									<option>Global Technologies</option>
+									<option>Delta Infotech</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Start Date</label>
+								<div class="cal-icon">
+									<input class="form-control datetimepicker" type="text">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">End Date</label>
+								<div class="cal-icon">
+									<input class="form-control datetimepicker" type="text">
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Rate</label>
+								<input placeholder="$50" class="form-control" type="text">
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<div class="input-block mb-3">
+								<label class="col-form-label">&nbsp;</label>
+								<select class="select">
+									<option>Hourly</option>
+									<option>Fixed</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Priority</label>
+								<select class="select">
+									<option>High</option>
+									<option>Medium</option>
+									<option>Low</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Add Project Leader</label>
+								<input class="form-control" type="text">
+							</div>
+						</div>
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Team Leader</label>
+								<div class="project-members">
+									<a href="#" data-bs-toggle="tooltip" title="Jeffery Lalor" class="avatar">
+										<img src="{%static 'hrms/assets/img/profiles/avatar-16.jpg'%}" alt="User Image">
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-6">
+							<div class="input-block mb-3">
+								<label class="col-form-label">Add Team</label>
+								<input class="form-control" type="text">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 							</div>
 						</div>
 						<div class="col-sm-6">
 							<div class="input-block mb-3">
 								<label class="col-form-label">Team Members</label>
+<<<<<<< HEAD
 								<div id="team-members" class="project-members">
 									<!-- Team members' avatars will be updated here dynamically -->
 								</div>
@@ -475,6 +712,41 @@
             </div>
         </div>
     </div>
+=======
+								<div class="project-members">
+									<a href="#" data-bs-toggle="tooltip" title="John Doe" class="avatar">
+										<img src="{%static 'hrms/assets/img/profiles/avatar-16.jpg'%}" alt="User Image">
+									</a>
+									<a href="#" data-bs-toggle="tooltip" title="Richard Miles" class="avatar">
+										<img src="{%static 'hrms/assets/img/profiles/avatar-09.jpg'%}" alt="User Image">
+									</a>
+									<a href="#" data-bs-toggle="tooltip" title="John Smith" class="avatar">
+										<img src="{%static 'hrms/assets/img/profiles/avatar-10.jpg'%}" alt="User Image">
+									</a>
+									<a href="#" data-bs-toggle="tooltip" title="Mike Litorus" class="avatar">
+										<img src="{%static 'hrms/assets/img/profiles/avatar-05.jpg'%}" alt="User Image">
+									</a>
+									<span class="all-team">+2</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="input-block mb-3">
+						<label class="col-form-label">Description</label>
+						<div id="editor"></div>
+					</div>
+					<div class="input-block mb-3">
+						<label class="col-form-label">Upload Files</label>
+						<input class="form-control" type="file">
+					</div>
+					<div class="submit-section">
+						<button class="btn btn-primary submit-btn">Submit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 </div>
 <!-- /Create Project Modal -->
 
@@ -485,6 +757,7 @@
 		
 <script>	
 	$(document).ready(function(){
+<<<<<<< HEAD
 		// Initialize the "Create Project" modal event listeners
 		$('#create_project').on('shown.bs.modal', function () {
 			// Update team leader photo when the project leader is changed
@@ -564,6 +837,8 @@
 				});
 			});
 		});
+=======
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
         $('.datetimepicker').datetimepicker({
             format: 'YYYY-MM-DD', // Date-only format
             // Additional configurations to ensure time is not included
@@ -571,6 +846,7 @@
             allowInputToggle: true
         });
 		// Initialize Select2 for the multi-select team field
+<<<<<<< HEAD
 		{% comment %} $('select[name="team"]').select2({
 			placeholder: "Select team members",
 			width: '100%',
@@ -578,6 +854,57 @@
 		}); {% endcomment %}
 		
     });
+=======
+		$('select[name="team"]').select2({
+			placeholder: "Select team members",
+			width: '100%',
+			multiple: true
+		});
+		
+    });
+	function initializeProjectLeaderSelect() {
+        const projectLeaderSelect = document.querySelector('select[name="project_leader"]');
+        const teamLeaderPhoto = document.getElementById('team-leader-photo');
+
+        projectLeaderSelect.addEventListener('change', function() {
+            const selectedOption = projectLeaderSelect.options[projectLeaderSelect.selectedIndex];
+            const photoUrl = selectedOption.getAttribute('data-photo-url');
+
+            if (photoUrl) {
+                teamLeaderPhoto.src = photoUrl;
+            } else {
+                teamLeaderPhoto.src = '{% static "assets/img/profiles/avatar-16.jpg" %}';
+            }
+        });
+    }
+	function initializeTeamSelect() {
+		const teamSelect = document.querySelector('select[name="team"]');
+		const teamMembersContainer = document.getElementById('team-members');
+	
+		teamSelect.addEventListener('change', function() {
+			// Clear current team members
+			teamMembersContainer.innerHTML = '';
+	
+			// Get selected options
+			const selectedOptions = Array.from(teamSelect.selectedOptions);
+			selectedOptions.forEach(option => {
+				const photoUrl = option.getAttribute('data-photo-url');
+				const avatar = document.createElement('a');
+				avatar.href = '#';
+				avatar.classList.add('avatar');
+				avatar.dataset.bsToggle = 'tooltip';
+				avatar.title = option.text; // Set tooltip to show employee name
+	
+				const img = document.createElement('img');
+				img.src = photoUrl || '{% static "assets/img/profiles/avatar-16.jpg" %}';
+				img.alt = option.text;
+	
+				avatar.appendChild(img);
+				teamMembersContainer.appendChild(avatar);
+			});
+		});
+	}
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 	
 		
 	function loadCreateProjectForm() {
@@ -597,7 +924,13 @@
             modalBody.appendChild(formElement);
 
             // Show the modal
+<<<<<<< HEAD
             $('#create_project').modal('show');			
+=======
+            $('#create_project').modal('show');
+			initializeProjectLeaderSelect(); // Initialize the ProjectLeader event listener
+			initializeTeamSelect(); // Initialize the Team event listener
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
         })
         .catch(error => {
             console.error('Error:', error);
@@ -716,7 +1049,11 @@
 		.then((result) => {
 			if (result.isConfirmed) {
 				// If user confirms, send Fetch API request to delete
+<<<<<<< HEAD
 				fetch('/app/task-board/delete-project/' + pk + '/', {
+=======
+				fetch('/app/project/delete-project/' + pk + '/', {
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',

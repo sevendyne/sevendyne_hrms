@@ -93,11 +93,17 @@
                         <div>Team :</div>
                         <ul class="team-members">
                             {% for member in project.team.all %}
+<<<<<<< HEAD
 								{% if not member.is_deleted %}
 									<li>
 										<a href="#" data-bs-toggle="tooltip" title="{{ member.get_full_name }}"><img src="{% if member.photo %}{{ member.photo.url }}{% else %}{% if member.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif member.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}" alt="User Image"></a>
 									</li>
 								{% endif %}
+=======
+                            <li>
+                                <a href="#" data-bs-toggle="tooltip" title="{{ member.get_full_name }}"><img src="{% if member.photo %}{{ member.photo.url }}{% else %}{% if member.gender == 'Male' %}{% static 'assets/img/profiles/it_man.png' %}{% elif member.gender == 'Female' %}{% static 'assets/img/profiles/it_woman.png' %}{% else %}{% static 'assets/img/profiles/avatar-02.jpg' %}{% endif %}{% endif %}" alt="User Image"></a>
+                            </li>
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
                             {% endfor %}
                         </ul>
                     </div>
@@ -361,12 +367,20 @@
                                 {% endif %}
                             </div>
                         </div>
+<<<<<<< HEAD
 						<div class="col-sm-6">
+=======
+                        <div class="col-sm-6">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
                             <div class="input-block mb-3">
                                 <label class="col-form-label">Team Leader</label>
                                 <div class="project-members">
                                     <a href="#" data-bs-toggle="tooltip" title="Project Leader" class="avatar">
+<<<<<<< HEAD
                                         <img id="team-leader-photo" src="{% static 'assets/img/profiles/avatar-02.jpg' %}" alt="User Image">
+=======
+                                        <img id="team-leader-photo" src="{% static 'assets/img/profiles/avatar-16.jpg' %}" alt="User Image">
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
                                     </a>
                                 </div>
                             </div>
@@ -518,11 +532,64 @@
             allowInputToggle: true
         });
 		// Initialize Select2 for the multi-select team field
+<<<<<<< HEAD
 		{% comment %} $('select[name="team"]').select2({
 			placeholder: "Select team members",
 			width: '100%',
 			multiple: true
 		}); {% endcomment %}
+=======
+		$('select[name="team"]').select2({
+			placeholder: "Select team members",
+			width: '100%',
+			multiple: true
+		});
+		
+    });
+	function initializeProjectLeaderSelect() {
+        const projectLeaderSelect = document.querySelector('select[name="project_leader"]');
+        const teamLeaderPhoto = document.getElementById('team-leader-photo');
+
+        projectLeaderSelect.addEventListener('change', function() {
+            const selectedOption = projectLeaderSelect.options[projectLeaderSelect.selectedIndex];
+            const photoUrl = selectedOption.getAttribute('data-photo-url');
+
+            if (photoUrl) {
+                teamLeaderPhoto.src = photoUrl;
+            } else {
+                teamLeaderPhoto.src = '{% static "assets/img/profiles/avatar-16.jpg" %}';
+            }
+        });
+    }
+	function initializeTeamSelect() {
+		const teamSelect = document.querySelector('select[name="team"]');
+		const teamMembersContainer = document.getElementById('team-members');
+	
+		teamSelect.addEventListener('change', function() {
+			// Clear current team members
+			teamMembersContainer.innerHTML = '';
+	
+			// Get selected options
+			const selectedOptions = Array.from(teamSelect.selectedOptions);
+			selectedOptions.forEach(option => {
+				const photoUrl = option.getAttribute('data-photo-url');
+				const avatar = document.createElement('a');
+				avatar.href = '#';
+				avatar.classList.add('avatar');
+				avatar.dataset.bsToggle = 'tooltip';
+				avatar.title = option.text; // Set tooltip to show employee name
+	
+				const img = document.createElement('img');
+				img.src = photoUrl || '{% static "assets/img/profiles/avatar-16.jpg" %}';
+				img.alt = option.text;
+	
+				avatar.appendChild(img);
+				teamMembersContainer.appendChild(avatar);
+			});
+		});
+	}
+	
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
 		
     });
 	function loadCreateProjectForm() {
@@ -543,6 +610,11 @@
 
             // Show the modal
             $('#create_project').modal('show');
+<<<<<<< HEAD
+=======
+			initializeProjectLeaderSelect(); // Initialize the ProjectLeader event listener
+			initializeTeamSelect(); // Initialize the Team event listener
+>>>>>>> cc16ce5fe1ff96202b72656d53117e7dbe444e45
         })
         .catch(error => {
             console.error('Error:', error);

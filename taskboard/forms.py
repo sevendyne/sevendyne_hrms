@@ -58,6 +58,17 @@ class ProjectForm(forms.ModelForm):
                     f'data-photo-url-{employee.id}': employee.photo.url if employee.photo else ''
                 })
 
+            # Customize project_leader field
+            self.fields['project_leader'].queryset = employees     
+            
+            # Adding data-photo-url attribute to project_leader field options
+            self.fields['project_leader'].widget.choices = [
+                (employee.id, employee.get_full_name) for employee in employees
+            ]
+            for employee in employees:
+                self.fields['project_leader'].widget.attrs.update({
+                    f'data-photo-url-{employee.id}': employee.photo.url if employee.photo else ''
+                })
 
 class TaskBoardForm(forms.ModelForm):    
     class Meta:
@@ -86,6 +97,7 @@ class TaskBoardForm(forms.ModelForm):
             # Filter departments by current company
             self.fields['project'].queryset = Project.objects.filter(company=current_company, is_deleted=False)
         
+            
 # class TaskForm(forms.ModelForm):
 #     class Meta:
 #         model = Task
