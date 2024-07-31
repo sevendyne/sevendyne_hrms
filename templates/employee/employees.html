@@ -119,14 +119,17 @@
 								</div>
 								<div class="col-sm-6">
 									<div class="input-block mb-3">
-										<label class="col-form-label">Photo</label>
-										<input class="form-control floating" name="photo" type="file" accept="image/*">
+										<label class="col-form-label">Username <span class="text-danger">*</span></label>
+										<input class="form-control" type="text" name="username" value="{{employee.username}}">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="input-block mb-3">
-										<label class="col-form-label">Username <span class="text-danger">*</span></label>
-										<input class="form-control" type="text" name="username" value="{{employee.username}}">
+										<label class="col-form-label">Password</label>
+										<div class="input-group">
+											<input class="form-control" type="password" name="password" id="password_{{ employee.id }}" value="{{employee.password}}">
+											<span class="position-relative input-group-text fa-solid fa-eye-slash" onclick="EdittogglePasswordVisibility('password_{{ employee.id }}')"></span>
+										</div>
 									</div>
 								</div>
 								<div class="col-sm-6">
@@ -143,15 +146,6 @@
 												<option {% if employee.gender == choice.0 %} selected {% endif %}>{{ choice.1 }}</option>
 											{% endfor %}
 										</select>
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="input-block mb-3">
-										<label class="col-form-label">Password</label>
-										<div class="input-group">
-											<input class="form-control" type="password" name="password" id="password_{{ employee.id }}" value="{{employee.password}}">
-											<span class="position-relative input-group-text fa-solid fa-eye-slash" onclick="EdittogglePasswordVisibility('password_{{ employee.id }}')"></span>
-										</div>
 									</div>
 								</div>
 								<div class="col-sm-6">
@@ -215,6 +209,20 @@
 											{% endfor %}
 										</select>
 									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="input-block mb-3">
+										<label class="col-form-label">Photo</label>
+										<input class="form-control floating" name="photo" type="file" accept="image/*">
+									</div>
+									Uploaded Photo : 
+									{% if employee.photo %}
+										<a href="{{ employee.photo.url }}" target="_blank">
+											<img src="{{ employee.photo.url }}" alt="Uploaded Image" style="max-width: 100%; height: auto;">
+										</a>
+									{% else %}
+										No photo uploaded.
+									{% endif %}
 								</div>
 							</div>
 							<div class="submit-section">

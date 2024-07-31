@@ -37,12 +37,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-sm-6">
-			<div class="input-block mb-6">
-				<label class="col-form-label">Logo</label>
-				<input class="form-control floating" name="logo" type="file" accept="image/*">
-			</div>
-		</div>
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="input-block mb-3">
@@ -140,6 +134,21 @@
 					{% endif %}
 				</div>
 			</div>
+		</div>
+
+		<div class="col-sm-6">
+			<div class="input-block mb-6">
+				<label class="col-form-label">Logo</label>
+				<input class="form-control floating" name="logo" type="file" accept="image/*">
+			</div>
+			Uploaded Logo :
+			{% if form.instance.logo %}
+				<a href="{{ form.instance.logo.url }}" target="_blank">
+					<img src="{{ form.instance.logo.url }}" alt="Uploaded Logo" style="max-width: 100%; height: auto; margin-top: 10px;">
+				</a>
+			{% else %}
+				<p>No logo uploaded.</p>
+			{% endif %}
 		</div>
 		<div class="submit-section">
 			<button type="submit" class="btn btn-primary submit-btn" onclick="submitForm(event)">Save</button>

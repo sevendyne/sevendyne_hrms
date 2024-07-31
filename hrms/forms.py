@@ -67,4 +67,7 @@ class HrmsClientPasswordForm(forms.ModelForm):
         fields = ['password']
         widgets = {   
             'password': forms.PasswordInput(attrs={'class': 'form-control ', 'placeholder': 'Password'})
-        }    
+        }
+    def __init__(self, *args, **kwargs):
+        super(HrmsClientPasswordForm, self).__init__(*args, **kwargs)
+        self.fields['password'].required = True    

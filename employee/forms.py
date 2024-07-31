@@ -91,8 +91,7 @@ class EmployeeForm(forms.ModelForm):
             'password': {
                 'required': _("password field is required."),
             }
-        }
-    
+        }    
     def __init__(self, *args, **kwargs):
         current_company = kwargs.pop('current_company', None)
         super(EmployeeForm, self).__init__(*args, **kwargs)        
@@ -111,10 +110,11 @@ class EmployeeProfileForm(forms.ModelForm):
             'photo': forms.FileInput(attrs={'class': 'form-control'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control ', 'placeholder': 'Password'}), 
         }    
+
     def __init__(self, *args, **kwargs):
         super(EmployeeProfileForm, self).__init__(*args, **kwargs)
         self.fields['photo'].required = False
-        self.fields['password'].required = False
+        self.fields['password'].required = True
 
 
 class LeaveTypeForm(forms.ModelForm):    

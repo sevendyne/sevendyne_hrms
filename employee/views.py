@@ -676,7 +676,7 @@ def edit_employee_profile(request):
         form = EmployeeProfileForm(instance=employee)
         context = {
             'company':company,
-            "instance": employee,
+            "employee": employee,
             "form": form,
             "title": "Edit Profile",
             "redirect": "true",
