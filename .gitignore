@@ -1,11 +1,23 @@
-/migrations/*
-notes.txt
-*.pyc
-*/__pycache__/
-db.sqlite3
-venv/
-media/
-__pycache__/
+# Ignore all files in migrations directories, except __init__.py
+*/migrations/*
+!*/migrations/__init__.py
 */migrations/*.py
 */migrations/*.pyc
-!*/migrations/__init__.py
+
+# Ignore Python bytecode
+*.pyc
+__pycache__/
+*/__pycache__/
+
+# Ignore database files
+db.sqlite3
+
+# Ignore virtual environments
+venv/
+
+# Ignore uploaded media files
+media/
+
+# Ignore specific file
+notes.txt
+
