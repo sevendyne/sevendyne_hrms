@@ -3,7 +3,7 @@ from django.urls import path,include
 from django.conf.urls.static import static
 from main import views as general_views
 from sevendyne_hrms import settings
-from sevendyne_hrms.sitemaps import StaticViewSitemap
+from main.sitemaps import StaticViewSitemap
 from django.contrib.sitemaps.views import sitemap
 
 
