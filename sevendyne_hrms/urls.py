@@ -7,12 +7,14 @@ from main.sitemaps import StaticViewSitemap
 from django.contrib.sitemaps.views import sitemap
 
 
+
 sitemaps = {
     'static': StaticViewSitemap,
 }
 
 urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='sitemap'),
+    path('robots.txt/', general_views.robots_txt,name='robots_txt'),
     path('admin/', admin.site.urls),
     path('app/',include(('user.urls','user'),namespace='user')),
     path('',general_views.job_portal,name='job_portal'),
@@ -25,7 +27,7 @@ urlpatterns = [
     path('app/client/',include(('client.urls','client'),namespace='client')),
     path('app/job/',include(('job.urls','job'),namespace='job')),
     path('app/payroll/',include(('payroll.urls','payroll'),namespace='payroll')),
-    path('app/task-board/',include(('taskboard.urls','taskboard'),namespace='taskboard')),
+    # path('app/task-board/',include(('taskboard.urls','taskboard'),namespace='taskboard')),
     path('app/asset/',include(('asset.urls','asset'),namespace='asset'))
 ] 
 

@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'employee',
     'payroll',
     'job',
-    'taskboard',
+    # 'taskboard',
     'asset'
 ]
 

@@ -30,6 +30,15 @@ from job.models import Job
 
 
 
+def robots_txt(request):
+    lines = [
+        "User-agent: *",
+        "Disallow: /private/",
+        "Allow: /",
+        "Sitemap: https://www.sevendyne.com/sitemap.xml"
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
+
 
 def home_hrms(request):
     portfolios = Portfolio.objects.filter(is_deleted=False)

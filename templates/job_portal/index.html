@@ -1,4 +1,11 @@
 {% extends "job_portal/base.html" %}
+
+{% block og_title %}Sevendyne : Top Talent Management & Free HRMS Solutions{% endblock %}
+{% block og_description %}At Sevendyne, we connect businesses with top talent and offer free HRMS software to streamline HR operations, reduce costs, and support business growth.{% endblock %}
+{% comment %} {% block og_image %}https://example.com/my-custom-image.jpg{% endblock %} {% endcomment %}
+{% block og_url %}https://sevendyne.com/{% endblock %}
+{% block title %}Sevendyne HRMS{% endblock %}
+
 {% load static %}
 
 {% block content %}
@@ -19,14 +26,16 @@
                 <source src="{% static 'job_portal/videos/video.mp4' %}" type="video/mp4">
                 Your browser does not support the video tag.
             </video>      {% endcomment %}
-              
+            
             <img class="img-fluid" src="{% static 'job_portal/img/cover3.jpg' %}" alt="" style="height:70vh;">
             <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
                 <div class="container">
                     <div class="row justify-content-start">
                         <div class="col-10 col-lg-8">
-                            <h1 class="text-white animated slideInDown mb-4">Unlock Global Talent Effortlessly</h1>
-                            <p class="fs-5 fw-medium text-white mb-4 pb-2">Connect with top remote talent worldwide, and make recruitment and management seamless and efficient with our innovative, free HRMS platform</p>
+                            <h1 class="text-white animated slideInDown mb-4">Effortlessly Unlock Global Talent with Talent Management and HRMS</h1>
+                            <h5 class="fs-5 fw-medium text-white mb-4 pb-2">Attract, develop, and retain top talent with our advanced Talent Management and HRMS platform, ensuring your organization stays competitive in today’s market.</h5>
+                            <h5 class="fs-5 fw-medium text-white mb-4 pb-2">Streamline HR operations with powerful, integrated tools for employee management, workforce planning, and strategic HR planning.</h5>
+                            <h5 class="fs-5 fw-medium text-white mb-4 pb-2">Unlock business growth with customized, scalable HRMS solutions designed to meet the unique needs of your organization.</h5>                            
                             {% comment %} <a href="" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Search A Job</a> {% endcomment %}
                             {% comment %} <a href="{% url 'user:signup' %}" target="_blank" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Build Teams With Us</a> {% endcomment %}
                             <a href="{% url 'main:home_hrms' %}" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Explore Sevendyne HRMS</a> 
