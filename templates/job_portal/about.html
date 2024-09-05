@@ -75,114 +75,35 @@
 </div>
 
 
-<!-- ======= Team Section ======= -->
-<section id="team" class="padd-section text-center" style="margin-bottom:3%;margin-top:3%">
-    <div class="container" data-aos="fade-up">
-      <div class="section-title text-center">
-        <div class="common-title-section">
-            <h1>Our Client Works</h1>
+<!-- Search Start -->
+<div id="index" class="container-fluid bg-primary mb-1 wow fadeIn" data-wow-delay="0.1s" style="padding: 15px;">
+    <div class="container">
+        <div class="row g-2">
+            <h3 style="text-align:center;color:white;">Our Clients</h3>
         </div>
-        <p class="separator">We specialize in assembling exceptional tech teams tailored to the unique needs of global companies. Our expertise includes providing customized staffing solutions, delivering top tech talent, and supporting international businesses with targeted IT staffing and development services. Whether you need teams for software development, AI projects, or technology integration, our solutions are designed to meet the demands of a competitive market.          
-        </p>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio1.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">Ruby On Rails, NodeJs Team and AI frameworks - Ecommerce, Germany</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering tailored staffing services and direct developments</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio2.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">Laravel, CodeIgniter & JavaScript Team - Fintech Company, Singapore</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Providing robust staffing solutions and direct development</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio3.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">C++, Qt  and mapping libraries Team - Automotive Navigation Company, Germany</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering proficient staffing support and direct project involvement</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio4.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">C++ Team -Android Gaming Libraries - 2D Gaming Company, USA</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Offering bespoke development support and project execution</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio5.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">C++, Qt, and JS Graphing Team - Fintech Trading Company, UK</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Providing advanced development and staffing solutions</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio6.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">App Training Team - IT Training Company, Malaysia</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering comprehensive training and hands-on support across diverse software applications</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio7.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">Solidworks & PLC SCADA Team - Enginnering Company UK</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Providing advanced development and staffing solutions in Solid Works and PLC</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio8.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">Angular, SpringBoot Team - Energy Utility Company, Germany</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering comprehensive training and hands-on support across diverse software applications</p>
-            </div>
-          </div>
-        </div>
-
-        {% for p in portfolios %}
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{{ p.image.url }}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">{{ p.title }}</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">{{ p.description }}</p>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-        
-      </div>
     </div>
-</section>
-<!-- End Team Section -->
+</div>
+<!-- Search End -->
+
+<!-- ======= Clients Section ======= -->
+<section id="clients" class="clients mb-3 " style="margin-top:0%">
+    <div class="container" data-aos="zoom-out">
+        <div class="clients-slider swiper">
+            <div class="swiper-wrapper align-items-center" style="height:40%;">
+                {% comment %} <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/getmy-1.png' %}" class="img-fluid" alt=""></div> {% endcomment %}
+                {% comment %} <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/orka.jpg' %}" class="img-fluid" alt="" ></div> {% endcomment %}
+                {% comment %} <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/redrhino-1.png' %}" class="img-fluid" alt="" ></div> {% endcomment %}
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/rdp-1.png' %}" class="img-fluid" alt="" ></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/tsapi-1.png' %}" class="img-fluid" alt="" ></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/np.png' %}" class="img-fluid" alt="" ></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/cygnus.png' %}" class="img-fluid" alt="" ></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/csr.png' %}" class="img-fluid" alt="" ></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/KE_logo.png' %}" class="img-fluid" alt="" ></div>
+            </div>
+        </div>
+    </div>
+</section> 
+
 <!-- End About Us Section -->
 
 {% endblock %}
