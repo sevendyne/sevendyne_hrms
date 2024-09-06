@@ -33,7 +33,7 @@
                 <div class="container">
                     <div class="row justify-content-start">
                         <div class="col-10 col-lg-8">
-                           <h1 class="text-white animated slideInDown mb-4">Empowering Your Business with Expert App Development Solutions</h1>
+                            <h1 class="text-white animated slideInDown mb-4">Empowering Your Business with Expert App Development Solutions</h1>
 						<h4 class="fs-5 fw-medium text-white mb-4 pb-2">Tailored App Development Services to Elevate Your Business and Drive Innovation</h4>
 						<a href="{% url 'main:about' %}" class="btn btn-secondary py-md-3 px-md-5 animated slideInRight">Know More About Us</a>
 
@@ -54,26 +54,27 @@
             <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
                 <div class="row g-0 about-bg rounded overflow-hidden">
                     <div class="col-12 text-start">
-                        <img class="img-fluid w-100" src="{% static 'job_portal/img/about1.png' %}">
+                        {% comment %} <img class="img-fluid w-100" src="{% static 'assets_home/img/laptop.png' %}"> {% endcomment %}
+                        <img class="img-fluid w-100" src="{% static 'job_portal/img/dashboard2.png' %}">
                     </div>
                 </div>
             </div>
-       <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-		   <h2 class="mb-4">Build Global Teams with Sevendyne's HRMS Platform</h2>
-		   <p class="mb-4">At Sevendyne, we specialize in building high-performing teams and sourcing skilled individuals through our powerful HRMS platform. From recruitment to onboarding and management, our platform simplifies the entire staffing process, ensuring your business has the right talent for every project. Our key offerings include:</p>
-		   
-		   <p><i class="fa fa-check text-primary me-3"></i>Recruitment & Onboarding</p>
-		   <p>Sevendyne's HRMS platform streamlines recruitment by connecting you with top-tier professionals, guiding them through a smooth onboarding process to ensure they integrate seamlessly into your organization.</p>
-		   
-		   <p><i class="fa fa-check text-primary me-3"></i>HRMS & Payroll Management</p>
-		   <p>Our all-in-one HRMS tool simplifies payroll processing and HR management, giving you full control over your workforce while automating administrative tasks.</p>
-		   
-		   <p><i class="fa fa-check text-primary me-3"></i>Talent & Workforce Optimization</p>
-		   <p>Maximize the potential of your workforce with resource optimization strategies, ensuring that each individual or team contributes to sustainable growth and success.</p>
-		   
-		   <p>Partner with Sevendyne to leverage our innovative HRMS platform and build world-class teams through efficient staffing and onboarding solutions.</p>
-		   <a class="btn btn-primary py-3 px-5 mt-3" href="{% url 'main:home_hrms' %}">Explore our HRMS platform</a>
-	   </div>
+    <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+        <h2 class="mb-4">Build Global Teams with Sevendyne's HRMS Platform</h2>
+        <p class="mb-4">At Sevendyne, we specialize in building high-performing teams and sourcing skilled individuals through our powerful HRMS platform. From recruitment to onboarding and management, our platform simplifies the entire staffing process, ensuring your business has the right talent for every project. Our key offerings include:</p>
+        
+        <p><i class="fa fa-check text-primary me-3"></i>Recruitment & Onboarding</p>
+        <p>Sevendyne's HRMS platform streamlines recruitment by connecting you with top-tier professionals, guiding them through a smooth onboarding process to ensure they integrate seamlessly into your organization.</p>
+        
+        <p><i class="fa fa-check text-primary me-3"></i>HRMS & Payroll Management</p>
+        <p>Our all-in-one HRMS tool simplifies payroll processing and HR management, giving you full control over your workforce while automating administrative tasks.</p>
+        
+        <p><i class="fa fa-check text-primary me-3"></i>Talent & Workforce Optimization</p>
+        <p>Maximize the potential of your workforce with resource optimization strategies, ensuring that each individual or team contributes to sustainable growth and success.</p>
+        
+        <p>Partner with Sevendyne to leverage our innovative HRMS platform and build world-class teams through efficient staffing and onboarding solutions.</p>
+        <a class="btn btn-primary py-3 px-5 mt-3" href="{% url 'main:home_hrms' %}">Explore our HRMS platform</a>
+    </div>
 
         </div>
     </div>
