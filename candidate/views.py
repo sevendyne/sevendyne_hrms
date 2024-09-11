@@ -15,6 +15,7 @@ from main.decorators import company_required
 from main.functions import generate_form_errors, get_current_company, has_admin_dashboard_permission, has_hrms_permission
 from main.functions import generate_form_errors, get_candidate_id
 from candidate.forms import CandidateForm, InternForm
+from user.tasks import send_hrms_signup_email_notification
 
 
 # candidate crud starts here
@@ -290,7 +291,7 @@ def candidate_application(request):
             resume = form.cleaned_data['resume']
             candidateid = get_candidate_id(request)
             if not Candidate.objects.filter(email=email).exists():
-                Candidate(                    
+                candidate = Candidate.objects.create(                    
                     first_name = first_name, 
                     last_name = last_name,
                     email = email, 
@@ -307,7 +308,16 @@ def candidate_application(request):
                     github_profile = github_profile,
                     resume = resume,
                     candidateid = candidateid
-                ).save()
+                )
+                # Send email notification to sevendyne hr about candidate registration
+                subject = 'Congratulations ! A Job Applicant, %s is registered in Sevendyne HRMS.' %str(first_name)
+                enable_url = request.build_absolute_uri(reverse('candidate:candidate', kwargs={'pk': candidate.id}))
+                html_message = render_to_string('candidate/email_templates/candidate_email_notification.html', {'candidate': candidate, 'enable_url': enable_url})
+                plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
+                from_email = settings.DEFAULT_FROM_EMAIL
+                to_email = "hr@sevendyne.com"
+                # Enqueue the email sending task
+                send_hrms_signup_email_notification.delay(subject, plain_message, from_email, to_email, html_message)    
                 response_data = {
                     "status": "true",
                     "title": "Successfully Created",
@@ -356,7 +366,7 @@ def create_intern(request):
             skills = form.cleaned_data['skills']
             domain = form.cleaned_data['domain']
             if not Intern.objects.filter(email=email,is_deleted=False).exists():                
-                Intern( 
+                intern = Intern.objects.create( 
                     name = name,
                     email = email,
                     phone = phone,
@@ -365,7 +375,16 @@ def create_intern(request):
                     resume = resume,
                     skills = skills,
                     domain = domain
-                ).save()                
+                )  
+                # Send email notification to sevendyne hr about intern registration
+                subject = 'Congratulations ! An Intern, %s is registered in Sevendyne HRMS.' %str(first_name)
+                enable_url = request.build_absolute_uri(reverse('candidate:intern', kwargs={'pk': intern.id}))
+                html_message = render_to_string('candidate/email_templates/intern_email_notification.html', {'intern': intern, 'enable_url': enable_url})
+                plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
+                from_email = settings.DEFAULT_FROM_EMAIL
+                to_email = "hr@sevendyne.com"
+                # Enqueue the email sending task
+                send_hrms_signup_email_notification.delay(subject, plain_message, from_email, to_email, html_message)                 
                 response_data = {
                     "status": "true",
                     "title": "Successfully Enrolled",
