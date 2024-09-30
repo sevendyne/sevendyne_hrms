@@ -47,123 +47,39 @@
 </div>
 <!-- Carousel End -->
 
-<!-- ======= Team Section ======= -->
-<section id="team" class="padd-section text-center" style="margin-bottom:3%;margin-top:3%">
-    <div class="container" data-aos="fade-up">
-      <div class="section-title text-center">
-        <div class="common-title-section">
-            <h1>Our Client Works</h1>
-        </div>
-        <p class="separator">From app to team, we've got you covered. Whether you need teams for software development, AI projects, or technology integration, our solutions are designed to meet the demands of a competitive market.          
-        </p>
-      </div>
-
-      <div class="row">
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio1.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">Ruby On Rails, NodeJs Team and AI frameworks - Ecommerce, Germany</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering tailored staffing services and direct developments</p>
+<!-- HRMS<!-- Jobs End --> -->
+<div id="about" class="container-xxl py-5">
+    <div class="container">
+        <div class="row g-5 align-items-center">
+            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
+                <div class="row g-0 about-bg rounded overflow-hidden">
+                    <div class="col-12 text-start">
+                        {% comment %} <img class="img-fluid w-100" src="{% static 'assets_home/img/laptop.png' %}"> {% endcomment %}
+                        <img class="img-fluid w-100" src="{% static 'job_portal/img/dashboard.png' %}">
+                    </div>
+                </div>
             </div>
-          </div>
+		   <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
+				<h2 class="mb-4">Hire team or individuals for your projects</h2>
+				<p class="mb-4">Simplifies hiring, onboarding, and managing staff globally. Built on Django, it automates recruitment, payroll, and workforce optimization.</p>
+				
+				<p><i class="fa fa-check text-primary me-3"></i>Streamlined Global Hiring</p>
+				<p>Quickly source and onboard top talent from anywhere.</p>
+				
+				<p><i class="fa fa-check text-primary me-3"></i>Automated Payroll & HR</p>
+				<p>Handle payroll and HR tasks with ease through automation.</p>
+				
+				<a class="btn btn-primary py-3 px-5 mt-3" href="{% url 'main:home_hrms' %}">Explore Sevendyne HRMS platform</a>
+			</div>
         </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio2.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">Laravel, CodeIgniter & JavaScript Team - Fintech Company, Singapore</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Providing robust staffing solutions and direct development</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio3.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">C++, Qt  and mapping libraries Team - Automotive Navigation Company, Germany</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering proficient staffing support and direct project involvement</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio4.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">C++ Team -Android Gaming Libraries - 2D Gaming Company, USA</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Offering bespoke development support and project execution</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio5.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">C++, Qt, and JS Graphing Team - Fintech Trading Company, UK</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Providing advanced development and staffing solutions</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio6.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">App Training Team - IT Training Company, Malaysia</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering comprehensive training and hands-on support across diverse software applications</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio7.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">Solidworks & PLC SCADA Team - Enginnering Company UK</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Providing advanced development and staffing solutions in Solid Works and PLC</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{% static 'job_portal/img/portfolio/portfolio8.jpg' %}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">Angular, SpringBoot Team - Energy Utility Company, Germany</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering comprehensive training and hands-on support across diverse software applications</p>
-            </div>
-          </div>
-        </div>
-
-        {% for p in portfolios %}
-        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
-          <div class="team-block bottom">
-            <img src="{{ p.image.url }}" class="img-responsive" alt="img">
-            <div class="team-content" style="">
-              <span class="mb-2">{{ p.title }}</span>
-              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">{{ p.description }}</p>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-        
-      </div>
     </div>
-</section>
-<!-- End Team Section -->
+</div>
+<!-- HRMS End -->
 
-<!-- Heading End -->
-
-
-<!-- End Clients Section -->
 <!-- Heading End -->
 <div id="jobs" class="padd-section" style="background-color: #d9e1e5b8;padding-top:5%;padding-bottom:5%">
     <div class="container">       
-        <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Job/Training Opportunities</h2>
+        <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Training/Job Opportunities</h2>
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
             <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
                 <li class="nav-item">
@@ -313,34 +229,121 @@
     </div>
 </div>
 <!-- Jobs End -->
-<!-- HRMS<!-- Jobs End --> -->
-<div id="about" class="container-xxl py-5">
-    <div class="container">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-6 wow fadeIn" data-wow-delay="0.1s">
-                <div class="row g-0 about-bg rounded overflow-hidden">
-                    <div class="col-12 text-start">
-                        {% comment %} <img class="img-fluid w-100" src="{% static 'assets_home/img/laptop.png' %}"> {% endcomment %}
-                        <img class="img-fluid w-100" src="{% static 'job_portal/img/dashboard.png' %}">
-                    </div>
-                </div>
-            </div>
-		   <div class="col-lg-6 wow fadeIn" data-wow-delay="0.5s">
-				<h2 class="mb-4">Onboards: Your Global Staffing Solution</h2>
-				<p class="mb-4">Onboards, Sevendyne's HRMS platform, simplifies hiring, onboarding, and managing staff globally. Built on Django, it automates recruitment, payroll, and workforce optimization.</p>
-				
-				<p><i class="fa fa-check text-primary me-3"></i>Streamlined Global Hiring</p>
-				<p>Quickly source and onboard top talent from anywhere.</p>
-				
-				<p><i class="fa fa-check text-primary me-3"></i>Automated Payroll & HR</p>
-				<p>Handle payroll and HR tasks with ease through automation.</p>
-				
-				<a class="btn btn-primary py-3 px-5 mt-3" href="{% url 'main:home_hrms' %}">Explore Onboards HRMS platform</a>
-			</div>
+
+<!-- ======= Team Section ======= -->
+<section id="team" class="padd-section text-center" style="margin-bottom:3%;margin-top:3%">
+    <div class="container" data-aos="fade-up">
+      <div class="section-title text-center">
+        <div class="common-title-section">
+            <h1>Our Client Works</h1>
         </div>
+        <p class="separator">From app to team, we've got you covered. Whether you need teams for software development, AI projects, or technology integration, our solutions are designed to meet the demands of a competitive market.          
+        </p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
+          <div class="team-block bottom">
+            <img src="{% static 'job_portal/img/portfolio/portfolio1.jpg' %}" class="img-responsive" alt="img">
+            <div class="team-content" style="">
+              <span class="mb-2">Ruby On Rails, NodeJs Team and AI frameworks - Ecommerce, Germany</span>
+              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering tailored staffing services and direct developments</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
+          <div class="team-block bottom">
+            <img src="{% static 'job_portal/img/portfolio/portfolio2.jpg' %}" class="img-responsive" alt="img">
+            <div class="team-content" style="">
+              <span class="mb-2">Laravel, CodeIgniter & JavaScript Team - Fintech Company, Singapore</span>
+              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Providing robust staffing solutions and direct development</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
+          <div class="team-block bottom">
+            <img src="{% static 'job_portal/img/portfolio/portfolio3.jpg' %}" class="img-responsive" alt="img">
+            <div class="team-content" style="">
+              <span class="mb-2">C++, Qt  and mapping libraries Team - Automotive Navigation Company, Germany</span>
+              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering proficient staffing support and direct project involvement</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
+          <div class="team-block bottom">
+            <img src="{% static 'job_portal/img/portfolio/portfolio4.jpg' %}" class="img-responsive" alt="img">
+            <div class="team-content" style="">
+              <span class="mb-2">C++ Team -Android Gaming Libraries - 2D Gaming Company, USA</span>
+              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Offering bespoke development support and project execution</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
+          <div class="team-block bottom">
+            <img src="{% static 'job_portal/img/portfolio/portfolio5.jpg' %}" class="img-responsive" alt="img">
+            <div class="team-content" style="">
+              <span class="mb-2">C++, Qt, and JS Graphing Team - Fintech Trading Company, UK</span>
+              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Providing advanced development and staffing solutions</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
+          <div class="team-block bottom">
+            <img src="{% static 'job_portal/img/portfolio/portfolio6.jpg' %}" class="img-responsive" alt="img">
+            <div class="team-content" style="">
+              <span class="mb-2">App Training Team - IT Training Company, Malaysia</span>
+              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering comprehensive training and hands-on support across diverse software applications</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
+          <div class="team-block bottom">
+            <img src="{% static 'job_portal/img/portfolio/portfolio7.jpg' %}" class="img-responsive" alt="img">
+            <div class="team-content" style="">
+              <span class="mb-2">Solidworks & PLC SCADA Team - Enginnering Company UK</span>
+              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Providing advanced development and staffing solutions in Solid Works and PLC</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
+          <div class="team-block bottom">
+            <img src="{% static 'job_portal/img/portfolio/portfolio8.jpg' %}" class="img-responsive" alt="img">
+            <div class="team-content" style="">
+              <span class="mb-2">Angular, SpringBoot Team - Energy Utility Company, Germany</span>
+              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">Delivering comprehensive training and hands-on support across diverse software applications</p>
+            </div>
+          </div>
+        </div>
+
+        {% for p in portfolios %}
+        <div class="col-md-6 col-md-4 col-lg-3 mt-3 mb-3" data-aos="zoom-in" >
+          <div class="team-block bottom">
+            <img src="{{ p.image.url }}" class="img-responsive" alt="img">
+            <div class="team-content" style="">
+              <span class="mb-2">{{ p.title }}</span>
+              <p class="mt-1"style="text-transform: uppercase;font-weight:bolder">{{ p.description }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        
+      </div>
     </div>
-</div>
-<!-- HRMS End -->
+</section>
+<!-- End Team Section -->
+
+<!-- Heading End -->
+
+
+<!-- End Clients Section -->
+
 <!-- Heading End -->
 <section id="contact" class="padd-section" style="background-color: #d9e1e5b8;padding-top:0%;">
 
