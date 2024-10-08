@@ -80,11 +80,34 @@
 <!-- Clients Section -->
 
 <!-- Introductory Section -->
-<section class="intro mb-5">
+
+<div id="index" class="container-fluid bg-primary mb-1 wow fadeIn" data-wow-delay="0.1s" style="padding: 15px;">
+    <div class="container">
+        <div class="row g-2">
+            <h3 style="text-align:center;color:white;">Our Clients</h3>
+        </div>
+    </div>
+</div>
+<!-- Clients Section -->
+<section id="clients" class="clients mb-3" style="margin-top:0%">
+	<h2>Our App Development Expertise</h2>
+    <p>At Sevendyne, we specialize in delivering innovative app development solutions tailored to your project needs. With a team of experienced developers, we transform your ideas into functional, user-friendly applications. Our portfolio includes successful projects across various industries, showcasing our commitment to quality and client satisfaction.</p>
+       
+    <div class="container" data-aos="zoom-out">
+        <div class="clients-slider swiper">
+            <div class="swiper-wrapper align-items-center" style="height:40%;">
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/rdp-1.png' %}" class="img-fluid" alt=""></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/tsapi-1.png' %}" class="img-fluid" alt=""></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/np.png' %}" class="img-fluid" alt=""></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/cygnus.png' %}" class="img-fluid" alt=""></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/csr.png' %}" class="img-fluid" alt=""></div>
+                <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/KE_logo.png' %}" class="img-fluid" alt=""></div>
+            </div>
+        </div>
+    </div>
+
     <div class="container text-center">
-        <h2>Our App Development Expertise</h2>
-        <p>At Sevendyne, we specialize in delivering innovative app development solutions tailored to your project needs. With a team of experienced developers, we transform your ideas into functional, user-friendly applications. Our portfolio includes successful projects across various industries, showcasing our commitment to quality and client satisfaction.</p>
-        
+         
         <!-- Request Quote Button -->
         <button class="btn btn-primary" id="quote-button" onclick="toggleQuoteForm()">Request a Quote</button>
 
@@ -125,17 +148,6 @@
         </div>
     </div>
 
-    <!-- Clients Slider -->
-    <div class="clients-slider swiper mt-4">
-        <div class="swiper-wrapper align-items-center" style="height:40%;">
-            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/rdp-1.png' %}" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/tsapi-1.png' %}" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/np.png' %}" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/cygnus.png' %}" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/csr.png' %}" class="img-fluid" alt=""></div>
-            <div class="swiper-slide"><img src="{% static 'job_portal/img/clients/KE_logo.png' %}" class="img-fluid" alt=""></div>
-        </div>
-    </div>
 </section>
 
 <!-- End Quote Request Section -->
