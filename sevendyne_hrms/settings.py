@@ -183,16 +183,16 @@ LOGOUT_URL = '/app/logout/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_HOST = 'smtpout.secureserver.net'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'hr@sevendyne.com'
-EMAIL_HOST_PASSWORD = '7dyne123$'
+EMAIL_HOST_USER = 'sevendyne.technical@gmail.com'
+EMAIL_HOST_PASSWORD = 'itze zzmq jiqt otqk'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'hr@sevendyne.com'
-DEFAULT_REPLY_TO_EMAIL = 'hr@sevendyne.com'
-DEFAULT_BCC_EMAIL = 'hr@sevendyne.com'
-SERVER_EMAIL = 'hr@sevendyne.com'
-ADMIN_EMAIL = 'hr@sevendyne.com'
+DEFAULT_FROM_EMAIL = 'sevendyne.technical@gmail.com'
+DEFAULT_REPLY_TO_EMAIL = 'sevendyne.technical@gmail.com'
+DEFAULT_BCC_EMAIL = 'sevendyne.technical@gmail.com'
+SERVER_EMAIL = 'sevendyne.technical@gmail.com'
+ADMIN_EMAIL = 'sevendyne.technical@gmail.com'
 
 # app password"#7dynehrms"
 
