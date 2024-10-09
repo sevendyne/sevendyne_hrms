@@ -84,7 +84,7 @@ def register(request):
             html_message = render_to_string('sevendyne_admin/hrms_clients/email_templates/email_notification.html', {'hrms_client': hrms_client, 'enable_url': enable_url})
             plain_message = strip_tags(html_message)  # Strip HTML tags for plain text email
             from_email = settings.DEFAULT_FROM_EMAIL
-            to_email = "hr@sevendyne.com"
+            to_email = "sevendyne.technical@gmail.com"
             # Enqueue the email sending task
             send_hrms_signup_email_notification.delay(subject, plain_message, from_email, to_email, html_message)    
                     
