@@ -1,6 +1,6 @@
 {% extends "job_portal/base.html" %}
 
-{% block og_title %}Sevendyne: IT Solutions, Digital Innovation & Skills Training{% endblock %}
+{% block og_title %}Sevendyne: IT Solutions, Digital Innovation & Tech Development{% endblock %}
 {% block og_description %}At Sevendyne, we specialize in providing innovative IT Solutions to enhance your team's capabilities and drive business growth. Explore how our tailored services can connect you with top talent and streamline your operations.{% endblock %}
 {% block og_url %}https://sevendyne.com/{% endblock %}
 {% block title %}Sevendyne: Innovative IT Solutions for Enterprise Growth{% endblock %}
@@ -96,11 +96,11 @@
         <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Upskill Your Workforce with Expert Resource Training</h2>
         <div class="tab-class text-center wow fadeInUp" data-wow-delay="0.3s">
             <ul class="nav nav-pills d-inline-flex justify-content-center border-bottom mb-5">
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 active" data-bs-toggle="pill" href="#tab-1">
                         <h6 class="mt-n1 mb-0">Internship</h6>
                     </a>
-                </li>
+                </li>-->
                 <li class="nav-item">
                     <a class="d-flex align-items-center text-start mx-3 pb-3" data-bs-toggle="pill" href="#tab-2">
                         <h6 class="mt-n1 mb-0">Full Time</h6>
@@ -118,7 +118,7 @@
                 </li>
             </ul>
             <div class="tab-content">
-                <div id="tab-1" class="tab-pane fade show p-0 active"> 
+               <!-- <div id="tab-1" class="tab-pane fade show p-0 active"> 
                     {% if internship_jobs %}                           
                         {% for job in internship_jobs %}
                         <div class="job-item p-4 mb-4">
@@ -150,7 +150,7 @@
 						</p>                    
                         <a href="{% url 'candidate:create_intern' %}" class="btn btn-primary mt-3">Apply for Training Programme</a>
                     {% endif %}                    
-                </div>
+                </div>-->
                 <div id="tab-2" class="tab-pane fade show p-0">  
                     {% if full_time_jobs %}                           
                         {% for job in full_time_jobs %}
