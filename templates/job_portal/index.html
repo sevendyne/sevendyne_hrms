@@ -30,7 +30,7 @@
                         <div class="col-10 col-lg-8">
                             <h2 class="mb-4 text-white">Comprehensive App Development Support</h2>
                             <p class="mb-4 text-white">Empower your organization with our expert app development services. We specialize in custom software development, mobile applications, and 3D design, using cutting-edge technology to deliver innovative solutions tailored to your needs.</p>
-                            <a class="btn btn-primary py-3 px-5 mt-3 animated slideInRight" href="{% url 'main:about' %}">Explore About Us</a>
+                            <a class="btn btn-primary py-3 px-5 mt-3 animated slideInRight" href="{% url 'main:contact' %}">Request Quote Here</a>
                         </div>
                     </div>
                 </div>
@@ -283,77 +283,55 @@
     </div>
 </div>
 <!-- Jobs End -->
-	<div id="index" class="container-fluid bg-primary mb-1 wow fadeIn" data-wow-delay="0.1s" style="padding: 15px;">
+<div id="about-us" class="container-fluid bg-primary mb-1 wow fadeIn" data-wow-delay="0.1s" style="padding: 15px;">
     <div class="container">
         <div class="row g-2">
-            <h3 style="text-align:center; color:white;">Request Your Free IT Project Quote</h3>
+            <h3 style="text-align:center; color:white;">7dyne: Your Trusted Partner for Innovative IT Solutions</h3>
         </div>
     </div>
-	</div>
+</div>
 
-	<div class="container text-center">
-		<h2></h2>
-		
-		<!-- Quote Request Form (Initially Hidden) -->
-		<div id="quote-form" style="margin-top: 20px;">
-			<div class="section-title text-center">
-				<p class="separator">
-					Provide us with some details about your IT project or product requirements, and our team will get back to you with a free, no-obligation quote.
-				</p>
-			</div>
+<div class="container text-center">
+    <!-- About Us Content -->
+    <div id="about-us-content" style="margin-top: 20px;">
+        <div class="section-title text-center">
+            <p class="separator">
+                Since 2016, 7dyne has been at the forefront of providing comprehensive IT solutions. Our journey began in 2012 as a freelance agency, and we incorporated as a company in 2016. Over the years, we have built solutions for clients across the UK, Germany, Malaysia, and more, offering top-notch services tailored to meet business needs.
+            </p>
+        </div>
 
-			<div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
-				<div class="col-lg-6 col-md-10">
-					<div class="form">
-						<form id="submit-form" action="#" class="php-email-form">
-							<div class="form-group">
-							<input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-							<input type="text" name="honeypot" style="display:none;"> <!-- Spam protection -->
-							</div>
-							<div class="form-group mt-3">
-								<input type="text" class="form-control" name="company_name" id="company_name" placeholder="Company Name" required>
-							</div>
-							<div class="form-group mt-3">
-								<input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-							</div>
-							<div class="form-group mt-3">
-								<select class="form-control" name="project_type" id="project_type" required>
-									<option value="" disabled selected>Project Request Type</option>
-									<option value="app_development">FullStack Development</option>
-									<option value="hrms_software">Android Development</option>
-									<option value="cloud_support">C++ Development</option>
-									<option value="other">Other IT Projects</option>
-								</select>
-							</div>
-							<div class="form-group mt-3">
-								<textarea class="form-control" name="project_description" rows="5" placeholder="Brief Description of Your IT Project or Product" required></textarea>
-							</div>
-							
-							<div class="form-group mt-3">
-								<input type="text" class="form-control" name="timeline" id="timeline" placeholder="Expected Timeline (e.g., 3 months, 1 year) (optional)">
-							</div>
-							<div class="form-group mt-3">
-								<input type="text" class="form-control" name="budget" id="budget" placeholder="Estimated Budget (optional)">
-							</div>
-							<div class="form-group mt-3">
-								<textarea class="form-control" name="additional_requirements" rows="3" placeholder="Additional Requirements or Details (optional)"></textarea>
-							</div>
+        <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-lg-10 col-md-12">
+                <div class="about-us-details">
 
-							<!-- reCAPTCHA Widget -->				
-							<div class="my-3">
-								<div class="error-message"></div>
-							</div>
-							<div class="text-center">
-								<button class="btn btn-primary" type="submit">Send Request</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-
+                    <h4>App Development: Crafting Tomorrow's Digital Experiences</h4>
+                    <p>Our app development expertise enables businesses to create innovative and user-friendly applications. We design and develop custom solutions tailored to meet unique business needs, driving digital transformation.</p>
+                    
+                    <h4>Mobile & Web Development</h4>
+                    <p>Scalable apps and responsive platforms for diverse industries.</p>
+                    
+                    <h4>Enterprise Solutions</h4>
+                    <p>Tailored systems that address complex business challenges.</p>
+                    
+                    <h4>Cloud Integration & DevOps</h4>
+                    <p>Efficient deployment and seamless management for enhanced scalability.</p>
+                    
+                    <h4>UI/UX Design</h4>
+                    <p>Engaging and intuitive interfaces that enhance user experience.</p>
+                    
+                    <h4>Why Choose 7dyne?</h4>
+                    <ul style="text-align:left; margin: 0 auto; max-width: 800px;">
+                        <li><b>Expertise and Experience:</b> Years of delivering successful IT solutions.</li>
+                        <li><b>Client-Centric Approach:</b> Understanding your unique needs and goals.</li>
+                        <li><b>Innovative Solutions:</b> Cutting-edge technology and creative thinking.</li>
+                        <li><b>Global Reach:</b> Serving clients across the globe.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-</section>
+</div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
