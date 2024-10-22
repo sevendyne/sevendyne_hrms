@@ -42,8 +42,8 @@
 <!-- Carousel End -->
 
 <!-- Portfolio Projects Section Start -->
-<div id="projects" class="container-fluid py-5">
-    <div class="container" style="padding-top: 5%; padding-bottom: 5%">
+<div id="projects" class="container-fluid">
+    <div class="container" style="padding-bottom: 5%">
         <div class="row g-5 align-items-center">
             <div class="col-12 wow fadeIn" data-wow-delay="0.1s">
                 <h2 class="mb-4 text-center">Featured Client Tech Projects</h2>
@@ -122,20 +122,6 @@
 </div>
 <!-- Portfolio Projects Section End -->
 
-<!-- Training Section -->
-<div class="container-fluid">
-    <div class="padd-section" style="background-color: #d9e1e5b8; padding-top: 5%; padding-bottom: 5%">
-        <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Upskill Your Workforce with Expert Resource Training</h2>
-        <div class="training-content text-center wow fadeInUp" data-wow-delay="0.3s">
-            <h5 style="font-weight:bolder">Enroll in Our Fullstack Training Program and Propel Your Career Forward!</h5>
-            <p>Our Fullstack training division is dedicated to providing high-quality programs for professionals eager to master both frontend and backend development skills. 
-            With a focus on practical knowledge, we offer comprehensive training in technologies like Node.js, Bootstrap, Django, Python, HTML, CSS, and more, helping you stay ahead in the fast-paced tech industry.
-            </p>                    
-            <a href="{% url 'candidate:create_intern' %}" class="btn btn-primary mt-3">Apply for Training Programme</a>
-        </div>
-    </div>
-</div>
-
 <!-- HRMS Section -->
 <div class="container-fluid">
     <div class="padd-section" style="background-color: #cfe2f3; padding-top: 5%; padding-bottom: 5%">
@@ -149,6 +135,19 @@
     </div>
 </div>
 
+<!-- Training Section -->
+<div class="container-fluid">
+    <div class="padd-section" style="background-color: #d9e1e5b8; padding-top: 5%; padding-bottom: 5%">
+        <h2 class="text-center mb-5 wow fadeInUp" data-wow-delay="0.1s">Upskill Your Workforce with Expert Resource Training</h2>
+        <div class="training-content text-center wow fadeInUp" data-wow-delay="0.3s">
+            <h5 style="font-weight:bolder">Enroll in Our Fullstack Training Program and Propel Your Career Forward!</h5>
+            <p>Our Fullstack training division is dedicated to providing high-quality programs for professionals eager to master both frontend and backend development skills. 
+            With a focus on practical knowledge, we offer comprehensive training in technologies like Node.js, Bootstrap, Django, Python, HTML, CSS, and more, helping you stay ahead in the fast-paced tech industry.
+            </p>                    
+            <a href="{% url 'candidate:create_intern' %}" class="btn btn-primary mt-3">Apply for Training Programme</a>
+        </div>
+    </div>
+</div>
 
 
 {% endblock %}
