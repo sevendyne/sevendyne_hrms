@@ -1,10 +1,9 @@
 {% extends "job_portal/base.html" %}
 
-{% block og_title %}Sevendyne: HRMS Consulting, Custom App Development, and Fullstack Training {% endblock %}
-{% block og_description %}At Sevendyne, we specialize in HRMS consulting, custom app development, and Fullstack training to enhance your team's capabilities and drive business growth. Discover how our tailored solutions can empower your organization.{% endblock %}
+{% block og_title %}Sevendyne: Custom App Development, HRMS Consulting and Fullstack Training {% endblock %}
+{% block og_description %}At Sevendyne, we specialize in Custom App development, HRMS consulting and Fullstack training to enhance your team's capabilities and drive business growth. Discover how our tailored solutions can empower your organization.{% endblock %}
 {% block og_url %}https://Sevendyne.com/{% endblock %}
-{% block title %}Sevendyne: Empowering Enterprises with HRMS Consulting, Custom App Development, and Fullstack Training{% endblock %}
-
+{% block title %}Sevendyne: Empowering Enterprises with Custom App Development, HRMS Consulting, and Fullstack Training{% endblock %}
 
 
 {% load static %}
@@ -22,6 +21,22 @@
 <!-- Carousel Start -->
 <div class="container-fluid p-0" style="height:70vh;">
     <div class="owl-carousel header-carousel position-relative">
+	    <!-- App Development Support Carousel Item -->
+        <div class="owl-carousel-item position-relative">
+            <img class="img-fluid" src="{% static 'job_portal/img/cover4.jpg' %}" alt="" style="height:70vh;">
+            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
+                <div class="container">
+                    <div class="row justify-content-start">
+                        <div class="col-10 col-lg-8">
+                            <h2 class="mb-4 text-white">Comprehensive App Development Support</h2>
+                            <p class="mb-4 text-white">Empower your organization with our expert app development services. We specialize in custom software, mobile applications, and websites using cutting-edge technology to deliver tailored solutions.</p>
+                            <a class="btn btn-primary py-3 px-5 mt-3 animated slideInRight" href="{% url 'main:portfolios_home' %}">Explore Our Projects</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+		
         <!-- HRMS Consulting Carousel Item -->
         <div class="owl-carousel-item position-relative">
             <img class="img-fluid" src="{% static 'job_portal/img/cover2.jpg' %}" alt="" style="height:70vh;">
@@ -37,21 +52,7 @@
                 </div>
             </div>
         </div>
-        <!-- App Development Support Carousel Item -->
-        <div class="owl-carousel-item position-relative">
-            <img class="img-fluid" src="{% static 'job_portal/img/cover4.jpg' %}" alt="" style="height:70vh;">
-            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
-                <div class="container">
-                    <div class="row justify-content-start">
-                        <div class="col-10 col-lg-8">
-                            <h2 class="mb-4 text-white">Comprehensive App Development Support</h2>
-                            <p class="mb-4 text-white">Empower your organization with our expert app development services. We specialize in custom software, mobile applications, and websites using cutting-edge technology to deliver tailored solutions.</p>
-                            <a class="btn btn-primary py-3 px-5 mt-3 animated slideInRight" href="{% url 'main:portfolios_home' %}">Explore Our Projects</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
         <!-- Training Program Carousel Item -->
         <div class="owl-carousel-item position-relative">
             <img class="img-fluid" src="{% static 'job_portal/img/cover3.jpg' %}" alt="" style="height:70vh;">
