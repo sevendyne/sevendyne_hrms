@@ -120,42 +120,6 @@
 		</div>
 	</div>
 	<!-- / Banner-->
-	
-	<!--options-->
-	<div class="build-feature mb-5">
-		<!-- Product Options Section with ID -->
-				<div id="plan-section" class="product-options-section mt-5 text-center">
-					<h3 style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">Choose Your Plan</h3>
-					<p style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">Select the option that best suits your business needs</p>
-					<div class="row mt-4">
-						<!-- Option 1: Yearly Subscription -->
-						<div class="col-md-4">
-							<div class="product-option">
-								<h4>Yearly Subscription</h4>
-								<p>Enjoy full access to our HRMS solution with a yearly subscription, offering the best value for continuous support.</p>
-								<a href="{% url 'user:signup' %}" class="btn btn-primary">Sign Up for Yearly</a>
-							</div>
-						</div>
-						<!-- Option 2: Monthly HR Support -->
-						<div class="col-md-4">
-							<div class="product-option">
-								<h4>Monthly HR Support</h4>
-								<p>Get flexible monthly HR support tailored to your staffing needs with easy, month-by-month commitment.</p>
-								<a href="{% url 'user:signup' %}" class="btn btn-primary">Sign Up for Monthly</a>
-							</div>
-						</div>
-						<!-- Option 3: Full Product Deployment -->
-						<div class="col-md-4">
-							<div class="product-option">
-								<h4>Full Product Deployment</h4>
-								<p>Experience end-to-end deployment of our HRMS solution, fully integrated into your organization's workflow.</p>
-								<a href="{% url 'user:signup' %}" class="btn btn-primary">Get Full Deployment</a>
-							</div>
-						</div>
-					</div>
-				</div>
-	</div>
-	<!--options end-->
 
 	<!-- Features slider-->
 	<div class="build-feature mb-5">
@@ -205,10 +169,35 @@
 
 	<!-- New Section at the End of the Page -->
 	<div class="signup-section d-flex justify-content-center" style="background-color: #4CAF50; padding: 40px; margin-top: 40px; text-align: center; color: white;">
-		<div class="col-lg-8 col-sm-10 col-12">
-			<h2>Join Us Today!</h2>
-			<p>Ready to enhance your team with global talent? Sign up now!</p>
-			<a href="{% url 'user:signup' %}" class="btn btn-primary" style="margin-top: 20px;">Get Started</a>
+		<div id="plan-section" class="product-options-section mt-5 text-center">
+			<h3 style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">Choose Your Plan</h3>
+			<p style="background-color: #f8f9fa; padding: 10px; border-radius: 5px;">Select the option that best suits your business needs</p>
+			<div class="row mt-4">
+				<!-- Option 1: Yearly Subscription -->
+				<div class="col-md-4">
+					<div class="product-option">
+						<h4>Yearly Subscription</h4>
+						<p>Enjoy full access to our HRMS solution with a yearly subscription, offering the best value for continuous support.</p>
+						<a href="{% url 'user:signup' %}" class="btn btn-primary">Sign Up for Yearly</a>
+					</div>
+				</div>
+				<!-- Option 2: Monthly HR Support -->
+				<div class="col-md-4">
+					<div class="product-option">
+						<h4>Monthly HR Support</h4>
+						<p>Get flexible monthly HR support tailored to your staffing needs with easy, month-by-month commitment.</p>
+						<a href="{% url 'user:signup' %}" class="btn btn-primary">Sign Up for Monthly</a>
+					</div>
+				</div>
+				<!-- Option 3: Full Product Deployment -->
+				<div class="col-md-4">
+					<div class="product-option">
+						<h4>Full Product Deployment</h4>
+						<p>Experience end-to-end deployment of our HRMS solution, fully integrated into your organization's workflow.</p>
+						<a href="{% url 'user:signup' %}" class="btn btn-primary">Get Full Deployment</a>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	
