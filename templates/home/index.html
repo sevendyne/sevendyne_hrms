@@ -106,7 +106,9 @@
 							<p>Build Your Global Team with Our Expert Staffing Services and HRMS Solution.</p>
 							<h2>Effortless Resource Management for International Clients</h2>
 							<!-- Updated Button with Anchor Link -->
-							<a href="#plan-section" class="btn btn-primary mt-3">Choose Our Plan</a>
+							<a href="#plan-section" class="btn btn-primary mt-3">Check HRMS features</a>
+							<a href="{% url 'user:signup' %}" class="btn btn-primary mt-3">Signup Now</a>
+							
 						</div>
 					</div>
 					<div class="col-lg-7 col-sm-7 col-12">
@@ -122,6 +124,36 @@
 		</div>
 	</div>
 	<!-- / Banner-->
+	
+	<!-- New Section at the End of the Page -->
+	<div class="signup-section d-flex justify-content-center" style="background-color: #4CAF50; padding: 40px; margin-top: 40px; text-align: center; color: white;">
+    <div id="plan-section" class="product-options-section mt-5 text-center">
+        <h3 style="color: #FFD700; font-weight: bold; font-size: 28px;">Choose Your Plan</h3>
+        <p style="color: #FFF8DC; font-size: 18px;">Select the option that best suits your business needs</p>
+        <div class="row mt-4 d-flex justify-content-center">
+            <!-- Option 1: Yearly Subscription -->
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                <div class="product-option p-4" style="background-color: white; color: #4CAF50; border-radius: 10px;">
+                    <h4 style="font-size: 22px; font-weight: bold;">Yearly Subscription</h4>
+                    <p style="font-size: 16px;">Enjoy full access to our HRMS solution with a yearly subscription, offering the best value for continuous support.</p>
+                     </div>
+            </div>
+            <!-- Option 2: Monthly HR Support -->
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                <div class="product-option p-4" style="background-color: white; color: #4CAF50; border-radius: 10px;">
+                    <h4 style="font-size: 22px; font-weight: bold;">Monthly HR Support</h4>
+                    <p style="font-size: 16px;">Get flexible monthly HR support tailored to your staffing needs with easy, month-by-month commitment.</p>
+                </div>
+            </div>
+            <!-- Option 3: Full Product Deployment -->
+            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                <div class="product-option p-4" style="background-color: white; color: #4CAF50; border-radius: 10px;">
+                    <h4 style="font-size: 22px; font-weight: bold;">Full Product Deployment</h4>
+                    <p style="font-size: 16px;">Experience end-to-end deployment of our HRMS solution, fully integrated into your organization's workflow.</p>                </div>
+            </div>
+        </div>
+    </div>
+	</div>
 
 	<!-- Features slider-->
 	<div class="build-feature mb-5">
@@ -169,39 +201,13 @@
 		</div>
 	</div>
 
-	<!-- New Section at the End of the Page -->
-	<div class="signup-section d-flex justify-content-center" style="background-color: #4CAF50; padding: 40px; margin-top: 40px; text-align: center; color: white;">
+	<div class="d-flex justify-content-center" style="background-color: #4CAF50; padding: 40px; margin-top: 40px; text-align: center; color: white;">
     <div id="plan-section" class="product-options-section mt-5 text-center">
-        <h3 style="color: #FFD700; font-weight: bold; font-size: 28px;">Choose Your Plan</h3>
-        <p style="color: #FFF8DC; font-size: 18px;">Select the option that best suits your business needs</p>
-        <div class="row mt-4 d-flex justify-content-center">
-            <!-- Option 1: Yearly Subscription -->
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-                <div class="product-option p-4" style="background-color: white; color: #4CAF50; border-radius: 10px;">
-                    <h4 style="font-size: 22px; font-weight: bold;">Yearly Subscription</h4>
-                    <p style="font-size: 16px;">Enjoy full access to our HRMS solution with a yearly subscription, offering the best value for continuous support.</p>
-                    <a href="{% url 'user:signup' %}" class="btn btn-primary mt-3" style="background-color: #4CAF50; border: none;">Sign Up for Yearly</a>
-                </div>
-            </div>
-            <!-- Option 2: Monthly HR Support -->
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-                <div class="product-option p-4" style="background-color: white; color: #4CAF50; border-radius: 10px;">
-                    <h4 style="font-size: 22px; font-weight: bold;">Monthly HR Support</h4>
-                    <p style="font-size: 16px;">Get flexible monthly HR support tailored to your staffing needs with easy, month-by-month commitment.</p>
-                    <a href="{% url 'user:signup' %}" class="btn btn-primary mt-3" style="background-color: #4CAF50; border: none;">Sign Up for Monthly</a>
-                </div>
-            </div>
-            <!-- Option 3: Full Product Deployment -->
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
-                <div class="product-option p-4" style="background-color: white; color: #4CAF50; border-radius: 10px;">
-                    <h4 style="font-size: 22px; font-weight: bold;">Full Product Deployment</h4>
-                    <p style="font-size: 16px;">Experience end-to-end deployment of our HRMS solution, fully integrated into your organization's workflow.</p>
-                    <a href="{% url 'user:signup' %}" class="btn btn-primary mt-3" style="background-color: #4CAF50; border: none;">Get Full Deployment</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+        <h3 style="color: #FFD700; font-weight: bold; font-size: 28px;">Signup</h3>
+        <p style="color: #FFF8DC; font-size: 18px;">Build your HRMS platform to successfully manage your team</p>
+        <a href="{% url 'user:signup' %}" class="btn btn-primary mt-3">Signup Now</a>
+		</div>
+	</div>
 
 	
 	<!-- Footer-->
