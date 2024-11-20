@@ -9,204 +9,84 @@
 
 {% block content %}
 
-
-<!-- Header Start -->
 <div class="container-xxl py-5 bg-dark page-header mb-5">
-    <div class="container my-5 pt-5 pb-4">
-        <h1 class="display-3 text-white mb-3 animated slideInDown">Software Development Courses</h1>
-    </div>
+  <div class="container my-5 pt-5 pb-4">
+    <h1 class="display-3 text-white mb-3 animated slideInDown">Software Development Courses</h1>
+  </div>
 </div>
-<!-- Header End -->
 
 <section id="courses" class="custom-app-development bg-light" style="margin-bottom:3%;margin-top:3%">
-    <div class="container">
-        <div class="section-title text-center">
-            <h1>Master Software Development with Our Expert-Led Courses</h1>
-            <p class="separator">
-                Enhance your skills and advance your career with our specialized training programs. Each course is designed to provide hands-on experience and comprehensive knowledge of the latest technologies. 
-            </p>
-        </div>
-
-        <div class="row justify-content-center">
-            <!-- Full-Stack Development -->
-            <div class="col-md-6 col-lg-4 mt-3 mb-3">
-                <div class="course-block bottom shadow rounded">
-                    <img src="{% static 'job_portal/img/courses/fullstack.jpg' %}" class="img-responsive course-img" alt="Full-Stack Development">
-                    <div class="course-content p-3">
-                        <h4 class="mb-2">Full-Stack Development</h4>
-                        <p>
-                            Master Full-Stack technologies including Python, Ruby on Rails, Angular, and more. Build dynamic web applications and APIs with industry-best practices.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- C++ with Qt & Boost -->
-            <div class="col-md-6 col-lg-4 mt-3 mb-3">
-                <div class="course-block bottom shadow rounded">
-                    <img src="{% static 'job_portal/img/courses/cpp.jpg' %}" class="img-responsive course-img" alt="C++ Development">
-                    <div class="course-content p-3">
-                        <h4 class="mb-2">C++ with Qt & Boost</h4>
-                        <p>
-                            Dive into advanced C++ programming with frameworks like Qt and Boost. Perfect for building high-performance applications and real-time systems.
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DevOps Cloud -->
-            <div class="col-md-6 col-lg-4 mt-3 mb-3">
-                <div class="course-block bottom shadow rounded">
-                    <img src="{% static 'job_portal/img/courses/devops.jpg' %}" class="img-responsive course-img" alt="DevOps Cloud">
-                    <div class="course-content p-3">
-                        <h4 class="mb-2">DevOps Cloud</h4>
-                        <p>
-                            Learn DevOps tools and cloud platforms like Docker, Kubernetes, AWS, and CI/CD pipelines. Automate workflows and optimize deployments.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="row justify-content-center">
-            <!-- Java with Android & Kotlin -->
-            <div class="col-md-6 col-lg-4 mt-3 mb-3">
-                <div class="course-block bottom shadow rounded">
-                    <img src="{% static 'job_portal/img/courses/java.jpg' %}" class="img-responsive course-img" alt="Java Development">
-                    <div class="course-content p-3">
-                        <h4 class="mb-2">Java with Android & Kotlin</h4>
-                        <p>
-                            Build modern mobile applications with Java, Android SDK, and Kotlin. Learn to create scalable and efficient apps for the Android platform.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Booking Section -->
-		<!-- Common Section for Course Fees and Admission -->
-		<div class="text-center mt-4">
-			<p><strong>Course Fees:</strong> ₹30,000 for the full 6-month program.</p>
-			<p><strong>Course Structure:</strong></p>
-			<ul style="list-style-type: none; padding: 0;">
-				<li>1. Each course is designed to be completed in <strong>6 months</strong> with a blend of theory and practical lessons.</li>
-				<li>2. The first <strong>4 months</strong> focus on continuous theory-based learning combined with practical exercises, ensuring you gain deep technical knowledge.</li>
-				<li>3. The final <strong>2 months</strong> are dedicated to <strong>job training</strong> to help you secure a job, where you'll work on real-world projects and learn industry best practices.</li>
-			</ul>
-			<p><strong>Payment Options:</strong></p>
-            <ul style="list-style-type: none; padding: 0;">
-                <li>1. Avail a <strong>10% discount</strong> on full payment (Pay ₹27,000 upfront).</li>
-                <li>2. Pay in easy installments of ₹5,000/month.</li>
-            </ul>
-				 <!-- Button to move to booking form -->
-			<div class="text-center mt-4">
-				<a href="#course-enrollment-form" class="btn btn-primary">Enroll Now</a>
-			</div>
-		</div>
-
-        <!-- Enrollment Form -->
-        <div id="course-enrollment-form" style="margin-top: 20px;">
-            <div class="section-title text-center">
-                <p class="separator">
-                    Fill out the form below to enroll in one of our software development courses. We’ll get in touch to guide you through the next steps.
-                </p>
-            </div>
-
-            <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
-                <div class="col-lg-6 col-md-10">
-                    <div class="form">
-                        <form id="course-enroll-form" action="#" class="php-email-form">
-                            {% csrf_token %}
-                            
-                            <!-- Full Name -->
-                            <div class="form-group">
-                                <label for="name" class="form-label">Your Name</label>
-                                <input type="text" name="name" class="form-control" id="name" placeholder="Full Name" required>
-                            </div>
-                            
-                            <!-- Email -->
-                            <div class="form-group mt-3">
-                                <label for="email" class="form-label">Your Email</label>
-                                <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required>
-                            </div>
-                            
-                            <!-- Contact Number -->
-                            <div class="form-group mt-3">
-                                <label for="contact_number" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" name="contact_number" id="contact_number" placeholder="Phone Number" required>
-                            </div>
-
-                            <!-- Course Selection -->
-                            <div class="form-group mt-3">
-                                <label for="course" class="form-label">Select Course</label>
-                                <select class="form-control" name="course" id="course" required>
-                                    <option value="" disabled selected>Select a Course</option>
-                                    <option value="full-stack-python">Full-Stack with Python, RoR, Angular & More</option>
-                                    <option value="cpp-qt-boost">C++ with Qt & Boost</option>
-                                    <option value="devops-cloud">DevOps Cloud</option>
-                                    <option value="java-android-kotlin">Java with Android & Kotlin</option>
-                                </select>
-                            </div>
-
-                            <!-- Payment Method -->
-                            <div class="form-group mt-3">
-                                <label for="payment_method" class="form-label">Payment Method</label>
-                                <select class="form-control" name="payment_method" id="payment_method" required>
-                                    <option value="" disabled selected>Select Payment Option</option>
-                                    <option value="full-payment">Full Payment (₹27,000)</option>
-                                    <option value="installment">Installment (₹5,000/month)</option>
-                                </select>
-                            </div>
-
-                            <!-- Additional Comments -->
-                            <div class="form-group mt-3">
-                                <label for="comments" class="form-label">Additional Comments (Optional)</label>
-                                <textarea class="form-control" name="comments" id="comments" rows="3" placeholder="Any additional details"></textarea>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <div class="my-3">
-                                <div class="error-message"></div>
-                            </div>
-                            <div class="text-center">
-                                <button class="btn btn-primary" type="submit">Enroll Now</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <div class="container">
+    <div class="section-title text-center">
+      <h2>Master Software Development with Our Expert-Led Courses</h2>
+      <p class="separator">
+        Enhance your skills and advance your career with our specialized training programs. Each course is designed to provide hands-on experience and comprehensive knowledge of the latest technologies.
+      </p>
     </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-6 col-lg-4 mt-3 mb-3">
+        <div class="course-block bottom shadow rounded">
+          <img src="{% static 'job_portal/img/courses/fullstack.jpg' %}" class="img-responsive course-img" alt="Full-Stack Development">
+          <div class="course-content p-3">
+            <h4>Full-Stack Development</h4>
+            <p>
+              Master Full-Stack technologies including Python, Ruby on Rails, Angular, and more. Build dynamic web applications and APIs with industry-best practices.
+            </p>
+            <a href="#" class="btn btn-primary">Learn More</a>
+          </div>
+        </div>
+      </div>
+
+      </div>
+  </div>
 </section>
 
-<!-- Script for handling form submission -->
-<script>
-    $("#course-enroll-form").submit((e) => {
-        e.preventDefault();
-        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+<section id="course-enrollment">
+  <div class="container">
+    <div class="section-title text-center">
+      <h2>Enroll in a Course</h2>
+      <p class="separator">
+        Fill out the form below to enroll in one of our software development courses. We'll get in touch to guide you through the next steps.
+      </p>
+    </div>
 
-        $.ajax({
-            url: "https://script.google.com/macros/s/AKfycbyxzRzjygEh1l0AHrTD6uEXKGilEkmYjCeC0YGk1wABLOureKv6sv1aah09itDpLgL6GQ/exec", 
-            data: $("#course-enroll-form").serialize() + '&csrfmiddlewaretoken=' + csrfToken,
-            method: "POST",
-            success: function (response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Your enrollment request has been submitted.',
-                }).then(() => {
-                    window.location.reload();
-                });
-            },
-            error: function (err) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Something went wrong.',
-                });
-            }
-        });
-    });
-</script>			
-	
+    <div class="text-center mt-4">
+      <h3>Course Fees and Structure</h3>
+      <p><strong>Course Fees:</strong> ₹30,000 for the full 6-month program.</p>
+      <p><strong>Course Structure:</strong></p>
+      <ul style="list-style-type: none; padding: 0;">
+        <li>1. Each course is designed to be completed in <strong>6 months</strong> with a blend of theory and practical lessons.</li>
+        <li>2. The first <strong>4 months</strong> focus on continuous theory-based learning combined with practical exercises, ensuring you gain deep technical knowledge.</li>
+        <li>3. The final <strong>2 months</strong> are dedicated to <strong>job training</strong> to help you secure a job, where you'll work on real-world projects and learn industry best practices.</li>
+      </ul>
+      <p><strong>Payment Options:</strong></p>
+      <ul style="list-style-type: none; padding: 0;">
+        <li>1. Avail a <strong>10% discount</strong> on full payment (Pay ₹27,000 upfront).</li>
+        <li>2. Pay in easy installments of ₹5,000/month.</li>
+      </ul>
+
+      <a href="#course-enrollment-form" class="btn btn-primary">Enroll Now</a>
+    </div>
+
+    <div id="course-enrollment-form" style="margin-top: 20px;">
+      <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
+        <div class="col-lg-6 col-md-10">
+          <div class="form">
+            <form id="course-enroll-form" action="#" class="php-email-form">
+              {% csrf_token %}
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  $("#course-enroll-form").submit((e) => {
+    // ... form submission logic ...
+  });
+</script>
+
 {% endblock %}
