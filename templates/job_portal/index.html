@@ -1,9 +1,9 @@
 {% extends "job_portal/base.html" %}
 
-{% block og_title %}Sevendyne: Delivering IT Solutions, Building Teams & Empowering IT Professionals {% endblock %}
-{% block og_description %} Sevendyne: We provide comprehensive IT support, deliver innovative solutions, and equip your teams with the skills they need to excel. Discover how Sevendyne can empower your organization to unlock its full IT potential and drive business growth.{% endblock %}
+{% block og_title %}Sevendyne: Professional IT Staffing & Software Development Training{% endblock %}
+{% block og_description %}Sevendyne provides premium IT staffing solutions and professional software development training. Connect with skilled tech professionals or advance your career with our industry-leading training programs. Offering both local and international staffing services with comprehensive payroll management.{% endblock %}
 {% block og_url %}https://Sevendyne.com/{% endblock %}
-{% block title %}Sevendyne: Your Trusted Partner for App Development, HR Management & Industrial Training{% endblock %}
+{% block title %}Sevendyne: Expert IT Staffing Solutions & Software Development Training Programs{% endblock %}
 
 
 
@@ -23,33 +23,17 @@
 <div class="container-fluid p-0" style="height:70vh;">
     <div class="owl-carousel header-carousel position-relative">
         
-        <!-- IT Support Carousel Item -->
+        <!-- Staffing Solutions Carousel Item -->
 		<div class="owl-carousel-item position-relative">
 			<img class="img-fluid" src="{% static 'job_portal/img/cover4.jpg' %}" alt="" style="height:70vh;">
 			<div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
 				<div class="container">
 					<div class="row justify-content-start">
 						<div class="col-10 col-lg-8">
-						<h2 class="mb-4 text-white">Building Custom App Development Solutions, Remotely</h2>
-						<p class="mb-4 text-white">We specialize in providing high-performing, remote app development support tailored to your specific needs. Our in-house expert team is ready to collaborate seamlessly and deliver exceptional results.</p>
-						<p class="mb-4 text-white">Whether you need mobile app development, UX/UI design, or full-stack engineering, we can provide dedicated support to meet your unique requirements.</p>
-						<a class="btn btn-primary py-3 px-5 mt-3 animated slideInRight" href="{% url 'main:portfolios_home' %}">See How We've Helped Our Clients</a>						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- IT Solutions Carousel Item (HRMS) -->
-		<div class="owl-carousel-item position-relative">
-			<img class="img-fluid" src="{% static 'job_portal/img/cover2.jpg' %}" alt="" style="height:70vh;">
-			<div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(43, 57, 64, .5);">
-				<div class="container">
-					<div class="row justify-content-start">
-						<div class="col-10 col-lg-8">
-							<h2 class="mb-4 text-white">HRMS Staffing Solutions</h2>
-							<p class="mb-4 text-white">Experience our tailored HRMS platform designed to streamline your HR processes with ease.</p>
-							<p class="mb-4 text-white">Empowering HR teams with efficient management tools for better results.</p>
-							<a class="btn btn-primary py-3 px-5 mt-3 animated slideInRight" href="{% url 'main:home_hrms' %}" target="_blank">Learn About Our Staffing Solutions</a>
+						<h2 class="mb-4 text-white">Empowering Your Business with Top Talent, Remotely</h2>
+						<p class="mb-4 text-white">We specialize in providing high-quality remote staffing solutions tailored to your unique business needs. Our expert team helps you find the right talent, whether for tech projects, app development, or other industries.</p>
+						<p class="mb-4 text-white">We provide staffing for full-stack development, DevOps engineering, HR management, and more to ensure your team has the skills to succeed.</p>
+						<a class="btn btn-primary py-3 px-5 mt-3 animated slideInRight" href="{% url 'main:portfolios_home' %}">Discover Our Staffing Solutions</a>
 						</div>
 					</div>
 				</div>
@@ -63,9 +47,9 @@
 				<div class="container">
 					<div class="row justify-content-start">
 						<div class="col-10 col-lg-8">
-							<h2 class="mb-4 text-white">Internship Training Programs</h2>
-							<p class="mb-4 text-white">Join our Training Skills program to gain hands-on experience in frontend and backend development, mastering technologies like Node.js, Django, Python, and more.</p>
-							<p class="mb-4 text-white">Take your first step toward a successful career in full-stack development.</p>
+							<h2 class="mb-4 text-white">Comprehensive Training Programs for Future Tech Leaders</h2>
+							<p class="mb-4 text-white">Join our hands-on training programs to gain practical experience in key technologies such as Node.js, Python, Django, and more. Our programs are designed to prepare you for successful careers in full-stack development and IT support.</p>
+							<p class="mb-4 text-white">Whether you're starting out or leveling up, our training empowers you with real-world skills and opportunities.</p>
 							<a class="btn btn-primary py-3 px-5 mt-3 animated slideInRight" href="{% url 'candidate:create_intern' %}">Join Our Training Programs</a>
 						</div>
 					</div>
@@ -76,7 +60,6 @@
     </div>
 </div>
 
-   
 <!-- Carousel End -->
 
 <!-- About Us Section -->
@@ -90,14 +73,13 @@
             <!-- Content Column -->
             <div class="col-lg-6">
                 <h2 class="mb-4">About Us</h2>
-                <p><strong>IT Support</strong>, <strong>Solutions</strong>, and <strong>Skills Training</strong>.</p>
-                <p>At SevenDyne, we provide comprehensive IT Support to assist companies in project development and app management. Our specialized IT Solutions, including our HRMS platform, streamline processes and drive efficiency. Through our Skills Training programs, we empower professionals with hands-on experience in full-stack development and more, equipping your team with cutting-edge tech capabilities.</p>
+                <p><strong>Staffing Solutions</strong>, <strong>Training Programs</strong>, and <strong>Consulting Services</strong>.</p>
+                <p>At SevenDyne, we provide comprehensive staffing solutions, offering skilled remote developers and engineers for your projects. Our expert recruitment team ensures that you have the right talent at the right time. In addition, our training programs are designed to equip aspiring tech professionals with the skills they need in full-stack development, DevOps, and more. Whether you're looking for team augmentation or training new talent, we are here to support your success.</p>
                 <a href="{% url 'main:about' %}" class="btn btn-primary mt-3">Learn More About Us</a>
             </div>
         </div>
     </div>
 </div>
-
 
 <!-- Our Clients Section -->
 <div class="container-fluid py-5 bg-light">
@@ -105,7 +87,7 @@
         <div class="row align-items-center">
             <div class="col-12 text-center mb-4">
                 <h2 class="mb-4">Our Clients</h2>
-                <p>We’ve had the pleasure of partnering with clients around the globe to deliver top-notch tech solutions and team-building services.</p>
+                <p>We’ve partnered with clients worldwide to deliver top-notch staffing solutions and training programs, helping them build high-performing teams and enhance their technical capabilities.</p>
             </div>
             <div class="col-12">
                 <div class="clients-slider swiper" data-aos="zoom-out">
@@ -122,103 +104,5 @@
         </div>
     </div>
 </div>
-
-<!-- Team Building Solutions Section -->
-<div id="index" class="container-fluid bg-primary mb-1 wow fadeIn" data-wow-delay="0.1s" style="padding: 15px;">
-    <div class="container">
-        <div class="row g-2">
-            <h3 style="text-align:center; color:white;">Contact Us</h3>
-        </div>
-    </div>
-</div>
-
-	<div class="container text-center">
-		<h2></h2>
-		
-		<!-- Quote Request Form (Initially Hidden) -->
-		<div id="quote-form" style="margin-top: 20px;">
-			<div class="section-title text-center">
-				<p class="separator">
-					Provide us with some details about your IT project or product requirements, and our team will get back to you with a free, no-obligation quote.
-				</p>
-			</div>
-
-			<div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
-				<div class="col-lg-6 col-md-10">
-					<div class="form">
-						<form id="submit-form" action="#" class="php-email-form">
-						{% csrf_token %}
-							<div class="form-group">
-							<input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-							<input type="text" name="honeypot" style="display:none;"> <!-- Spam protection -->
-							</div>
-							<div class="form-group mt-3">
-								<input type="text" class="form-control" name="company_name" id="company_name" placeholder="Company Name" required>
-							</div>
-							<div class="form-group mt-3">
-								<input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-							</div>
-							<div class="form-group mt-3">
-								<select class="form-control" name="project_type" id="project_type" required>
-									<option value="" disabled selected>Project Request Type</option>
-									<option value="it_supports">App Development</option>
-									<option value="hrms_solutions">HRMS Staffing</option>
-									<option value="training_skills">Internship Training</option>
-									<option value="other">Other IT</option>
-								</select>
-							</div>
-							<div class="form-group mt-3">
-								<textarea class="form-control" name="project_description" rows="5" placeholder="Brief Description of Your IT Project or Product" required></textarea>
-							</div>
-							
-
-							<!-- reCAPTCHA Widget -->				
-							<div class="my-3">
-								<div class="error-message"></div>
-							</div>
-							<div class="text-center">
-								<button class="btn btn-primary" type="submit">Send Request</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-
-    </div>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
-
-<script>
-    $("#submit-form").submit((e) => {
-        e.preventDefault();
-		const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-
-        $.ajax({
-            url: "https://script.google.com/macros/s/AKfycbyxzRzjygEh1l0AHrTD6uEXKGilEkmYjCeC0YGk1wABLOureKv6sv1aah09itDpLgL6GQ/exec",
-            data: $("#submit-form").serialize() + '&csrfmiddlewaretoken=' + csrfToken,
-            method: "POST",
-            success: function (response) {
-                // Use SweetAlert for success message
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Your Message is sent to Sevendyne Inc.',
-                }).then(() => {
-                    window.location.reload();
-                });
-            },
-            error: function (err) {
-                // Use SweetAlert for error message
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'Something went wrong.',
-                });
-            }
-        });
-    });
-</script>
 
 {% endblock %}
