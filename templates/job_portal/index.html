@@ -131,12 +131,26 @@
         background-color: #ffffff;
         border: 1px solid #ddd;
         transition: all 0.3s ease;
+        height: 100%; /* Makes all boxes the same height */
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Ensures content stays equally spaced */
     }
     .skill-box:hover {
         background-color: #f8f9fa;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+    /* Ensures all skill boxes have the same height */
+    .row > .col-md-3 {
+        display: flex;
+        justify-content: center;
+    }
+    /* Keeps text centered in each box */
+    .skill-box h4, .skill-box p {
+        text-align: center;
+    }
 </style>
+
 
 <!-- Our Solutions -->
 <div class="container-fluid py-5" style="background-color: #f8f9fa;"> <!-- Light grey background -->
