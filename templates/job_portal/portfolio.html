@@ -1,9 +1,9 @@
 {% extends "job_portal/base.html" %}
 
-{% block og_title %}Sevendyne: Professional IT Staffing & Software Development Training{% endblock %}
-{% block og_description %}Sevendyne provides premium IT staffing solutions and professional software development training. Connect with skilled tech professionals or advance your career with our industry-leading training programs. Offering both local and international staffing services with comprehensive payroll management.{% endblock %}
+{% block og_title %}SevenDyne: Your Trusted Technology Consultancy for Innovative Solutions{% endblock %}
+{% block og_description %}SevenDyne is a versatile technology consultancy specializing in app development, HR payroll, and professional training. With a focus on innovation, we provide transformative solutions to meet diverse organizational needs, while continuously expanding into emerging tech domains.{% endblock %}
 {% block og_url %}https://Sevendyne.com/{% endblock %}
-{% block title %}Sevendyne: Expert IT Staffing Solutions & Software Development Training Programs{% endblock %}
+{% block title %}SevenDyne: Technology Consultancy Delivering App Development, HR Payroll, Training, and Beyond{% endblock %}
 
 {% load static %}
 
@@ -12,7 +12,7 @@
 <!-- Header Start -->
 <div class="container-xxl py-5 bg-dark page-header mb-5">
     <div class="container my-5 pt-5 pb-4">
-        <h1 class="display-3 text-white mb-3 animated slideInDown">Client Staffing Projects</h1>
+        <h1 class="display-3 text-white mb-3 animated slideInDown">Client Projects</h1>
     </div>
 </div>
 <!-- Header End -->
@@ -96,22 +96,18 @@
     </div>
 </section>
 
-<!-- Request Payroll Staffing Section -->
+<!-- Request Project Support Section -->
 <div id="index" class="container-fluid bg-primary mb-1 wow fadeIn" data-wow-delay="0.1s" style="padding: 15px;">
     <div class="container">
         <div class="row g-2">
-            <h3 style="text-align:center; color:white;">Request Payroll Staffing Support</h3>
+            <h3 style="text-align:center; color:white;">Request Project Support</h3>
         </div>
     </div>
 </div>
 
-<!-- Payroll Staffing Request Form -->
+<!-- Project Support Request Form -->
 <div class="container text-center">
-    <div id="staffing-form" style="margin-top: 20px;">
-        <div class="section-title text-center mt-4">
-            <p><strong>Fixed Payroll Cost: ₹10,000 per resource/month</strong></p>
-            <p><strong>This cost will be added to the employee's monthly salary in the invoice.</strong></p>
-        </div>
+    <div id="project-form" style="margin-top: 20px;">
 
         <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
             <div class="col-lg-8 col-md-10">
@@ -136,46 +132,52 @@
                                 </div>
 
                                 <div class="form-group mt-3">
+                                    <label for="project_name" class="form-label">Project Name</label>
+                                    <input type="text" class="form-control" name="project_name" id="project_name" placeholder="Project Name" required>
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="project_description" class="form-label">Project Description</label>
+                                    <textarea class="form-control" name="project_description" rows="4" id="project_description" placeholder="Brief description of your project" required></textarea>
+                                </div>
+
+                                <div class="form-group mt-3">
                                     <label for="num_resources" class="form-label">Number of Resources Needed</label>
                                     <input type="number" class="form-control" name="num_resources" id="num_resources" placeholder="e.g., 5" min="1" required>
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <label for="job_roles" class="form-label">Job Roles</label>
-                                    <input type="text" class="form-control" name="job_roles" id="job_roles" placeholder="e.g., Developers, Engineers" required>
-                                </div>
-
-                                <div class="form-group mt-3">
-                                    <label for="duration" class="form-label">Expected Duration (in months)</label>
+                                    <label for="duration" class="form-label">Project Duration (in months)</label>
                                     <input type="number" class="form-control" name="duration" id="duration" placeholder="e.g., 12" min="1" required>
                                 </div>
 
-                                <div class="form-group mt-3">
-                                    <label for="message" class="form-label">Message</label>
-                                    <textarea class="form-control" name="message" rows="4" id="message" placeholder="Additional Details (Optional)"></textarea>
-                                </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group mt-3">
-                                    <label for="service_start" class="form-label">Start Date</label>
-                                    <input type="date" class="form-control" name="service_start" id="service_start" required>
+                                    <label for="start_date" class="form-label">Project Start Date</label>
+                                    <input type="date" class="form-control" name="start_date" id="start_date" required>
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <label for="location" class="form-label">Preferred Location</label>
-                                    <input type="text" class="form-control" name="location" id="location" placeholder="City, Country">
+                                    <label for="preferred_location" class="form-label">Preferred Location</label>
+                                    <input type="text" class="form-control" name="preferred_location" id="preferred_location" placeholder="City, Country">
                                 </div>
 
                                 <div class="form-group mt-3">
-                                    <label for="requirements" class="form-label">Additional Requirements (Optional)</label>
-                                    <input type="text" class="form-control" name="requirements" id="requirements" placeholder="e.g., Experience in XYZ">
+                                    <label for="budget" class="form-label">Project Budget (Optional)</label>
+                                    <input type="text" class="form-control" name="budget" id="budget" placeholder="Estimated Project Budget">
+                                </div>
+
+                                <div class="form-group mt-3">
+                                    <label for="additional_requirements" class="form-label">Additional Requirements (Optional)</label>
+                                    <input type="text" class="form-control" name="additional_requirements" id="additional_requirements" placeholder="e.g., Technology stack preferences">
                                 </div>
                             </div>
                         </div>
 
                         <div class="my-3 text-center">
-                            <button type="submit" class="btn btn-primary">Request Payroll Staffing</button>
+                            <button type="submit" class="btn btn-primary">Request Project Support</button>
                         </div>
                     </form>
                 </div>
