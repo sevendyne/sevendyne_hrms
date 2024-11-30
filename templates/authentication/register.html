@@ -1,449 +1,141 @@
 <!DOCTYPE html>
+
 {% load static %}
-<html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Sevendyne Jobs: Remote Staffing platform</title>
-	<meta name="keywords" content="Talent Management and HRMS Germany, Recruitment and HR Software, Staffing and HR Solutions, Talent Management and Workforce Administration, HRMS and Recruitment Services" />
-	<meta name="description" content="At SevenDyne, we connect businesses with top talent and offer free HRMS software to streamline HR operations, reduce costs, and support business growth." />
-	<meta property="og:title" content="{% block og_title %}SevenDyne: Unlock Top Talent with Leading HRMS & Talent Management Solutions{% endblock %}" />
-	<meta property="og:description" content="{% block og_description %}SevenDyne connects businesses with top talent and offers free HRMS software to streamline HR processes, reduce costs, and drive growth. Simplify your HR operations and empower your business with our innovative solutions.{% endblock %}" />
-	<meta property="og:url" content="{% block og_url %}https://sevendyne.com{% endblock %}" />
-	<meta property="og:type" content="website" />
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="keywords" content="Talent Management und HRMS Deutschland, Personalbeschaffung und HR-Software, Rekrutierung und HR-Lösungen, Talent Management und Personalverwaltung, HRMS und Rekrutierungsservices" name="keywords">
+		<meta name="description" content="At Sevendyne, we connect businesses with top talent and offer free HRMS software to streamline HR operations, reduce costs, and support business growth." name="description">
+		<meta property="og:title" content="{% block og_title %}Sevendyne: Unlock Top Talent with Leading HRMS & Talent Management Solutions{% endblock %}" />
+		<meta property="og:description" content="{% block og_description %}Sevendyne connects businesses with top talent and offers free HRMS software to streamline HR processes, reduce costs, and drive growth. Simplify your HR operations and empower your business with our innovative solutions.{% endblock %}" />
+		{% comment %} <meta property="og:image" content="{% block og_image %}https://sevendyne.com/default-image.jpg{% endblock %}" /> {% endcomment %}
+		<meta property="og:url" content="{% block og_url %}https://sevendyne.com{% endblock %}" />
+		<meta property="og:type" content="website" />
+        <title>Sign Up - Sevendyne HRMS</title>
+		
+		<!-- Favicon -->
+		<link href="{% static 'job_portal/img/logo1.png'%}" rel="icon">
 
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
 
-    <!-- Favicon -->
-    <link href="{% static 'assets/img/logo/logo_svd.png' %}" rel="icon">
+		<!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="assets/css/bootstrap.min.css">
 
-    <!-- Animate CSS -->
-    <link rel="stylesheet" href="{% static 'assets_home/css/aos.css' %}">
+		<!-- Fontawesome CSS -->
+        <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
+    	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
 
-    <!-- Owl Carousel -->
-    <link rel="stylesheet" href="{% static 'assets_home/css/owl.carousel.min.css' %}">
+		
+		<!-- Main CSS -->
+        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{% static 'assets_home/css/bootstrap.min.css' %}">
-
-    <!-- Fontawesome CSS -->
-    <link rel="stylesheet" href="{% static 'assets_home/plugins/fontawesome/css/fontawesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'assets_home/plugins/fontawesome/css/all.min.css' %}">
-
-    <!-- Main CSS -->
-    <link rel="stylesheet" href="{% static 'assets_home/css/style.css' %}">
-    <!-- Add Swiper -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SE9SJ7ZJCT"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-SE9SJ7ZJCT');
-    </script>
-	
-</head>
-<body class="second-landing-page">
-    <!-- Header -->
-    <header id="header" class="site-header home-header home-header-while header-land">
-        <div class="container">
-            <div class="row">
-                <div class="main-menu-wrapper">
-                    <div class="menu-header">
-                        <a href="{% url 'main:job_portal' %}" class="menu-logo">
-                            <img src="{% static 'assets_home/img/01.png' %}" style="max-width:50% !important" class="img-fluid" alt="Logo">
-                        </a>
-                        <a id="menu_close" class="menu-close" href="javascript:void(0);">
-                            <i class="fas fa-times"></i>
-                        </a>
-                    </div>
-                    <div class="try-free link mobile-head-menu">
-                        <a class="btn btn-primary response-head-menu" href="{% url 'user:signup' %}">Build Your Team</a>
-                    </div>
-                </div>
-                <div class="main-menu-head d-flex justify-content-between">
-                    <div class="res-center col-lg-3 col-sm-12 col-12">
-                        <div class="site">
-                            <a id="mobile_btn" href="javascript:void(0);">
-                                <span class="bar-icon-second">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </span>
-                            </a>
-						<div class="site-brand">
-							<a href="{% url 'main:job_portal' %}" class="site-branding-text d-flex align-items-center">
-								<img src="{% static 'assets/img/01.png' %}" alt="Sevendyne HRMS Login" style="width: 51%; height: auto;"/>
-								<span class="site-title ms-3" style="font-size: 24px; color: #4CAF50; font-weight: bold;">Sevendyne Jobs</span>
-							</a>
-						</div>
-                        </div>
-                    </div>
-                    <div class="home-buy-button">
-                        <div class="buy-btns">
-                            <a href="{% url 'user:user_login' %}" target="_blank" class="btn btn-buy">Login</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- / Header -->
-
-    <!-- Hero Section -->
-    <section class="gradient-bg text-center py-5" style="background: #3a86ff; color: white;">
-        <div class="container">
-            <h1 class="display-4 mb-4">Streamline HR Operations with Sevendyne</h1>
-            <p class="lead mb-5">Connect with top talent and optimize your HR processes with our innovative HRMS solution</p>
-        </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="py-5" style="background: #f4f4f9;">
-        <div class="container">
-            <h2 class="text-center mb-5" style="color: #2b2b2b;">Why Choose Sevendyne?</h2>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="feature-card p-4" style="background: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 8px;">
-                        <h3 style="color: #0c9d58;">Top Talent Acquisition</h3>
-                        <p>Efficiently connect with and recruit the best professionals for your business.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card p-4" style="background: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 8px;">
-                        <h3 style="color: #0c9d58;">Free HRMS Software</h3>
-                        <p>Reduce costs and streamline HR operations with our comprehensive HRMS platform.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card p-4" style="background: #ffffff; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); border-radius: 8px;">
-                        <h3 style="color: #0c9d58;">Business Growth Support</h3>
-                        <p>Empower your organization with innovative HR solutions designed to drive success.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Signup Form Section -->
-    <section class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 offset-md-3">
-                    <div class="card shadow-lg" style="border-radius: 12px;">
-                        <div class="card-body p-5">
-                            <h3 class="account-title text-center" style="color: #3164b8;">Sign Up</h3>
-                            <p class="account-subtitle text-center mb-4" style="color: #777;">Access to Sevendyne Staffing Platform</p>
-                            
-                            <form action="" method="post" style="border: 1px solid #ddd; padding: 20px; border-radius: 8px; background-color: #f9f9f9; width: 100%; max-width: 500px; margin: 0 auto;">
+		 
+    </head>
+    <body class="account-page">	
+		<!-- Main Wrapper -->
+        <div class="main-wrapper">
+			<div class="account-content">
+				<div class="container">
+					<!-- hidden div for the popup message -->
+					<div id="signupMessage" class="alert alert-danger alert-dismissible fade show" style="display: none;" role="alert">
+						{% if message %}
+							{{ message }}
+						{% endif %}
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="account-box">
+						<div class="account-wrapper">
+							<!-- Account Logo -->
+							<div class="account-logo">
+								<a href="#"><img src="{% static 'assets/img/01.png' %}" alt="Sevendyne" style="width:71%"></a>
+							</div>
+							<!-- /Account Logo -->
+							<h3 class="account-title">Sign Up</h3>
+							<p class="account-subtitle">Access to hrms dashboard</p>							
+							<!-- Account Form -->
+							<form action="" method="post">
 								{% csrf_token %}
 								<div class="input-block mb-4">
-									<label for="email" class="col-form-label" style="font-weight: bold;">Email<span class="text-danger">*</span></label>
-									<input class="form-control" type="email" id="email" name="email" required style="border: 1px solid #ccc; padding: 10px; width: 100%; border-radius: 5px;">
+									<label for="email" class="col-form-label">Email<span class="mandatory">*</span></label>
+									<input class="form-control" type="email" id="email" name="email" required>
 								</div>
 								<div class="input-block mb-4">
-									<label for="username" class="col-form-label" style="font-weight: bold;">Username<span class="text-danger">*</span></label>
-									<input class="form-control" type="text" id="username" name="username" required style="border: 1px solid #ccc; padding: 10px; width: 100%; border-radius: 5px;">
+									<label for="username" class="col-form-label">Username<span class="mandatory">*</span></label>
+									<input class="form-control" type="text" id="username" name="username" required>
 								</div>
+								{% for message in messages %}
+									<p style="color:#ff512f">{{message}}</p>
+								{% endfor %}
 								<div class="input-block mb-4">
-									<label for="password" class="col-form-label" style="font-weight: bold;">Password<span class="text-danger">*</span></label>
-									<div class="input-group" style="position: relative;">
-										<input class="form-control" type="password" id="password" name="password" required style="border: 1px solid #ccc; padding: 10px; width: 100%; border-radius: 5px;">
-										<span id="password-icon" class="position-relative input-group-text fa-solid fa-eye-slash" onclick="togglePasswordVisibility()" style="position: absolute; top: 10px; right: 10px; cursor: pointer;"></span>
+									<label for="password" class="col-form-label">Password<span class="mandatory">*</span></label>
+									<div class="input-group">
+										<input class="form-control" type="password" id="password" name="password" required>
+										<span id="password-icon" class="position-relative input-group-text fa-solid fa-eye-slash" onclick="togglePasswordVisibility()"></span>
 									</div>
 								</div>
 								<div class="input-block mb-4">
-									<label for="first_name" class="col-form-label" style="font-weight: bold;">First Name<span class="text-danger">*</span></label>
-									<input class="form-control" type="text" id="first_name" name="first_name" required style="border: 1px solid #ccc; padding: 10px; width: 100%; border-radius: 5px;">
+									<label for="first_name" class="col-form-label">First Name<span class="mandatory">*</span></label>
+									<input class="form-control" type="text" id="first_name" name="first_name" required>
 								</div>
 								<div class="input-block mb-4">
-									<label for="last_name" class="col-form-label" style="font-weight: bold;">Last Name<span class="text-danger">*</span></label>
-									<input class="form-control" type="text" id="last_name" name="last_name" required style="border: 1px solid #ccc; padding: 10px; width: 100%; border-radius: 5px;">
+									<label for="last_name" class="col-form-label">Last Name<span class="mandatory">*</span></label>
+									<input class="form-control" type="text" id="last_name" name="last_name" required>
 								</div>
 								<div class="input-block mb-4 text-center">
-									<button class="btn btn-primary account-btn" type="submit" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%); padding: 12px 20px; border-radius: 5px; border: none; color: white; width: 100%;">Sign Up</button>
+									<button class="btn btn-primary account-btn" type="submit" value="Register" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%)">Sign Up</button>
 								</div>
-								<div class="account-footer text-center">
-									<p>Already have an account? <a href="#">Login</a></p>
+								<div class="account-footer">
+									<p>Already have an account? <a href="{% url 'user:user_login' %}">Login</a></p>
 								</div>
 							</form>
-							
-							<style>
-								.input-block {
-									margin-bottom: 20px;
-								}
-							
-								.form-control {
-									border: 1px solid #ccc;
-									padding: 10px;
-									border-radius: 5px;
-									width: 100%;
-								}
-							
-								.input-group {
-									position: relative;
-								}
-							
-								#password-icon {
-									position: absolute;
-									top: 10px;
-									right: 10px;
-									cursor: pointer;
-								}
-							
-								.account-footer {
-									margin-top: 20px;
-								}
-							
-								.btn {
-									font-size: 16px;
-									font-weight: bold;
-								}
-							</style>
-							
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="bg-light py-5">
-        <div class="container">
-            <h2 class="text-center mb-5" style="color: #2b2b2b;">Frequently Asked Questions</h2>
-			<div class="accordion" id="faqAccordion">
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingOne">
-						<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" style="background: #f7f7f7;">
-							What is Sevendyne HRMS?
-						</button>
-					</h2>
-					<div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-						<div class="accordion-body">
-							Sevendyne is a comprehensive HRMS solution that helps businesses connect with top talent and streamline HR operations through innovative software and services.
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingTwo">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" style="background: #f7f7f7;">
-							Is the HRMS software really free?
-						</button>
-					</h2>
-					<div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-						<div class="accordion-body">
-							Yes! Sevendyne's HRMS software is completely free to use, helping businesses save costs while efficiently managing their HR functions.
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingThree">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" style="background: #f7f7f7;">
-							How much do you charge for your HR services?
-						</button>
-					</h2>
-					<div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-						<div class="accordion-body">
-							We charge a monthly fee of 10% of the staff's salary for our HR services. This fee covers all HR-related functions such as payroll management, compliance, and administrative support. The HRMS software is free to use.
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingFour">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" style="background: #f7f7f7;">
-							Do you provide training for new employees?
-						</button>
-					</h2>
-					<div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-						<div class="accordion-body">
-							Yes, we provide comprehensive training programs for new employees to ensure they are well-prepared and meet your business's expectations.
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingFive">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" style="background: #f7f7f7;">
-							How can I recruit employees through Sevendyne?
-						</button>
-					</h2>
-					<div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-						<div class="accordion-body">
-							You can post job openings through Sevendyne’s platform. We will help you find the best candidates and manage the recruitment process.
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingSix">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSix" style="background: #f7f7f7;">
-							Is Sevendyne HRMS suitable for small businesses?
-						</button>
-					</h2>
-					<div id="collapseSix" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-						<div class="accordion-body">
-							Absolutely! Sevendyne HRMS is designed to be scalable, making it an ideal solution for small to medium-sized businesses looking to streamline their HR processes without the overhead of expensive software.
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingSeven">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSeven" style="background: #f7f7f7;">
-							What types of HR services do you offer?
-						</button>
-					</h2>
-					<div id="collapseSeven" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-						<div class="accordion-body">
-							We offer a full range of HR services including recruitment, payroll processing, compliance management, employee benefits administration, and general HR support.
-						</div>
-					</div>
-				</div>
-				<div class="accordion-item">
-					<h2 class="accordion-header" id="headingEight">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseEight" style="background: #f7f7f7;">
-							Can I customize the HRMS system for my business needs?
-						</button>
-					</h2>
-					<div id="collapseEight" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-						<div class="accordion-body">
-							Yes, Sevendyne HRMS is highly customizable. We offer a range of features and configurations that can be tailored to meet the unique needs of your business.
+							<!-- /Account Form -->
 						</div>
 					</div>
 				</div>
 			</div>
-			
         </div>
-    </section>
+		<!-- /Main Wrapper -->
 
-
-    <!-- Testimonials Section -->
-    <!-- <section class="py-5">
-        <div class="container">
-            <h2 class="text-center mb-5">What Our Clients Say</h2>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="testimonial-card">
-                        <p>"Sevendyne has transformed our HR operations and helped us find top talent efficiently."</p>
-                        <p class="fw-bold">- HR Manager, Tech Innovations Inc.</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="testimonial-card">
-                        <p>"The free HRMS software is a game-changer for our small business."</p>
-                        <p class="fw-bold">- Startup Founder, Growth Dynamics</p>
-                    </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="testimonial-card">
-                        <p>"Incredible talent acquisition support and user-friendly HRMS platform."</p>
-                        <p class="fw-bold">- Operations Director, Global Solutions</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
-
-	<!-- Footer-->
-	<footer class="footer-second ">
-		<div class="container">
-			<div class="row g-5">
-				<div class="col-lg-3 col-md-6">
-					<h5 class="text-white mb-4">Sevendyne Inc</h5>
-					<a class="btn-link text-white-50" href="#">IT Consultancy Company</a>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<h5 class="text-white mb-4" style="font-size:small">HR SUPPORT</h5>
-					<a class="btn-link text-white-50" style="text-transform: lowercase;" href="mailto:hr@sevendyne.com">hr@sevendyne.com</a>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<h5 class="text-white mb-4" style="font-size:small">QUICK LINKS</h5>
-					<p class="mb-2"><i class=""></i><a href="{% url 'main:terms_and_conditions' %}">Terms Of Service</a></p>
-					<p class="mb-2"><i class=""></i><a href="{% url 'main:privacy_policy' %}">Privacy Policy</a></p>
-				</div>
-			</div>
-			<div class="row  mt-3">
-				<div class="col-lg-5">
-					<div class="copy-rights-second">
-						<p>@Copyright 2016-2024 Sevendyne Consultancy Services LLP.<br> All Rights Reserved. </p>
-					</div>
-				</div>
-				<div class="col-lg-6">
-					<div class="company-logo-second">
-						<p>Sevendyne Inc                        
-							{% comment %} <img src="{% static 'assets/img/logo_svd.png' %}" alt="Company-logo"> {% endcomment %}
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</footer>
-	<!-- Footer-->
-
-	<!-- jQuery -->
-	<script src="{% static 'assets_home/js/jquery-3.7.0.min.js' %}"></script>
-	<script src="{% static 'assets_home/js//swiper/swiper-bundle.min.js' %}"></script>
-
-	<!-- Bootstrap Core JS -->
-	<script src="{% static 'assets_home/js/bootstrap.bundle.min.js' %}"></script>
-
-	<!-- Wow JS -->
-	<script src="{% static 'assets_home/js/aos.js' %}"></script>
-
-	<!-- Owl JS -->
-	<script src="{% static 'assets_home/js/owl.carousel.min.js' %}"></script>
-
-	<!-- Smooth Scroll JS -->
-	<script src="{% static 'assets_home/js/smooth-scroll.min.js' %}"></script>
-
-	<!-- Custom JS -->
-	<script src="{% static 'assets_home/js/script.js' %}"></script>
-
-	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-	<script>
-		$("#submit-form").submit((e) => {
-			e.preventDefault();
-			$.ajax({
-				url: "https://script.google.com/macros/s/AKfycbx94Kyn57PdZWaV3euEKfESfYG4QRYcVINTmqYVgDaknZCbOnoMUzMY_SZlwdSwkPDE/exec",
-				data: $("#submit-form").serialize(),
-				method: "POST",
-				success: function (response) {
-					// Use SweetAlert for success message
-					Swal.fire({
-						icon: 'success',
-						title: 'Success!',
-						text: 'Your email subscription request is sent to Sevendyne Inc.',
-					}).then(() => {
-						window.location.reload();
-					});
-				},
-				error: function (err) {
-					console.error("An error occurred:", err);
-					// Use SweetAlert for error message
-					Swal.fire({
-						icon: 'error',
-						title: 'Error!',
-						text: 'Something went wrong.',
-					});
-				}
-			});
-		});
+		<!-- jQuery -->
+		<script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
 		
-	</script>
-	
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        function togglePasswordVisibility() {
-            var passwordField = document.getElementById("password");
-            var passwordIcon = document.getElementById("password-icon");
-            if (passwordField.type === "password") {
-                passwordField.type = "text";
-                passwordIcon.classList.remove("fa-eye-slash");
-                passwordIcon.classList.add("fa-eye");
-            } else {
-                passwordField.type = "password";
-                passwordIcon.classList.remove("fa-eye");
-                passwordIcon.classList.add("fa-eye-slash");
-            }
-        }
-    </script>
-	</body>
+		<!-- Bootstrap Core JS -->
+        <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+		
+		<!-- Custom JS -->
+		<script src="{% static 'assets/js/app.js' %}"></script>
+		<!-- JavaScript to display popup message if registration success -->
+		<script>
+			function togglePasswordVisibility() {
+				var passwordField = document.getElementById("password");
+				var passwordIcon = document.getElementById("password-icon");
+				if (passwordField.type === "password") {
+					passwordField.type = "text";
+					passwordIcon.classList.remove("fa-eye-slash");
+					passwordIcon.classList.add("fa-eye");
+				} else {
+					passwordField.type = "password";
+					passwordIcon.classList.remove("fa-eye");
+					passwordIcon.classList.add("fa-eye-slash");
+				}
+			}
+			// Check if login failed, then display the error message
+			{% if message %}
+				document.getElementById('signupMessage').style.display = 'block';
+			{% endif %}
+			// Function to close the error message div when the close button is clicked
+			document.addEventListener('DOMContentLoaded', function() {
+				document.querySelectorAll('.close').forEach(function(closeBtn) {
+					closeBtn.addEventListener('click', function() {
+						this.closest('.alert').style.display = 'none';
+					});
+				});
+			});
+		</script>
+		
+    </body>
 </html>
