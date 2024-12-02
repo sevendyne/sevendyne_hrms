@@ -89,8 +89,7 @@
             <div class="col-md-4 mb-4">
                 <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
                     <h4 class="text-center fw-bold">And More...</h4>
-                    <p class="text-center">Delivering excellence globally.</p>
-					<a href="{% url 'main:about' %}">Read More</a>
+					<a href="{% url 'main:about' %}" class="btn btn-primary text-center">Read More</a>
                 </div>
             </div>
         </div>
@@ -98,20 +97,20 @@
 </div>
 
 <!-- Improve Your Skills Section -->
-<div class="container py-5 text-center" style="background-color: #f8f9fa;">
+<div class="container py-5 text-center">
     <h2 class="text-dark fw-bold mb-4">Master Software Development with Our Expert-Led Courses</h2>
-  
+   
     <div class="d-flex justify-content-center gap-4">
         <!-- Flexbox Cards for each course -->
-        <div class="course-card p-4 bg-light shadow rounded text-center flex-fill" style="max-width: 250px; background-color: #ffffff;">
+        <div class="course-card p-4 bg-light shadow rounded text-center flex-fill" style="max-width: 250px;">
             <h4 class="fw-bold">Full-Stack Development</h4>
             <p class="text-muted">Learn to build dynamic web apps with technologies like Python, Angular, and more.</p>
         </div>
-        <div class="course-card p-4 bg-light shadow rounded text-center flex-fill" style="max-width: 250px; background-color: #ffffff;">
+        <div class="course-card p-4 bg-light shadow rounded text-center flex-fill" style="max-width: 250px;">
             <h4 class="fw-bold">DevOps Engineering</h4>
             <p class="text-muted">Set up CI/CD pipelines and manage containerized applications using Docker.</p>
         </div>
-        <div class="course-card p-4 bg-light shadow rounded text-center flex-fill" style="max-width: 250px; background-color: #ffffff;">
+        <div class="course-card p-4 bg-light shadow rounded text-center flex-fill" style="max-width: 250px;">
             <h4 class="fw-bold">C++ Development</h4>
             <p class="text-muted">Master advanced C++ concepts like memory management and object-oriented programming.</p>
         </div>
@@ -119,8 +118,7 @@
 
     <a href="{% url 'candidate:create_intern' %}" class="btn btn-primary mt-4">Start Learning Today</a>
 
-    <p class="mt-3 text-muted">For more details on course structure, fees, and schedules, explore our training programs.</p>
-</div>
+ </div>
 
 
 <!-- Features Section -->
@@ -156,7 +154,7 @@
             </div>
         </div>
         <div class="text-center mt-4">
-            <a href="{% url 'main:about' %}">Read More</a>
+            <a href="{% url 'main:about' %}" class="btn btn-primary">Read More</a>
         </div>
     </div>
 </div>
