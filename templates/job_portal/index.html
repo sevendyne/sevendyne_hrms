@@ -9,7 +9,7 @@
 
 {% block content %}
 <!-- Banner -->
-<div class="main-banner-section py-5 text-white" style="background-color: #007bff;" data-aos="fade-up" data-aos-duration="2000">
+<div class="main-banner-section py-5 text-white" style="background-color: darkblue;" data-aos="fade-up" data-aos-duration="2000">
     <div class="container">
         <div class="row align-items-center">
             <!-- Left Side: Text Content -->
@@ -18,7 +18,7 @@
                 <p class="mt-3">Discover flexible workforce solutions, ranging from remote to onsite roles, tailored to meet your business needs or help you find the perfect job opportunity across all career levels</p>
                 <div class="d-flex flex-column flex-md-row justify-content-center justify-content-lg-start gap-3 mt-4">
                     <a href="{% url 'user:signup' %}" class="btn btn-light btn-lg px-3 py-3 text-primary fw-bold">Hire Talents</a>
-                    <a href="{% url 'candidate:candidate_application' %}" class="btn btn-warning btn-lg px-3 py-3 text-dark fw-bold">Apply for Jobs</a>
+                    <a href="{% url 'candidate:create_intern' %}" class="btn btn-warning btn-lg px-3 py-3 text-dark fw-bold">Grow Skills</a>
                 </div>
             </div>
             <!-- Right Side: Image -->
@@ -72,7 +72,7 @@
             </div>
             <div class="col-md-4 mb-4">
                 <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-					<a href="{% url 'main:portfolios_home' %}" class="btn btn-primary mt-4 text-center">See How We Helped Our Clients</a>
+					<a href="{% url 'user:signup' %}" class="btn btn-primary mt-4 text-center">See How We Helped Our Clients</a>
                 </div>
             </div>
         </div>
