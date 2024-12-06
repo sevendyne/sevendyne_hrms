@@ -115,17 +115,27 @@
 
 .navbar-light .navbar-brand,
 .navbar-light a.btn {
-    height: 75px;
+    height: 80px;
 }
 
 .navbar-light .navbar-nav .nav-link {
     color: var(--dark);
     font-weight: 500;
+    padding: 15px 10px; /* Adjust for spacing */
 }
 
 .navbar-light.sticky-top {
     top: -100px;
     transition: .5s;
+}   
+
+.navbar {
+    min-height: 80px; /* Ensure the navbar height accommodates the logo */
+}
+
+.navbar-brand img {
+    max-height: 60px; /* Adjust based on your navbar height */
+    width: auto;      /* Maintain aspect ratio */
 }
 
 @media (min-width: 992px) {
@@ -146,6 +156,14 @@
         visibility: visible;
         transition: .5s;
         opacity: 1;
+    }
+
+    .navbar-brand img {
+        max-height: 50px; /* Smaller logo for mobile */
+    }
+
+    .navbar-nav .nav-link {
+        padding: 10px 5px; /* Adjust padding for mobile */
     }
 }
 
