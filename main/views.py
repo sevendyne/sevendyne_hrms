@@ -63,39 +63,8 @@ def about(request):
 def terms_and_conditions(request):
     return render(request, 'job_portal/terms_and_conditions.html')
 
-# products
-def hrms(request):
-    return render(request, 'job_portal/hrms.html')
-
-# staffing
-def remote_staffing(request):
-    return render(request, 'job_portal/remote_staffing.html')
-
-# training
 def corporate_training(request):
     return render(request, 'job_portal/corporate_training.html')
-
-def mean_stack_training(request):
-    return render(request, 'job_portal/mean_stack_training.html')
-
-def testing_training(request):
-    return render(request, 'job_portal/testing_training.html')
-
-# turnkey_solutions
-def devops(request):
-    return render(request, 'job_portal/devops.html')
-
-def webapps(request):
-    return render(request, 'job_portal/webapps.html')
-
-def mobileapps(request):
-    return render(request, 'job_portal/mobileapps.html')
-
-def embedded(request):
-    return render(request, 'job_portal/embedded.html')
-
-def testing(request):
-    return render(request, 'job_portal/testing.html')
 
 def privacy_policy(request):
     return render(request, 'job_portal/privacy_policy.html')
