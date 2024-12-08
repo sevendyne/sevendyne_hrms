@@ -78,6 +78,21 @@ def remote_staffing(request):
 def hrms(request):
     return render(request, 'job_portal/hrms.html')
 
+def devops(request):
+    return render(request, 'job_portal/devops.html')
+
+def webapps(request):
+    return render(request, 'job_portal/webapps.html')
+
+def mobileapps(request):
+    return render(request, 'job_portal/mobileapps.html')
+
+def embeddedapps(request):
+    return render(request, 'job_portal/embeddedapps.html')
+
+def testing(request):
+    return render(request, 'job_portal/testing.html')
+
 def privacy_policy(request):
     return render(request, 'job_portal/privacy_policy.html')
 
