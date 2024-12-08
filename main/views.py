@@ -75,9 +75,11 @@ def testing_training(request):
 def remote_staffing(request):
     return render(request, 'job_portal/remote_staffing.html')
 
+def hrms(request):
+    return render(request, 'job_portal/hrms.html')
+
 def privacy_policy(request):
     return render(request, 'job_portal/privacy_policy.html')
-
 
 def get_states(request):
     country_id = request.GET.get('country_id')

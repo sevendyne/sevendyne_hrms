@@ -44,5 +44,6 @@ urlpatterns = [
     path('mean_stack_training/',views.mean_stack_training,name='mean_stack_training'),
     path('testing_training/',views.testing_training,name='testing_training'),
     path('remote_staffing/',views.remote_staffing,name='remote_staffing'),
+    path('hrms/',views.hrms,name='hrms'),
 ]
 
