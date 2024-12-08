@@ -41,17 +41,5 @@ urlpatterns = [
     re_path(r'^email-setting/(?P<pk>.*)/$', views.email_setting, name='email_setting'),
 
     path('corporate_training/',views.corporate_training,name='corporate_training'),
-    path('mean_stack_training/',views.mean_stack_training,name='mean_stack_training'),
-    path('testing_training/',views.testing_training,name='testing_training'),
-
-    path('remote_staffing/',views.remote_staffing,name='remote_staffing'),
-    
-    path('hrms/',views.hrms,name='hrms'),
-
-    path('devops/',views.devops,name='devops'),
-    path('webapps/',views.webapps,name='webapps'),
-    path('embeddedapps/',views.embeddedapps,name='embeddedapps'),
-    path('mobileapps/',views.mobileapps,name='mobileapps'),
-    path('testing/',views.testing,name='testing')
 ]
 
