@@ -1,9 +1,10 @@
 {% extends "job_portal/base.html" %}
 
-{% block og_title %}SevenDyne: Your Trusted Technology Consultancy for Innovative Solutions{% endblock %}
-{% block og_description %}SevenDyne is a versatile technology consultancy specializing in app development and professional training. With a focus on innovation, we provide transformative solutions to meet diverse organizational needs, while continuously expanding into emerging tech domains.{% endblock %}
+{% block og_title %}SevenDyne: Leading Corporate Training Provider in Kochi{% endblock %}
+{% block og_description %}SevenDyne offers top-notch corporate training programs in Kochi, designed to enhance skills and knowledge in emerging technologies. Our expert-led courses cater to businesses looking to boost their workforce's technical proficiency and stay competitive in a dynamic market.{% endblock %}
 {% block og_url %}https://Sevendyne.com/{% endblock %}
-{% block title %}SevenDyne: Technology Consultancy Delivering App Development, Training, and Beyond{% endblock %}
+{% block title %}Corporate Training in Kochi: Upskill Your Workforce with SevenDyne{% endblock %}
+
 
 {% load static %}
 
@@ -12,16 +13,73 @@
 <!-- Hero Section -->
 <div class="container-xxl py-5 bg-dark page-header mb-5">
   <div class="container my-5 pt-5 pb-4">
-    <h1 class="display-3 text-white mb-3 animated slideInDown">Training Programs</h1>
+    <h1 class="display-3 text-white mb-3 animated slideInDown">Corporate Training Programs</h1>
   </div>
 </div>
+
+<section id="contactForm" class="py-5" style="background: #f8f9fa;">
+  <div class="container">
+    <div class="card shadow-lg rounded p-5 bg-white">
+      <h3 class="text-center text-primary">Enroll in SevenDyne Training Programs</h3>
+      <p class="text-muted text-center mb-4">Join our professional training courses in Kochi</p>
+      <form id="submit-form" action="#" class="php-email-form">
+        {% csrf_token %}
+        <div class="row">
+          <!-- Left Column -->
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="name" class="form-label">Your Name</label>
+              <input type="text" class="form-control" id="name" name="name" placeholder="Full Name" required>
+            </div>
+            <div class="form-group mt-3">
+              <label for="email" class="form-label">Your Email</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="Email Address" required>
+            </div>
+            <div class="form-group mt-3">
+              <label for="phone" class="form-label">Phone Number</label>
+              <input type="text" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+            </div>
+          </div>
+          <!-- Right Column -->
+          <div class="col-md-6">
+            <div class="form-group mt-3">
+              <label for="course_interest" class="form-label">Course of Interest</label>
+              <select class="form-control" id="course_interest" name="course_interest" required>
+                <option value="">Select a Course</option>
+                <option value="Full Stack Development">Full Stack Development</option>
+                <option value="C++ Programming">C++ Programming</option>
+                <option value="DevOps Engineering">DevOps Engineering</option>
+                <option value="Angular Development">Angular Development</option>
+              </select>
+            </div>
+            <div class="form-group mt-3">
+              <label for="preferred_schedule" class="form-label">Preferred Schedule</label>
+              <select class="form-control" id="preferred_schedule" name="preferred_schedule" required>
+                <option value="">Select a Schedule</option>
+                <option value="Weekday">Weekday</option>
+                <option value="Weekend">Weekend</option>
+                <option value="Evening">Evening</option>
+              </select>
+            </div>
+            <div class="form-group mt-3">
+              <label for="comments" class="form-label">Additional Comments</label>
+              <textarea class="form-control" id="comments" name="comments" rows="4" placeholder="Any specific requirements or questions?" required></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+          <button type="submit" class="btn btn-primary">Enroll Now</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
 
 <!-- Courses Section -->
 <section id="courses" class="custom-app-development bg-light py-5" style="margin-bottom: 2%; margin-top: 2%;">
   <div class="container">
     <div class="section-title text-center mb-5">
-      <h2 class="text-primary">Master Software Development with Our Expert-Led Courses</h2>
-      <p class="lead text-muted">Start your journey to becoming a software development expert with our top-rated courses designed by industry professionals.</p>
+      <h2 class="text-primary">Course Details</h2>
     </div>
 
     <div class="row">
@@ -64,59 +122,150 @@
   </div>
 </section>
 
-<!-- Success Stories Section -->
-<section id="success-stories" class="py-5" style="background: linear-gradient(to bottom right, #eaf4fc, #ffffff);">
+<section id="courses" class="custom-app-development bg-light py-5" style="margin-bottom: 2%; margin-top: 2%;">
   <div class="container">
-    <div class="shadow-lg p-5 border rounded bg-white">
-      <div class="section-title text-center mb-4">
-        <h3 class="text-primary font-weight-bold">Success Stories</h3>
+    <div class="section-title text-center mb-5">
+      <h2 class="text-primary">Empower Your Team with Cutting-Edge Corporate Training in Kochi</h2>
+      <p class="lead text-muted">Boost your workforce's skills and productivity with SevenDyne's tailored corporate training programs designed to meet your organization's unique needs and challenges.</p>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-4">
+        <div class="service-card shadow-lg rounded p-4 bg-white text-center">
+          <h3 class="text-primary">Technical Skill Development</h3>
+          <p class="text-muted">Enhance your team’s technical expertise with hands-on training in the latest programming languages, frameworks, and development tools.</p>
+        </div>
       </div>
-      <p class="text-muted text-center">
-        The professionals trained at Sevendyne have gone on to work with some of the most exciting startups and companies, contributing to cutting-edge projects in tech, development, and innovation. Explore their journeys and the impactful projects they've delivered with the skills gained from our expert-led training programs.
-      </p>
-      <p class="text-muted text-center">
-        We take pride in seeing our graduates thrive in various roles, from full-stack developers to DevOps engineers, building solutions that drive success across industries.
-      </p>
-      <div class="text-center mt-4">
-        <a href="{% url 'main:portfolios_home' %}" class="btn btn-primary btn-lg">View Our Client Works</a>
+      <div class="col-md-4">
+        <div class="service-card shadow-lg rounded p-4 bg-white text-center">
+          <h3 class="text-primary">Leadership & Management Training</h3>
+          <p class="text-muted">Develop leadership capabilities and strategic thinking skills essential for managing high-performing teams and projects.</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="service-card shadow-lg rounded p-4 bg-white text-center">
+          <h3 class="text-primary">Soft Skills Enhancement</h3>
+          <p class="text-muted">Improve communication, teamwork, problem-solving, and adaptability to drive better results in the workplace.</p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- Course Fees and Structure Section -->
-<section id="course-fees" class="py-5" style="background: #f8f9fa;">
-  <div class="container">
-    <div class="shadow-lg p-5 border rounded bg-white">
-      <div class="section-title text-center mb-4">
-        <h3 class="text-primary font-weight-bold">Course Fees and Structure</h3>
-      </div>
-      <p class="lead text-muted text-center">Everything you need to know about our course fees and flexible payment options.</p>
-      <div class="text-center mt-4">
-        <p class="font-weight-bold" style="color: #28a745;">₹30,000 for the full 6-month program</p>
-      </div>
-      <ul class="list-unstyled">
-        <li><span class="font-weight-bold text-primary">Duration:</span> Each course is designed to be completed in <strong>6 months</strong>, with a blend of theory and practical lessons.</li>
-        <li><span class="font-weight-bold text-primary">Phase 1:</span> The first <strong>4 months</strong> focus on continuous theory-based learning combined with practical exercises.</li>
-        <li><span class="font-weight-bold text-primary">Phase 2:</span> The final <strong>2 months</strong> are dedicated to <strong>job training</strong> to help you secure a job, working on real-world projects.</li>
+    <!-- Key Benefits Section -->
+    <div class="mt-5">
+      <h3 class="text-primary text-center">Key Benefits</h3>
+      <ul class="list-unstyled text-muted">
+        <li><strong>Customized Training Solutions:</strong> Tailored programs to align with your organization's goals and challenges.</li>
+        <li><strong>Experienced Trainers:</strong> Learn from industry experts with hands-on experience in their fields.</li>
+        <li><strong>Flexible Scheduling:</strong> Choose the training schedule that works best for your team’s needs.</li>
+        <li><strong>Results-Driven Approach:</strong> Our training programs are designed to deliver measurable improvements in performance and productivity.</li>
       </ul>
-      <div class="payment-options mt-4">
-        <h5 class="text-primary font-weight-bold">Payment Options:</h5>
-        <ul class="list-unstyled">
-          <li><span class="font-weight-bold" style="color: black;">1. Avail a <strong style="color: #ff6347;">10% discount</strong> on full payment (Pay ₹27,000 upfront).</span></li>
-          <li><span class="font-weight-bold" style="color: black;">2. Pay in easy installments of ₹5,000/month.</span></li>
-        </ul>
-      </div>
-      <div class="text-center mt-4">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSe36Ac9tfVFCsMxIToY8ZpxX_V-abMtmuzX8JPh7tOcO84sPg/viewform?usp=pp_url" target="_blank" class="btn btn-success btn-lg">Book Here</a>
-      </div>
+    </div>
+
+    <!-- Why Choose SevenDyne -->
+    <div class="mt-5">
+      <h3 class="text-primary text-center">Why Choose SevenDyne for Corporate Training?</h3>
+      <ul class="list-unstyled text-muted">
+        <li><strong>Expertise:</strong> Decades of experience in training professionals across various sectors, including IT, software development, and more.</li>
+        <li><strong>Holistic Learning:</strong> Focus on practical, real-world applications combined with theoretical understanding.</li>
+        <li><strong>State-of-the-Art Facilities:</strong> Access to modern training venues equipped with the latest technology and tools.</li>
+      </ul>
+    </div>
+
+    <!-- Additional Services -->
+    <div class="mt-5">
+      <h3 class="text-primary text-center">Additional Services</h3>
+      <ul class="list-unstyled text-muted">
+        <li>On-site Training: Training delivered at your location to minimize disruptions and maximize convenience.</li>
+        <li>Custom Training Plans: We work with you to develop training programs specific to your team’s requirements.</li>
+        <li>Post-Training Support: Ongoing assistance and resources to reinforce new skills and knowledge.</li>
+      </ul>
+    </div>
+
+    <!-- Industries We Serve -->
+    <div class="mt-5">
+      <h3 class="text-primary text-center">Industries We Serve</h3>
+      <p class="text-muted text-center">From IT and software development to finance, healthcare, and more, SevenDyne supports organizations across diverse industries.</p>
+    </div>
+
+    <!-- Client Results -->
+    <div class="mt-5">
+      <h3 class="text-primary text-center">Client Results</h3>
+      <p class="text-muted">
+        <strong>Case Study Snippet:</strong> A global IT company in Kochi reported a 30% increase in team productivity after implementing SevenDyne’s tailored training programs.
+      </p>
+    </div>
+
+    <!-- How It Works -->
+    <div class="mt-5">
+      <h3 class="text-primary text-center">How It Works</h3>
+      <ol class="list-unstyled text-muted">
+        <li><strong>Needs Assessment:</strong> We analyze your team’s skill levels and training requirements.</li>
+        <li><strong>Customized Program Design:</strong> We develop a training curriculum that fits your objectives and business goals.</li>
+        <li><strong>Implementation:</strong> Our trainers deliver interactive and engaging training sessions.</li>
+        <li><strong>Follow-Up & Support:</strong> We offer continuous support and resources to ensure long-term success.</li>
+      </ol>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="text-center mt-5 bg-light py-4">
+      <h4 class="text-primary">Ready to Boost Your Team’s Skills?</h4>
+      <p class="text-muted">Get started with SevenDyne’s corporate training programs today.</p>
+      <a href="#contactForm" class="btn btn-primary">Contact Us for a Personalized Training Plan</a>
     </div>
   </div>
 </section>
 
+<!-- Scripts -->
+<script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/app.js' %}"></script>
+<script>
+    function togglePasswordVisibility() {
+        var passwordField = document.getElementById("password");
+        var passwordIcon = document.getElementById("password-icon");
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            passwordIcon.classList.remove("fa-eye-slash");
+            passwordIcon.classList.add("fa-eye");
+        } else {
+            passwordField.type = "password";
+            passwordIcon.classList.remove("fa-eye");
+            passwordIcon.classList.add("fa-eye-slash");
+        }
+    }
+</script>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
 
+<script>
+    $("#submit-form").submit((e) => {
+        e.preventDefault();
+		const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
-
-
+        $.ajax({
+            url: "https://script.google.com/macros/s/AKfycbyxzRzjygEh1l0AHrTD6uEXKGilEkmYjCeC0YGk1wABLOureKv6sv1aah09itDpLgL6GQ/exec",
+            data: $("#submit-form").serialize() + '&csrfmiddlewaretoken=' + csrfToken,
+            method: "POST",
+            success: function (response) {
+                // Use SweetAlert for success message
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Your Message is sent to Sevendyne Inc.',
+                }).then(() => {
+                    window.location.reload();
+                });
+            },
+            error: function (err) {
+                // Use SweetAlert for error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Something went wrong.',
+                });
+            }
+        });
+    });
+</script>
 {% endblock %}
