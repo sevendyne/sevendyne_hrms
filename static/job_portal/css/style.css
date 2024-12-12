@@ -775,3 +775,10 @@
     font-size: 2.5rem; /* Adjust size if necessary */
     line-height: 1.4; /* Better line spacing for readability */
 }
+
+.project-block .project-img {
+    width: 100%; /* Ensures the image spans the width of the parent container */
+    height: 250px; /* Set a fixed height */
+    object-fit: cover; /* Ensures the image is cropped proportionally to fill the dimensions */
+    border-radius: 5px; /* Optional: keeps the rounded corners */
+}
