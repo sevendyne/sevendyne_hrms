@@ -218,6 +218,9 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+
 <!-- Script for form submission -->
 <script>
     $(document).ready(function() {
@@ -236,7 +239,7 @@
                         text: 'Your project details have been successfully submitted!'
                     });
                     $("#submit-form")[0].reset();
-                    $('#projectSubmissionModal').modal('hide');
+                    $('#consultationModal').modal('hide');
                 },
                 error: function (error) {
                     Swal.fire({
