@@ -14,7 +14,7 @@ urlpatterns = [
     path('terms_and_conditions/',views.terms_and_conditions,name='terms_and_conditions'),
     path('privacy_policy/',views.privacy_policy,name='privacy_policy'),
     path('portfolio-home/',views.portfolios_home,name='portfolios_home'),
-    path('home/hrms/',views.home_hrms,name='home_hrms'),
+    path('products/hrms/',views.hrms,name='hrms'),
 
     path('get_states/', views.get_states, name='get_states'),
 
