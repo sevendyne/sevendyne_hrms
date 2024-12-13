@@ -1,162 +1,253 @@
 {% extends "job_portal/base.html" %}
 
-{% block og_title %}SevenDyne: Remote Staffing platform{% endblock %}
-{% block og_description %}Connect with top talent and find your next opportunity through Sevendyne's innovative staffing and HRMS platform.{% endblock %}
+{% block og_title %}SevenDyne: HR Services & IT Training in Kochi | Remote Staffing{% endblock %}
+{% block og_description %}Comprehensive HR solutions and professional IT training in Kochi. Remote staffing, payroll management, full stack developer training, and talent acquisition services.{% endblock %}
 {% block og_url %}https://sevendyne.com{% endblock %}
-{% block title %}SevenDyne Jobs: Remote Staffing and HRMS{% endblock %}
+{% block title %}SevenDyne: HR Services, IT Training & Remote Staffing in Kochi{% endblock %}
 
 {% load static %}
 
 {% block content %}
-<!-- Banner -->
+<!-- Hero Section -->
 <div class="main-banner-section py-5 text-white" style="background-color: darkblue;" data-aos="fade-up" data-aos-duration="2000">
     <div class="container">
         <div class="row align-items-center">
-            <!-- Left Side: Text Content -->
             <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
-                <h1 class="fw-bold highlight-text">Connect with Top Talent or Find Your Next Opportunity</h1>
-
-                <p class="mt-3">Discover flexible workforce solutions, ranging from remote to onsite roles, tailored to meet your business needs or help you find the perfect job opportunity across all career levels</p>
+                <h1 class="fw-bold highlight-text">Empower Your Business with Expert HR Solutions & Cutting-Edge IT Training in Kochi</h1>
+                
+                <p class="mt-3">Drive growth, efficiency, and innovation with our comprehensive HR services and professional training programs. Whether you need top talent or want to develop in-demand tech skills, SevenDyne is your trusted partner.</p>
+                
                 <div class="d-flex flex-column flex-md-row justify-content-center justify-content-lg-start gap-3 mt-4">
-                    <a href="{% url 'user:signup' %}" class="btn btn-light btn-lg px-3 py-3 text-primary fw-bold">Hire Top Talents</a>
-                    <a href="{% url 'candidate:create_intern' %}" class="btn btn-warning btn-lg px-3 py-3 text-dark fw-bold">Grow Your Skills</a>
+                     <button type="button" class="btn btn-success btn-lg px-3 py-3 fw-bold" data-bs-toggle="modal" data-bs-target="#consultationModal">
+                        Get Free Consultation
+                    </button>
                 </div>
             </div>
-            <!-- Right Side: Image -->
             <div class="col-lg-6 d-none d-lg-block">
-                <img src="{% static 'job_portal/img/hrmscover3.jpeg' %}" alt="HRMS Cover" class="img-fluid rounded">
+                <img src="{% static 'job_portal/img/hrmscover3.jpeg' %}" alt="HR Services and IT Training in Kochi" class="img-fluid rounded">
             </div>
         </div>
     </div>
 </div>
+
+<!-- Why Choose SevenDyne Section -->
+<div class="container py-5">
+    <div class="row text-center">
+        <div class="col-12">
+            <h2 class="text-primary fw-bold mb-4">Why Choose SevenDyne?</h2>
+            <p class="text-muted">We bridge gaps in workforce management and skill development with holistic solutions tailored for businesses and professionals in Kochi.</p>
+        </div>
+    </div>
+    <div class="row text-center mt-4">
+        <div class="col-12">
+            <p class="text-muted">
+                Learn more about our mission, vision, and the range of services we provide to empower businesses and individuals. 
+                <a href="{% static 'about' %}" class="fw-bold text-primary">About Us</a>
+            </p>
+        </div>
+    </div>
+</div>
+
 
 <!-- Our Clients Section -->
 <div class="container-fluid py-5" style="background-color: #eef2f7;">
     <div class="container">
         <div class="row justify-content-center mb-5">
             <div class="col-12 text-center">
-                <h2 class="mb-4 text-dark">Our Clients</h2>
-                <p class="text-secondary">We've partnered with clients worldwide to deliver top-notch staffing solutions.</p>
+                <h2 class="mb-4 text-dark">Our Esteemed Clients Across IT Services</h2>
+                <p class="text-secondary">
+                    We take pride in collaborating with global companies, offering a diverse range of IT services including remote staffing, turnkey solutions, corporate training, and software project development.
+                </p>
             </div>
         </div>
         <div class="row justify-content-center">
-            <!-- Client Boxes -->
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">J&A UK</h4>
-                    <p class="text-center">Staffing Solidwork and PLC Engineers</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">Kliebert Engineering, Germany</h4>
-                    <p class="text-center">Staffing C++ Engineers</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">Reddotpayment, Singapore</h4>
-                    <p class="text-center">Staffing Fullstack PHP Professionals</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">CSR, Germany</h4>
-                    <p class="text-center">Staffing Fullstack Angular & Ruby on Rails Engineers</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">Cygnus, UK</h4>
-                    <p class="text-center">Staffing C++ Engineers</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-					<a href="{% url 'user:signup' %}" class="btn btn-primary mt-4 text-center">Hire your Top Talent today!</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Improve Your Skills Section -->
-<div class="container py-5 text-center">
-    <h2 class="text-dark fw-bold mb-5">Master Software Development with Our Expert-Led Courses</h2>
-
-    <div class="row justify-content-center gap-4">
-        <!-- Flexbox Cards for each course -->
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="course-card p-4 bg-light shadow-lg rounded text-center" style="border: 1px solid #ddd; transition: transform 0.3s ease-in-out;">
-                <h4 class="fw-bold text-primary mb-3">Full-Stack Development</h4>
-                <p class="text-muted mb-4">Learn to build dynamic web apps with technologies like Python, Angular, and more.</p>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="course-card p-4 bg-light shadow-lg rounded text-center" style="border: 1px solid #ddd; transition: transform 0.3s ease-in-out;">
-                <h4 class="fw-bold text-primary mb-3">DevOps Engineering</h4>
-                <p class="text-muted mb-4">Set up CI/CD pipelines and manage containerized applications using Docker.</p>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-12">
-            <div class="course-card p-4 bg-light shadow-lg rounded text-center" style="border: 1px solid #ddd; transition: transform 0.3s ease-in-out;">
-                <h4 class="fw-bold text-primary mb-3">C++ Development</h4>
-                <p class="text-muted mb-4">Master advanced C++ concepts like memory management and object-oriented programming.</p>
-            </div>
-        </div>
-    </div>
-
-    <a href="{% url 'candidate:create_intern' %}" class="btn btn-primary mt-4 px-5 py-2">Start Learning Today!</a>
-</div>
-
-
-<!-- Features Section -->
-<div class="build-feature py-5" style="background-color: #e3f2fd;">
-    <div class="container">
-        <div class="row text-center">
-            <div class="col-12">
-                <h2 class="text-primary fw-bold">Discover Our Remote Staffing Features</h2>
-                <p class="text-muted">Find vetted candidates, onboard easily, and manage teams through our advanced HRMS platform.</p>
-            </div>
-        </div>
-        <div class="row mt-4">
             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-box p-4 text-center bg-white shadow rounded">
-                    <img src="{% static 'assets_home/img/handshake.png' %}" alt="find-vetted-candidates" class="mb-3" style="width: 50px;">
-                    <h4 class="text-primary">Find Vetted Candidates</h4>
-                    <p class="text-muted">Access a pool of pre-screened candidates ready to join your team.</p>
+                <div class="client-box p-4 text-center bg-white shadow rounded">
+                    <h3 class="text-primary mb-3">HR Payroll Clients</h3>
+                    <p class="text-muted">
+                        <strong>J&A UK</strong>, <strong>Kliebert Engineering, Germany</strong>, and <strong>OVT Germany</strong> have entrusted us to hire and manage their staff on a payroll basis, ensuring seamless workforce management.
+                    </p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-box p-4 text-center bg-white shadow rounded">
-                    <img src="{% static 'assets_home/img/client.png' %}" alt="easy-onboarding" class="mb-3" style="width: 50px;">
-                    <h4 class="text-primary">Easy Onboarding</h4>
-                    <p class="text-muted">Onboard your new hires smoothly with our intuitive platform.</p>
+                <div class="client-box p-4 text-center bg-white shadow rounded">
+                    <h3 class="text-primary mb-3">Project Clients</h3>
+                    <p class="text-muted">
+                        We delivered software development and management solutions for <strong>Reddotpayment, Singapore</strong>, <strong>CSR, Germany</strong>, and <strong>Cygnus, UK</strong>, using technologies like CodeIgniter, PHP, Angular, Python, Ruby on Rails, C++, Qt, and more.
+                    </p>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6 mb-4">
-                <div class="feature-box p-4 text-center bg-white shadow rounded">
-                    <img src="{% static 'assets_home/img/management.png' %}" alt="hrms-management" class="mb-3" style="width: 50px;">
-                    <h4 class="text-primary">Manage via HRMS Platform</h4>
-                    <p class="text-muted">Streamline your remote team management with our integrated HRMS solution.</p>
+                <div class="client-box p-4 text-center bg-white shadow rounded">
+                    <h3 class="text-primary mb-3">Corporate Training Clients</h3>
+                    <p class="text-muted">
+                        We provided in-depth training programs for <strong>Niagaprestasi, Malaysia</strong>, covering Java, .NET, and database systems. Additionally, we trained companies like <strong>Collabera</strong> with intensive 8-hour full-day sessions over 3 months.
+                    </p>
                 </div>
             </div>
-        </div>
-        <div class="text-center mt-4">
-            <a href="{% url 'main:about' %}" class="btn btn-primary">Know More About Us</a>
         </div>
     </div>
 </div>
 
-<!-- Signup Section -->
-<div class="d-flex justify-content-center" style="background-color: #ff5722; padding: 40px; margin-top: 40px; text-align: center; color: white;">
-    <div id="plan-section" class="product-options-section mt-5 text-center">
-        <h3 style="font-size: 28px; font-weight: bold;">Get Started with SevenDyne</h3>
-        <p style="font-size: 18px;">Take the next step toward smarter staffing or career advancement today!</p>
-        <div class="mt-4">
-            <a href="{% url 'user:signup' %}" class="btn btn-light btn-lg px-5 py-2 text-primary fw-bold me-3">Hire Top Talents</a>
-            <a href="{% url 'candidate:create_intern' %}" class="btn btn-warning btn-lg px-5 py-2 fw-bold text-dark">Grow Your Skills</a>
+
+<!-- HR Services Section -->
+<div class="container py-5">
+    <div class="row text-center">
+        <div class="col-12">
+            <h2 class="text-primary fw-bold mb-4">Our HR Services in Kochi</h2>
+            <p class="text-muted">Streamline your workforce with our comprehensive HR solutions designed to build, manage, and retain high-performing teams.</p>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="service-box p-4 text-center bg-white shadow rounded">
+                <h3 class="text-primary mb-3">Remote Staffing</h3>
+                <p class="text-muted">Expand your team with global talent. We handle sourcing, vetting, and onboarding professional candidates.</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="service-box p-4 text-center bg-white shadow rounded">
+                <h3 class="text-primary mb-3">Payroll Management</h3>
+                <p class="text-muted">Ensure timely and accurate payroll processes with our reliable and compliant solutions.</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="service-box p-4 text-center bg-white shadow rounded">
+                <h3 class="text-primary mb-3">HR Outsourcing</h3>
+                <p class="text-muted">Optimize HR functions with expert consultancy and comprehensive outsourcing services.</p>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4">
+            <div class="service-box p-4 text-center bg-white shadow rounded">
+                <h3 class="text-primary mb-3">Talent Acquisition</h3>
+                <p class="text-muted">Secure top-tier talent through our data-driven recruitment strategies and comprehensive hiring process.</p>
+            </div>
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <a href="/remote_staffing" class="btn btn-primary btn-lg px-5">Learn More About Our Services</a>
+    </div>
+</div>
+
+
+<!-- IT Training Programs Section -->
+<div class="container py-5" style="background-color: #f4f4f4;">
+    <div class="row text-center">
+        <div class="col-12">
+            <h2 class="text-primary fw-bold mb-4">Professional IT Training Programs</h2>
+            <p class="text-muted">Enhance your skills with our tailored corporate and technical training programs.</p>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="course-card p-4 bg-white shadow-lg rounded text-center">
+                <h3 class="fw-bold text-primary mb-3">Corporate Training</h3>
+                <p class="text-muted mb-4">Empower your workforce with tailored IT training designed to meet the specific needs of your organization.</p>
+                <a href="/corporate_training" class="btn btn-outline-primary">Explore Training</a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="course-card p-4 bg-white shadow-lg rounded text-center">
+                <h3 class="fw-bold text-primary mb-3">MEAN Stack Training</h3>
+                <p class="text-muted mb-4">Gain expertise in MongoDB, Express.js, Angular, and Node.js to build full-stack web applications.</p>
+                <a href="/mean_stack_training" class="btn btn-outline-primary">Explore Training</a>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="course-card p-4 bg-white shadow-lg rounded text-center">
+                <h3 class="fw-bold text-primary mb-3">Testing Training</h3>
+                <p class="text-muted mb-4">Master software testing techniques, including manual testing, Selenium automation, and advanced testing tools.</p>
+                <a href="/testing_training" class="btn btn-outline-primary">Explore Training</a>
+            </div>
+        </div>
+    </div>    
+</div>
+
+
+<!-- Modal Structure -->
+<div class="modal fade" id="consultationModal" tabindex="-1" aria-labelledby="projectSubmissionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="projectSubmissionModalLabel">Submit Your Project Details</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="submit-form" action="#" class="php-email-form">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Full Name" required>
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="email" class="form-label">Your Email</label>
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="project_name" class="form-label">Project Name</label>
+                        <input type="text" class="form-control" name="project_name" id="project_name" placeholder="Project Name" required>
+                    </div>
+
+                    <div class="form-group mt-3">
+                        <label for="project_description" class="form-label">Project Description</label>
+                        <textarea class="form-control" name="project_description" rows="4" id="project_description" placeholder="Brief description of your project" required></textarea>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-6 form-group">
+                            <label for="preferred_location" class="form-label">Preferred Location</label>
+                            <input type="text" class="form-control" name="preferred_location" id="preferred_location" placeholder="City, Country">
+                        </div>
+
+                        <div class="col-md-6 form-group">
+                            <label for="budget" class="form-label">Project Budget (Optional)</label>
+                            <input type="text" class="form-control" name="budget" id="budget" placeholder="Estimated Project Budget">
+                        </div>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">Submit Project Details</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
+
+<!-- Script for form submission -->
+<script>
+    $(document).ready(function() {
+        $("#submit-form").submit(function(e) {
+            e.preventDefault();
+            const csrfToken = $('[name=csrfmiddlewaretoken]').val();
+
+            $.ajax({
+                url: "https://script.google.com/macros/s/AKfycbyxzRzjygEh1l0AHrTD6uEXKGilEkmYjCeC0YGk1wABLOureKv6sv1aah09itDpLgL6GQ/exec",
+                data: $(this).serialize() + '&csrfmiddlewaretoken=' + csrfToken,
+                method: 'POST',
+                success: function (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Your project details have been successfully submitted!'
+                    });
+                    $("#submit-form")[0].reset();
+                    $('#projectSubmissionModal').modal('hide');
+                },
+                error: function (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while submitting the form. Please try again later.'
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 {% endblock %}
