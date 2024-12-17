@@ -832,14 +832,59 @@ body {
 
 
 
-/* Updated Section Background Styles */
-section {
-    background-color: transparent; /* Default transparent for all sections */
-    padding: 50px 0; /* Add consistent padding */
+:root {
+    --primary-blue: #0057B3;     /* Matches logo blue */
+    --secondary-blue: #4A90E2;   /* Lighter blue for contrast */
+    --accent-teal: #80D6FF;      /* Complementary teal for accents */
+    --highlight-yellow: #FFC857; /* Subtle yellow for CTAs */
+    --background-light: #F5F5F5; /* Neutral background */
+    --text-dark: #333333;        /* Dark text for readability */
+    --white: #FFFFFF;            /* White for clean design */
 }
 
-.container {
-    max-width: 1200px; /* Ensure uniform width for containers */
-    margin: 0 auto;
-    padding: 0 15px;
+/* Updated Button Styles */
+.btn-primary {
+    background: linear-gradient(45deg, var(--primary-blue), var(--secondary-blue));
+    color: var(--white);
+    border: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: var(--accent-teal);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background-color: var(--highlight-yellow);
+    color: var(--white);
+    border: none;
+}
+
+.btn-success:hover {
+    background-color: var(--accent-teal);
+    color: var(--white);
+}
+
+/* Section Styles */
+section {
+    background-color: var(--background-light); /* Neutral background */
+    padding: 50px 0;
+}
+
+/* Text and Highlight Adjustments */
+h1, h2, h3, h4 {
+    color: var(--primary-blue);
+}
+
+p, span {
+    color: var(--text-dark);
+}
+
+/* Link Hover */
+a:hover {
+    color: var(--accent-teal);
+    text-decoration: none;
 }
