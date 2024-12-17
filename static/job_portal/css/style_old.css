@@ -831,15 +831,3 @@ body {
 }
 
 
-
-/* Updated Section Background Styles */
-section {
-    background-color: transparent; /* Default transparent for all sections */
-    padding: 50px 0; /* Add consistent padding */
-}
-
-.container {
-    max-width: 1200px; /* Ensure uniform width for containers */
-    margin: 0 auto;
-    padding: 0 15px;
-}
