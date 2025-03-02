@@ -64,7 +64,7 @@ def terms_and_conditions(request):
     return render(request, 'job_portal/terms_and_conditions.html')
 
 def corporate_training(request):
-    return render(request, 'job_portal/corporate_training.html')
+    return render(request, 'job_portal/training_professionals.html')
 
 def mean_stack_training(request):
     return render(request, 'job_portal/mean_stack_training.html')
@@ -72,8 +72,8 @@ def mean_stack_training(request):
 def testing_training(request):
     return render(request, 'job_portal/testing_training.html')
 
-def team_supports(request):
-    return render(request, 'job_portal/team_supports.html')
+def client_works(request):
+    return render(request, 'job_portal/client_works.html')
 
 def hrms(request):
     return render(request, 'job_portal/hrms.html')

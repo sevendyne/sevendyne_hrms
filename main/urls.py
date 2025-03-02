@@ -40,10 +40,10 @@ urlpatterns = [
     re_path(r'^delete-email-setting/(?P<pk>.*)/$', views.delete_email_setting, name='delete_email_setting'),    
     re_path(r'^email-setting/(?P<pk>.*)/$', views.email_setting, name='email_setting'),
 
-    path('corporate_training/',views.corporate_training,name='corporate_training'),
+    path('training_professionals/',views.training_professionals,name='training_professionals'),
     path('mean_stack_training/',views.mean_stack_training,name='mean_stack_training'),
     path('testing_training/',views.testing_training,name='testing_training'),
-    path('team_supports/',views.team_supports,name='team_supports'),
+    path('client_works/',views.client_works,name='client_works'),
     path('hrms/',views.hrms,name='hrms'),
     path('devops/',views.devops,name='devops'),
     path('webapps/',views.webapps,name='webapps'),
