@@ -1,9 +1,9 @@
 {% extends "job_portal/base.html" %}
 
-{% block og_title %}SevenDyne: Leading Corporate Training Provider in Kochi{% endblock %}
-{% block og_description %}SevenDyne offers top-notch corporate training programs in Kochi, designed to enhance skills and knowledge in emerging technologies. Our expert-led courses cater to businesses looking to boost their workforce's technical proficiency and stay competitive in a dynamic market.{% endblock %}
+{% block og_title %}SevenDyne: Leading IT Training Provider in Kochi{% endblock %}
+{% block og_description %}SevenDyne offers top-notch IT training programs in Kochi, designed to enhance skills and knowledge in emerging technologies. Our expert-led courses cater to businesses looking to boost their workforce's technical proficiency and stay competitive in a dynamic market.{% endblock %}
 {% block og_url %}https://Sevendyne.com/{% endblock %}
-{% block title %}Corporate Training in Kochi: Upskill Your Workforce with SevenDyne{% endblock %}
+{% block title %}IT Training in Kochi: Upskill Your Workforce with SevenDyne{% endblock %}
 
 
 {% load static %}
@@ -13,7 +13,14 @@
 <!-- Hero Section -->
 <div class="container-xxl py-5 bg-dark page-header mb-5">
   <div class="container my-5 pt-5 pb-4">
-    <h1 class="display-3 text-white mb-3 animated slideInDown">Corporate Training Programs</h1>
+    <h1 class="display-3 text-white mb-3 animated slideInDown">Professional Training Programs</h1>
+  </div>
+</div>
+
+<!-- Hero Section -->
+<div class="container-xxl py-5 bg-dark page-header mb-5">
+  <div class="container my-5 pt-5 pb-4">
+    <h1 class="display-3 text-white mb-3 animated slideInDown">Professional Training Programs</h1>
   </div>
 </div>
 
@@ -21,7 +28,42 @@
   <div class="container">
     <!-- Section Title -->
     <div class="section-title text-center mb-5">
-      <h2 class="text-primary">Corporate Training Services</h2>
+      <h2 class="text-primary">Highlighted Training Programs</h2>
+      <p class="lead text-muted">Our most in-demand courses designed to build expertise in emerging technologies.</p>
+    </div>
+
+    <!-- Highlighted Training Programs -->
+    <div class="row mb-5">
+      <div class="col-md-4">
+        <div class="service-card shadow-lg rounded p-4 bg-white text-center">
+          <h3 class="text-primary">MEAN Stack Training</h3>
+          <p class="text-muted">Master the MEAN stack (MongoDB, Express.js, Angular, Node.js) for building scalable web applications.</p>
+          <a href="{% url 'main:mean_stack_training' %}" class="btn btn-primary mt-3">Learn More</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="service-card shadow-lg rounded p-4 bg-white text-center">
+          <h3 class="text-primary">MERN Stack Training</h3>
+          <p class="text-muted">Learn full-stack development using MongoDB, Express.js, React, and Node.js for modern web applications.</p>
+          <a href="{% url 'main:mern_stack_training' %}" class="btn btn-primary mt-3">Learn More</a>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="service-card shadow-lg rounded p-4 bg-white text-center">
+          <h3 class="text-primary">Software Testing Training</h3>
+          <p class="text-muted">Gain expertise in manual and automation testing techniques, including Selenium and advanced testing frameworks.</p>
+          <a href="{% url 'main:testing_training' %}" class="btn btn-primary mt-3">Learn More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="py-5" style="background: #f8f9fa;">
+  <div class="container">
+    <!-- Section Title -->
+    <div class="section-title text-center mb-5">
+      <h2 class="text-primary">Our Services</h2>
       <p class="lead text-muted">Empower your team with tailored training programs that drive growth and development.</p>
     </div>
 
@@ -99,10 +141,9 @@
               <label for="course_interest" class="form-label">Course of Interest</label>
               <select class="form-control" id="course_interest" name="course_interest" required>
                 <option value="">Select a Course</option>
-                <option value="Full Stack Development">Full Stack Development</option>
-                <option value="C++ Programming">C++ Programming</option>
-                <option value="DevOps Engineering">DevOps Engineering</option>
-                <option value="Angular Development">Angular Development</option>
+                <option value="Full Stack Development">MEAN Stack</option>
+                <option value="C++ Programming">MERN Stack</option>
+                <option value="DevOps Engineering">Software Testing</option>
               </select>
             </div>
             <div class="form-group mt-3">
@@ -121,61 +162,12 @@
           </div>
         </div>
         <div class="text-center mt-4">
-          <button type="submit" class="btn btn-primary">Register for Corporate Training</button>
+          <button type="submit" class="btn btn-primary">Register for Training</button>
         </div>
       </form>
     </div>
   </div>
 </section>
-
-
-<!-- Courses Section -->
-<section id="courses" class="custom-app-development bg-light py-5" style="margin-bottom: 2%; margin-top: 2%;">
-  <div class="container">
-    <div class="section-title text-center mb-5">
-      <h2 class="text-primary">Course Details</h2>
-    </div>
-
-    <div class="row">
-		<div class="col-md-6 col-lg-3 mt-3 mb-3">
-			<div class="course-block shadow-lg rounded d-flex flex-column border p-4 bg-light" style="min-height: 350px;">
-				<h4 class="text-center mb-3 text-primary">Full-Stack Development</h4>
-				<p class="text-muted text-center">Master Full-Stack technologies including Python, Ruby on Rails, Angular, and more. Build dynamic web applications and APIs with industry-best practices.</p>
-				<a href="{% static 'courses/Webapp-Sevendyne_Programs.pdf' %}" target="_blank" class="btn btn-primary mt-auto">Download Full-Stack Catalog</a>
-			</div>
-		</div>
-
-		<!-- DevOps Engineering -->
-		<div class="col-md-6 col-lg-3 mt-3 mb-3">
-			<div class="course-block shadow-lg rounded d-flex flex-column border p-4 bg-light" style="min-height: 350px;">
-				<h4 class="text-center mb-3 text-primary">DevOps Engineering</h4>
-				<p class="text-muted text-center">Learn to set up CI/CD pipelines, manage containerized applications using Docker, and automate workflows to streamline development operations.</p>
-				<a href="{% static 'courses/Devops-Sevendyne_Programs.pdf' %}" target="_blank" class="btn btn-primary mt-auto">Download DevOps Catalog</a>
-			</div>
-		</div>
-
-		<!-- C++ Development -->
-		<div class="col-md-6 col-lg-3 mt-3 mb-3">
-			<div class="course-block shadow-lg rounded d-flex flex-column border p-4 bg-light" style="min-height: 350px;">
-				<h4 class="text-center mb-3 text-primary">C++ Development</h4>
-				<p class="text-muted text-center">Master the intricacies of C++ programming, including advanced features like memory management, object-oriented programming, and more.</p>
-				<a href="{% static 'courses/Cpp-Sevendyne_Programs.pdf' %}" target="_blank" class="btn btn-primary mt-auto">Download C++ Catalog</a>
-			</div>
-		</div>
-
-		<!-- Java Development -->
-		<div class="col-md-6 col-lg-3 mt-3 mb-3">
-			<div class="course-block shadow-lg rounded d-flex flex-column border p-4 bg-light" style="min-height: 350px;">
-				<h4 class="text-center mb-3 text-primary">Java Development</h4>
-				<p class="text-muted text-center">Master Java development from basics to core concepts, including object-oriented programming, and explore Android development with Kotlin for building mobile applications.</p>
-				<a href="{% static 'courses/Java-Sevendyne_Programs.pdf' %}" target="_blank" class="btn btn-primary mt-auto">Download Java Catalog</a>
-			</div>
-		</div>
-   
-    </div>
-  </div>
-</section>
-
 
 <section class="py-5" style="background: #f8f9fa;">
     <div class="container">

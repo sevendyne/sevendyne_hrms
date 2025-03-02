@@ -120,9 +120,24 @@
                 <div class="navbar-nav ms-auto p-4 p-lg-0">
                     <a href="{% url 'main:job_portal' %}" class="nav-item nav-link active">Home</a>
 
-                    <a href="{% url 'main:client_works' %}" class="nav-item nav-link">Client Works</a>
-
-                    <a href="{% url 'main:training_professionals' %}" class="nav-item nav-link">Training Professionals</a>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Client Works</a>
+                        <div class="dropdown-menu">
+                            <a href="{% url 'main:mobileapps' %}" class="dropdown-item">Mobile Apps</a>
+                            <a href="{% url 'main:webapps' %}" class="dropdown-item">Web Apps</a>
+                            <a href="{% url 'main:embeddedapps' %}" class="dropdown-item">Embedded Apps</a>
+                            <a href="{% url 'main:devops' %}" class="dropdown-item">DevOps Cloud</a>
+                            <a href="{% url 'main:testing' %}" class="dropdown-item">Software Testing</a>
+                        </div>
+                    </div>
+                    
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Training Professionals</a>
+                        <div class="dropdown-menu">
+                            <a href="{% url 'main:mean_stack_training' %}" class="dropdown-item">Mean Stack Training</a>
+                            <a href="{% url 'main:testing_training' %}" class="dropdown-item">Testing Training</a>
+                        </div>
+                    </div>
                         
                     <a href="{% url 'main:about' %}" class="nav-item nav-link">About Us</a>
             
@@ -146,7 +161,6 @@
 			<div class="row g-5">
 				<div class="col-lg-3 col-md-6">
 					<h5 class="text-white mb-4">Sevendyne Consultancy Services LLP</h5>
-					<a class="btn-link text-white-50" href="#">IT Consultancy Company</a>
 					<p>
 						<!-- Additional content for footer if needed -->
 					</p>
