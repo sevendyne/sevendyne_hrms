@@ -63,7 +63,7 @@ def about(request):
 def terms_and_conditions(request):
     return render(request, 'job_portal/terms_and_conditions.html')
 
-def corporate_training(request):
+def training_professionals(request):
     return render(request, 'job_portal/training_professionals.html')
 
 def mean_stack_training(request):
