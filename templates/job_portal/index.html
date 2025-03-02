@@ -1,23 +1,26 @@
 {% extends "job_portal/base.html" %}
 
-{% block og_title %}SevenDyne: Turnkey Projects | Professional IT Training | Team Building Solutions{% endblock %}
-{% block og_description %}Comprehensive turnkey project support and team building services. From project planning to execution, we offer end-to-end solutions for your business needs.{% endblock %}
+{% block og_title %}SevenDyne: ERP & HRMS Solutions | Trusted by Global Clients{% endblock %}
+{% block og_description %}Sevendyne is a powerful ERP platform starting with our HRMS solution. Join us to streamline business processes and enhance enterprise efficiency.{% endblock %}
 {% block og_url %}https://sevendyne.com{% endblock %}
-{% block title %}SevenDyne: Turnkey Project Support & Team Building{% endblock %}
+{% block title %}SevenDyne: ERP & HRMS Platform | Trusted by Global Clients{% endblock %}
 
 {% load static %}
 
 {% block content %}
-<!-- Hero Section -->
-<div class="main-banner-section py-5 text-white" style="background-image: url('/static/job_portal/img/technology-785742_1280.jpg'); background-size: cover; background-position: center;">
+<!-- Hero Section: ERP & HRMS Focus -->
+<div class="main-banner-section py-5 text-white" style="background-image: url('/static/job_portal/img/hrms_background.jpg'); background-size: cover; background-position: center;">
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-12 text-center text-lg-start mb-4 mb-lg-0">
-                <h1 class="fw-bold">Empower Your Business with Comprehensive Turnkey Project Support and Team Building</h1>
-                <p class="mt-3">End-to-end project solutions and expert team building services to drive successful outcomes.</p>
+                <h1 class="fw-bold">Empower Your Business with Sevendyne ERP & HRMS</h1>
+                <p class="mt-3">Comprehensive enterprise solutions for team management, payroll, finance, and business automation.</p>
                 <div class="d-flex flex-column flex-md-row justify-content-center justify-content-lg-start gap-3 mt-4">
-                    <a href="#consultationModal" class="btn btn-primary btn-lg px-4 py-3 fw-bold shadow-lg" data-bs-toggle="modal">
-                        <i class="bi bi-chat" style="font-size: 1.2em;"></i> Get Free Consultation & Consulting
+                    <a href="{% url 'user:signup' %}" class="btn btn-primary btn-lg px-4 py-3 fw-bold shadow-lg">
+                        <i class="bi bi-eye"></i> Check HRMS Demo
+                    </a>
+                    <a href="#consultationModal" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold shadow-lg" data-bs-toggle="modal">
+                        <i class="bi bi-chat"></i> Get Free Consultation & Consulting
                     </a>
                 </div>
             </div>
@@ -25,254 +28,53 @@
     </div>
 </div>
 
-<!-- Why Choose SevenDyne Section -->
-<div class="container py-3">
-    <div class="row text-center">
-        <div class="col-12">
-            <h2 class="text-primary">Why Choose SevenDyne?</h2>
-            <p class="text-muted">
-                SevenDyne has been a trusted partner in project development and related services since 2016.
-            </p>
-        </div>
-
-        <div class="row mt-3">
-            <div class="col-lg-4 col-md-6 mb-4 d-flex">
-                <div class="service-box p-4 text-center bg-white shadow rounded d-flex flex-column justify-content-between">
-                    <div>
-                        <h3 class="text-primary mb-3">End-to-End Project Development</h3>
-                        <p class="text-muted">
-                            We provide comprehensive solutions, from initial project planning to full-scale execution, ensuring successful delivery.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4 d-flex">
-                <div class="service-box p-4 text-center bg-white shadow rounded d-flex flex-column justify-content-between">
-                    <div>
-                        <h3 class="text-primary mb-3">Team Building & Management</h3>
-                        <p class="text-muted">
-                            We help you build high-performing teams with the right talent, ensuring seamless collaboration and efficiency across projects.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-4 d-flex">
-                <div class="service-box p-4 text-center bg-white shadow rounded d-flex flex-column justify-content-between">
-                    <div>
-                        <h3 class="text-primary mb-3">Professional IT Training</h3>
-                        <p class="text-muted">
-                            Upskill your team with our tailored training programs, from full-stack development to advanced project management techniques.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>        
-
-        <div class="row text-center mt-3">
-            <div class="col-12">
-                <div class="flex-button">
-                    <a href="{% url 'main:about' %}" class="btn btn-primary btn-lg px-5">Explore More About Us</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Tech solutions Section -->
+<!-- Clients Section -->
 <div class="container py-5">
-    <div class="row text-center">
-        <div class="col-12">
-            <h2 class="text-primary fw-bold mb-4">Team Development Supports</h2>
-            <p class="text-muted">Streamline your project execution with our comprehensive turnkey project support services, designed to build, manage, and deliver high-quality, timely results</p>
+    <h2 class="text-primary text-center fw-bold">Our Clients & Global Presence</h2>
+    <p class="text-muted text-center">With over 8 years of experience, we have served 10+ clients from the US, UK, Germany, India, and Malaysia.</p>
+    <div class="row text-center mt-4">
+        <div class="col-md-4 mb-4">
+            <h4>J&A UK</h4>
+            <p>Staffing SolidWorks & PLC Engineers</p>
         </div>
-    </div>
-    <div class="row mt-4">
-        <!-- Service Box Start -->
-        <div class="col-lg-3 col-md-6 mb-4 d-flex">
-            <div class="service-box p-4 text-center bg-white shadow rounded d-flex flex-column justify-content-between">
-                <div>
-                    <h3 class="text-primary mb-3">Project Development Teams</h3>
-                    <p class="text-muted">Comprehensive solutions for managing your project from inception to completion. We ensure seamless execution and timely delivery.</p>
-                </div>
-            </div>
+        <div class="col-md-4 mb-4">
+            <h4>Kliebert Engineering, Germany</h4>
+            <p>Staffing C++ Engineers</p>
         </div>
-        <div class="col-lg-3 col-md-6 mb-4 d-flex">
-            <div class="service-box p-4 text-center bg-white shadow rounded d-flex flex-column justify-content-between">
-                <div>
-                    <h3 class="text-primary mb-3">Team Building & Collaboration</h3>
-                    <p class="text-muted">Strengthen your team with skilled professionals. We assist in building high-performing teams tailored to your project's needs.</p>
-                </div>
-            </div>
+        <div class="col-md-4 mb-4">
+            <h4>OVT Germany</h4>
+            <p>Staffing Engineers for Custom Solutions</p>
         </div>
-        <div class="col-lg-3 col-md-6 mb-4 d-flex">
-            <div class="service-box p-4 text-center bg-white shadow rounded d-flex flex-column justify-content-between">
-                <div>
-                    <h3 class="text-primary mb-3">Project Management</h3>
-                    <p class="text-muted">Expert project management services to ensure smooth workflows, resource allocation, and timely execution of your project goals.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-6 mb-4 d-flex">
-            <div class="service-box p-4 text-center bg-white shadow rounded d-flex flex-column justify-content-between">
-                <div>
-                    <h3 class="text-primary mb-3">Custom Development Solutions</h3>
-                    <p class="text-muted">Tailored software development to meet your unique project requirements, leveraging cutting-edge technologies for optimal performance.</p>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Service Box End -->
     </div>
     <div class="text-center mt-4">
-        <a href="{% url 'main:team_supports' %}" class="btn btn-primary btn-lg px-5">Explore Team Supports</a>
+        <a href="{% url 'main:team_supports' %}" class="btn btn-primary btn-lg px-5">View Client Portfolio</a>
     </div>
 </div>
 
-<!-- Training Programs Section -->
+<!-- Training & Development -->
 <div class="container py-5">
-    <div class="row text-center">
-        <div class="col-12">
-            <h2 class="text-primary fw-bold mb-4">Training Skilled Professionals</h2>
-            <p class="text-muted">Enhance your skills or empower your team with our tailored corporate and technical training programs.</p>
-        </div>
-    </div>
-    <div class="row justify-content-center mt-4">
-        <!-- Row 1: Corporate Training -->
-        <div class="col-lg-6 col-md-8 mb-4">
-            <div class="course-card p-4 bg-white shadow-lg rounded text-center">
-                <h3 class="fw-bold text-primary mb-3">Corporate Training</h3>
-                <p class="text-muted mb-4">Empower your workforce with tailored IT training solutions designed to meet your organization’s specific needs.</p>
-                <a href="/corporate_training" class="btn btn-outline-primary">Learn More</a>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-center mt-4">
-        <!-- Row 2: Technical Training -->
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="course-card p-4 bg-white shadow-lg rounded text-center">
-                <h3 class="fw-bold text-primary mb-3">MEAN Stack Training</h3>
-                <p class="text-muted mb-4">Gain expertise in MongoDB, Express.js, Angular, and Node.js to build full-stack web applications.</p>
-                <a href="/mean_stack_training" class="btn btn-outline-primary">Explore More</a>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 mb-4">
-            <div class="course-card p-4 bg-white shadow-lg rounded text-center">
-                <h3 class="fw-bold text-primary mb-3">Testing Training</h3>
-                <p class="text-muted mb-4">Master software testing techniques, including manual testing, Selenium automation, and advanced testing tools.</p>
-                <a href="/testing_training" class="btn btn-outline-primary">Explore More</a>
-            </div>
-        </div>
+    <h2 class="text-primary text-center fw-bold">Building Skilled Professionals</h2>
+    <p class="text-muted text-center">Empowering businesses with tailored IT & corporate training.</p>
+    <div class="text-center mt-4">
+        <a href="{% url 'main:corporate_training' %}" class="btn btn-outline-primary btn-lg px-5">Explore Training Programs</a>
     </div>
 </div>
 
-
-<div class="container-fluid py-5">
-    <style>
-        .client-box {
-            background: linear-gradient(135deg, #001f3f, #004080); /* Dark blue gradient */
-            color: #fff; /* White text */
-            transition: all 0.3s ease;
-            border: 1px solid #004080;
-        }
-        .client-box:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        }
-        .client-box h4 {
-            color: #ffffff;
-        }
-        .client-box p {
-            color: #d9d9d9; /* Slightly lighter text */
-        }
-    </style>
-    <div class="container">
-        <div class="row justify-content-center mb-5">
-            <div class="col-12 text-center">
-                <h2 class="mb-4 text-primary">Our Esteemed Clients</h2>
-                <p class="text-muted">
-                    We’ve partnered with clients worldwide to deliver top-notch HR, project development, and corporate training solutions.
-                </p>
-            </div>
-        </div>
-        <div class="row justify-content-center">
-            <!-- HR Payroll Clients -->
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">J&A UK</h4>
-                    <p class="text-center">Staffing Solidworks and PLC Engineers</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">Kliebert Engineering, Germany</h4>
-                    <p class="text-center">Staffing C++ Engineers</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">OVT Germany</h4>
-                    <p class="text-center">Staffing Engineers for Custom Solutions</p>
-                </div>
-            </div>
-
-            <!-- Project Clients -->
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">Reddotpayment, Singapore</h4>
-                    <p class="text-center">Staffing Fullstack PHP Developers</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">CSR, Germany</h4>
-                    <p class="text-center">Staffing Angular and Ruby on Rails Developers</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">Cygnus, UK</h4>
-                    <p class="text-center">Staffing C++ Developers</p>
-                </div>
-            </div>
-
-            <!-- Corporate Training Clients -->
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">Niagaprestasi, Malaysia</h4>
-                    <p class="text-center">Trained Teams in Java, .NET, and Databases</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">Collabera</h4>
-                    <p class="text-center">Conducted Fullday Training Sessions on Java, .Net, DB tools etc for 1-3 Months</p>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="client-box p-4 rounded shadow h-100 d-flex flex-column justify-content-between">
-                    <h4 class="text-center fw-bold">And More...</h4>
-                    <p class="text-center">Delivering excellence globally.</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
+<!-- Consultancy -->
 <div class="container py-5 text-center">
-    <div class="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
-        <a href="#consultationModal" class="btn btn-primary btn-lg px-4 py-3 fw-bold shadow-lg" data-bs-toggle="modal">
-            <i class="bi bi-chat" style="font-size: 1.2em;"></i> Get Free Consultation & Consulting
-        </a>
-    </div>
+    <h2 class="text-primary fw-bold">Expert IT & Business Consultancy</h2>
+    <p class="text-muted">Get professional guidance on ERP implementation, HRMS solutions, and enterprise management.</p>
+    <a href="#consultationModal" class="btn btn-outline-light btn-lg px-4 py-3 fw-bold shadow-lg" data-bs-toggle="modal">
+    <i class="bi bi-chat"></i> Get Free Consultation & Consulting
+</a>
 </div>
 
-
-<!-- Modal Structure -->
-<div class="modal fade" id="consultationModal" tabindex="-1" aria-labelledby="projectSubmissionModalLabel" aria-hidden="true">
+<!-- Consultation Modal -->
+<div class="modal fade" id="consultationModal" tabindex="-1" aria-labelledby="consultationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="projectSubmissionModalLabel">Get Free Consultation</h5>
+                <h5 class="modal-title" id="consultationModalLabel">Get Free Consultation</h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -282,27 +84,14 @@
                         <label for="name" class="form-label">Your Name</label>
                         <input type="text" name="name" class="form-control" id="name" placeholder="Full Name" required>
                     </div>
-
                     <div class="form-group mt-3">
                         <label for="email" class="form-label">Your Email</label>
                         <input type="email" class="form-control" name="email" id="email" placeholder="Email Address" required>
                     </div>
-
                     <div class="form-group mt-3">
-                        <label for="interested_in" class="form-label">Interested In</label>
-                        <select class="form-control" name="interested_in" id="interested_in" required>
-                            <option value="">Select an option</option>
-                            <option value="Turneky">Team Supports</option>
-                            <option value="Training">Training Staffs</option>
-                            <option value="Technologies">Tech ERP Solutions</option>
-                        </select>
+                        <label for="message" class="form-label">Your Message</label>
+                        <textarea class="form-control" name="message" rows="4" id="message" placeholder="Describe your needs" required></textarea>
                     </div>
-
-                    <div class="form-group mt-3">
-                        <label for="additional_info" class="form-label">Additional Information</label>
-                        <textarea class="form-control" name="additional_info" rows="4" id="additional_info" placeholder="Briefly describe your needs or inquiries" required></textarea>
-                    </div>
-
                     <div class="text-center mt-4">
                         <button type="submit" class="btn btn-primary btn-lg px-5">Submit Consultation Request</button>
                     </div>
@@ -312,11 +101,9 @@
     </div>
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="{%static 'assets/js/jquery-3.7.1.min.js'%}"></script>
+<script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
 
-<!-- Script for form submission -->
 <script>
     $(document).ready(function() {
         $("#submit-form").submit(function(e) {
@@ -331,7 +118,7 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
-                        text: 'Your query have been successfully submitted!'
+                        text: 'Your query has been successfully submitted!'
                     });
                     $("#submit-form")[0].reset();
                     $('#consultationModal').modal('hide');
