@@ -19,9 +19,11 @@
                     <a href="{% url 'main:client_works' %}" class="btn btn-primary btn-lg px-4 py-3 fw-bold shadow-lg">
                         <i class="bi bi-eye"></i> Explore Our Team-Building Expertise
                     </a>
-                    <a href="#consultation-form-section" class="btn btn-primary btn-lg px-4 py-3 fw-bold shadow-lg" data-bs-toggle="modal">
-                        <i class="bi bi-chat" style="font-size: 1.2em;"></i> Get Free Consultation & Consulting
-                    </a>
+                 <button id="consultationBtn" type="button" class="btn btn-primary">
+                  Get Free Consultation
+                </button>
+
+
                 </div>
             </div>
         </div>
@@ -251,5 +253,12 @@
         });
     });
 </script>
+
+<script>
+  document.getElementById('consultationBtn').addEventListener('click', function() {
+    document.getElementById('consultation-form-section').scrollIntoView({ behavior: 'smooth' });
+  });
+</script>
+
 
 {% endblock %}
