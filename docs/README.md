@@ -9,6 +9,7 @@ Welcome to the Sevendyne Enterprise HRMS documentation. This project was **built
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Domain modules, settings, environment variables |
 | [DOCKER.md](DOCKER.md) | Plug-and-play Docker setup |
 | [DIRECTORY_STRUCTURE.md](DIRECTORY_STRUCTURE.md) | Production-ready repository layout |
+| [SOCIAL_POSTS.md](SOCIAL_POSTS.md) | Copy-paste posts for LinkedIn, Reddit, Dev.to, HN, Instagram |
 | [VISIBILITY.md](VISIBILITY.md) | How to promote the repo on GitHub and social channels |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | How to collaborate and get evaluated |
 | [../README.md](../README.md) | Project storefront and quick start |

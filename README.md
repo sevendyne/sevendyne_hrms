@@ -13,6 +13,8 @@ A robust, enterprise-grade Human Resource Management System built with Python an
 
 If this HRMS helps you or your team, please **[give the repo a star on GitHub](https://github.com/sevendyne/sevendyne_hrms)** — it helps other developers discover the project and encourages us to release more open-source tools from Sevendyne.
 
+**Share on other platforms:** ready-to-copy posts for LinkedIn, Reddit, Dev.to, HN, and Instagram → [docs/SOCIAL_POSTS.md](docs/SOCIAL_POSTS.md)
+
 [![Star on GitHub](https://img.shields.io/github/stars/sevendyne/sevendyne_hrms?style=social)](https://github.com/sevendyne/sevendyne_hrms)
 
 ## Our Story
