@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Contributing Guide
+    url: https://github.com/sevendyne/sevendyne_hrms/blob/main/CONTRIBUTING.md
+    about: How to fork, pick issues, and submit PRs
+  - name: Docker Quick Start
+    url: https://github.com/sevendyne/sevendyne_hrms/blob/main/README.md#getting-started
+    about: Run the HRMS locally in one command
+  - name: Sevendyne Website
+    url: https://sevendyne.com
+    about: Company details and engineering services

@@ -1,0 +1,68 @@
+name: Bug report
+description: Report something broken in the HRMS
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Sevendyne HRMS. Please search [existing issues](https://github.com/sevendyne/sevendyne_hrms/issues) first.
+
+  - type: dropdown
+    id: module
+    attributes:
+      label: Module
+      options:
+        - Authentication / Login
+        - Attendance
+        - Payroll
+        - Leave tracker
+        - Recruitment / Jobs
+        - Docker / Setup
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Clear description of the bug
+      placeholder: When I log in as employee1, the attendance page shows...
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. docker compose up --build
+        2. Login as employee1 / password@123
+        3. Go to ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      placeholder: |
+        - OS: Ubuntu 24.04
+        - Docker version: 29.x
+        - Browser: Firefox 128
+    validations:
+      required: true
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Paste relevant `docker compose logs web` output or attach screenshots

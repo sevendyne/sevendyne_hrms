@@ -1,0 +1,63 @@
+name: Candidate / Collaborator
+description: Propose a contribution or ask to work on a challenge
+title: "[Collaborate]: "
+labels: ["candidate-challenge"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this template if you want to **collaborate with Sevendyne** or propose work for evaluation.
+        See [CONTRIBUTING.md](https://github.com/sevendyne/sevendyne_hrms/blob/main/CONTRIBUTING.md).
+
+  - type: input
+    id: github_profile
+    attributes:
+      label: GitHub profile URL
+      placeholder: https://github.com/yourusername
+    validations:
+      required: true
+
+  - type: dropdown
+    id: interest
+    attributes:
+      label: What do you want to work on?
+      options:
+        - Pick an existing `good-first-issue`
+        - Pick an existing `candidate-challenge`
+        - Propose my own small feature (describe below)
+        - Bug fix only
+        - Documentation / tests
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Your proposal
+      description: What will you build or fix? Keep scope small enough for one PR.
+      placeholder: I will add API tests for the leave approval workflow in apps/employee...
+    validations:
+      required: true
+
+  - type: textarea
+    id: experience
+    attributes:
+      label: Relevant experience
+      placeholder: Django 3+ years, pytest, Docker, prior HRMS or payroll projects...
+
+  - type: checkboxes
+    id: standards
+    attributes:
+      label: I agree to
+      options:
+        - label: Write pytest-django tests for new logic
+        - label: Run black and flake8 before opening a PR
+        - label: Follow the Definition of Done in CONTRIBUTING.md
+    validations:
+      required: true
+
+  - type: input
+    id: timeline
+    attributes:
+      label: Estimated timeline for first PR
+      placeholder: e.g. 3–5 days
