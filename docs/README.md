@@ -9,6 +9,7 @@ Welcome to the Sevendyne Enterprise HRMS documentation. This project was **built
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Domain modules, settings, environment variables |
 | [DOCKER.md](DOCKER.md) | Plug-and-play Docker setup |
 | [DIRECTORY_STRUCTURE.md](DIRECTORY_STRUCTURE.md) | Production-ready repository layout |
+| [VISIBILITY.md](VISIBILITY.md) | How to promote the repo on GitHub and social channels |
 | [../CONTRIBUTING.md](../CONTRIBUTING.md) | How to collaborate and get evaluated |
 | [../README.md](../README.md) | Project storefront and quick start |
 
@@ -30,9 +31,11 @@ Then open http://localhost:8000 and log in with the [demo credentials](../README
 
 ## Get Involved
 
-1. Star and fork the repository
-2. Read [CONTRIBUTING.md](../CONTRIBUTING.md)
+1. **[Star the repository](https://github.com/sevendyne/sevendyne_hrms)** — helps visibility (see [VISIBILITY.md](VISIBILITY.md))
+2. Fork and read [CONTRIBUTING.md](../CONTRIBUTING.md)
 3. Pick a `good-first-issue` or `candidate-challenge` label
 4. Submit a PR — we review for quality, tests, and documentation
+
+**License:** [MIT](../LICENSE) — free for personal and commercial use.
 
 We are actively looking for collaborators. More repositories from the Sevendyne team are coming.

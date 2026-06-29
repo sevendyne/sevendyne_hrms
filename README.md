@@ -3,8 +3,17 @@
 ![Build Status](https://img.shields.io/badge/tests-passing-success)
 ![Python Version](https://img.shields.io/badge/python-3.11%2B-blue)
 ![Django Version](https://img.shields.io/badge/django-5.0%20LTS-green)
+![License](https://img.shields.io/badge/license-MIT-blue)
 
 A robust, enterprise-grade Human Resource Management System built with Python and Django. Designed for easy containerized deployment across any office infrastructure.
+
+> **This is not a paid commercial product.** Sevendyne is sharing this HRMS **free and open source** so anyone — startups, agencies, schools, or enterprises — can **use, modify, and deploy it**, including for **commercial purposes**. No license fee required. See [LICENSE](LICENSE) (MIT).
+
+## Support This Project
+
+If this HRMS helps you or your team, please **[give the repo a star on GitHub](https://github.com/sevendyne/sevendyne_hrms)** — it helps other developers discover the project and encourages us to release more open-source tools from Sevendyne.
+
+[![Star on GitHub](https://img.shields.io/github/stars/sevendyne/sevendyne_hrms?style=social)](https://github.com/sevendyne/sevendyne_hrms)
 
 ## Our Story
 
@@ -55,7 +64,7 @@ sevendyne_hrms/
 └── CONTRIBUTING.md         # Guidelines for candidates/collaborators
 ```
 
-Full technical documentation: [docs/](docs/)
+Full technical documentation: [docs/](docs/) · Visibility guide: [docs/VISIBILITY.md](docs/VISIBILITY.md)
 
 ## Getting Started
 
@@ -117,4 +126,8 @@ We use this repository to **discover engineering talent** and welcome **collabor
 
 ## License
 
-Proprietary — Sevendyne. Contact hr@sevendyne.com for licensing inquiries.
+Released under the **[MIT License](LICENSE)**.
+
+You may use this software freely — including in **commercial products and internal business operations** — as long as you include the copyright notice. There is no purchase, subscription, or proprietary license required.
+
+Sevendyne retains copyright on the codebase but does **not** restrict commercial adoption under MIT terms. For partnership or custom engineering support, visit [sevendyne.com](https://sevendyne.com) or contact hr@sevendyne.com.
