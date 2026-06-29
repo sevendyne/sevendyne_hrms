@@ -2,41 +2,56 @@ name: Django CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [main]
   pull_request:
-    branches: [ "main" ]
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      max-parallel: 4
-      matrix:
-        python-version: [3.7, 3.8, 3.9]
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        env:
+          POSTGRES_DB: hrms_db
+          POSTGRES_USER: sevendyne
+          POSTGRES_PASSWORD: securepassword
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgres://sevendyne:securepassword@localhost:5432/hrms_db
+      DJANGO_SETTINGS_MODULE: config.settings.local
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install Dependencies
+          python-version: "3.11"
+
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-      - name: Run Tests
-        run: |
-          python manage.py test
-     
-      # - name: Debug
-      #   run: |
-      #     cat ~/.ssh/known_hosts
-      #     ls -l ~/.ssh
+          pip install -r requirements/local.txt
 
-      # Deployment steps
-      - name: Deploy to AWS EC2
+      - name: Lint with flake8
+        run: flake8 apps config --count --select=E9,F63,F7,F82 --show-source --statistics
+
+      - name: Check formatting with black
+        run: black --check apps config
+
+      - name: Run migrations
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > deploy_key.pem
-          chmod 600 deploy_key.pem
-          ssh -o StrictHostKeyChecking=no -i deploy_key.pem ubuntu@ec2-3-110-118-236.ap-south-1.compute.amazonaws.com "git clone https://github.com/Sevendyne/sevendyne_hrms.git ~/sevendyne_hrms && cd ~/sevendyne_hrms && git pull && python manage.py makemigrations && python manage.py migrate && python manage.py loaddata states countries && python manage.py create_groups_and_permissions && python manage.py createsuperuser && systemctl restart your-app-service"
-          rm deploy_key.pem
+          python manage.py makemigrations --noinput
+          python manage.py migrate --noinput
+
+      - name: Run tests
+        run: pytest --tb=short -q

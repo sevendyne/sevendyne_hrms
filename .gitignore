@@ -1,13 +1,8 @@
-# Ignore all files in migrations directories, except __init__.py
-*/migrations/*
-!*/migrations/__init__.py
-*/migrations/*.py
-*/migrations/*.pyc
-
 # Ignore Python bytecode
 *.pyc
 __pycache__/
 */__pycache__/
+*/migrations/__pycache__/
 
 # Ignore database files
 db.sqlite3
@@ -20,4 +15,3 @@ media/
 
 # Ignore specific file
 notes.txt
-

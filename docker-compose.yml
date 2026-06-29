@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: hrms_db
+      POSTGRES_USER: sevendyne
+      POSTGRES_PASSWORD: securepassword
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sevendyne -d hrms_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  web:
+    build:
+      context: .
+      dockerfile: ./compose/local/Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.local
+      DATABASE_URL: postgres://sevendyne:securepassword@db:5432/hrms_db
+      REDIS_HOST: redis
+      REDIS_PORT: "6379"
+      EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+
+volumes:
+  postgres_data:
