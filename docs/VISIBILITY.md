@@ -28,7 +28,8 @@ Create starter issues and label them:
 Pin 2–3 `good-first-issue` items so newcomers know where to start.
 
 ### 4. GitHub Social preview
-- Settings → General → **Social preview** — upload a 1280×640 banner (logo + “Open Source HRMS · MIT · Docker”).
+- Settings → General → **Social preview** — upload the banner at [`docs/images/github-social-preview.png`](../docs/images/github-social-preview.png) (1280×640).
+- Same image works for LinkedIn article covers and Dev.to post headers (crop if needed).
 
 ### 5. Releases
 Tag versions (`v1.0.0`) with release notes:
