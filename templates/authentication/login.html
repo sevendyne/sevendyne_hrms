@@ -1,144 +1,242 @@
-<!DOCTYPE html>
+<!doctype html>
 {% load static %}
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none">
-    <head>
-        <meta charset="utf-8">
-		<meta content="width=device-width, initial-scale=1.0" name="viewport">
-		<meta name="keywords" content="Talent Management und HRMS Deutschland, Personalbeschaffung und HR-Software, Rekrutierung und HR-Lösungen, Talent Management und Personalverwaltung, HRMS und Rekrutierungsservices" name="keywords">
-		<meta name="description" content="At Sevendyne, we connect businesses with top talent and offer free HRMS software to streamline HR operations, reduce costs, and support business growth." name="description">
-		<meta property="og:title" content="{% block og_title %}Sevendyne: Unlock Top Talent with Leading HRMS & Talent Management Solutions{% endblock %}" />
-		<meta property="og:description" content="{% block og_description %}Sevendyne connects businesses with top talent and offers free HRMS software to streamline HR processes, reduce costs, and drive growth. Simplify your HR operations and empower your business with our innovative solutions.{% endblock %}" />
-		{% comment %} <meta property="og:image" content="{% block og_image %}https://sevendyne.com/default-image.jpg{% endblock %}" /> {% endcomment %}
-		<meta property="og:url" content="{% block og_url %}https://sevendyne.com{% endblock %}" />
-		<meta property="og:type" content="website" />
-        <title>Login - Sevendyne HRMS</title>
-		
-		<!-- Favicon -->
-		<link href="{% static 'job_portal/img/logo1.png'%}" rel="icon">
+<html
+  lang="en"
+  data-layout="vertical"
+  data-topbar="light"
+  data-sidebar="dark"
+  data-sidebar-size="lg"
+  data-sidebar-image="none"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <meta
+      name="keywords"
+      content="Talent Management und HRMS Deutschland, Personalbeschaffung und HR-Software, Rekrutierung und HR-Lösungen, Talent Management und Personalverwaltung, HRMS und Rekrutierungsservices"
+      name="keywords"
+    />
+    <meta
+      name="description"
+      content="At Sevendyne, we connect businesses with top talent and offer free HRMS software to streamline HR operations, reduce costs, and support business growth."
+      name="description"
+    />
+    <meta
+      property="og:title"
+      content="{% block og_title %}Sevendyne: Unlock Top Talent with Leading HRMS & Talent Management Solutions{% endblock %}"
+    />
+    <meta
+      property="og:description"
+      content="{% block og_description %}Sevendyne connects businesses with top talent and offers free HRMS software to streamline HR processes, reduce costs, and drive growth. Simplify your HR operations and empower your business with our innovative solutions.{% endblock %}"
+    />
+    {% comment %}
+    <meta
+      property="og:image"
+      content="{% block og_image %}https://sevendyne.com/default-image.jpg{% endblock %}"
+    />
+    {% endcomment %}
+    <meta
+      property="og:url"
+      content="{% block og_url %}https://sevendyne.com{% endblock %}"
+    />
+    <meta property="og:type" content="website" />
+    <title>Login - Sevendyne HRMS</title>
 
-		<!-- Bootstrap CSS -->
-        <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+    <!-- Favicon -->
+    <link href="{% static 'job_portal/img/logo1.png'%}" rel="icon" />
 
-		<!-- Fontawesome CSS -->
-        <link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}">
-    	<link rel="stylesheet" href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
 
-		<!-- Lineawesome CSS -->
-        <link rel="stylesheet" href="{% static 'assets/css/line-awesome.min.css' %}">
-		<link rel="stylesheet" href="{% static 'assets/css/material.css' %}">
-			
-		<!-- Lineawesome CSS -->
-		<link rel="stylesheet" href="{% static 'assets/css/line-awesome.min.css' %}">
-		
-		<!-- Main CSS -->
-        <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+    <!-- Fontawesome CSS -->
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/plugins/fontawesome/css/fontawesome.min.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/plugins/fontawesome/css/all.min.css' %}"
+    />
 
-    </head>
-    <body class="account-page">
-		<!-- Main Wrapper -->
-        <div class="main-wrapper">
-			<div class="account-content">
-				<div class="container">
-					<!-- hidden div for the popup message -->
-					<div id="loginErrorMessage" class="alert alert-danger alert-dismissible fade show" style="display: none;" role="alert">
-						{% if error_message %}
-							{{ error_message }}
-						{% endif %}
-						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>					
-					<div class="account-box">
-						<div class="account-wrapper">
-							<!-- Account Logo -->
-							<div class="account-logo">
-								<a href="#"><img src="{% static 'assets/img/01.png' %}" alt="Sevendyne HRMS Login" style="width:71%"></a>
-							</div>
-							<!-- /Account Logo -->							
-							<h3 class="account-title">Login</h3>
-							<p class="account-subtitle">Access to our dashboard</p>							
-							<!-- Account Form -->
-							<form method="POST" enctype="multipart/form-data">
-								{% csrf_token %}
-								<div class="input-block mb-4">
-									<label class="col-form-label">Username</label><br>
-									{{ form.username }}
-									{% if form.username.errors %}
-									<span class="error">{{ form.username.errors.0 }}</span>
-									{% endif %}
-								</div>
-								<div class="input-block mb-4">
-									<div class="row align-items-center">
-										<div class="col">
-											<label class="col-form-label">Password</label><br>
-										</div>
-									</div>
-									<div class="position-relative">
-										<div class="input-group">
-											{{ form.password }}
-											<span id="password-icon" class="position-relative input-group-text fa-solid fa-eye-slash" onclick="togglePasswordVisibility()"></span>						
-										</div>
-										{% if form.password.errors %}
-										<span class="error">{{ form.password.errors.0 }}</span>
-										{% endif %}
-									</div>
-								</div>
-								<div class="input-block mb-4 text-center">
-									<button class="btn btn-primary account-btn" type="submit" style="background: linear-gradient(275.55deg, #50a5d5 0%, #3164b8 100%)">Login</button>
-								</div>
-							</form>
-							<div class="account-footer">
-								<p>Sign Up/Register <a href="{% url 'user:signup' %}">Sign Up</a></p>
-							</div>
-							<div class="mt-4 p-3 rounded" style="background: #f4f7fb; font-size: 0.9rem;">
-								<h6 class="text-primary mb-2">Demo Accounts (local)</h6>
-								<p class="mb-1"><strong>Admin:</strong> <code>admin</code> / <code>admin</code></p>
-								<p class="mb-1"><strong>HRMS Client:</strong> <code>hrmsclient1</code> / <code>password@123</code></p>
-								<p class="mb-0"><strong>Employee:</strong> <code>employee1</code> / <code>password@123</code></p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+    <!-- Lineawesome CSS -->
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/css/line-awesome.min.css' %}"
+    />
+    <link rel="stylesheet" href="{% static 'assets/css/material.css' %}" />
+
+    <!-- Lineawesome CSS -->
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/css/line-awesome.min.css' %}"
+    />
+
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}" />
+  </head>
+  <body class="account-page">
+    <!-- Main Wrapper -->
+    <div class="main-wrapper" style="display: block">
+      <div class="account-content">
+        <div class="container">
+          <!-- hidden div for the popup message -->
+          <div
+            id="loginErrorMessage"
+            class="alert alert-danger alert-dismissible fade show"
+            style="display: none"
+            role="alert"
+          >
+            {% if error_message %} {{ error_message }} {% endif %}
+            <button
+              type="button"
+              class="close"
+              data-dismiss="alert"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="account-box">
+            <div class="account-wrapper">
+              <!-- Account Logo -->
+              <div class="account-logo">
+                <a href="#"
+                  ><img
+                    src="{% static 'assets/img/01.png' %}"
+                    alt="Sevendyne HRMS Login"
+                    style="width: 71%"
+                /></a>
+              </div>
+              <!-- /Account Logo -->
+              <h3 class="account-title">Login</h3>
+              <p class="account-subtitle">Access to our dashboard</p>
+              <!-- Account Form -->
+              <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="input-block mb-4">
+                  <label class="col-form-label">Username</label><br />
+                  {{ form.username }} {% if form.username.errors %}
+                  <span class="error">{{ form.username.errors.0 }}</span>
+                  {% endif %}
+                </div>
+                <div class="input-block mb-4">
+                  <div class="row align-items-center">
+                    <div class="col">
+                      <label class="col-form-label">Password</label><br />
+                    </div>
+                  </div>
+                  <div class="position-relative">
+                    <div class="input-group">
+                      {{ form.password }}
+                      <span
+                        id="password-icon"
+                        class="position-relative input-group-text fa-solid fa-eye-slash"
+                        onclick="togglePasswordVisibility()"
+                      ></span>
+                    </div>
+                    {% if form.password.errors %}
+                    <span class="error">{{ form.password.errors.0 }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="input-block mb-4 text-center">
+                  <button
+                    class="btn btn-primary account-btn"
+                    type="submit"
+                    style="
+                      background: linear-gradient(
+                        275.55deg,
+                        #50a5d5 0%,
+                        #3164b8 100%
+                      );
+                    "
+                  >
+                    Login
+                  </button>
+                </div>
+              </form>
+              <div class="account-footer">
+                <p>
+                  Sign Up/Register <a href="{% url 'user:signup' %}">Sign Up</a>
+                </p>
+              </div>
+              <div
+                class="mt-4 p-3 rounded"
+                style="background: #f4f7fb; font-size: 0.9rem"
+              >
+                <h6 class="text-primary mb-2">Demo Accounts (local)</h6>
+                <p class="mb-1">
+                  <strong>Admin:</strong> <code>admin</code> /
+                  <code>admin</code>
+                </p>
+                <p class="mb-1">
+                  <strong>HRMS Client:</strong> <code>hrmsclient1</code> /
+                  <code>password@123</code>
+                </p>
+                <p class="mb-0">
+                  <strong>Employee:</strong> <code>employee1</code> /
+                  <code>password@123</code>
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-		<!-- /Main Wrapper -->
-		
-		<!-- jQuery -->
-       <script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
-		
-		<!-- Bootstrap Core JS -->
-        <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
-		
-		<!-- Custom JS -->
-		<script src="{% static 'assets/js/app.js' %}"></script>
-		<!-- JavaScript to display popup message if login fails -->
-		<script>
-			function togglePasswordVisibility() {
-				var passwordField = document.getElementById("id_password");
-				var passwordIcon = document.getElementById("password-icon");
-				if (passwordField.type === "password") {
-					passwordField.type = "text";
-					passwordIcon.classList.remove("fa-eye-slash");
-					passwordIcon.classList.add("fa-eye");
-				} else {
-					passwordField.type = "password";
-					passwordIcon.classList.remove("fa-eye");
-					passwordIcon.classList.add("fa-eye-slash");
-				}
-			}
-			// Check if login failed, then display the error message
-			{% if error_message %}
-				document.getElementById('loginErrorMessage').style.display = 'block';
-			{% endif %}
-			// Function to close the error message div when the close button is clicked
-			document.addEventListener('DOMContentLoaded', function() {
-				document.querySelectorAll('.close').forEach(function(closeBtn) {
-					closeBtn.addEventListener('click', function() {
-						this.closest('.alert').style.display = 'none';
-					});
-				});
-			});
-		</script>
-		
-    </body>
+      </div>
+      <!-- Footer -->
+      <footer
+        class="py-3 d-flex justify-content-center align-items-center gap-2"
+      >
+        <iframe
+          src="https://ghbtns.com/github-btn.html?user=sevendyne&repo=sevendyne_hrms&type=star&count=true&size=large"
+          title="Star us on GitHub"
+          width="160"
+          height="30"
+        ></iframe>
+        <a
+          href="https://github.com/sevendyne/sevendyne_hrms/blob/main/LICENSE"
+          target="_blank"
+          class="text-reset"
+          >&bull; MIT Licensed</a
+        >
+      </footer>
+    </div>
+    <!-- /Main Wrapper -->
+
+    <!-- jQuery -->
+    <script src="{% static 'assets/js/jquery-3.7.1.min.js' %}"></script>
+
+    <!-- Bootstrap Core JS -->
+    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+
+    <!-- Custom JS -->
+    <script src="{% static 'assets/js/app.js' %}"></script>
+    <!-- JavaScript to display popup message if login fails -->
+    <script>
+      function togglePasswordVisibility() {
+      	var passwordField = document.getElementById("id_password");
+      	var passwordIcon = document.getElementById("password-icon");
+      	if (passwordField.type === "password") {
+      		passwordField.type = "text";
+      		passwordIcon.classList.remove("fa-eye-slash");
+      		passwordIcon.classList.add("fa-eye");
+      	} else {
+      		passwordField.type = "password";
+      		passwordIcon.classList.remove("fa-eye");
+      		passwordIcon.classList.add("fa-eye-slash");
+      	}
+      }
+      // Check if login failed, then display the error message
+      {% if error_message %}
+      	document.getElementById('loginErrorMessage').style.display = 'block';
+      {% endif %}
+      // Function to close the error message div when the close button is clicked
+      document.addEventListener('DOMContentLoaded', function() {
+      	document.querySelectorAll('.close').forEach(function(closeBtn) {
+      		closeBtn.addEventListener('click', function() {
+      			this.closest('.alert').style.display = 'none';
+      		});
+      	});
+      });
+    </script>
+  </body>
 </html>
