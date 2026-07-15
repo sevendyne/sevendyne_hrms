@@ -132,7 +132,7 @@ We use this repository to **discover engineering talent** and welcome **collabor
 This HRMS is built and maintained by **[Sevendyne Consultancy Services LLP](https://sevendyne.com)** — we build, customise, deploy, and support HRMS/payroll systems commercially, and run managed payroll services for companies with teams in India.
 
 **Need customisation, hosted deployment, integrations, or managed payroll?**
-→ [sevendyne.com](https://sevendyne.com) · hr@sevendyne.com
+→ [sevendyne.com](https://sevendyne.com) · contact@sevendyne.com
 
 ## License
 
