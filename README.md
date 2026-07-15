@@ -5,6 +5,8 @@
 ![Django Version](https://img.shields.io/badge/django-5.0%20LTS-green)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
+<img width="1882" height="902" alt="dashboard" src="docs/images/dashboard.png" />
+
 A robust, enterprise-grade Human Resource Management System built with Python and Django. Designed for easy containerized deployment across any office infrastructure.
 
 > **This is not a paid commercial product.** Sevendyne is sharing this HRMS **free and open source** so anyone — startups, agencies, schools, or enterprises — can **use, modify, and deploy it**, including for **commercial purposes**. No license fee required. See [LICENSE](LICENSE) (MIT).
